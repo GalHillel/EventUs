@@ -4,7 +4,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { UserModule } from './modules/user/user.module';
 
 @Module({
-  imports: [ MongooseModule.forRoot('mongodb://127.0.0.1:27017/EventUs'), UserModule],
+  imports: [ MongooseModule.forRoot('mongodb+srv://zivmorgan:ZfgRRn3HDEj9mC4d@cluster0.c5gbgne.mongodb.net/?retryWrites=true&w=majority/EventUs'), UserModule],
   controllers: [],
   providers: [],
 })
