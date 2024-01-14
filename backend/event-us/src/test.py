@@ -1,6 +1,6 @@
 import time
 import requests
-"""
+
 # api-endpoint
 URL = "http://localhost:3000/users"
 data_user1 = {
@@ -19,7 +19,6 @@ data_user2 = {
     "userType": "user"
 }
 
-
 data_event = {
     "_id":421,
     "name":"Event1",
@@ -35,20 +34,28 @@ data_message = {
     "content":"this is a test message from ziv to user1"
 }
 
-data_profilePic = {
-    "id":0,
+with open("backend/event-us/src/testimg.png",'rb') as f:
+    testImg = f.read()
+with open("backend/event-us/src/defaultpfp.png",'rb') as f:
+    defaultpfp = f.read()
 
+data_profilePic1 = {
+    "id":0,
+    "icon":defaultpfp
 }
+
+data_profilePic2 = {
+    "id":31245,
+    "icon":testImg
+}
+
 
  
 # sending get request and saving the response as response object
-r = requests.post(url = URL,json=data)
+r = requests.post(url = URL,json=data_user1)
  
 # extracting data in json format
 data = r.json()
 
 print(data)
 
-"""
-import cv2
-img = cv2.imread('backend/event-us/src/defaultpfp.png')
