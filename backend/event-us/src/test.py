@@ -1,8 +1,9 @@
 import time
 import requests
+import json
 
 # api-endpoint
-URL = "http://localhost:3000/users"
+URL = "http://localhost:3000/profilepics"
 data_user1 = {
     "_id":123,
     "pfp_id":31245,
@@ -39,20 +40,22 @@ with open("backend/event-us/src/testimg.png",'rb') as f:
 with open("backend/event-us/src/defaultpfp.png",'rb') as f:
     defaultpfp = f.read()
 
-data_profilePic1 = {
-    "id":0,
-    "icon":defaultpfp
-}
+data_profilePic1 = {"_id":31245}
+files1 = {
+    "_id":('payload.json',json.dumps(data_profilePic1),'application/json'),
+    "icon": ("testimg.png", testImg, "multipart/form-data")
+    }
 
-data_profilePic2 = {
-    "id":31245,
-    "icon":testImg
-}
-
+data_profilePic2 = {"_id":0}
+files2 = {
+    "_id":('payload.json',json.dumps(data_profilePic2),'application/json'),
+    "icon": ("defaultpfp.png", defaultpfp, "multipart/form-data")
+    }
 
  
 # sending get request and saving the response as response object
-r = requests.post(url = URL,json=data_user1)
+for i in range(1):
+    r = requests.post(url = URL,files=files1)
  
 # extracting data in json format
 data = r.json()
