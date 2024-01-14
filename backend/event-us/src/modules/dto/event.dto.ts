@@ -1,5 +1,5 @@
 import {Id} from './id.dto'
-export class CreateUserEvent{
+export class CreateEventDto{
     readonly _id: Id;
     readonly name: string;
     readonly date: Date;
