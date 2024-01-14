@@ -1,6 +1,6 @@
 import {Id} from './id.dto'
 
-enum UserType {attendent, creator};
+export enum UserType {USER="user", CREATOR="creator"};
 export class CreateUserDto {
     readonly _id: Id;
     readonly pfp_id: Id;

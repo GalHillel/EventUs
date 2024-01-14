@@ -1,3 +1,3 @@
-export class id{
-    readonly id: number
+export class Id{
+    readonly Id: number
 }

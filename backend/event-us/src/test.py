@@ -4,10 +4,11 @@ import requests
 # api-endpoint
 URL = "http://localhost:3000/users"
 data = {
-    "_id":8713276817587123,
-    "name": "exampleUserdasdsa12312",
-    "email": "example@email.com",
-    "password": "examplePassword"
+    "_id":47672931264,
+    "name": "ziv",
+    "email": "ziv.morgan@gmail.com",
+    "password": "newPass",
+    "userType": "creator"
 }
 
  

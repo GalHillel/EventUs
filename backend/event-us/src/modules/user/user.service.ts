@@ -9,7 +9,7 @@ export class UserService {
   constructor(@InjectModel(User.name) private readonly userModel: Model<User>) {}
 
   async createUser(createUserDto: CreateUserDto): Promise<User> {
-    console.log("adding user!");
+    console.log("creating user" + createUserDto);
     const createdUser = new this.userModel(createUserDto);
     return createdUser.save();
   }
@@ -19,9 +19,9 @@ export class UserService {
   }
   async printAllUsers(): Promise<void>{
     const users: User[] = await this.userModel.find().exec();
-    console.log("hello");
+    
     users.forEach( (user,index)=>{
-      console.log(user.id+ ', ' + user.name + ', ' + user.email + ', ' + user.password);
+      console.log(user);
     });
   }
 
