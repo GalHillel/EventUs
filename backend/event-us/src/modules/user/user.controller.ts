@@ -4,6 +4,7 @@ import { CreateUserDto } from '../dto/user.dto';
 import { User } from './user.model';
 import { UserEvent } from '../event/event.model';
 import {Id} from '../dto/id.dto'
+import { Message } from '../message/message.model';
 
 @Controller('users')
 export class UserController {
@@ -22,14 +23,17 @@ export class UserController {
 
 
   // get user specific fields  
-  @Get('events')
-  async getUserEvents(@Query('id') _id: string): Promise<UserEvent[]>{
+  @Get(':id/events')
+  async getUserEvents(@Param('id') _id: Id): Promise<UserEvent[]>{
     return this.userService.getEventsForUser(_id);
   }
-  @Get('profilepics')
-  async getUserProfilePic(@Query('id') _id: string): Promise<Buffer>{
-    console.log(_id);
+  @Get(':id/profilepics')
+  async getUserProfilePic(@Param('id') _id: Id): Promise<Buffer>{
     return this.userService.getProfilePicForUser(_id);
+  }
+  @Get(':id/messages')
+  async getUserMessages(@Param('id') _id: Id): Promise<Message[]>{
+    return this.userService.getMessagesForUser(_id);
   }
 
   // Implement other CRUD endpoints as needed

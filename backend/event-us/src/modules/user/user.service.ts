@@ -7,6 +7,7 @@ import { ProfilePic } from '../profilePic/profilePic.model';
 
 import { CreateUserDto } from '../dto/user.dto';
 import { Id } from '../dto/id.dto'
+import { Message } from '../message/message.model';
 
 
 @Injectable()
@@ -14,7 +15,8 @@ export class UserService {
   constructor(
     @InjectModel(User.name) private readonly userModel: Model<User>,
     @InjectModel(UserEvent.name) private readonly userEventModel: Model<UserEvent>,
-    @InjectModel(ProfilePic.name) private readonly profilePicModel: Model<ProfilePic>
+    @InjectModel(ProfilePic.name) private readonly profilePicModel: Model<ProfilePic>,
+    @InjectModel(Message.name) private readonly MessageModel: Model<Message>
     ) {}
 
   async createUser(createUserDto: CreateUserDto): Promise<User> {
@@ -34,7 +36,7 @@ export class UserService {
     });
   }
 
-  async getEventsForUser(_id: string): Promise<UserEvent[]> {
+  async getEventsForUser(_id: Id): Promise<UserEvent[]> {
     const user = await this.userModel.findById(_id).exec();
 
     if (!user) {
@@ -48,7 +50,7 @@ export class UserService {
     return [];
   }
 
-  async getProfilePicForUser(_id: string): Promise<Buffer> {
+  async getProfilePicForUser(_id: Id): Promise<Buffer> {
     const user = await this.userModel.findOne({'_id':_id}).exec();
     console.log(typeof _id)
     if (!user) {
@@ -62,6 +64,18 @@ export class UserService {
 
     return profilePic.icon;
   }
+  async getMessagesForUser(_id: Id): Promise<Message[]> {
+    const user = await this.userModel.findById(_id).exec();
 
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    const message_ids = user.events; 
+    if(message_ids.length>0){
+      return await this.MessageModel.find({ _id: { $in: message_ids } }).exec();
+    }
+    return [];
+  }
   // Implement other CRUD operations as needed
 }
