@@ -9,9 +9,9 @@ import { Id } from '../dto/id.dto';
 export class ProfilePicService {
   constructor(@InjectModel(ProfilePic.name) private readonly profilePicModel: Model<ProfilePic>) {}
 
-  async createProfilePic(id :Id, buf: Buffer): Promise<ProfilePic> {
-    console.log(id);
-    const profilePic =  new this.profilePicModel({ _id: id, icon: buf });
+  async createProfilePic(createProfilePicDto:CreateProfilePicDto): Promise<ProfilePic> {
+    
+    const profilePic =  new this.profilePicModel(createProfilePicDto);
     return profilePic.save();
   }
 
@@ -22,6 +22,7 @@ export class ProfilePicService {
     const profilepics: ProfilePic[] = await this.profilePicModel.find().exec();
     
     profilepics.forEach( (profilepic,index)=>{
+      
       console.log(profilepic);
     });
   }

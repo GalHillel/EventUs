@@ -11,15 +11,16 @@ export class ProfilePicController {
 
   @Post()
   @UseInterceptors(FileFieldsInterceptor([
-    { name: '_id', maxCount: 2 },
-    { name: 'icon', maxCount: 2 },
+    { name: '_id', maxCount: 1 },
+    { name: 'icon', maxCount: 1 },
   ]))
-  async uploadProfilePicture(@UploadedFiles() files: { idData?: Express.Multer.File[], iconData?: Express.Multer.File[] }){//: Promise<ProfilePic> {
-    console.log(files);
+  async uploadProfilePicture(@UploadedFiles() files: { _id?: Express.Multer.File[], icon?: Express.Multer.File[] }) : Promise<ProfilePic>{
+    var params : {'_id':Id,'icon':Buffer} = JSON.parse(files._id[0].buffer.toString()) 
+    params['icon'] = files.icon[0].buffer 
     
-    //const icon = file.buffer;
-    //console.log(icon.toString());
-    //return this.profilePicService.createProfilePic(id, icon);
+    return this.profilePicService.createProfilePic(params);
+    
+   
    
   }
 
