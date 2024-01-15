@@ -3,14 +3,18 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from './user.model';
 import { UserEvent } from '../event/event.model';
+import { ProfilePic } from '../profilePic/profilePic.model';
+
 import { CreateUserDto } from '../dto/user.dto';
 import { Id } from '../dto/id.dto'
+
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectModel(User.name) private readonly userModel: Model<User>,
-    @InjectModel(UserEvent.name) private readonly eventModel: Model<UserEvent>
+    @InjectModel(UserEvent.name) private readonly userEventModel: Model<UserEvent>,
+    @InjectModel(ProfilePic.name) private readonly profilePicModel: Model<ProfilePic>
     ) {}
 
   async createUser(createUserDto: CreateUserDto): Promise<User> {
@@ -30,7 +34,7 @@ export class UserService {
     });
   }
 
-  async getEventsForUser(_id: Id): Promise<UserEvent[]> {
+  async getEventsForUser(_id: string): Promise<UserEvent[]> {
     const user = await this.userModel.findById(_id).exec();
 
     if (!user) {
@@ -38,10 +42,25 @@ export class UserService {
     }
 
     const eventIds = user.events; 
+    if(eventIds.length>0){
+      return await this.userEventModel.find({ _id: { $in: eventIds } }).exec();
+    }
+    return [];
+  }
 
-    const events = await this.eventModel.find({ _id: { $in: eventIds } }).exec();
+  async getProfilePicForUser(_id: string): Promise<Buffer> {
+    const user = await this.userModel.findOne({'_id':_id}).exec();
+    console.log(typeof _id)
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    
+    const profilePic = await this.profilePicModel.findById(user.pfp_id).exec();
+    if (!profilePic) {
+      throw new NotFoundException('profile pic not found');
+    }
 
-    return events;
+    return profilePic.icon;
   }
 
   // Implement other CRUD operations as needed

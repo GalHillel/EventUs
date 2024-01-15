@@ -28,4 +28,4 @@ export class UserEvent extends Document {
     attendents: Id[];
 }
 
-export const EventSchema = SchemaFactory.createForClass(UserEvent);
+export const UserEventSchema = SchemaFactory.createForClass(UserEvent);

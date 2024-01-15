@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, Param } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param, ValidationPipe, UseInterceptors,ClassSerializerInterceptor, Query } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from '../dto/user.dto';
 import { User } from './user.model';
@@ -19,9 +19,17 @@ export class UserController {
     this.userService.printAllUsers();
     return this.userService.findAllUsers();
   }
-  @Get(':id/events')
-  async getUserEvents(@Param('id') _id: Id): Promise<UserEvent[]>{
+
+
+  // get user specific fields  
+  @Get('events')
+  async getUserEvents(@Query('id') _id: string): Promise<UserEvent[]>{
     return this.userService.getEventsForUser(_id);
+  }
+  @Get('profilepics')
+  async getUserProfilePic(@Query('id') _id: string): Promise<Buffer>{
+    console.log(_id);
+    return this.userService.getProfilePicForUser(_id);
   }
 
   // Implement other CRUD endpoints as needed

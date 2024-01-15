@@ -1,3 +1,3 @@
 export class Id{
-    readonly Id: number
+    readonly Id: string
 }

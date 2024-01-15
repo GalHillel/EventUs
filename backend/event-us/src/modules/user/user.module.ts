@@ -4,8 +4,14 @@ import { UserController } from './user.controller';
 import { UserService } from './user.service';
 import { User, UserSchema } from './user.model';
 
+import { UserEvent, UserEventSchema } from '../event/event.model';
+import { ProfilePic, ProfilePicSchema } from '../profilePic/profilePic.model';
+
 @Module({
-    imports: [MongooseModule.forFeature([{ name: User.name, schema: UserSchema }])],
+    imports: [MongooseModule.forFeature([
+      { name: User.name, schema: UserSchema },
+      { name: UserEvent.name, schema: UserEventSchema },
+      { name: ProfilePic.name, schema: ProfilePicSchema } ])],
     controllers: [UserController],
     providers: [UserService],
   })

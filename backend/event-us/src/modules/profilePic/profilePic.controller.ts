@@ -4,6 +4,7 @@ import { CreateProfilePicDto } from '../dto/profilePic.dto';
 import { ProfilePic } from './profilePic.model';
 import { FileFieldsInterceptor, FileInterceptor } from '@nestjs/platform-express';
 import { Id } from '../dto/id.dto';
+import { Multer } from 'multer';
 
 @Controller('profilepics')
 export class ProfilePicController {
@@ -14,7 +15,7 @@ export class ProfilePicController {
     { name: '_id', maxCount: 1 },
     { name: 'icon', maxCount: 1 },
   ]))
-  async uploadProfilePicture(@UploadedFiles() files: { _id?: Express.Multer.File[], icon?: Express.Multer.File[] }) : Promise<ProfilePic>{
+  async uploadProfilePicture(@UploadedFiles() files: { _id?: Multer.File, icon?: Multer.File[] }) : Promise<ProfilePic>{
     var params : {'_id':Id,'icon':Buffer} = JSON.parse(files._id[0].buffer.toString()) 
     params['icon'] = files.icon[0].buffer 
     
