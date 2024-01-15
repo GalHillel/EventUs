@@ -2,24 +2,24 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Event } from './event.model';
+import { UserEvent } from './event.model';
 import { CreateEventDto } from '../dto/event.dto';
 
 @Injectable()
 export class EventService {
-  constructor(@InjectModel(Event.name) private readonly eventModel: Model<Event>) {}
+  constructor(@InjectModel(UserEvent.name) private readonly eventModel: Model<UserEvent>) {}
 
-  async createEvent(createEventDto: CreateEventDto): Promise<Event> {
+  async createEvent(createEventDto: CreateEventDto): Promise<UserEvent> {
     console.log("creating event" + createEventDto);
     const createdEvent = new this.eventModel(createEventDto);
     return createdEvent.save();
   }
 
-  async findAllEvents(): Promise<Event[]> {
+  async findAllEvents(): Promise<UserEvent[]> {
     return this.eventModel.find().exec();
   }
   async printAllEvents(): Promise<void>{
-    const events: Event[] = await this.eventModel.find().exec();
+    const events: UserEvent[] = await this.eventModel.find().exec();
     
     events.forEach( (event,index)=>{
       console.log(event);

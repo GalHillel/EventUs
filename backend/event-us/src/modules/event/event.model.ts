@@ -4,7 +4,7 @@ import { Id } from '../dto/id.dto';
 
 
 @Schema()
-export class Event extends Document {    
+export class UserEvent extends Document {    
     
     @Prop()
     _id: Id;
@@ -28,4 +28,4 @@ export class Event extends Document {
     attendents: Id[];
 }
 
-export const EventSchema = SchemaFactory.createForClass(Event);
+export const EventSchema = SchemaFactory.createForClass(UserEvent);

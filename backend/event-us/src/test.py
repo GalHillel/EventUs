@@ -53,9 +53,12 @@ files2 = {
     }
 
  
-# sending get request and saving the response as response object
-for i in range(1):
-    r = requests.post(url = URL,files=files1)
+
+# post request example for profile picture
+r = requests.post(url = URL,files=files1)
+
+# post request example for other collections
+r2 = requests.post(url = URL,json=data_user1)
  
 # extracting data in json format
 data = r.json()
