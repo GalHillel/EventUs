@@ -8,7 +8,7 @@ export class User extends Document {
     @Prop()
     _id: Id;
     
-    @Prop({ default: 0})
+    @Prop({ default: "0"})
     pfp_id: Id;
     
     @Prop({ required: true })
