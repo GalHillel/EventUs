@@ -25,6 +25,10 @@ export class EventController {
   async getEventUsers(@Param("id") _id: Id): Promise<User[]>{
     return  this.eventService.getUserIds(_id).then((ids) => this.userService.getUsers(ids))
   }
+  @Get(":id/creator")
+  async getEventCreator_id(@Param("id") _id: Id): Promise<User>{
+    return  this.eventService.getCreator_id(_id).then((creator) => this.userService.getUser(creator))
+  }
 
   // Implement other CRUD endpoints as needed
 }

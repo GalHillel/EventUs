@@ -55,6 +55,9 @@ export class EventService {
   async getUserIds(_id: Id): Promise<Id[]> {
     return (await this.getUserEvent(_id,'attendents')).attendents; 
   }
+  async getCreator_id(_id: Id): Promise<Id> {
+    return (await this.getUserEvent(_id,'creator_id')).creator_id; 
+  }
 
   // Implement other CRUD operations as needed
 }
