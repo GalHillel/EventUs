@@ -11,7 +11,7 @@ export class Message extends Document {
     sender_id: Id;
     
     @Prop({ required: true })
-    receiver_id: Id;
+    receiver_ids: Id[];
 
     @Prop({ default: "" })
     title: string;
