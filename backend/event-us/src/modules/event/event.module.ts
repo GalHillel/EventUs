@@ -8,7 +8,7 @@ import { User, UserSchema } from '../user/user.model';
 @Module({
   imports: [MongooseModule.forFeature([
     { name: UserEvent.name, schema: UserEventSchema },
-    { name: User.name, schema: UserSchema } ])],
+    ])],
     controllers: [EventController],
     providers: [EventService],
   })

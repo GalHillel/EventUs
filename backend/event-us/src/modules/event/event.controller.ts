@@ -19,11 +19,11 @@ export class EventController {
     this.eventService.printAllEvents();
     return this.eventService.findAllEvents();
   }
-
+  /*
   @Get(":id/users")
   async getEventUsers(@Param("id") _id: Id): Promise<User[]>{
     return this.eventService.getUsersForEvent(_id);
-  }
+  }*/
 
   // Implement other CRUD endpoints as needed
 }

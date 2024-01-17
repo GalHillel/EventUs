@@ -7,6 +7,9 @@ import { User, UserSchema } from './user.model';
 import { UserEvent, UserEventSchema } from '../event/event.model';
 import { ProfilePic, ProfilePicSchema } from '../profilePic/profilePic.model';
 import { Message, MessageSchema } from '../message/message.model';
+import { ProfilePicService } from '../profilePic/profilePic.service';
+import { EventService } from '../event/event.service';
+import { MessageService } from '../message/message.service';
 
 @Module({
     imports: [MongooseModule.forFeature([
@@ -15,6 +18,6 @@ import { Message, MessageSchema } from '../message/message.model';
       { name: ProfilePic.name, schema: ProfilePicSchema },
       { name: Message.name, schema: MessageSchema } ])],
     controllers: [UserController],
-    providers: [UserService],
+    providers: [UserService, ProfilePicService,EventService,MessageService],
   })
 export class UserModule {}

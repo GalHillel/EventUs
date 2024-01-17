@@ -12,7 +12,7 @@ import { Id } from '../dto/id.dto';
 export class EventService {
   constructor(
     @InjectModel(UserEvent.name) private readonly userEventModel: Model<UserEvent>,
-    @InjectModel(User.name) private readonly userModel: Model<User>
+    
   ) {}
 
   async createEvent(createEventDto: CreateEventDto): Promise<UserEvent> {
@@ -32,18 +32,28 @@ export class EventService {
     });
   }
 
-  async getUsersForEvent(_id:Id): Promise<User[]>{
-    const userEvent = await this.userEventModel.findById(_id).exec();
-    
-    if (!userEvent) {
-      throw new NotFoundException('User not found');
-    }
-
-    const userIds = userEvent.attendents; 
-    if(userIds.length>0){
-      return await this.userModel.find({ _id: { $in: userIds } }).exec();
-    }
-    return [];
+  /**
+   * Get message by message Id
+   * @param _id _id field of the desired message
+   * @returns Desired message
+   */
+  async getUserEvent(_id:Id,field?:string): Promise<UserEvent>{
+    return this.userEventModel.findById(_id,field).exec().then((message) => { 
+      if (!message) throw new NotFoundException('Event '+_id+' not Found');
+      return message;
+    });
+  }
+  // TODO: error handling
+  /**
+   * Get all messages by ids
+   * @param _ids List of _id field of desired messages
+   * @returns List of desired messages
+   */
+  async getUserEvents(_ids:Id[]): Promise<UserEvent[]>{
+    return this.userEventModel.find({ _id: { $in: _ids } }).exec();
+  }
+  async getUserIds(_id: Id): Promise<Id[]> {
+    return (await this.getUserEvent(_id,'attendents')).attendents; 
   }
 
   // Implement other CRUD operations as needed

@@ -6,7 +6,7 @@ import json
 URL = "http://localhost:3000/profilepics"
 data_user1 = {
     "_id":"123",
-    "pfp_id":"31245",
+    "profilePic":"31245",
     "name": "ziv",
     "email": "ziv.morgan@gmail.com",
     "password": "newPass",
@@ -55,14 +55,14 @@ files2 = {
 all_data = [[data_user1,"users"],[data_user2,"users"],[data_message,"messages"],[data_event,"events"]] 
 
 # post request example for profile picture
-r = requests.post(url = URL,files=files1)
+#r = requests.post(url = URL,files=files1)
 
 # post request example for other collections
-r2 = requests.post(url = URL,json=data_user1)
+#r2 = requests.post(url = URL,json=data_user1)
 
 # load test db
-#for d in all_data:
-#    r = requests.post(url = "http://localhost:3000/"+d[1],json=d[0])
+for d in all_data:
+    r = requests.post(url = "http://localhost:3000/"+d[1],json=d[0])
 
 
 # extracting data in json format

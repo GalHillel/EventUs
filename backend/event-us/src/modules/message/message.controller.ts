@@ -15,7 +15,7 @@ export class MessageController {
   @Get()
   async findAllMessages(): Promise<Message[]> {
     this.messageService.printAllMessages();
-    return this.messageService.findAllMessages();
+    return this.messageService.getAllMessages();
   }
 
   // Implement other CRUD endpoints as needed

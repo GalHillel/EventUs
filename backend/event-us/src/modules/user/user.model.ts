@@ -9,7 +9,7 @@ export class User extends Document {
     _id: Id;
     
     @Prop({ default: "0"})
-    pfp_id: Id;
+    profilePic: Id;
     
     @Prop({ required: true })
     name: string;

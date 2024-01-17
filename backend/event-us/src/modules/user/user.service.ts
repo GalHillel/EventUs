@@ -14,9 +14,6 @@ import { Message } from '../message/message.model';
 export class UserService {
   constructor(
     @InjectModel(User.name) private readonly userModel: Model<User>,
-    @InjectModel(UserEvent.name) private readonly userEventModel: Model<UserEvent>,
-    @InjectModel(ProfilePic.name) private readonly profilePicModel: Model<ProfilePic>,
-    @InjectModel(Message.name) private readonly MessageModel: Model<Message>
     ) {}
 
   async createUser(createUserDto: CreateUserDto): Promise<User> {
@@ -36,46 +33,38 @@ export class UserService {
     });
   }
 
-  async getEventsForUser(_id: Id): Promise<UserEvent[]> {
-    const user = await this.userModel.findById(_id).exec();
 
-    if (!user) {
-      throw new NotFoundException('User not found');
-    }
-
-    const eventIds = user.events; 
-    if(eventIds.length>0){
-      return await this.userEventModel.find({ _id: { $in: eventIds } }).exec();
-    }
-    return [];
+  // TODO: error handling
+  /**
+   * Get all messages by ids
+   * @param _ids List of _id field of desired messages
+   * @returns List of desired messages
+   */
+  async getUsers(_ids:Id[]): Promise<User[]>{
+    return await this.userModel.find({ _id: { $in: _ids } }).exec();
+  }
+  
+  async getUser(_id:Id, field?:string): Promise<User>{
+    return this.userModel.findById(_id,field).exec().then((user) => { 
+      if (!user) throw new NotFoundException('User '+_id+' not Found');
+      return user;
+    })
   }
 
-  async getProfilePicForUser(_id: Id): Promise<Buffer> {
-    const user = await this.userModel.findOne({'_id':_id}).exec();
-    console.log(typeof _id)
-    if (!user) {
-      throw new NotFoundException('User not found');
-    }
+
+  async getEventIds(_id: Id): Promise<Id[]> {
+    return (await this.getUser(_id,'events')).events; 
+  }
+  
+  async getProfilePic(_id: Id): Promise<Id> {
     
-    const profilePic = await this.profilePicModel.findById(user.pfp_id).exec();
-    if (!profilePic) {
-      throw new NotFoundException('profile pic not found');
-    }
-
-    return profilePic.icon;
+    return (await this.getUser(_id,'profilePic')).profilePic;
   }
-  async getMessagesForUser(_id: Id): Promise<Message[]> {
-    const user = await this.userModel.findById(_id).exec();
-
-    if (!user) {
-      throw new NotFoundException('User not found');
-    }
-
-    const message_ids = user.events; 
-    if(message_ids.length>0){
-      return await this.MessageModel.find({ _id: { $in: message_ids } }).exec();
-    }
-    return [];
+  async getMessages(_id: Id): Promise<Id[]> {
+    return (await this.getUser(_id,'messages')).messages;
   }
+  
+  
+
   // Implement other CRUD operations as needed
 }
