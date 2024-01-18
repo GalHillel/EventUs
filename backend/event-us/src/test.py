@@ -61,8 +61,11 @@ all_data = [[data_user1,"users"],[data_user2,"users"],[data_message,"messages"],
 #r2 = requests.post(url = URL,json=data_user1)
 
 # load test db
-for d in all_data:
-    r = requests.post(url = "http://localhost:3000/"+d[1],json=d[0])
+#for d in all_data:
+    #r = requests.post(url = "http://localhost:3000/"+d[1],json=d[0])
+
+#event1_id_data = {"_id":"321"}
+#r = requests.patch("http://localhost:3000/events/421/joinEvent",json=event1_id_data)
 
 
 # extracting data in json format

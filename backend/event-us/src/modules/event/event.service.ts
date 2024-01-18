@@ -1,5 +1,5 @@
 
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { UserEvent } from './event.model';
@@ -57,6 +57,21 @@ export class EventService {
   }
   async getCreator_id(_id: Id): Promise<Id> {
     return (await this.getUserEvent(_id,'creator_id')).creator_id; 
+  }
+  /**
+   * Adds a user id to the events attendents list
+   * @param _id event _id
+   * @param userId user _id
+   * @returns updated event
+   */
+  async addUser(_id:Id,userId:Id): Promise<UserEvent>{
+    const userEvent = await this.getUserEvent(_id);
+    if (userEvent.attendents.includes(userId)){
+      throw new HttpException("User exists in event!",HttpStatus.CONFLICT);
+    } 
+    userEvent.attendents.push(userId);
+    await userEvent.save();
+    return userEvent;
   }
 
   // Implement other CRUD operations as needed

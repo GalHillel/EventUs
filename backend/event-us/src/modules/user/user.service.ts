@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from './user.model';
@@ -62,6 +62,21 @@ export class UserService {
   }
   async getMessages(_id: Id): Promise<Id[]> {
     return (await this.getUser(_id,'messages')).messages;
+  }
+  /**
+   * Adds an event id to the users events list
+   * @param _id user _id
+   * @param eventId event _id
+   * @returns updated user
+   */
+  async addEvent(_id:Id,eventId:Id): Promise<User>{
+    const user = await this.getUser(_id);
+    if (user.events.includes(eventId)){
+      throw new HttpException("Event exists for user!",HttpStatus.CONFLICT);
+    } 
+    user.events.push(eventId);
+    await user.save();
+    return user;
   }
   
   

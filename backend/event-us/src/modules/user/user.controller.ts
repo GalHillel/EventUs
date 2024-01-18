@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, Param, ValidationPipe, UseInterceptors,ClassSerializerInterceptor, Query } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param, ValidationPipe, UseInterceptors,ClassSerializerInterceptor, Query, Put, Patch } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from '../dto/user.dto';
 import { User } from './user.model';
@@ -42,6 +42,18 @@ export class UserController {
   @Get(':id/messages')
   async getUserMessages(@Param('id') _id: Id): Promise<Message[]>{
     return this.userService.getEventIds(_id).then((ids) => this.messageService.getMessages(ids));
+  }
+
+  /**
+   * users/<user id>/joinEvent, Put request should contain a json in the form {_id:<event id>}
+   * @param _id user id
+   * @param eventId event id
+   * @returns updated user
+   */
+  @Patch(':id/joinEvent')
+  async joinEvent(@Param('id') _id: Id, @Body('_id') eventId: Id): Promise<User>{
+    await this.eventService.addUser(eventId,_id);
+    return this.userService.addEvent(_id,eventId);
   }
 
   // Implement other CRUD endpoints as needed
