@@ -30,7 +30,7 @@ data_event = {
 data_message = {
     "_id":"4215123",
     "sender_id":"123",
-    "receiver_id":"321",
+    "receiver_ids":["321"],
     "title":"test message",
     "content":"this is a test message from ziv to user1"
 }
@@ -54,18 +54,25 @@ files2 = {
 
 all_data = [[data_user1,"users"],[data_user2,"users"],[data_message,"messages"],[data_event,"events"]] 
 
+
+# load test db
+for d in all_data:
+    r = requests.post(url = "http://localhost:3000/"+d[1],json=d[0])
+
+event1_id_data = {"_id":"421"}
+r = requests.patch("http://localhost:3000/users/321/joinEvent",json=event1_id_data)
+
+
+
+
 # post request example for profile picture
-#r = requests.post(url = URL,files=files1)
+r = requests.post(url = URL,files=files1)
+r = requests.post(url = URL,files=files2)
 
 # post request example for other collections
 #r2 = requests.post(url = URL,json=data_user1)
 
-# load test db
-#for d in all_data:
-    #r = requests.post(url = "http://localhost:3000/"+d[1],json=d[0])
 
-#event1_id_data = {"_id":"321"}
-#r = requests.patch("http://localhost:3000/events/421/joinEvent",json=event1_id_data)
 
 
 # extracting data in json format

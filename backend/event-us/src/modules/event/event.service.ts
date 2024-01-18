@@ -18,6 +18,7 @@ export class EventService {
   async createEvent(createEventDto: CreateEventDto): Promise<UserEvent> {
     console.log("creating event" + createEventDto);
     const createdEvent = new this.userEventModel(createEventDto);
+    createdEvent.attendents.push(createdEvent.creator_id)
     return createdEvent.save();
   }
 

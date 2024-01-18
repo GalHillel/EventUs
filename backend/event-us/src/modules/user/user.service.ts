@@ -8,6 +8,7 @@ import { ProfilePic } from '../profilePic/profilePic.model';
 import { CreateUserDto } from '../dto/user.dto';
 import { Id } from '../dto/id.dto'
 import { Message } from '../message/message.model';
+import { CreateMessageDto } from '../dto/message.dto';
 
 
 @Injectable()
@@ -77,6 +78,20 @@ export class UserService {
     user.events.push(eventId);
     await user.save();
     return user;
+  }
+  async addMessage(user:User,msgId:Id):Promise<User>{
+    
+    if (user.messages.includes(msgId)){
+      throw new HttpException('message '+msgId+' exists for user!',HttpStatus.CONFLICT);
+    } 
+    await user.save();
+    return user
+  }
+  async addMessages(userIds: Id[],msgId:Id): Promise<User[]>{
+    console.log(userIds)
+    const users = await this.getUsers(userIds)
+    users.forEach((user) => this.addMessage(user,msgId))
+    return users;
   }
   
   

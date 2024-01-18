@@ -8,6 +8,7 @@ import { Message } from '../message/message.model';
 import { EventService } from '../event/event.service';
 import { ProfilePicService } from '../profilePic/profilePic.service';
 import { MessageService } from '../message/message.service';
+import { CreateMessageDto } from '../dto/message.dto';
 
 @Controller('users')
 export class UserController {
@@ -22,6 +23,7 @@ export class UserController {
   async createUser(@Body() createUserDto: CreateUserDto): Promise<User> {
     return this.userService.createUser(createUserDto);
   }
+  
 
   @Get()
   async findAllUsers(): Promise<User[]> {

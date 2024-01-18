@@ -12,7 +12,9 @@ export class EventController {
 
   @Post()
   async createEvent(@Body() createEventDto: CreateEventDto): Promise<UserEvent> {
-    return this.eventService.createEvent(createEventDto);
+    const userEvent = await this.eventService.createEvent(createEventDto);
+    this.userService.addEvent(createEventDto.creator_id,createEventDto._id)
+    return userEvent
   }
 
   @Get()
