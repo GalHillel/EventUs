@@ -47,15 +47,26 @@ export class UserController {
   }
 
   /**
-   * users/<user id>/joinEvent, Put request should contain a json in the form {_id:<event id>}
+   * users/<user id>/joinEvent, Patch request should contain a json in the form {_id:<event id>}
    * @param _id user id
    * @param eventId event id
-   * @returns updated user
+   * 
    */
   @Patch(':id/joinEvent')
-  async joinEvent(@Param('id') _id: Id, @Body('_id') eventId: Id): Promise<User>{
-    await this.eventService.addUser(eventId,_id);
-    return this.userService.addEvent(_id,eventId);
+  async joinEvent(@Param('id') _id: Id, @Body('_id') eventId: Id): Promise<void>{
+    this.eventService.addUser(eventId,_id);
+    this.userService.addEvent(_id,eventId);
+  }
+  /**
+   * users/<user id>/exitEvent, Patch request should contain a json in the form {_id:<event id>}
+   * @param _id user id
+   * @param eventId event id
+   */
+  @Patch(':id/exitEvent')
+  async exitEvent(@Param('id') _id: Id,  @Body('_id') eventId: Id): Promise<void>{
+    this.eventService.removeUser(eventId,_id);
+    this.userService.removeEvent(_id,eventId);
+
   }
 
   // Implement other CRUD endpoints as needed

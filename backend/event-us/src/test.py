@@ -61,6 +61,7 @@ for d in all_data:
 
 event1_id_data = {"_id":"421"}
 r = requests.patch("http://localhost:3000/users/321/joinEvent",json=event1_id_data)
+r = requests.patch("http://localhost:3000/users/321/exitEvent",json=event1_id_data)
 
 
 
@@ -73,6 +74,7 @@ r = requests.post(url = URL,files=files2)
 #r2 = requests.post(url = URL,json=data_user1)
 
 
+#r = requests.delete("http://localhost:3000/events/421")
 
 
 # extracting data in json format

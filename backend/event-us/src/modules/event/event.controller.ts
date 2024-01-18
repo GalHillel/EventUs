@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, Param, Patch } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param, Patch, Delete } from '@nestjs/common';
 import { EventService } from './event.service';
 import { CreateEventDto } from '../dto/event.dto';
 import { UserEvent } from './event.model';
@@ -32,17 +32,22 @@ export class EventController {
     return  this.eventService.getCreator_id(_id).then((creator) => this.userService.getUser(creator))
   }
 
-
   /**
    * events/<event id>/joinEvent, Put request should contain a json in the form {_id:<user id>}
    * @param _id event id
    * @param userId user id
-   * @returns updated event
    */
   @Patch(':id/joinEvent')
-  async joinEvent(@Param('id') _id: Id, @Body('_id') userId: Id): Promise<UserEvent>{
-    await this.userService.addEvent(userId,_id);
-    return this.eventService.addUser(_id,userId);
+  async joinEvent(@Param('id') _id: Id, @Body('_id') userId: Id): Promise<void>{
+    this.userService.addEvent(userId,_id);
+    this.eventService.addUser(_id,userId);
+  }
+
+  @Delete(':id')
+  async delEvent(@Param('id') _id:Id){
+    const userIds = await this.eventService.getUserIds(_id)
+    this.eventService.deleteEvent(_id);
+    userIds.forEach((userId) => this.userService.removeEvent(userId,_id))
   }
 
   // Implement other CRUD endpoints as needed

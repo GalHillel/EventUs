@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Schema as mongooseSchema } from 'mongoose';
 import { Id } from '../dto/id.dto';
 import { UserType } from '../dto/user.dto';
 
@@ -23,10 +23,10 @@ export class User extends Document {
     @Prop({ required: true })
     userType: UserType;
     
-    @Prop({ default: [] })
+    @Prop({ type: [{ type: Id, ref: 'message' }], default: [] })
     messages: Id[];
     
-    @Prop({ default: [] })
+    @Prop({ type: [{ type: Id, ref: 'userevents' }], default: [] })
     events: Id[];
 
 }

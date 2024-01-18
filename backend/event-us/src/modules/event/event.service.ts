@@ -74,6 +74,23 @@ export class EventService {
     await userEvent.save();
     return userEvent;
   }
+  /**
+   * Removes a user from the events attendents list
+   * @param _id event _id
+   * @param userId user _id
+   */
+  async removeUser(_id:Id,userId:Id): Promise<void>{
+    await this.userEventModel.findById(_id).updateOne({},{ $pull: {attendents: userId} }).exec();
+  }
+
+
+  /**
+   * Deletes event from database
+   * @param _id event id
+   */
+  async deleteEvent(_id:Id): Promise<void>{
+    await this.userEventModel.findById(_id).deleteOne().exec();
+  }
 
   // Implement other CRUD operations as needed
 }

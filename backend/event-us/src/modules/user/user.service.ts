@@ -64,6 +64,8 @@ export class UserService {
   async getMessages(_id: Id): Promise<Id[]> {
     return (await this.getUser(_id,'messages')).messages;
   }
+
+  
   /**
    * Adds an event id to the users events list
    * @param _id user _id
@@ -79,21 +81,32 @@ export class UserService {
     await user.save();
     return user;
   }
-  async addMessage(user:User,msgId:Id):Promise<User>{
-    
-    if (user.messages.includes(msgId)){
-      throw new HttpException('message '+msgId+' exists for user!',HttpStatus.CONFLICT);
-    } 
-    await user.save();
-    return user
+
+  /**
+   * removes an event id from the users events list
+   * @param _id user _id
+   * @param eventId event _id
+   * @returns updated user
+   */
+  async removeEvent(_id:Id,eventId:Id): Promise<void>{
+    await this.userModel.findById(_id).updateOne({},{ $pull: {events: eventId} }).exec();
   }
-  async addMessages(userIds: Id[],msgId:Id): Promise<User[]>{
-    console.log(userIds)
-    const users = await this.getUsers(userIds)
-    users.forEach((user) => this.addMessage(user,msgId))
-    return users;
+
+
+  /**
+   * Adds a message to all users inbox's, there is no check for duplicate messages
+   * @param userIds user id's
+   * @param msgId msg id
+   */
+  async addMessages(userIds: Id[],msgId:Id): Promise<void>{
+    //no need to check for duplicate messages as this gets called only on message creation
+    await this.userModel.find({ _id: { $in: userIds } }).updateMany({},{ $push: {messages: msgId} }).exec()
   }
   
+
+
+
+ 
   
 
   // Implement other CRUD operations as needed

@@ -64,9 +64,9 @@ export class MessageService {
     return (await this.getMessage(_id)).content;
   }
   /**
-   * Get sender Id by message contents
-   * @param _id 
-   * @returns 
+   * Get sender Id by message Id
+   * @param _id message id
+   * @returns sender Id
    */
   async getSenderId(_id:Id): Promise<Id>{
     return (await this.getMessage(_id)).sender_id;
