@@ -57,7 +57,7 @@ export class UserController {
     this.eventService.addUser(eventId,_id);
     this.userService.addEvent(_id,eventId);
   }
-  /**
+  /** TODO add guard for event creator
    * users/<user id>/exitEvent, Patch request should contain a json in the form {_id:<event id>}
    * @param _id user id
    * @param eventId event id
