@@ -34,31 +34,34 @@ export class EventService {
   }
 
   /**
-   * Get message by message Id
-   * @param _id _id field of the desired message
-   * @returns Desired message
+   * Get event by event Id
+   * @param _id _id field of the desired event
+   * @param field get only selected fields from event
+   * @returns Desired event
    */
   async getUserEvent(_id:Id,field?:string): Promise<UserEvent>{
-    return this.userEventModel.findById(_id,field).exec().then((message) => { 
-      if (!message) throw new NotFoundException('Event '+_id+' not Found');
-      return message;
+    return this.userEventModel.findById(_id,field).exec().then((userEvent) => { 
+      if (!userEvent) throw new NotFoundException('Event '+_id+' not Found');
+      return userEvent;
     });
   }
   // TODO: error handling
   /**
-   * Get all messages by ids
-   * @param _ids List of _id field of desired messages
-   * @returns List of desired messages
+   * Get all event by ids
+   * @param _ids List of _id field of desired event
+   * @returns List of desired event
    */
   async getUserEvents(_ids:Id[]): Promise<UserEvent[]>{
     return this.userEventModel.find({ _id: { $in: _ids } }).exec();
   }
+  
   async getUserIds(_id: Id): Promise<Id[]> {
     return (await this.getUserEvent(_id,'attendents')).attendents; 
   }
   async getCreator_id(_id: Id): Promise<Id> {
     return (await this.getUserEvent(_id,'creator_id')).creator_id; 
   }
+
   /**
    * Adds a user id to the events attendents list
    * @param _id event _id
@@ -67,6 +70,7 @@ export class EventService {
    */
   async addUser(_id:Id,userId:Id): Promise<UserEvent>{
     const userEvent = await this.getUserEvent(_id);
+    //dupe check
     if (userEvent.attendents.includes(userId)){
       throw new HttpException("User exists in event!",HttpStatus.CONFLICT);
     } 

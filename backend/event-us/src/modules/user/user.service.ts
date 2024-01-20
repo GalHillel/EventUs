@@ -37,14 +37,19 @@ export class UserService {
 
   // TODO: error handling
   /**
-   * Get all messages by ids
-   * @param _ids List of _id field of desired messages
-   * @returns List of desired messages
+   * Get all users by ids
+   * @param _ids List of _id field of desired users
+   * @returns List of desired users
    */
   async getUsers(_ids:Id[]): Promise<User[]>{
     return await this.userModel.find({ _id: { $in: _ids } }).exec();
   }
-  
+  /**
+   * Get user by user Id
+   * @param _id _id field of the desired user
+   * @param field get only selected fields from user
+   * @returns Desired user
+   */
   async getUser(_id:Id, field?:string): Promise<User>{
     return this.userModel.findById(_id,field).exec().then((user) => { 
       if (!user) throw new NotFoundException('User '+_id+' not Found');
@@ -57,11 +62,11 @@ export class UserService {
     return (await this.getUser(_id,'events')).events; 
   }
   
-  async getProfilePic(_id: Id): Promise<Id> {
+  async getProfilePicId(_id: Id): Promise<Id> {
     
     return (await this.getUser(_id,'profilePic')).profilePic;
   }
-  async getMessages(_id: Id): Promise<Id[]> {
+  async getMessageIds(_id: Id): Promise<Id[]> {
     return (await this.getUser(_id,'messages')).messages;
   }
 
@@ -74,6 +79,7 @@ export class UserService {
    */
   async addEvent(_id:Id,eventId:Id): Promise<User>{
     const user = await this.getUser(_id);
+    //dupe check
     if (user.events.includes(eventId)){
       throw new HttpException("Event exists for user!",HttpStatus.CONFLICT);
     } 
@@ -99,7 +105,7 @@ export class UserService {
    * @param msgId msg id
    */
   async addMessages(userIds: Id[],msgId:Id): Promise<void>{
-    //no need to check for duplicate messages as this gets called only on message creation
+    //no need to check for duplicate messages as this function gets called only on message creation
     await this.userModel.find({ _id: { $in: userIds } }).updateMany({},{ $push: {messages: msgId} }).exec()
   }
   

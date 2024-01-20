@@ -35,6 +35,7 @@ export class MessageService {
   /**
    * Get message by message Id
    * @param _id _id field of the desired message
+   * @param field get only selected fields from message
    * @returns Desired message
    */
   async getMessage(_id:Id,field?:string): Promise<Message>{

@@ -26,7 +26,12 @@ export class ProfilePicService {
       console.log(profilepic);
     });
   }
-
+  /**
+   * Get profilePic by profilePic Id
+   * @param _id _id field of the desired profilePic
+   * @param field get only selected fields from profilePic
+   * @returns Desired profilePic
+   */
   async getProfilePic(_id:Id, field?:string): Promise<ProfilePic>{
     return this.profilePicModel.findById(_id,field).exec().then((pic) => { 
         if (!pic) throw new NotFoundException('profile pic '+_id+' not Found');
@@ -34,6 +39,11 @@ export class ProfilePicService {
       }
     )
   }
+  /**
+   * Get profile pic data as buffer
+   * @param _id _id field of the desired profilePic
+   * @returns profile pic icon
+   */
   async getIcon(_id:Id): Promise<Buffer>{
     
     return (await this.getProfilePic(_id,'icon')).icon; 
