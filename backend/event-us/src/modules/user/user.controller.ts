@@ -39,7 +39,7 @@ export class UserController {
   }
   @Get(':id/profilepic')
   async getUserProfilePicIcon(@Param('id') _id: Id): Promise<Buffer>{
-    return this.userService.getProfilePic(_id).then((profile_id) => this.profilePicService.getIcon(profile_id));
+    return this.userService.getProfilePicId(_id).then((profile_id) => this.profilePicService.getIcon(profile_id));
   }
   @Get(':id/messages')
   async getUserMessages(@Param('id') _id: Id): Promise<Message[]>{
