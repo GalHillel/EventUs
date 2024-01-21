@@ -49,6 +49,15 @@ public class ButtonEvents {
 
         return responseCode;
     }
+
+    /**
+     * Registers a new user
+     * @param email user email
+     * @param name username
+     * @param password password
+     * @param userType creator/user
+     * @throws Exception
+     */
     public void registerButton(String email, String name, String password, String userType) throws Exception{
         HashMap<String, Object> jsonData = new HashMap<String, Object>();
         jsonData.put("name",name);
@@ -58,6 +67,16 @@ public class ButtonEvents {
 
         sendHttpRequest("users",jsonData,"POST");
 
+    }
 
+    public void createEventsButton(String creator_id, String name, String date, String location, String description) throws Exception{
+        HashMap<String, Object> jsonData = new HashMap<String, Object>();
+        jsonData.put("name",name);
+        jsonData.put("creator_id",creator_id);
+        jsonData.put("date",date);
+        jsonData.put("location",location);
+        jsonData.put("description",description);
+
+        sendHttpRequest("events",jsonData,"POST");
     }
 }
