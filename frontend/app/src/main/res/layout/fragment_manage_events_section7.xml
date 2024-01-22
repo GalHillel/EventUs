@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/sec7"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/blue_figma"
+    android:paddingLeft="@dimen/fragment_horizontal_margin"
+    android:paddingTop="@dimen/fragment_vertical_margin"
+    android:paddingRight="@dimen/fragment_horizontal_margin"
+    android:paddingBottom="@dimen/fragment_vertical_margin"
+    tools:context=".ui.eventsManager.Events">
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="68dp"
+        android:text="@string/manage_events"
+        android:textColor="@color/black"
+        android:background="@color/teal_figma"
+        android:gravity="center"
+        android:textSize="@dimen/_50dp"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="16dp"
+        tools:ignore="MissingConstraints,SpUsage" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="100dp"
+        tools:ignore="MissingConstraints">
+
+        <TextView
+            android:id="@+id/text_forScroll"
+            android:layout_width="match_parent"
+            android:layout_height="68dp"
+            android:textColor="@color/black"
+            android:background="@color/red"
+            android:gravity="center"
+            android:textSize="20sp"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="16dp" />
+    </ScrollView>
+
+    <Button
+        android:id="@+id/button"
+
+        android:layout_width="100dp"
+        android:layout_height="70dp"
+        android:background="@color/teal_figma"
+        android:text="@string/back"
+        android:textColor="@color/black"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="7dp"
+        tools:layout_editor_absoluteY="626dp" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

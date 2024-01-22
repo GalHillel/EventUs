@@ -41,4 +41,29 @@
             android:id="@+id/action_registrationFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/ManagerMenu"
+        android:name="com.example.eventus.ui.eventsManager.ManagerMenu"
+        android:label="MenuManagerFragment"
+        tools:layout="@layout/fragment_manager_menu_sescion4">
+        <!-- Define actions for the registration fragment -->
+        <action
+            android:id="@+id/action_managerMenu_to_managerEventsList"
+            app:destination="@id/ManagerEventsMenu" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/ManagerEventsMenu"
+        android:name="com.example.eventus.ui.eventsManager.Events"
+        android:label="EventsMenuManagerFragment"
+        tools:layout="@layout/fragment_manage_events_section7">
+        <!-- Define actions for the registration fragment -->
+        <action
+            android:id="@+id/action_managerEventsList_to_managerMenu"
+            app:destination="@id/ManagerMenu" />
+    </fragment>
+
+
+
 </navigation>
