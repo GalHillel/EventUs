@@ -8,7 +8,7 @@
     android:background="@drawable/background"
     tools:context=".MainMenuUser">
 
-    <!-- Your existing views go here -->
+    <!-- existing views -->
 
     <ImageView
         android:id="@+id/imageViewLogo"
