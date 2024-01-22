@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -50,6 +51,19 @@ public class RegistrationFragment extends Fragment {
             String userType = radioOrganizer.isChecked() ? "Organizer" : "Participant";
 
             registrationViewModel.register(email, password, passwordValidation, username, userType);
+
+            // Assuming you have a NavHostFragment in your activity
+            NavHostFragment.findNavController(RegistrationFragment.this)
+                    .navigate(R.id.action_registrationFragment_to_loginFragment);
+        });
+
+        TextView loginLink = view.findViewById(R.id.loginLink);
+        loginLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NavHostFragment.findNavController(RegistrationFragment.this)
+                        .navigate(R.id.action_registrationFragment_to_loginFragment);
+            }
         });
     }
 }
