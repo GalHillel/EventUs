@@ -15,6 +15,7 @@ public class LoginViewModel extends ViewModel {
 
     private MutableLiveData<LoginFormState> loginFormState = new MutableLiveData<>();
     private MutableLiveData<LoginResult> loginResult = new MutableLiveData<>();
+    private MutableLiveData<LoggedInUserView> loggedInUser = new MutableLiveData<>(); // Added
     private LoginRepository loginRepository;
 
     LoginViewModel(LoginRepository loginRepository) {
@@ -29,12 +30,17 @@ public class LoginViewModel extends ViewModel {
         return loginResult;
     }
 
+    LiveData<LoggedInUserView> getLoggedInUser() { // Modified
+        return loggedInUser;
+    }
+
     public void login(String username, String password) {
         // can be launched in a separate asynchronous job
         Result<LoggedInUser> result = loginRepository.login(username, password);
 
         if (result instanceof Result.Success) {
             LoggedInUser data = ((Result.Success<LoggedInUser>) result).getData();
+            loggedInUser.setValue(new LoggedInUserView(data.getDisplayName()));
             loginResult.setValue(new LoginResult(new LoggedInUserView(data.getDisplayName())));
         } else {
             loginResult.setValue(new LoginResult(R.string.login_failed));
