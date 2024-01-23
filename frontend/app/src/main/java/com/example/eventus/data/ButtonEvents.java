@@ -1,10 +1,8 @@
 package com.example.eventus.data;
-import android.widget.Button;
 
 import java.io.*;
-import java.net.*;
+
 import java.util.HashMap;
-import java.util.Map;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -13,9 +11,7 @@ import java.nio.charset.StandardCharsets;
 import com.example.eventus.data.model.ServerResponse;
 import com.example.eventus.data.model.User;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
-import java.lang.reflect.Type;
+
 
 public class ButtonEvents{
     static Gson gson;
@@ -55,7 +51,7 @@ public class ButtonEvents{
 
         // Get the response code
         int responseCode = connection.getResponseCode();
-        String responseStr = "";
+        String responseStr;
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
             StringBuilder responseBuilder = new StringBuilder();
             String line;
@@ -64,7 +60,6 @@ public class ButtonEvents{
             }
 
             // Print the response from the server
-            System.out.println("Response from server: " + responseBuilder.toString());
             responseStr = responseBuilder.toString();
         }
 
