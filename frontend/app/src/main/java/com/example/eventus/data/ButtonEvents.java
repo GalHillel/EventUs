@@ -2,6 +2,7 @@ package com.example.eventus.data;
 
 import java.io.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -10,6 +11,7 @@ import java.nio.charset.StandardCharsets;
 
 import com.example.eventus.data.model.ServerResponse;
 import com.example.eventus.data.model.User;
+import com.example.eventus.data.model.UserEvent;
 import com.google.gson.Gson;
 
 
@@ -111,4 +113,21 @@ public class ButtonEvents{
 
         ServerResponse response = sendHttpRequest("events",jsonData,"POST");
     }
+
+    /** TODO implement
+     * Get user events for some user
+     * @param user
+     * @return list of events
+     */
+    public ArrayList<UserEvent> getUsersEventList(User user){
+        ArrayList<UserEvent> lst = new ArrayList<UserEvent>();
+        UserEvent uEvent1 = new UserEvent("event 1"),
+                uEvent2 = new UserEvent("event 2"),
+                uEvent3 = new UserEvent("event 3");
+        lst.add(uEvent1);
+        lst.add(uEvent2);
+        lst.add(uEvent3);
+        return lst;
+    }
+
 }

@@ -19,4 +19,9 @@ public class UserEvent {
         this.attendents = new ArrayList<String>();
 
     }
+
+
+    public UserEvent(String name){
+        this.name = name;
+    }
 }
