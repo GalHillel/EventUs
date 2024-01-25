@@ -21,6 +21,10 @@ public class UserEvent {
     }
 
 
+    /**
+     * FOR TESTING ONLY!
+     * @param name
+     */
     public UserEvent(String name){
         this.name = name;
     }

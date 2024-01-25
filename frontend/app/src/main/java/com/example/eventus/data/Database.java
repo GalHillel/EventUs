@@ -15,13 +15,8 @@ import com.example.eventus.data.model.UserEvent;
 import com.google.gson.Gson;
 
 
-public class ButtonEvents{
-    static Gson gson;
-
-    public ButtonEvents(){
-        gson = new Gson();
-    }
-
+public class Database{
+    static Gson gson = new Gson();
 
     private ServerResponse sendHttpRequest(String dir, HashMap<String, Object> payloadData, String method) throws Exception{
 
@@ -79,17 +74,22 @@ public class ButtonEvents{
      * @param userType creator/user
      * @throws Exception
      */
-    public User registerButton(String email, String name, String password, String userType) throws Exception{
+    public User addUser(String email, String name, String password, String userType){
         HashMap<String, Object> payloadData = new HashMap<String, Object>();
         payloadData.put("name",name);
         payloadData.put("email",email);
         payloadData.put("password",password);
         payloadData.put("userType",userType);
-
-        ServerResponse response = sendHttpRequest("users",payloadData,"POST");
-        if (response.getReturnCode() == 201){
-            return gson.fromJson(response.getPayload(), User.class);
+        try{
+            ServerResponse response = sendHttpRequest("users",payloadData,"POST");
+            if (response.getReturnCode() == 201){
+                return gson.fromJson(response.getPayload(), User.class);
+            }
         }
+        catch (Exception e){
+            return null;
+        }
+
         return null;
 
     }
@@ -103,7 +103,7 @@ public class ButtonEvents{
      * @param description description of the event
      * @throws Exception
      */
-    public void createEventsButton(String creator_id, String name, String date, String location, String description) throws Exception{
+    public void addEvent(String creator_id, String name, String date, String location, String description) throws Exception{
         HashMap<String, Object> jsonData = new HashMap<String, Object>();
         jsonData.put("name",name);
         jsonData.put("creator_id",creator_id);
@@ -119,7 +119,7 @@ public class ButtonEvents{
      * @param user
      * @return list of events
      */
-    public ArrayList<UserEvent> getUsersEventList(User user){
+    public static ArrayList<UserEvent> getEventList(User user){
         ArrayList<UserEvent> lst = new ArrayList<UserEvent>();
         UserEvent uEvent1 = new UserEvent("event 1"),
                 uEvent2 = new UserEvent("event 2"),
