@@ -130,4 +130,14 @@ public class Database{
         return lst;
     }
 
+    /** TODO implement
+     * Checks if the user exists in the database and returns it if found
+     * @param email user email
+     * @param password user password
+     * @return User entry in the database or null if not found
+     */
+    public static User userLogin(String email,String password){
+        return null;
+    }
+
 }
