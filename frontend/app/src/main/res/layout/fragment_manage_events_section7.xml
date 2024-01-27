@@ -33,17 +33,6 @@
         app:layout_constraintTop_toBottomOf="@+id/textView2"
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="16dp">
-
-        <TextView
-            android:id="@+id/text_forScroll"
-            android:layout_width="match_parent"
-            android:layout_height="68dp"
-            android:background="@color/red"
-            android:gravity="center"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            tools:layout_editor_absoluteX="16dp"
-            tools:layout_editor_absoluteY="16dp" />
     </ScrollView>
 
     <Button
