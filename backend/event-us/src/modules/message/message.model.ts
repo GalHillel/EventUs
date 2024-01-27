@@ -20,7 +20,7 @@ export class Message extends Document {
     content: string;
     
     @Prop({ default: Date.now })
-    dateSent: Date; 
+    date_sent: Date; 
 
 }
 
