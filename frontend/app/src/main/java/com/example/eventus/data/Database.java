@@ -71,15 +71,15 @@ public class Database{
      * @param email user email
      * @param name username
      * @param password password
-     * @param userType creator/user
+     * @param user_type creator/user
      * @throws Exception
      */
-    public User addUser(String email, String name, String password, String userType){
+    public User addUser(String email, String name, String password, String user_type){
         HashMap<String, Object> payloadData = new HashMap<String, Object>();
         payloadData.put("name",name);
         payloadData.put("email",email);
         payloadData.put("password",password);
-        payloadData.put("userType",userType);
+        payloadData.put("userType",user_type);
         try{
             ServerResponse response = sendHttpRequest("users",payloadData,"POST");
             if (response.getReturnCode() == 201){
