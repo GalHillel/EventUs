@@ -6,5 +6,5 @@ export class CreateMessageDto {
     readonly receiver_ids: Id[];
     readonly title: string;
     readonly content: string;
-    readonly dateSent: Date; 
+    readonly date_sent: Date; 
   }

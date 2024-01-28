@@ -9,7 +9,7 @@ export class User extends Document {
     _id: Id;
     
     @Prop({ default: "0"})
-    profilePic: Id;
+    profile_pic: Id;
     
     @Prop({ required: true })
     name: string;
@@ -21,7 +21,7 @@ export class User extends Document {
     password: string;
     
     @Prop({ required: true })
-    userType: UserType;
+    user_type: UserType;
     
     @Prop({ type: [{ type: Id, ref: 'message' }], default: [] })
     messages: Id[];

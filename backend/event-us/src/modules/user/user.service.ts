@@ -64,7 +64,7 @@ export class UserService {
   
   async getProfilePicId(_id: Id): Promise<Id> {
     
-    return (await this.getUser(_id,'profilePic')).profilePic;
+    return (await this.getUser(_id,'profile_pic')).profile_pic;
   }
   async getMessageIds(_id: Id): Promise<Id[]> {
     return (await this.getUser(_id,'messages')).messages;
