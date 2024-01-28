@@ -1,18 +1,9 @@
 // LoginFragment.java
 package com.example.eventus.ui.login;
 
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
-import androidx.fragment.app.Fragment;
-import androidx.navigation.fragment.NavHostFragment;
-
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +13,13 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.eventus.R;
 import com.example.eventus.databinding.FragmentLoginBinding;
@@ -53,35 +51,29 @@ public class LoginFragment extends Fragment {
         final Button loginButton = binding.login;
         final ProgressBar loadingProgressBar = binding.loading;
 
-        loginViewModel.getLoginFormState().observe(getViewLifecycleOwner(), new Observer<LoginFormState>() {
-            @Override
-            public void onChanged(@Nullable LoginFormState loginFormState) {
-                if (loginFormState == null) {
-                    return;
-                }
-                loginButton.setEnabled(loginFormState.isDataValid());
-                if (loginFormState.getUsernameError() != null) {
-                    usernameEditText.setError(getString(loginFormState.getUsernameError()));
-                }
-                if (loginFormState.getPasswordError() != null) {
-                    passwordEditText.setError(getString(loginFormState.getPasswordError()));
-                }
+        loginViewModel.getLoginFormState().observe(getViewLifecycleOwner(), loginFormState -> {
+            if (loginFormState == null) {
+                return;
+            }
+            loginButton.setEnabled(loginFormState.isDataValid());
+            if (loginFormState.getUsernameError() != null) {
+                usernameEditText.setError(getString(loginFormState.getUsernameError()));
+            }
+            if (loginFormState.getPasswordError() != null) {
+                passwordEditText.setError(getString(loginFormState.getPasswordError()));
             }
         });
 
-        loginViewModel.getLoginResult().observe(getViewLifecycleOwner(), new Observer<LoginResult>() {
-            @Override
-            public void onChanged(@Nullable LoginResult loginResult) {
-                if (loginResult == null) {
-                    return;
-                }
-                loadingProgressBar.setVisibility(View.GONE);
-                if (loginResult.getError() != null) {
-                    showLoginFailed(loginResult.getError());
-                }
-                if (loginResult.getSuccess() != null) {
-                    updateUiWithUser(loginResult.getSuccess());
-                }
+        loginViewModel.getLoginResult().observe(getViewLifecycleOwner(), loginResult -> {
+            if (loginResult == null) {
+                return;
+            }
+            loadingProgressBar.setVisibility(View.GONE);
+            if (loginResult.getError() != null) {
+                showLoginFailed(loginResult.getError());
+            }
+            if (loginResult.getSuccess() != null) {
+                updateUiWithUser(loginResult.getSuccess());
             }
         });
 
@@ -104,44 +96,29 @@ public class LoginFragment extends Fragment {
         };
         usernameEditText.addTextChangedListener(afterTextChangedListener);
         passwordEditText.addTextChangedListener(afterTextChangedListener);
-        passwordEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    loginViewModel.login(usernameEditText.getText().toString(),
-                            passwordEditText.getText().toString());
-                }
-                return false;
-            }
-        });
-
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadingProgressBar.setVisibility(View.VISIBLE);
+        passwordEditText.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
                 loginViewModel.login(usernameEditText.getText().toString(),
                         passwordEditText.getText().toString());
             }
+            return false;
+        });
+
+        loginButton.setOnClickListener(v -> {
+            loadingProgressBar.setVisibility(View.VISIBLE);
+            loginViewModel.login(usernameEditText.getText().toString(),
+                    passwordEditText.getText().toString());
         });
 
         TextView registerLink = binding.registerLink;
-        registerLink.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                NavHostFragment.findNavController(LoginFragment.this)
-                        .navigate(R.id.action_loginFragment_to_registrationFragment);
-            }
-        });
+        registerLink.setOnClickListener(view1 -> NavHostFragment.findNavController(LoginFragment.this)
+                .navigate(R.id.action_loginFragment_to_registrationFragment));
 
         // Navigate to home screen after successful login
-        loginViewModel.getLoggedInUser().observe(getViewLifecycleOwner(), new Observer<LoggedInUserView>() {
-            @Override
-            public void onChanged(LoggedInUserView loggedInUserView) {
-                if (loggedInUserView != null) {
-                    NavHostFragment.findNavController(LoginFragment.this)
-                            .navigate(R.id.action_loginFragment_to_homeFragment);
-                }
+        loginViewModel.getLoggedInUser().observe(getViewLifecycleOwner(), loggedInUserView -> {
+            if (loggedInUserView != null) {
+                NavHostFragment.findNavController(LoginFragment.this)
+                        .navigate(R.id.action_loginFragment_to_userEventsFragment);
             }
         });
     }

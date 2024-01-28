@@ -17,7 +17,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <!-- Big Headline: EventUS -->
         <ImageView
             android:id="@+id/imageViewLogo"
             android:layout_width="340dp"
@@ -29,7 +28,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <!-- User Photo and Choose Photo Button -->
         <ImageView
             android:id="@+id/userPhoto"
             android:layout_width="100dp"
@@ -54,7 +52,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/userPhoto" />
 
-        <!-- Email and Username in the same row -->
         <EditText
             android:id="@+id/email"
             android:layout_width="0dp"
@@ -80,7 +77,6 @@
             app:layout_constraintStart_toEndOf="@+id/email"
             app:layout_constraintTop_toBottomOf="@+id/choosePhotoButton" />
 
-        <!-- First Name and Last Name in the same row -->
         <EditText
             android:id="@+id/firstName"
             android:layout_width="0dp"
@@ -105,7 +101,6 @@
             app:layout_constraintStart_toEndOf="@+id/firstName"
             app:layout_constraintTop_toBottomOf="@+id/username" />
 
-        <!-- Password and Repeat Password in the same row -->
         <EditText
             android:id="@+id/password"
             android:layout_width="0dp"
@@ -132,7 +127,20 @@
             app:layout_constraintStart_toEndOf="@+id/password"
             app:layout_constraintTop_toBottomOf="@+id/lastName" />
 
-        <!-- RadioGroup for Organizer/Participant -->
+        <EditText
+            android:id="@+id/phoneNumber"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:hint="Phone Number"
+            android:inputType="phone"
+            android:minHeight="48dp"
+            android:textColorHint="#FFFFFF"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/passwordValidation" />
+
+
         <RadioGroup
             android:id="@+id/radioGroup"
             android:layout_width="0dp"
@@ -140,8 +148,9 @@
             android:layout_marginTop="16dp"
             android:textColorHint="#FFFFFF"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/passwordValidation">
+            app:layout_constraintTop_toBottomOf="@+id/phoneNumber">
 
             <RadioButton
                 android:id="@+id/radioOrganizer"
@@ -159,7 +168,6 @@
 
         </RadioGroup>
 
-        <!-- Register Button -->
         <Button
             android:id="@+id/register"
             android:layout_width="0dp"
@@ -172,7 +180,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
 
-        <!-- Login Link -->
         <TextView
             android:id="@+id/loginLink"
             android:layout_width="wrap_content"

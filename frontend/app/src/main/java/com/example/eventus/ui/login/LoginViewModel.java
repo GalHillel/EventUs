@@ -30,7 +30,7 @@ public class LoginViewModel extends ViewModel {
         return loginResult;
     }
 
-    LiveData<LoggedInUserView> getLoggedInUser() { // Modified
+    LiveData<LoggedInUserView> getLoggedInUser() {
         return loggedInUser;
     }
 
