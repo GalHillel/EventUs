@@ -48,7 +48,7 @@ r_messages = requests.post(url = "http://localhost:3000/messages",json=data_mess
 
 
 
-"""
+
 
 with open("backend/event-us/src/testimg.png",'rb') as f:
     testImg = f.read()
@@ -57,15 +57,16 @@ with open("backend/event-us/src/defaultpfp.png",'rb') as f:
 
 data_profilePic1 = {}
 files1 = {
-    "_id":('payload.json',json.dumps(data_profilePic1),'application/json'),
+    
     "icon": ("testimg.png", testImg, "multipart/form-data")
     }
 
 data_profilePic2 = {}
 files2 = {
-    "_id":('payload.json',json.dumps(data_profilePic2),'application/json'),
+    
     "icon": ("defaultpfp.png", defaultpfp, "multipart/form-data")
     }
+"""
 #[data_message,"messages"],[data_event,"events"]
 all_data = [[data_user1,"users"],[data_user2,"users"]] 
 
@@ -84,11 +85,11 @@ r = requests.patch("http://localhost:3000/users/"+r_user2["_id"]+"/exitEvent",js
 
 
 
-"""
+
 # post request example for profile picture
 r = requests.post(url = URL,files=files1)
 r = requests.post(url = URL,files=files2)
-"""
+
 # post request example for other collections
 #r2 = requests.post(url = URL,json=data_user1)
 
