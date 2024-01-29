@@ -28,82 +28,33 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/userPhoto"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginTop="16dp"
-            android:background="#00000000"
-            android:src="@drawable/placeholder_image"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageViewLogo" />
-
-        <Button
-            android:id="@+id/choosePhotoButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Choose Photo"
-            android:background="#00000000"
-            android:textColor="#FFFFFF"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/userPhoto" />
 
         <EditText
             android:id="@+id/email"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="176dp"
             android:hint="Email"
             android:inputType="textEmailAddress"
             android:minHeight="48dp"
-            android:textColorHint="#FFFFFF"
             android:textColor="@color/white"
+            android:textColorHint="#FFFFFF"
             app:layout_constraintEnd_toStartOf="@+id/username"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/choosePhotoButton" />
+            app:layout_constraintTop_toBottomOf="@+id/imageViewLogo" />
 
         <EditText
             android:id="@+id/username"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="176dp"
             android:hint="Username"
             android:minHeight="48dp"
-            android:textColorHint="#FFFFFF"
             android:textColor="@color/white"
+            android:textColorHint="#FFFFFF"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/email"
-            app:layout_constraintTop_toBottomOf="@+id/choosePhotoButton" />
-
-        <EditText
-            android:id="@+id/firstName"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:hint="First Name"
-            android:minHeight="48dp"
-            android:textColor="@color/white"
-            android:textColorHint="#FFFFFF"
-            app:layout_constraintEnd_toStartOf="@+id/lastName"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/username" />
-
-        <EditText
-            android:id="@+id/lastName"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:hint="Last Name"
-            android:textColor="@color/white"
-            android:minHeight="48dp"
-            android:textColorHint="#FFFFFF"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/firstName"
-            app:layout_constraintTop_toBottomOf="@+id/username" />
+            app:layout_constraintTop_toBottomOf="@+id/imageViewLogo" />
 
         <EditText
             android:id="@+id/password"
@@ -117,7 +68,7 @@
             android:textColorHint="#FFFFFF"
             app:layout_constraintEnd_toStartOf="@+id/passwordValidation"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lastName" />
+            app:layout_constraintTop_toBottomOf="@+id/username" />
 
         <EditText
             android:id="@+id/passwordValidation"
@@ -131,21 +82,7 @@
             android:textColorHint="#FFFFFF"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/password"
-            app:layout_constraintTop_toBottomOf="@+id/lastName" />
-
-        <EditText
-            android:id="@+id/phoneNumber"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:hint="Phone Number"
-            android:inputType="phone"
-            android:minHeight="48dp"
-            android:textColorHint="#FFFFFF"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/passwordValidation" />
-
+            app:layout_constraintTop_toBottomOf="@+id/username" />
 
         <RadioGroup
             android:id="@+id/radioGroup"
@@ -156,7 +93,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/phoneNumber">
+            app:layout_constraintTop_toBottomOf="@+id/passwordValidation">
 
             <RadioButton
                 android:id="@+id/radioOrganizer"

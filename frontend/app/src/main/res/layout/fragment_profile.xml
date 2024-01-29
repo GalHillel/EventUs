@@ -42,29 +42,15 @@
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="175dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="First Name">
+            android:hint="Username">
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/fName"
+                android:id="@+id/Username"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"
-                android:enabled="false" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="175dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:hint="Last Name">
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/lName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:enabled="false"
-                android:inputType="textPersonName" />
+            />
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 
@@ -75,7 +61,6 @@
         style="@style/Widget.MaterialComponents.Button.Icon"
         app:backgroundTint="#00bbff"
         android:layout_marginTop="215dp"
-        android:enabled="false"
         android:text="Save" />
 
     <TextView
@@ -94,15 +79,15 @@
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="175dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Email">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:enabled="false"
-                android:inputType="textEmailAddress" />
+                android:inputType="textEmailAddress"
+            />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -111,12 +96,6 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
             android:hint="Phone Number">
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/phoneNumber"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:enabled="false"
-                android:inputType="text|phone" />
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 
@@ -127,8 +106,8 @@
         style="@style/Widget.MaterialComponents.Button.Icon"
         app:backgroundTint="#00bbff"
         android:layout_marginTop="375dp"
-        android:enabled="false"
-        android:text="Save" />
+        android:text="Save"
+    />
 
     <TextView
         android:layout_width="match_parent"

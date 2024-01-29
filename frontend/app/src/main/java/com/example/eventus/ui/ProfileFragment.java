@@ -17,10 +17,8 @@ import com.google.android.material.textfield.TextInputEditText;
 
 public class ProfileFragment extends Fragment {
 
-    private TextInputEditText fNameEditText;
-    private TextInputEditText lNameEditText;
+    private TextInputEditText usernameEditText;
     private TextInputEditText emailEditText;
-    private TextInputEditText phoneNumberEditText;
     private TextInputEditText oldPasswordEditText;
     private TextInputEditText newPasswordEditText;
 
@@ -36,13 +34,10 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        fNameEditText = view.findViewById(R.id.fName);
-        lNameEditText = view.findViewById(R.id.lName);
+        usernameEditText = view.findViewById(R.id.Username);
         emailEditText = view.findViewById(R.id.email);
-        phoneNumberEditText = view.findViewById(R.id.phoneNumber);
         oldPasswordEditText = view.findViewById(R.id.oldPassword);
         newPasswordEditText = view.findViewById(R.id.newPassword);
-
         saveNameButton = view.findViewById(R.id.saveName);
         saveContactButton = view.findViewById(R.id.saveContact);
         savePasswordButton = view.findViewById(R.id.savePassword);
@@ -102,10 +97,8 @@ public class ProfileFragment extends Fragment {
             }
         };
 
-        fNameEditText.addTextChangedListener(textWatcher);
-        lNameEditText.addTextChangedListener(textWatcher);
+        usernameEditText.addTextChangedListener(textWatcher);
         emailEditText.addTextChangedListener(textWatcher);
-        phoneNumberEditText.addTextChangedListener(textWatcher);
         oldPasswordEditText.addTextChangedListener(textWatcher);
         newPasswordEditText.addTextChangedListener(textWatcher);
 
@@ -114,12 +107,10 @@ public class ProfileFragment extends Fragment {
     }
 
     private void updateSaveButtonsState() {
-        boolean isNameNotEmpty = !TextUtils.isEmpty(fNameEditText.getText())
-                && !TextUtils.isEmpty(lNameEditText.getText());
+        boolean isNameNotEmpty = !TextUtils.isEmpty(usernameEditText.getText());
         saveNameButton.setEnabled(isNameNotEmpty);
 
-        boolean isContactNotEmpty = !TextUtils.isEmpty(emailEditText.getText())
-                && !TextUtils.isEmpty(phoneNumberEditText.getText());
+        boolean isContactNotEmpty = !TextUtils.isEmpty(emailEditText.getText());
         saveContactButton.setEnabled(isContactNotEmpty);
 
         boolean isPasswordNotEmpty = !TextUtils.isEmpty(oldPasswordEditText.getText())
