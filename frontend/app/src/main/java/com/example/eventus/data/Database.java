@@ -71,15 +71,15 @@ public class Database{
      * @param email user email
      * @param name username
      * @param password password
-     * @param userType creator/user
+     * @param user_type creator/user
      * @throws Exception
      */
-    public User addUser(String email, String name, String password, String userType){
+    public User addUser(String email, String name, String password, String user_type){
         HashMap<String, Object> payloadData = new HashMap<String, Object>();
         payloadData.put("name",name);
         payloadData.put("email",email);
         payloadData.put("password",password);
-        payloadData.put("userType",userType);
+        payloadData.put("userType",user_type);
         try{
             ServerResponse response = sendHttpRequest("users",payloadData,"POST");
             if (response.getReturnCode() == 201){
@@ -128,6 +128,16 @@ public class Database{
         lst.add(uEvent2);
         lst.add(uEvent3);
         return lst;
+    }
+
+    /** TODO implement
+     * Checks if the user exists in the database and returns it if found
+     * @param email user email
+     * @param password user password
+     * @return User entry in the database or null if not found
+     */
+    public static User userLogin(String email,String password){
+        return null;
     }
 
 }
