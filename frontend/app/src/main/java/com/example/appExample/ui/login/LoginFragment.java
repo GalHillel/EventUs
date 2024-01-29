@@ -140,7 +140,7 @@ public class LoginFragment extends Fragment {
             public void onChanged(LoggedInUserView loggedInUserView) {
                 if (loggedInUserView != null) {
                     NavHostFragment.findNavController(LoginFragment.this)
-                            .navigate(R.id.action_loginFragment_to_homeFragment);
+                            .navigate(R.id.action_loginFragment_to_userEventsFragment);
                 }
             }
         });
