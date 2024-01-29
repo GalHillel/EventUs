@@ -20,7 +20,7 @@ public class Database {
 
     private ServerResponse sendHttpRequest(String dir, HashMap<String, Object> payloadData, String method) throws Exception {
 
-        String url = "http://localhost:3000/" + dir;
+        String url = "http://10.0.2.2:3000/" + dir;
         // Prepare the JSON data
         String payloadStr = gson.toJson(payloadData);
 
@@ -81,7 +81,7 @@ public class Database {
         payloadData.put("name", name);
         payloadData.put("email", email);
         payloadData.put("password", password);
-        payloadData.put("userType", user_type);
+        payloadData.put("user_type", user_type);
         try {
             ServerResponse response = sendHttpRequest("users", payloadData, "POST");
             if (response.getReturnCode() == 201) {

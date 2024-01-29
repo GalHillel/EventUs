@@ -6,18 +6,18 @@ import json
 URL = "http://localhost:3000/profilepics"
 data_user1 = {
     "_id":"123",
-    "profilePic":"31245",
+    "profile_pic":"31245",
     "name": "ziv",
     "email": "ziv.morgan@gmail.com",
     "password": "newPass",
-    "userType": "creator"
+    "user_type": "creator"
 }
 data_user2 = {
     "_id":"321",
     "name": "user1",
     "email": "user1@gmail.com",
     "password": "userPass",
-    "userType": "user"
+    "user_type": "user"
 }
 
 data_event = {
