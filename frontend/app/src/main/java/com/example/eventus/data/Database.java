@@ -15,12 +15,12 @@ import com.example.eventus.data.model.UserEvent;
 import com.google.gson.Gson;
 
 
-public class Database{
+public class Database {
     static Gson gson = new Gson();
 
-    private ServerResponse sendHttpRequest(String dir, HashMap<String, Object> payloadData, String method) throws Exception{
+    private ServerResponse sendHttpRequest(String dir, HashMap<String, Object> payloadData, String method) throws Exception {
 
-        String url = "http://localhost:3000/"+dir;
+        String url = "http://localhost:3000/" + dir;
         // Prepare the JSON data
         String payloadStr = gson.toJson(payloadData);
 
@@ -63,30 +63,31 @@ public class Database{
         // Close the connection
         connection.disconnect();
 
-        return new ServerResponse(responseCode,responseStr);
+        return new ServerResponse(responseCode, responseStr);
     }
 
-    /** TODO error handling
+    /**
+     * TODO error handling
      * Registers a new user
-     * @param email user email
-     * @param name username
-     * @param password password
+     *
+     * @param email     user email
+     * @param name      username
+     * @param password  password
      * @param user_type creator/user
      * @throws Exception
      */
-    public User addUser(String email, String name, String password, String user_type){
+    public User addUser(String email, String name, String password, String user_type) {
         HashMap<String, Object> payloadData = new HashMap<String, Object>();
-        payloadData.put("name",name);
-        payloadData.put("email",email);
-        payloadData.put("password",password);
-        payloadData.put("userType",user_type);
-        try{
-            ServerResponse response = sendHttpRequest("users",payloadData,"POST");
-            if (response.getReturnCode() == 201){
+        payloadData.put("name", name);
+        payloadData.put("email", email);
+        payloadData.put("password", password);
+        payloadData.put("userType", user_type);
+        try {
+            ServerResponse response = sendHttpRequest("users", payloadData, "POST");
+            if (response.getReturnCode() == 201) {
                 return gson.fromJson(response.getPayload(), User.class);
             }
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             return null;
         }
 
@@ -94,32 +95,36 @@ public class Database{
 
     }
 
-    /** TODO add response and error handling
+    /**
+     * TODO add response and error handling
      * creates a new event
-     * @param creator_id id of event creator
-     * @param name name of the event
-     * @param date date of the event
-     * @param location location of the event
+     *
+     * @param creator_id  id of event creator
+     * @param name        name of the event
+     * @param date        date of the event
+     * @param location    location of the event
      * @param description description of the event
      * @throws Exception
      */
-    public void addEvent(String creator_id, String name, String date, String location, String description) throws Exception{
+    public void addEvent(String creator_id, String name, String date, String location, String description) throws Exception {
         HashMap<String, Object> jsonData = new HashMap<String, Object>();
-        jsonData.put("name",name);
-        jsonData.put("creator_id",creator_id);
-        jsonData.put("date",date);
-        jsonData.put("location",location);
-        jsonData.put("description",description);
+        jsonData.put("name", name);
+        jsonData.put("creator_id", creator_id);
+        jsonData.put("date", date);
+        jsonData.put("location", location);
+        jsonData.put("description", description);
 
-        ServerResponse response = sendHttpRequest("events",jsonData,"POST");
+        ServerResponse response = sendHttpRequest("events", jsonData, "POST");
     }
 
-    /** TODO implement
+    /**
+     * TODO implement
      * Get user events for some user
+     *
      * @param user
      * @return list of events
      */
-    public static ArrayList<UserEvent> getEventList(User user){
+    public static ArrayList<UserEvent> getEventList(User user) {
         ArrayList<UserEvent> lst = new ArrayList<UserEvent>();
         UserEvent uEvent1 = new UserEvent("event 1"),
                 uEvent2 = new UserEvent("event 2"),
@@ -130,14 +135,15 @@ public class Database{
         return lst;
     }
 
-    /** TODO implement
+    /**
+     * TODO implement
      * Checks if the user exists in the database and returns it if found
-     * @param email user email
+     *
+     * @param email    user email
      * @param password user password
      * @return User entry in the database or null if not found
      */
-    public static User userLogin(String email,String password){
+    public static User userLogin(String email, String password) {
         return null;
     }
-
 }

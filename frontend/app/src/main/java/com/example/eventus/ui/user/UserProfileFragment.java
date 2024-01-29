@@ -1,4 +1,4 @@
-package com.example.eventus.ui;
+package com.example.eventus.ui.user;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -15,7 +15,7 @@ import com.example.eventus.R;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 
-public class ProfileFragment extends Fragment {
+public class UserProfileFragment extends Fragment {
 
     private TextInputEditText usernameEditText;
     private TextInputEditText emailEditText;
@@ -28,7 +28,7 @@ public class ProfileFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_profile, container, false);
+        return inflater.inflate(R.layout.fragment_user_profile, container, false);
     }
 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -43,13 +43,13 @@ public class ProfileFragment extends Fragment {
         savePasswordButton = view.findViewById(R.id.savePassword);
 
         // Set up click listeners for buttons in user_navigation
-        view.findViewById(R.id.discover).setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_profileFragment_to_userDiscoverFragment));
+        view.findViewById(R.id.discover).setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_userProfileFragment_to_userDiscoverFragment));
 
-        view.findViewById(R.id.myevents).setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_profileFragment_to_userEventsFragment));
+        view.findViewById(R.id.myevents).setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_userProfileFragment_to_userEventsFragment));
 
         MaterialButton logoutButton = view.findViewById(R.id.logout);
 
-        logoutButton.setOnClickListener(v -> {Navigation.findNavController(v).navigate(R.id.action_profileFragment_to_loginFragment);});
+        logoutButton.setOnClickListener(v -> {Navigation.findNavController(v).navigate(R.id.action_userProfileFragment_to_loginFragment);});
 
 
         // Set up text change listeners

@@ -1,0 +1,27 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".ui.organizer.EditEventFragment">
+    <include layout="@layout/organizer_navigation" />
+
+    <TextView
+        android:id="@+id/editEventTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:text="Edit Events"
+        android:textColor="@color/black"
+        android:textSize="30sp" />
+    <Button
+        android:id="@+id/saveEventChangesButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="610dp"
+        android:layout_marginStart="20dp"
+        android:text="Save Changes"
+        android:onClick="onSaveEventChangesClick" />
+
+</FrameLayout>

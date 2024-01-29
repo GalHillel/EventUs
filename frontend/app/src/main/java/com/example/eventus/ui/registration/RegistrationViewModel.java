@@ -25,22 +25,22 @@ public class RegistrationViewModel extends ViewModel {
 
         // Call Database method for user registration
         Database database = new Database();
-        User user = database.addUser(email, username, password, userType);
 
-        // Handle the response from the database (user registration success or failure)
-        if (user != null) {
-            // Registration successful
-            registrationSuccess.setValue(true);
+        // Use a background thread or AsyncTask to perform network operations
+        new Thread(() -> {
+            try {
+                User user = database.addUser(email, username, password, userType);
 
-            // Perform any additional actions if needed
-            // For example, you can navigate to the login screen
-        } else {
-            // Registration failed, handle the error
-            errorMessage.setValue("Registration failed. Please try again.");
-
-            // You can log the error or perform additional error handling here
-        }
+                // Use postValue to update LiveData on the main thread
+                registrationSuccess.postValue(user != null);
+                errorMessage.postValue(user == null ? "Registration failed. Please try again." : null);
+            } catch (Exception e) {
+                // Handle exceptions, log them, or show appropriate error messages
+                errorMessage.postValue("An error occurred during registration.");
+            }
+        }).start();
     }
+
 }
 
 

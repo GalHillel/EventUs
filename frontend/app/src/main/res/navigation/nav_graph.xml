@@ -69,7 +69,7 @@
             app:destination="@id/userDiscoverFragment" />
         <action
             android:id="@+id/action_userEventsFragment_to_profileFragment"
-            app:destination="@id/profileFragment" />
+            app:destination="@id/userProfileFragment" />
     </fragment>
 
     <fragment
@@ -82,24 +82,68 @@
             app:destination="@id/userEventsFragment" />
         <action
             android:id="@+id/action_userDiscoverFragment_to_profileFragment"
-            app:destination="@id/profileFragment" />
+            app:destination="@id/userProfileFragment" />
     </fragment>
 
     <fragment
-        android:id="@+id/profileFragment"
-        android:name="com.example.eventus.ui.ProfileFragment"
-        android:label="ProfileFragment"
-        tools:layout="@layout/fragment_profile">
+        android:id="@+id/userProfileFragment"
+        android:name="com.example.eventus.ui.user.UserProfileFragment"
+        android:label="UserProfileFragment"
+        tools:layout="@layout/fragment_user_profile">
         <action
-            android:id="@+id/action_profileFragment_to_userEventsFragment"
+            android:id="@+id/action_userProfileFragment_to_userEventsFragment"
             app:destination="@id/userEventsFragment" />
         <action
-            android:id="@+id/action_profileFragment_to_userDiscoverFragment"
+            android:id="@+id/action_userProfileFragment_to_userDiscoverFragment"
             app:destination="@id/userDiscoverFragment" />
         <action
-            android:id="@+id/action_profileFragment_to_loginFragment"
+            android:id="@+id/action_userProfileFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
 
+    </fragment>
+
+    <fragment
+        android:id="@+id/organizerProfileFragment"
+        android:name="com.example.eventus.ui.organizer.OrganizerProfileFragment"
+        android:label="OrganizerProfileFragment"
+        tools:layout="@layout/fragment_organizer_profile">
+
+        <action
+            android:id="@+id/action_organizerProfileFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_organizerProfileFragment_to_organizerMessages"
+            app:destination="@id/organizerMessages" />
+        <action
+            android:id="@+id/action_organizerProfileFragment_to_organizerEvents"
+            app:destination="@id/organizerEvents" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/organizerMessages"
+        android:name="com.example.eventus.ui.organizer.OrganizerMessagesFragment"
+        android:label="OrganizerMessagesFragment"
+        tools:layout="@layout/fragment_organizer_messages">
+
+        <action
+            android:id="@+id/action_organizerMessages_to_organizerProfileFragment"
+            app:destination="@id/organizerProfileFragment" />
+        <action
+            android:id="@+id/action_organizerMessages_to_organizerEvents"
+            app:destination="@id/organizerEvents" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/organizerEvents"
+        android:name="com.example.eventus.ui.organizer.OrganizerEventsFragment"
+        android:label="OrganizerEventsFragment"
+        tools:layout="@layout/fragment_organizer_event">
+        <action
+            android:id="@+id/action_organizerEvents_to_organizerMessages"
+            app:destination="@id/organizerMessages" />
+        <action
+            android:id="@+id/action_organizerEvents_to_organizerProfileFragment"
+            app:destination="@id/organizerProfileFragment" />
     </fragment>
 
 </navigation>

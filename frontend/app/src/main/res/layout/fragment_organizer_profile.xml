@@ -4,9 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.ProfileFragment"
+    tools:context=".ui.user.UserProfileFragment"
     android:background="@color/white">
-    <include layout="@layout/user_navigation" />
+    <include layout="@layout/organizer_navigation" />
 
 
     <TextView
@@ -50,7 +50,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"
-            />
+                />
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 
@@ -87,7 +87,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"
-            />
+                />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -107,7 +107,7 @@
         app:backgroundTint="#00bbff"
         android:layout_marginTop="375dp"
         android:text="Save"
-    />
+        />
 
     <TextView
         android:layout_width="match_parent"
