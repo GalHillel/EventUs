@@ -2,7 +2,7 @@ import {Id} from './id.dto'
 
 export enum UserType {USER="user", CREATOR="creator"};
 export class CreateUserDto {
-    readonly _id: Id;
+    
     readonly profile_pic: Id;
     readonly name: string;
     readonly email: string;

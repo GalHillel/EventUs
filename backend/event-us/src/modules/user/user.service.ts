@@ -6,7 +6,7 @@ import { UserEvent } from '../event/event.model';
 import { ProfilePic } from '../profilePic/profilePic.model';
 
 import { CreateUserDto } from '../dto/user.dto';
-import { Id } from '../dto/id.dto'
+import { Id } from '../dto/id.dto';
 import { Message } from '../message/message.model';
 import { CreateMessageDto } from '../dto/message.dto';
 

@@ -5,6 +5,8 @@ import { UserEvent } from './event.model';
 import {Id} from '../dto/id.dto'
 import { User } from '../user/user.model';
 import { UserService } from '../user/user.service';
+import { Schema as mongooseSchema } from "mongoose";
+
 
 @Controller('events')
 export class EventController {
@@ -13,9 +15,10 @@ export class EventController {
   @Post()
   async createEvent(@Body() createEventDto: CreateEventDto): Promise<UserEvent> {
     const userEvent = await this.eventService.createEvent(createEventDto);
-    this.userService.addEvent(createEventDto.creator_id,createEventDto._id)
+    this.userService.addEvent(createEventDto.creator_id,userEvent.id)
     return userEvent
   }
+
 
   @Get()
   async findAllEvents(): Promise<UserEvent[]> {
@@ -39,7 +42,8 @@ export class EventController {
    */
   @Patch(':id/joinEvent')
   async joinEvent(@Param('id') _id: Id, @Body('_id') userId: Id): Promise<void>{
-    this.userService.addEvent(userId,_id);
+    
+    this.userService.addEvent(userId, _id);
     this.eventService.addUser(_id,userId);
   }
 

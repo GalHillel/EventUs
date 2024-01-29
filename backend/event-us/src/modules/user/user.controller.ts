@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, Param, ValidationPipe, UseInterceptors,ClassSerializerInterceptor, Query, Put, Patch } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param, ValidationPipe, UseInterceptors,ClassSerializerInterceptor, Query, Put, Patch, ParseUUIDPipe } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from '../dto/user.dto';
 import { User } from './user.model';
@@ -9,6 +9,7 @@ import { EventService } from '../event/event.service';
 import { ProfilePicService } from '../profilePic/profilePic.service';
 import { MessageService } from '../message/message.service';
 import { CreateMessageDto } from '../dto/message.dto';
+
 
 @Controller('users')
 export class UserController {
@@ -43,7 +44,7 @@ export class UserController {
   }
   @Get(':id/messages')
   async getUserMessages(@Param('id') _id: Id): Promise<Message[]>{
-    return this.userService.getEventIds(_id).then((ids) => this.messageService.getMessages(ids));
+    return this.userService.getMessageIds(_id).then((ids) => this.messageService.getMessages(ids));
   }
 
   /**
@@ -54,8 +55,8 @@ export class UserController {
    */
   @Patch(':id/joinEvent')
   async joinEvent(@Param('id') _id: Id, @Body('_id') eventId: Id): Promise<void>{
-    this.eventService.addUser(eventId,_id);
-    this.userService.addEvent(_id,eventId);
+    await this.eventService.addUser(eventId,_id);
+    await this.userService.addEvent(_id,eventId);
   }
   /** TODO add guard for event creator
    * users/<user id>/exitEvent, Patch request should contain a json in the form {_id:<event id>}
@@ -64,8 +65,8 @@ export class UserController {
    */
   @Patch(':id/exitEvent')
   async exitEvent(@Param('id') _id: Id,  @Body('_id') eventId: Id): Promise<void>{
-    this.eventService.removeUser(eventId,_id);
-    this.userService.removeEvent(_id,eventId);
+    await this.eventService.removeUser(eventId,_id);
+    await this.userService.removeEvent(_id,eventId);
 
   }
 

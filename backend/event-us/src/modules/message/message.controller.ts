@@ -14,7 +14,7 @@ export class MessageController {
   @Post()
   async createMessage(@Body() createMessageDto: CreateMessageDto): Promise<Message> {
     const message = await this.messageService.createMessage(createMessageDto);
-    await this.userService.addMessages(message.receiver_ids,message._id)
+    await this.userService.addMessages(message.receiver_ids,message.id)
     return message
   }
 

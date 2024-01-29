@@ -3,11 +3,10 @@ import { Document } from 'mongoose';
 import { Id } from '../dto/id.dto';
 
 
+
 @Schema()
 export class UserEvent extends Document {    
     
-    @Prop()
-    _id: Id;
     
     @Prop({ required: true })
     name: string;

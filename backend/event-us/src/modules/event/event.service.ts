@@ -4,6 +4,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { UserEvent } from './event.model';
 import { CreateEventDto } from '../dto/event.dto';
+import { ObjectId } from 'mongoose';
 
 import { User } from '../user/user.model';
 import { Id } from '../dto/id.dto';
@@ -84,7 +85,9 @@ export class EventService {
    * @param userId user _id
    */
   async removeUser(_id:Id,userId:Id): Promise<void>{
-    await this.userEventModel.findById(_id).updateOne({},{ $pull: {attendents: userId} }).exec();
+    
+    await this.userEventModel.findOne({ _id: _id }).updateOne({},{ $pull: {attendents: userId} }).exec();
+   
   }
 
 

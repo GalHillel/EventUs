@@ -5,10 +5,8 @@ import { UserType } from '../dto/user.dto';
 
 @Schema()
 export class User extends Document {    
-    @Prop()
-    _id: Id;
     
-    @Prop({ default: "0"})
+    @Prop()
     profile_pic: Id;
     
     @Prop({ required: true })
@@ -23,11 +21,14 @@ export class User extends Document {
     @Prop({ required: true })
     user_type: UserType;
     
-    @Prop({ type: [{ type: Id, ref: 'message' }], default: [] })
+    //@Prop({ type: [{ type: Id, ref: 'message' }], default: [] })
+    @Prop({ default: [] })
     messages: Id[];
     
-    @Prop({ type: [{ type: Id, ref: 'userevents' }], default: [] })
+    //@Prop({ type: [{ type: Id, ref: 'userevents' }], default: [] })
+    @Prop({ default: [] })
     events: Id[];
+
 
 }
 
