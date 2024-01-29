@@ -1,4 +1,4 @@
-package com.example.eventus;
+package com.example.eventus.ui.mainScreen;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+
+import com.example.eventus.R;
 
 public class MainMenuUser extends Fragment {
 

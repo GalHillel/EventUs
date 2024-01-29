@@ -1,7 +1,9 @@
-package com.example.eventus;
+package com.example.eventus.ui.mainScreen;
 
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.eventus.R;
 
 public class MainActivity extends AppCompatActivity {
 

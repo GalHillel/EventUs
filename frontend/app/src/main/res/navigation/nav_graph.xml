@@ -20,7 +20,7 @@
 
     <fragment
         android:id="@+id/mainMenuUserFragment"
-        android:name="com.example.eventus.MainMenuUser"
+        android:name="com.example.eventus.ui.mainScreen.MainMenuUser"
         android:label="MainMenuUserFragment"
         tools:layout="@layout/fragment_main">
         <action

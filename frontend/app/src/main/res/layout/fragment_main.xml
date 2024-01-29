@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
-    tools:context=".MainMenuUser">
+    tools:context=".ui.mainScreen.MainMenuUser">
 
     <ImageView
         android:id="@+id/imageViewLogo"
