@@ -5,7 +5,7 @@ import { User } from './user.model';
 import { UserEvent } from '../event/event.model';
 import { ProfilePic } from '../profilePic/profilePic.model';
 
-import { CreateUserDto } from '../dto/user.dto';
+import { CreateUserDto, LoginUserDto } from '../dto/user.dto';
 import { Id } from '../dto/id.dto';
 import { Message } from '../message/message.model';
 import { CreateMessageDto } from '../dto/message.dto';
@@ -21,6 +21,10 @@ export class UserService {
     console.log("creating user" + createUserDto);
     const createdUser = new this.userModel(createUserDto);
     return createdUser.save();
+  }
+
+  async loginUser(loginUserDto: LoginUserDto): Promise<User>{
+    return this.userModel.findOne(loginUserDto).exec();
   }
 
   async findAllUsers(): Promise<User[]> {

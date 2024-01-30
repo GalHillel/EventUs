@@ -1,9 +1,9 @@
 import { Controller, Post, Body, Get, Param, ValidationPipe, UseInterceptors,ClassSerializerInterceptor, Query, Put, Patch, ParseUUIDPipe } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserDto } from '../dto/user.dto';
+import { CreateUserDto, LoginUserDto } from '../dto/user.dto';
 import { User } from './user.model';
 import { UserEvent } from '../event/event.model';
-import {Id} from '../dto/id.dto'
+import { Id } from '../dto/id.dto'
 import { Message } from '../message/message.model';
 import { EventService } from '../event/event.service';
 import { ProfilePicService } from '../profilePic/profilePic.service';
@@ -31,9 +31,13 @@ export class UserController {
     this.userService.printAllUsers();
     return this.userService.findAllUsers();
   }
+  @Get("login")
+  async login(@Body() loginUserDto: LoginUserDto): Promise<User>{
+    return this.userService.loginUser(loginUserDto);
+  }
 
 
-  // get user specific fields  
+  
   @Get(':id/events')
   async getUserEvents(@Param('id') _id: Id): Promise<UserEvent[]>{
     return this.userService.getEventIds(_id).then((ids) => this.eventService.getUserEvents(ids));
