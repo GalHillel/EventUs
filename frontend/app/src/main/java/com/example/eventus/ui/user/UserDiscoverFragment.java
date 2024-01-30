@@ -35,5 +35,8 @@ public class UserDiscoverFragment extends Fragment {
             // Navigate to Events screen
             Navigation.findNavController(v).navigate(R.id.action_userDiscoverFragment_to_userEventsFragment);
         });
+
+        view.findViewById(R.id.messages).setOnClickListener(v ->
+                Navigation.findNavController(v).navigate(R.id.action_userDiscoverFragment_to_userMessagesFragment));
     }
 }

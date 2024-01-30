@@ -22,11 +22,9 @@ import java.util.List;
 public class OrganizerEventsFragment extends Fragment {
 
     private RecyclerView upcomingEventsRecyclerView;
-    private RecyclerView pastEventsRecyclerView;
 
     // Replace with your actual data model for events
     private List<EventModel> upcomingEventsList = new ArrayList<>();
-    private List<EventModel> pastEventsList = new ArrayList<>();
 
     public OrganizerEventsFragment() {
         // Required empty public constructor
@@ -49,8 +47,12 @@ public class OrganizerEventsFragment extends Fragment {
             Navigation.findNavController(v).navigate(R.id.action_organizerEvents_to_organizerProfileFragment);
         });
 
+        view.findViewById(R.id.createEventFragment).setOnClickListener(v -> {
+            // Navigate to OrganizerProfileFragment
+            Navigation.findNavController(v).navigate(R.id.action_organizerEvents_to_createEventFragment);
+        });
+
         upcomingEventsRecyclerView = view.findViewById(R.id.eventsList);
-        pastEventsRecyclerView = view.findViewById(R.id.pastEventsList);
 
         // Replace with your logic to populate upcomingEventsList and pastEventsList
         populateDummyData();
@@ -60,21 +62,13 @@ public class OrganizerEventsFragment extends Fragment {
         upcomingEventsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         upcomingEventsRecyclerView.setAdapter(upcomingEventsAdapter);
 
-        // Set up RecyclerView for Past Events
-        EventAdapter pastEventsAdapter = new EventAdapter(pastEventsList);
-        pastEventsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        pastEventsRecyclerView.setAdapter(pastEventsAdapter);
-
         return view;
     }
 
     // TODO:Replace this with actual data retrieval logic
     private void populateDummyData() {
         // Example: Adding dummy data
-        upcomingEventsList.add(new EventModel("Event 1", "2024-02-01", "Location 1"));
-        upcomingEventsList.add(new EventModel("Event 2", "2024-03-15", "Location 2"));
-
-        pastEventsList.add(new EventModel("Past Event 1", "2023-12-10", "Location A"));
-        pastEventsList.add(new EventModel("Past Event 2", "2023-11-05", "Location B"));
+        upcomingEventsList.add(new EventModel("Event 1", "2024-02-01", "Location 1", "description"));
+        upcomingEventsList.add(new EventModel("Event 2", "2024-03-15", "Location 2", "description"));
     }
 }

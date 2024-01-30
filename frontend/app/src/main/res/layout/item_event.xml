@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="16dp">
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
+    android:paddingTop="16dp"
+    android:paddingBottom="16dp">
 
     <ImageView
         android:id="@+id/eventIconImageView"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:src="@drawable/ic_event"
-        app:tint="@color/black" />
+        android:src="@drawable/ic_event" />
 
     <LinearLayout
         android:layout_width="0dp"
@@ -22,40 +23,36 @@
 
         <TextView
             android:id="@+id/eventNameTextView"
+            style="@style/TextAppearance.AppCompat.Large"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:textColor="@color/black"
             android:textStyle="bold"
-            android:layout_marginBottom="8dp"/>
+            android:layout_marginBottom="8dp" />
 
         <TextView
             android:id="@+id/eventDateTextView"
+            style="@style/TextAppearance.AppCompat.Body1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:textColor="@color/black"
-            android:layout_marginBottom="4dp"/>
+            android:layout_marginBottom="4dp" />
 
         <TextView
             android:id="@+id/eventLocationTextView"
+            style="@style/TextAppearance.AppCompat.Body1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:textColor="@color/black"
             android:drawableStart="@drawable/ic_location"
-        android:drawablePadding="4dp"
-        android:gravity="center_vertical"
-        android:layout_marginBottom="4dp"/>
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="4dp" />
 
         <TextView
             android:id="@+id/eventMoreTextView"
+            style="@style/TextAppearance.AppCompat.Body1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:textColor="@color/black"
             android:drawableStart="@drawable/ic_more"
-        android:drawablePadding="4dp"
-        android:gravity="center_vertical"/>
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical" />
     </LinearLayout>
 </LinearLayout>

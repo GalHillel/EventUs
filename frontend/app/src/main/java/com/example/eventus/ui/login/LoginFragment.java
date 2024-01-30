@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -37,7 +38,6 @@ public class LoginFragment extends Fragment {
 
         binding = FragmentLoginBinding.inflate(inflater, container, false);
         return binding.getRoot();
-
     }
 
     @Override
@@ -50,6 +50,7 @@ public class LoginFragment extends Fragment {
         final EditText passwordEditText = binding.password;
         final Button loginButton = binding.login;
         final ProgressBar loadingProgressBar = binding.loading;
+        final CheckBox checkOrganizer = view.findViewById(R.id.checkOrganizer);
 
         loginViewModel.getLoginFormState().observe(getViewLifecycleOwner(), loginFormState -> {
             if (loginFormState == null) {
@@ -99,7 +100,7 @@ public class LoginFragment extends Fragment {
         passwordEditText.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 loginViewModel.login(usernameEditText.getText().toString(),
-                        passwordEditText.getText().toString());
+                        passwordEditText.getText().toString(), checkOrganizer.isChecked());
             }
             return false;
         });
@@ -107,7 +108,7 @@ public class LoginFragment extends Fragment {
         loginButton.setOnClickListener(v -> {
             loadingProgressBar.setVisibility(View.VISIBLE);
             loginViewModel.login(usernameEditText.getText().toString(),
-                    passwordEditText.getText().toString());
+                    passwordEditText.getText().toString(), checkOrganizer.isChecked());
         });
 
         TextView registerLink = binding.registerLink;
@@ -117,8 +118,13 @@ public class LoginFragment extends Fragment {
         // Navigate to home screen after successful login
         loginViewModel.getLoggedInUser().observe(getViewLifecycleOwner(), loggedInUserView -> {
             if (loggedInUserView != null) {
-                NavHostFragment.findNavController(LoginFragment.this)
-                        .navigate(R.id.action_loginFragment_to_userEventsFragment);
+                if (checkOrganizer.isChecked()) {
+                    NavHostFragment.findNavController(LoginFragment.this)
+                            .navigate(R.id.action_loginFragment_to_organizerEvents);
+                } else {
+                    NavHostFragment.findNavController(LoginFragment.this)
+                            .navigate(R.id.action_loginFragment_to_userEventsFragment);
+                }
             }
         });
     }

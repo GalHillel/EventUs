@@ -33,6 +33,11 @@ public class OrganizerMessagesFragment extends Fragment {
             Navigation.findNavController(v).navigate(R.id.action_organizerMessages_to_organizerEvents);
         });
 
+        view.findViewById(R.id.createEventFragment).setOnClickListener(v -> {
+            // Navigate to OrganizerProfileFragment
+            Navigation.findNavController(v).navigate(R.id.action_organizerMessages_to_createEventFragment);
+        });
+
         return view;
     }
 }

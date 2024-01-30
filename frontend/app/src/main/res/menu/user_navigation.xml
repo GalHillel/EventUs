@@ -1,19 +1,31 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <item
         android:id="@+id/discover"
         android:state_checked="true"
         android:title="Discover"
-        android:icon="@drawable/ic_compass" />
+        android:icon="@drawable/ic_compass"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/messages"
+        android:state_checked="true"
+        android:title="Messages"
+        android:icon="@drawable/ic_messages"
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/myevents"
         android:state_checked="true"
         android:title="My Events"
-        android:icon="@drawable/ic_schedule" />
+        android:icon="@drawable/ic_schedule"
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/profile"
         android:state_checked="true"
         android:title="Profile"
-        android:icon="@drawable/ic_profile" />
+        android:icon="@drawable/ic_profile"
+        app:showAsAction="always" />
 </menu>

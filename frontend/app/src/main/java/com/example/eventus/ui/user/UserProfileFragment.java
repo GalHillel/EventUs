@@ -47,6 +47,9 @@ public class UserProfileFragment extends Fragment {
 
         view.findViewById(R.id.myevents).setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_userProfileFragment_to_userEventsFragment));
 
+        view.findViewById(R.id.messages).setOnClickListener(v ->
+                Navigation.findNavController(v).navigate(R.id.action_userProfileFragment_to_userMessagesFragment));
+
         MaterialButton logoutButton = view.findViewById(R.id.logout);
 
         logoutButton.setOnClickListener(v -> {Navigation.findNavController(v).navigate(R.id.action_userProfileFragment_to_loginFragment);});

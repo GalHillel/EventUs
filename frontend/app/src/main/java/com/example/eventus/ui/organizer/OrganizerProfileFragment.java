@@ -53,6 +53,11 @@ public class OrganizerProfileFragment extends Fragment {
             Navigation.findNavController(v).navigate(R.id.action_organizerProfileFragment_to_organizerEvents);
         });
 
+        view.findViewById(R.id.createEventFragment).setOnClickListener(v -> {
+            // Navigate to OrganizerProfileFragment
+            Navigation.findNavController(v).navigate(R.id.action_organizerProfileFragment_to_createEventFragment);
+        });
+
         MaterialButton logoutButton = view.findViewById(R.id.logout);
         logoutButton.setOnClickListener(v -> {
             Navigation.findNavController(v).navigate(R.id.action_organizerProfileFragment_to_loginFragment);

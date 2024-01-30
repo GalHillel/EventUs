@@ -42,6 +42,9 @@ public class UserEventsFragment extends Fragment {
         view.findViewById(R.id.profile).setOnClickListener(v ->
                 Navigation.findNavController(v).navigate(R.id.action_userEventsFragment_to_profileFragment));
 
+        view.findViewById(R.id.messages).setOnClickListener(v ->
+                Navigation.findNavController(v).navigate(R.id.action_userEventsFragment_to_userMessagesFragment));
+
         // data for events
         populateDummyData();
 
@@ -54,7 +57,7 @@ public class UserEventsFragment extends Fragment {
 
     private void populateDummyData() {
         // Example: Adding EVENTS
-        eventsList.add(new EventModel("Lior & Eden Wedding", "2024-02-01", "Lago - Rishon Lezion"));
-        eventsList.add(new EventModel("Shar 25 Birthday", "2024-03-15", "58 - Petach Tikva"));
+        eventsList.add(new EventModel("Lior & Eden Wedding", "2024-02-01", "Lago - Rishon Lezion", "first time"));
+        eventsList.add(new EventModel("Shar 25 Birthday", "2024-03-15", "58 - Petach Tikva", "somthing"));
     }
 }

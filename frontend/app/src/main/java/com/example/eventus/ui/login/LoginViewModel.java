@@ -34,7 +34,7 @@ public class LoginViewModel extends ViewModel {
         return loggedInUser;
     }
 
-    public void login(String username, String password) {
+    public void login(String username, String password, boolean checked) {
         // can be launched in a separate asynchronous job
         Result<LoggedInUser> result = loginRepository.login(username, password);
 

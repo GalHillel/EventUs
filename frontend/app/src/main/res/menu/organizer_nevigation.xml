@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
+        android:id="@+id/newEvent"
+        android:state_checked="false"
+        android:title="New Event"
+        android:icon="@drawable/ic_create_event" />
+
+    <item
         android:id="@+id/messages"
         android:state_checked="false"
         android:title="Messages"
