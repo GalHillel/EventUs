@@ -8,7 +8,7 @@ public class User {
 
     public User(String name, String email, String password, String user_type) {
         this._id = "";
-        this.profile_pic = "0";
+        this.profile_pic = "";
         this.name = name;
         this.email = email;
         this.password = password;

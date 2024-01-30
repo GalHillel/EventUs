@@ -5,7 +5,7 @@ import { Id } from '../dto/id.dto';
 @Schema()
 export class User extends Document {    
     
-    @Prop()
+    @Prop({default: ""})
     profile_pic: Id;
     
     @Prop({ required: true })
