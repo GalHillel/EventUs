@@ -20,7 +20,7 @@ public class RegistrationViewModel extends ViewModel {
         return errorMessage;
     }
 
-    public void register(String email, String password, String passwordValidation, String username, String userType) {
+    public void register(String email, String password, String username, String userType) {
         // Validate input if needed (you can add validation logic here)
 
         // Call Database method for user registration

@@ -9,6 +9,8 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -48,10 +50,17 @@ public class RegistrationFragment extends Fragment {
             String username = usernameEditText.getText().toString();
             String userType = radioOrganizer.isChecked() ? "Organizer" : "Participant";
 
-            registrationViewModel.register(email, password, passwordValidation, username, userType);
+            if(passwordValidation.equals(password)){
+                registrationViewModel.register(email, password, username, userType);
+                NavHostFragment.findNavController(RegistrationFragment.this)
+                        .navigate(R.id.action_registrationFragment_to_loginFragment);
+            }else {
+                // Inform the user that passwords do not match
+                Toast.makeText(requireContext(), "Passwords do not match. Please try again.", Toast.LENGTH_SHORT).show();
+            }
 
-            NavHostFragment.findNavController(RegistrationFragment.this)
-                    .navigate(R.id.action_registrationFragment_to_loginFragment);
+
+
         });
 
         TextView loginLink = view.findViewById(R.id.loginLink);
