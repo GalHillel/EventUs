@@ -26,7 +26,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/username"
+        android:id="@+id/email"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -64,7 +64,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/username" />
+        app:layout_constraintTop_toBottomOf="@+id/email" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
@@ -88,15 +88,10 @@
             android:id="@+id/radioOrganizer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Organizer"
+            android:text="I Am An Organizer"
             android:textColor="#FFFFFF" />
 
-        <RadioButton
-            android:id="@+id/radioParticipant"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Participant"
-            android:textColor="#FFFFFF" />
+
 
     </RadioGroup>
 
