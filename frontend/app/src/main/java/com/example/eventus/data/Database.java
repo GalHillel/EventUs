@@ -18,7 +18,7 @@ import com.google.gson.Gson;
 public class Database {
     static Gson gson = new Gson();
 
-    private ServerResponse sendHttpRequest(String dir, HashMap<String, Object> payloadData, String method) throws Exception {
+    private static ServerResponse sendHttpRequest(String dir, HashMap<String, Object> payloadData, String method) throws Exception {
 
         String url = "http://10.0.2.2:3000/" + dir;
         // Prepare the JSON data
@@ -74,9 +74,9 @@ public class Database {
      * @param name      username
      * @param password  password
      * @param user_type creator/user
-     * @throws Exception
+     *
      */
-    public User addUser(String email, String name, String password, String user_type) {
+    public static User addUser(String email, String name, String password, String user_type) {
         HashMap<String, Object> payloadData = new HashMap<String, Object>();
         payloadData.put("name", name);
         payloadData.put("email", email);
@@ -88,33 +88,60 @@ public class Database {
                 return gson.fromJson(response.getPayload(), User.class);
             }
         } catch (Exception e) {
-            return null;
+
         }
-
         return null;
+    }
+    /**
+     * TODO Test and add error handling
+     * Checks if the user exists in the database and returns it if found
+     *
+     * @param email    user email
+     * @param password user password
+     * @param user_type type of user Organizer or Participant
+     * @return User entry in the database or null if not found
+     */
+    public static User userLogin(String email, String password, String user_type) {
+        HashMap<String, Object> payloadData = new HashMap<String, Object>();
+        payloadData.put("email", email);
+        payloadData.put("password", password);
+        payloadData.put("user_type", user_type);
+        try {
+            ServerResponse response = sendHttpRequest("users/login", payloadData, "GET");
+            if (response.getReturnCode() == 200) {
+                return gson.fromJson(response.getPayload(), User.class);
+            }
+        } catch (Exception e) {
 
+        }
+        return null;
     }
 
-    /**
-     * TODO add response and error handling
+    /** TODO Test and add error handling
      * creates a new event
-     *
      * @param creator_id  id of event creator
      * @param name        name of the event
      * @param date        date of the event
      * @param location    location of the event
      * @param description description of the event
-     * @throws Exception
      */
-    public void addEvent(String creator_id, String name, String date, String location, String description) throws Exception {
-        HashMap<String, Object> jsonData = new HashMap<String, Object>();
-        jsonData.put("name", name);
-        jsonData.put("creator_id", creator_id);
-        jsonData.put("date", date);
-        jsonData.put("location", location);
-        jsonData.put("description", description);
+    public static UserEvent addEvent(String creator_id, String name, String date, String location, String description) {
+        HashMap<String, Object> payloadData = new HashMap<String, Object>();
+        payloadData.put("name", name);
+        payloadData.put("creator_id", creator_id);
+        payloadData.put("date", date);
+        payloadData.put("location", location);
+        payloadData.put("description", description);
 
-        ServerResponse response = sendHttpRequest("events", jsonData, "POST");
+        try {
+            ServerResponse response = sendHttpRequest("events", payloadData, "POST");
+            if (response.getReturnCode() == 201) {
+                return gson.fromJson(response.getPayload(), UserEvent.class);
+            }
+        } catch (Exception e) {
+
+        }
+        return null;
     }
 
     /**
@@ -133,17 +160,5 @@ public class Database {
         lst.add(uEvent2);
         lst.add(uEvent3);
         return lst;
-    }
-
-    /**
-     * TODO implement
-     * Checks if the user exists in the database and returns it if found
-     *
-     * @param email    user email
-     * @param password user password
-     * @return User entry in the database or null if not found
-     */
-    public static User userLogin(String email, String password) {
-        return null;
     }
 }
