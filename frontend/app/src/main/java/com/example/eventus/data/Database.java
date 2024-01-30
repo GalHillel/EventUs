@@ -2,6 +2,7 @@ package com.example.eventus.data;
 
 import java.io.*;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.io.OutputStream;
@@ -13,6 +14,7 @@ import com.example.eventus.data.model.ServerResponse;
 import com.example.eventus.data.model.User;
 import com.example.eventus.data.model.UserEvent;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 
 public class Database {
@@ -145,20 +147,21 @@ public class Database {
     }
 
     /**
-     * TODO implement
+     * TODO Test and add error handling
      * Get user events for some user
-     *
-     * @param user
-     * @return list of events
+     * @param user the user we want to get the events from
+     * @return array of events or null if not found
      */
-    public static ArrayList<UserEvent> getEventList(User user) {
-        ArrayList<UserEvent> lst = new ArrayList<UserEvent>();
-        UserEvent uEvent1 = new UserEvent("event 1"),
-                uEvent2 = new UserEvent("event 2"),
-                uEvent3 = new UserEvent("event 3");
-        lst.add(uEvent1);
-        lst.add(uEvent2);
-        lst.add(uEvent3);
-        return lst;
+    public static UserEvent[] getEventList(User user) {
+        try {
+
+            ServerResponse response = sendHttpRequest("users/"+user.getId()+"/events",  new HashMap<String, Object>(), "GET");
+            if (response.getReturnCode() == 200) {
+                return gson.fromJson(response.getPayload(), UserEvent[].class);
+            }
+        } catch (Exception e) {
+
+        }
+        return null;
     }
 }

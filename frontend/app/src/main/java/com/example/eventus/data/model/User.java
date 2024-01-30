@@ -16,5 +16,8 @@ public class User {
         this.messages = new ArrayList<String>();
         this.events = new ArrayList<String>();
     }
+    public String getId(){
+        return this._id;
+    }
 
 }
