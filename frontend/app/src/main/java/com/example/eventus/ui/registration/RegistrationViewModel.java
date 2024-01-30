@@ -24,12 +24,12 @@ public class RegistrationViewModel extends ViewModel {
         // Validate input if needed (you can add validation logic here)
 
         // Call Database method for user registration
-        Database database = new Database();
+
 
         // Use a background thread or AsyncTask to perform network operations
         new Thread(() -> {
             try {
-                User user = database.addUser(email, username, password, userType);
+                User user = Database.addUser(email, username, password, userType);
 
                 // Use postValue to update LiveData on the main thread
                 registrationSuccess.postValue(user != null);
