@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, Param, ValidationPipe, UseInterceptors,ClassSerializerInterceptor, Query, Put, Patch, ParseUUIDPipe } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param, ValidationPipe, UseInterceptors,ClassSerializerInterceptor, Query, Put, Patch, ParseUUIDPipe, HttpException, HttpStatus } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto, LoginUserDto } from '../dto/user.dto';
 import { User } from './user.model';
@@ -22,7 +22,12 @@ export class UserController {
 
   @Post()
   async createUser(@Body() createUserDto: CreateUserDto): Promise<User> {
-    return this.userService.createUser(createUserDto);
+    try{
+      return await this.userService.createUser(createUserDto);
+    } catch(e){
+      throw e
+    }
+
   }
   
 
@@ -31,9 +36,21 @@ export class UserController {
     this.userService.printAllUsers();
     return this.userService.findAllUsers();
   }
+
+  /**
+   * 
+   * @param loginUserDto 
+   * @returns 
+   */
   @Get("login")
   async login(@Body() loginUserDto: LoginUserDto): Promise<User>{
-    return this.userService.loginUser(loginUserDto);
+    
+    try{
+      return await this.userService.loginUser(loginUserDto);
+    } catch(e){
+      throw e;
+    }
+    
   }
 
 

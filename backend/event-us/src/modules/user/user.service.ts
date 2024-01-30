@@ -15,17 +15,40 @@ import { CreateMessageDto } from '../dto/message.dto';
 export class UserService {
   constructor(
     @InjectModel(User.name) private readonly userModel: Model<User>,
-    ) {}
+  ) {}
 
+
+  /**
+   * Adds a new user to the database if there is no user that shares the same email and is of the same type
+   * @param createUserDto DTO containing registration information
+   * @returns user object from the database 
+   */
   async createUser(createUserDto: CreateUserDto): Promise<User> {
+    
+    if(await this.userModel.findOne({email:createUserDto.email, user_type:createUserDto.user_type}).exec() != null){
+      throw new HttpException(createUserDto.user_type+" with this email already exists!",HttpStatus.FORBIDDEN)
+    }
     console.log("creating user" + createUserDto);
     const createdUser = new this.userModel(createUserDto);
     return createdUser.save();
   }
 
+
+  /**
+   * Gets a user with matching email, password, and user_type from the database 
+   * @param loginUserDto DTO containing email, password and user_type
+   * @returns user object from the database or null if doesn't exist
+   */
   async loginUser(loginUserDto: LoginUserDto): Promise<User>{
-    return this.userModel.findOne(loginUserDto).exec();
+    return this.userModel.findOne(loginUserDto).exec().then((user)=>{
+      if(user == null){
+        throw new HttpException("Incorrect credentials!",HttpStatus.FORBIDDEN)
+      }
+      return user;
+    })
+    
   }
+
 
   async findAllUsers(): Promise<User[]> {
     return this.userModel.find().exec();
@@ -65,9 +88,7 @@ export class UserService {
   async getEventIds(_id: Id): Promise<Id[]> {
     return (await this.getUser(_id,'events')).events; 
   }
-  
   async getProfilePicId(_id: Id): Promise<Id> {
-    
     return (await this.getUser(_id,'profile_pic')).profile_pic;
   }
   async getMessageIds(_id: Id): Promise<Id[]> {

@@ -34,19 +34,19 @@ export class EventController {
   async getEventCreator_id(@Param("id") _id: Id): Promise<User>{
     return  this.eventService.getCreator_id(_id).then((creator) => this.userService.getUser(creator))
   }
-
+  
   /**
    * events/<event id>/joinEvent, Put request should contain a json in the form {_id:<user id>}
    * @param _id event id
    * @param userId user id
-   */
+   *//*
   @Patch(':id/joinEvent')
   async joinEvent(@Param('id') _id: Id, @Body('_id') userId: Id): Promise<void>{
     
     this.userService.addEvent(userId, _id);
     this.eventService.addUser(_id,userId);
-  }
-
+  }*/
+  
   @Delete(':id')
   async delEvent(@Param('id') _id:Id){
     const userIds = await this.eventService.getUserIds(_id)
