@@ -151,8 +151,7 @@ public class LoginFragment extends Fragment {
         TextView loginBtn = view.findViewById(R.id.login);
         loginBtn.setOnClickListener(v -> {
 //            loadingProgressBar.setVisibility(View.VISIBLE);
-
-
+            new Thread(() ->{
             if (passwordFromTheUser.getText().length() <= 5) {
                 // Show a message indicating incorrect password length
                 Toast.makeText(requireContext(), "The password length must be greater than 5", Toast.LENGTH_SHORT).show();
@@ -178,6 +177,7 @@ public class LoginFragment extends Fragment {
                 Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show();
                 passwordFromTheUser.setText("");
             }
+            }).start();
 
         });
 
