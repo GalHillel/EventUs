@@ -14,7 +14,6 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.os.Handler;
 
 
 import androidx.annotation.NonNull;
@@ -22,18 +21,20 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.eventus.R;
 import com.example.eventus.data.Database;
 import com.example.eventus.data.model.User;
 import com.example.eventus.databinding.FragmentLoginBinding;
+import com.example.eventus.ui.registration.RegistrationFragment;
 
 public class LoginFragment extends Fragment {
 
 //    private LoginViewModel loginViewModel;
     private FragmentLoginBinding binding;
-    private Handler handler;
 
 
     @Nullable
@@ -42,8 +43,12 @@ public class LoginFragment extends Fragment {
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
+
         binding = FragmentLoginBinding.inflate(inflater, container, false);
         return binding.getRoot();
+
+
+
     }
 
     @Override
@@ -54,10 +59,13 @@ public class LoginFragment extends Fragment {
 
         final EditText emailFromTheUser = binding.email;
         final EditText passwordFromTheUser = binding.password;
-        final Button loginButton = binding.login;
+//        final Button loginButton = binding.login;
         final ProgressBar loadingProgressBar = binding.loading;
         final CheckBox checkOrganizer = binding.checkOrganizer;
+
         final String userType = (checkOrganizer.isChecked())? "Organizer": "Participant";
+        final String emailToSendToLoginFunction = emailFromTheUser.getText().toString().trim();
+        final String passwordToSendToLoginFunction = emailFromTheUser.getText().toString().trim();
 
 //        loginViewModel.getLoginFormState().observe(getViewLifecycleOwner(), loginFormState -> {
 //            if (loginFormState == null) {
@@ -112,26 +120,39 @@ public class LoginFragment extends Fragment {
 //            return false;
 //        });
         // Add a TextWatcher to monitor changes in the password field
-        passwordFromTheUser.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int start, int before, int count) {
-            }
+//        passwordFromTheUser.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence charSequence, int start, int before, int count) {
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable editable) {
+//                // Enable or disable the login button based on password length
+//                loginButton.setEnabled(editable.length() > 5);
+//            }
+//        });
 
-            @Override
-            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
-            }
+//        TextView loginLink = view.findViewById(R.id.login);
+//        loginLink.setOnClickListener(view1 ->
+//                {
+//                    String userMail =emailFromTheUser.getText().toString().trim();
+//                    if(userMail.equals("yoni")) {
+//                        NavHostFragment.findNavController(LoginFragment.this)
+//                                .navigate(R.id.action_loginFragment_to_userEventsFragment);
+//                    }
+//
+//
+//                });
 
-            @Override
-            public void afterTextChanged(Editable editable) {
-                // Enable or disable the login button based on password length
-                loginButton.setEnabled(editable.length() > 5);
-            }
-        });
+        TextView loginBtn = view.findViewById(R.id.login);
+        loginBtn.setOnClickListener(v -> {
+//            loadingProgressBar.setVisibility(View.VISIBLE);
 
-        loginButton.setOnClickListener(v -> {
-            loadingProgressBar.setVisibility(View.VISIBLE);
 
-            // Check if password length is greater than 5
             if (passwordFromTheUser.getText().length() <= 5) {
                 // Show a message indicating incorrect password length
                 Toast.makeText(requireContext(), "The password length must be greater than 5", Toast.LENGTH_SHORT).show();
@@ -139,11 +160,12 @@ public class LoginFragment extends Fragment {
                 return; // Do not proceed with login
             }
 
+            User userToLogIn ;
+            try {
+                userToLogIn =Database.userLogin(emailToSendToLoginFunction,passwordToSendToLoginFunction,userType) ;
+                emailFromTheUser.setText("");
+                passwordFromTheUser.setText("");
 
-            User userToLogIn = Database.userLogin(emailFromTheUser.getText().toString(), passwordFromTheUser.getText().toString(),userType);
-            if (userToLogIn!=null) {
-                // If login is successful, remove the timeout callback
-                handler.removeCallbacksAndMessages(null);
                 if (checkOrganizer.isChecked()) {
                     NavHostFragment.findNavController(LoginFragment.this)
                             .navigate(R.id.action_loginFragment_to_organizerEvents);
@@ -151,14 +173,10 @@ public class LoginFragment extends Fragment {
                     NavHostFragment.findNavController(LoginFragment.this)
                             .navigate(R.id.action_loginFragment_to_userEventsFragment);
                 }
-            } else {
-                // If login is unsuccessful, show a message and clear the fields
-                loadingProgressBar.setVisibility(View.GONE);
-                Toast.makeText(requireContext(), "Incorrect username or password. Please try again.", Toast.LENGTH_SHORT).show();
-
-                // Clear the fields
-                emailFromTheUser.setText("");
-             passwordFromTheUser.setText("");
+            } catch (Exception e) {
+                String errorMessage = e.toString().trim();
+                Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show();
+                passwordFromTheUser.setText("");
             }
 
         });
@@ -191,4 +209,6 @@ public class LoginFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
+
+
 }
