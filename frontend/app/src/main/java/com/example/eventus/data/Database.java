@@ -101,22 +101,23 @@ public class Database {
      * @param email    user email
      * @param password user password
      * @param user_type type of user Organizer or Participant
-     * @return User entry in the database or null if not found
+     * @return User entry in the database
+     * @throws Exception response error
      */
-    public static User userLogin(String email, String password, String user_type) {
+    public static User userLogin(String email, String password, String user_type) throws Exception{
         HashMap<String, Object> payloadData = new HashMap<String, Object>();
         payloadData.put("email", email);
         payloadData.put("password", password);
         payloadData.put("user_type", user_type);
-        try {
-            ServerResponse response = sendHttpRequest("users/login", payloadData, "GET");
-            if (response.getReturnCode() == 200) {
-                return gson.fromJson(response.getPayload(), User.class);
-            }
-        } catch (Exception e) {
 
+        ServerResponse response = sendHttpRequest("users/login", payloadData, "GET");
+        if (response.getReturnCode() == 200) {
+            return gson.fromJson(response.getPayload(), User.class);
         }
-        return null;
+        else{
+            throw new Exception(response.getPayload());
+        }
+
     }
 
     /** TODO Test and add error handling
