@@ -90,6 +90,7 @@ export class UserController {
    */
   @Patch(':id/exitEvent')
   async exitEvent(@Param('id') _id: Id,  @Body('_id') eventId: Id): Promise<void>{
+    
     await this.eventService.removeUser(eventId,_id);
     await this.userService.removeEvent(_id,eventId);
 

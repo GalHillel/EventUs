@@ -4,6 +4,6 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class Id{
     
-    readonly Id: string
+    readonly _id: string
 }
 

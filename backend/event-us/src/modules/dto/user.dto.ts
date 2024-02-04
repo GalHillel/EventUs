@@ -12,8 +12,8 @@ export class UserDto{
   readonly messages: Id[];
   readonly events: Id[];
 }
-export class CreateUserDto extends PartialType(OmitType(UserDto,['_id','profile_pic','messages','events'])){}
-export class LoginUserDto extends PartialType(PickType(UserDto,['email','password','user_type'])){}
-export class editUserDto extends PartialType(PickType(UserDto,['name','email','password','profile_pic'])){}
+export class CreateUserDto extends OmitType(UserDto,['_id','profile_pic','messages','events']){}
+export class LoginUserDto extends PickType(UserDto,['email','password','user_type']){}
+export class editUserDto extends PickType(UserDto,['name','email','password','profile_pic']){}
 
   
