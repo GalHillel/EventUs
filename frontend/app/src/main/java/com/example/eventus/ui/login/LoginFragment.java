@@ -185,6 +185,7 @@ public class LoginFragment extends Fragment {
                     passwordFromTheUser.setText("");
                 }
                 //handle other exceptions
+                return;
             }
 
         });
