@@ -94,7 +94,7 @@ public class CreateEventFragment extends Fragment {
 
         try {
             // Call the Database method to add the event
-            UserEvent userEvent = Database.addEvent("creator_id_placeholder", eventName, eventDate, eventLocation, eventDescription);
+            UserEvent userEvent = Database.addEvent("65b91bfb1800bf3124779178", eventName, eventDate, eventLocation, eventDescription);
 
             // Convert UserEvent to UserEventDisplay for display purposes
             UserEventDisplay userEventDisplay = new UserEventDisplay(

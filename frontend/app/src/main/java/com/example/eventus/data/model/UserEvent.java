@@ -28,4 +28,18 @@ public class UserEvent {
     public UserEvent(String name){
         this.name = name;
     }
+
+
+    public String getId() { return this._id; }
+    public String getName() {
+        return this.name;
+    }
+
+    public Date getDate() {
+        return this.date;
+    }
+
+    public String getLocation() {
+        return this.location;
+    }
 }
