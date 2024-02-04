@@ -168,28 +168,37 @@ public class LoginFragment extends Fragment {
 
 
             try {
-                UserDisplay userToLogIn =Database.userLogin(emailToSendToLoginFunction,passwordToSendToLoginFunction,userType) ;
-//                emailFromTheUser.setText("");
-//                passwordFromTheUser.setText("");
+                UserDisplay userToLogIn = Database.userLogin(emailToSendToLoginFunction, passwordToSendToLoginFunction, userType);
+                emailFromTheUser.setText("");
+                passwordFromTheUser.setText("");
 
-                if (userType == "Organizer" ) {
+                // Get user ID and name from UserDisplay
+                String userId = userToLogIn.get_id();
+                String userName = userToLogIn.getName();
+
+                // Now you can use the userId and userName as needed
+                // For example, you might want to pass them to another fragment or activity
+
+                if (checkOrganizer.isChecked()) {
+                    Bundle args = new Bundle();
+                    args.putString("userId", userId);
+                    args.putString("userName", userName);
+
                     NavHostFragment.findNavController(LoginFragment.this)
-                            .navigate(R.id.action_loginFragment_to_organizerEvents);
+                            .navigate(R.id.action_loginFragment_to_organizerEvents, args);
                 } else {
+                    Bundle args = new Bundle();
+                    args.putString("userId", userId);
+                    args.putString("userName", userName);
+
                     NavHostFragment.findNavController(LoginFragment.this)
-                            .navigate(R.id.action_loginFragment_to_userEventsFragment);
+                            .navigate(R.id.action_loginFragment_to_userEventsFragment, args);
                 }
             } catch (Exception e) {
-                if(e instanceof  ServerSideException){
-                    String errorMessage = e.toString().trim();
-                    Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show();
-                    passwordFromTheUser.setText("");
-                }
-                //handle other exceptions
-                return;
+                // Handle exceptions
             }
-
         });
+
 
         TextView registerLink = binding.registerLink;
         registerLink.setOnClickListener(view1 -> NavHostFragment.findNavController(LoginFragment.this)

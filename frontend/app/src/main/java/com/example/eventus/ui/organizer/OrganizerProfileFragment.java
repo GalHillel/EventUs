@@ -7,10 +7,12 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
+
 import com.example.eventus.R;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
@@ -26,6 +28,9 @@ public class OrganizerProfileFragment extends Fragment {
     private MaterialButton saveContactButton;
     private MaterialButton savePasswordButton;
 
+    private String userId;
+    private String userName;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_organizer_profile, container, false);
@@ -33,6 +38,11 @@ public class OrganizerProfileFragment extends Fragment {
 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        if (getArguments() != null) {
+            userId = getArguments().getString("userId", "");
+            userName = getArguments().getString("userName", "");
+        }
 
         usernameEditText = view.findViewById(R.id.Username);
         emailEditText = view.findViewById(R.id.email);
@@ -43,52 +53,36 @@ public class OrganizerProfileFragment extends Fragment {
         savePasswordButton = view.findViewById(R.id.savePassword);
 
         // Set up click listeners for buttons in user_navigation
-        view.findViewById(R.id.messages).setOnClickListener(v -> {
-            // Navigate to OrganizerMessagesFragment
-            Navigation.findNavController(v).navigate(R.id.action_organizerProfileFragment_to_organizerMessages);
-        });
+        view.findViewById(R.id.messages).setOnClickListener(v ->
+                Navigation.findNavController(v).navigate(R.id.action_organizerProfileFragment_to_organizerMessages, createNavigationBundle()));
 
-        view.findViewById(R.id.myevents).setOnClickListener(v -> {
-            // Navigate to OrganizerEventsFragment
-            Navigation.findNavController(v).navigate(R.id.action_organizerProfileFragment_to_organizerEvents);
-        });
+        view.findViewById(R.id.myevents).setOnClickListener(v ->
+                Navigation.findNavController(v).navigate(R.id.action_organizerProfileFragment_to_organizerEvents, createNavigationBundle()));
 
-        view.findViewById(R.id.newEvent).setOnClickListener(v -> {
-            // Navigate to OrganizerProfileFragment
-            Navigation.findNavController(v).navigate(R.id.action_organizerProfileFragment_to_createEventFragment);
-        });
+        view.findViewById(R.id.newEvent).setOnClickListener(v ->
+                Navigation.findNavController(v).navigate(R.id.action_organizerProfileFragment_to_createEventFragment, createNavigationBundle()));
 
         MaterialButton logoutButton = view.findViewById(R.id.logout);
-        logoutButton.setOnClickListener(v -> {
-            Navigation.findNavController(v).navigate(R.id.action_organizerProfileFragment_to_loginFragment);
-        });
+        logoutButton.setOnClickListener(v ->
+                Navigation.findNavController(v).navigate(R.id.action_organizerProfileFragment_to_loginFragment));
 
         // Set up text change listeners
         setUpTextListeners();
 
         // Set up click listeners for buttons
-        saveNameButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Handle Save Name button click
-                // Implement logic to save name
-            }
+        saveNameButton.setOnClickListener(v -> {
+            // Handle Save Name button click
+            // Implement logic to save name
         });
 
-        saveContactButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Handle Save Contact button click
-                // Implement logic to save contacts
-            }
+        saveContactButton.setOnClickListener(v -> {
+            // Handle Save Contact button click
+            // Implement logic to save contacts
         });
 
-        savePasswordButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Handle Save Password button click
-                // Implement logic to save password
-            }
+        savePasswordButton.setOnClickListener(v -> {
+            // Handle Save Password button click
+            // Implement logic to save password
         });
     }
 
@@ -127,5 +121,12 @@ public class OrganizerProfileFragment extends Fragment {
         boolean isPasswordNotEmpty = !TextUtils.isEmpty(oldPasswordEditText.getText())
                 && !TextUtils.isEmpty(newPasswordEditText.getText());
         savePasswordButton.setEnabled(isPasswordNotEmpty);
+    }
+
+    private Bundle createNavigationBundle() {
+        Bundle bundle = new Bundle();
+        bundle.putString("userId", userId);
+        bundle.putString("userName", userName);
+        return bundle;
     }
 }

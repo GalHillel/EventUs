@@ -1,6 +1,5 @@
 package com.example.eventus.ui.user;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +13,7 @@ import androidx.navigation.Navigation;
 import com.example.eventus.R;
 
 public class UserMessagesFragment extends Fragment {
+
     public UserMessagesFragment() {
         // Required empty public constructor
     }
@@ -28,12 +28,20 @@ public class UserMessagesFragment extends Fragment {
 
         // Set up click listeners for buttons
         view.findViewById(R.id.discover).setOnClickListener(v ->
-                Navigation.findNavController(v).navigate(R.id.action_userMessagesFragment_to_userDiscoverFragment));
+                Navigation.findNavController(v).navigate(R.id.action_userMessagesFragment_to_userDiscoverFragment, createNavigationBundle()));
 
         view.findViewById(R.id.profile).setOnClickListener(v ->
-                Navigation.findNavController(v).navigate(R.id.action_userMessagesFragment_to_userProfileFragment));
+                Navigation.findNavController(v).navigate(R.id.action_userMessagesFragment_to_userProfileFragment, createNavigationBundle()));
 
         view.findViewById(R.id.myevents).setOnClickListener(v ->
-                Navigation.findNavController(v).navigate(R.id.action_userMessagesFragment_to_userEventsFragment));
+                Navigation.findNavController(v).navigate(R.id.action_userMessagesFragment_to_userEventsFragment, createNavigationBundle()));
+    }
+
+    // Method to create a common bundle for navigation
+    private Bundle createNavigationBundle() {
+        Bundle bundle = new Bundle();
+        bundle.putString("userId", getArguments().getString("userId", ""));
+        bundle.putString("userName", getArguments().getString("userName", ""));
+        return bundle;
     }
 }
