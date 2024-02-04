@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.eventus.R;
 import com.example.eventus.ui.events.EventAdapter;
-import com.example.eventus.ui.events.EventModel;
+import com.example.eventus.ui.events.UserEventDisplay;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +22,7 @@ import java.util.List;
 public class OrganizerEventsFragment extends Fragment {
 
     private RecyclerView upcomingEventsRecyclerView;
-    private List<EventModel> upcomingEventsList = new ArrayList<>();
+    private List<UserEventDisplay> upcomingEventsList = new ArrayList<>();
 
     public OrganizerEventsFragment() {
         // Required empty public constructor
@@ -70,7 +70,7 @@ public class OrganizerEventsFragment extends Fragment {
     // TODO: Replace this with actual data retrieval logic
     private void populateEventData() {
         // Example: Adding dummy data
-        upcomingEventsList.add(new EventModel("Event 1", "2024-02-01", "Location 1", "description"));
-        upcomingEventsList.add(new EventModel("Event 2", "2024-03-15", "Location 2", "description"));
+        upcomingEventsList.add(new UserEventDisplay("Event 1", "2024-02-01", "Location 1", "description"));
+        upcomingEventsList.add(new UserEventDisplay("Event 2", "2024-03-15", "Location 2", "description"));
     }
 }

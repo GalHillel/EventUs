@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.eventus.R;
 import com.example.eventus.ui.events.EventAdapter;
-import com.example.eventus.ui.events.EventModel;
+import com.example.eventus.ui.events.UserEventDisplay;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +22,7 @@ import java.util.List;
 public class UserEventsFragment extends Fragment {
 
     private RecyclerView eventsRecyclerView;
-    private List<EventModel> eventsList = new ArrayList<>();
+    private List<UserEventDisplay> eventsList = new ArrayList<>();
 
     public UserEventsFragment() {}
 
@@ -57,7 +57,7 @@ public class UserEventsFragment extends Fragment {
 
     private void populateDummyData() {
         // Example: Adding EVENTS
-        eventsList.add(new EventModel("Lior & Eden Wedding", "2024-02-01", "Lago - Rishon Lezion", "first time"));
-        eventsList.add(new EventModel("Shar 25 Birthday", "2024-03-15", "58 - Petach Tikva", "somthing"));
+        eventsList.add(new UserEventDisplay("Lior & Eden Wedding", "2024-02-01", "Lago - Rishon Lezion", "first time"));
+        eventsList.add(new UserEventDisplay("Shar 25 Birthday", "2024-03-15", "58 - Petach Tikva", "somthing"));
     }
 }

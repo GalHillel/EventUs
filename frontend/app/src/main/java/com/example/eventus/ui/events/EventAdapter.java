@@ -14,9 +14,9 @@ import java.util.List;
 
 public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHolder> {
 
-    private List<EventModel> eventList;
+    private List<UserEventDisplay> eventList;
 
-    public EventAdapter(List<EventModel> eventList) {
+    public EventAdapter(List<UserEventDisplay> eventList) {
         this.eventList = eventList;
     }
 
@@ -30,7 +30,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
 
     @Override
     public void onBindViewHolder(@NonNull EventViewHolder holder, int position) {
-        EventModel event = eventList.get(position);
+        UserEventDisplay event = eventList.get(position);
 
         holder.eventNameTextView.setText(event.getEventName());
         holder.eventDateTextView.setText(event.getEventDate());

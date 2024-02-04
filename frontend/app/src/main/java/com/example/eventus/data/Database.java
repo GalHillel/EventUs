@@ -17,53 +17,7 @@ import com.google.gson.Gson;
 public class Database {
     static Gson gson = new Gson();
 
-    private static ServerResponse sendHttpRequest(String dir, HashMap<String, Object> payloadData, String method) throws Exception {
 
-        String url = "http://10.0.2.2:3000/" + dir;
-        // Prepare the JSON data
-        String payloadStr = gson.toJson(payloadData);
-
-        // Create a URL object
-        URL urlObject = new URL(url);
-
-        // Open a connection to the URL
-        HttpURLConnection connection = (HttpURLConnection) urlObject.openConnection();
-
-        // Set the request method to POST
-        connection.setRequestMethod(method);
-
-        // Enable input/output streams
-        connection.setDoOutput(true);
-
-        // Set the content type to JSON
-        connection.setRequestProperty("Content-Type", "application/json");
-
-        // Get the output stream of the connection
-        try (OutputStream os = connection.getOutputStream()) {
-            // Write the JSON data to the output stream
-            byte[] input = payloadStr.getBytes(StandardCharsets.UTF_8);
-            os.write(input, 0, input.length);
-        }
-
-        // Get the response code
-        int responseCode = connection.getResponseCode();
-        String responseStr;
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
-            StringBuilder responseBuilder = new StringBuilder();
-            String line;
-            while ((line = reader.readLine()) != null) {
-                responseBuilder.append(line);
-            }
-
-            // Print the response from the server
-            responseStr = responseBuilder.toString();
-        }
-
-        // Close the connection
-        connection.disconnect();
-
-        return new ServerResponse(responseCode, responseStr);
-    }
 
     /**
      * TODO error handling
@@ -81,9 +35,11 @@ public class Database {
         payloadData.put("email", email);
         payloadData.put("password", password);
         payloadData.put("user_type", user_type);
-
-        ServerResponse response = sendHttpRequest("users", payloadData, "POST");
-        if (response.getReturnCode() == 201) {
+        AsyncHttpRequest task = new AsyncHttpRequest("users", payloadData, "POST");
+        task.execute();
+        task.get();
+        ServerResponse response = task.getServerResponse();
+        if (response.getReturnCode() == HttpURLConnection.HTTP_CREATED) {
             return gson.fromJson(response.getPayload(), User.class);
         }
         else{
@@ -112,9 +68,7 @@ public class Database {
         task.execute();
         task.get();
         ServerResponse response = task.getServerResponse();
-
-        //ServerResponse response = sendHttpRequest("users/login", payloadData, "GET");
-        if (response.getReturnCode() == 200) {
+        if (response.getReturnCode() == HttpURLConnection.HTTP_OK) {
             return gson.fromJson(response.getPayload(), User.class);
         }
         else{
@@ -139,16 +93,17 @@ public class Database {
         payloadData.put("location", location);
         payloadData.put("description", description);
 
+        AsyncHttpRequest task = new AsyncHttpRequest("events", payloadData, "POST");
+        task.execute();
+        task.get();
+        ServerResponse response = task.getServerResponse();
 
-        ServerResponse response = sendHttpRequest("events", payloadData, "POST");
-        if (response.getReturnCode() == 201) {
+        if (response.getReturnCode() == HttpURLConnection.HTTP_CREATED) {
             return gson.fromJson(response.getPayload(), UserEvent.class);
         }
         else{
-            throw new Exception(response.getPayload());
+            throw new ServerSideException(response.getPayload());
         }
-
-
     }
 
     /**
@@ -157,16 +112,31 @@ public class Database {
      * @param user the user we want to get the events from
      * @return array of events or null if not found
      */
-    public static UserEvent[] getEventList(User user) {
-        try {
-
-            ServerResponse response = sendHttpRequest("users/"+user.getId()+"/events",  new HashMap<String, Object>(), "GET");
-            if (response.getReturnCode() == 200) {
-                return gson.fromJson(response.getPayload(), UserEvent[].class);
-            }
-        } catch (Exception e) {
-
+    public static UserEvent[] getEventList(User user) throws Exception{
+        AsyncHttpRequest task = new AsyncHttpRequest("users/"+user.getId()+"/events",  new HashMap<String, Object>(), "GET");
+        task.execute();
+        task.get();
+        ServerResponse response = task.getServerResponse();
+        if (response.getReturnCode() == HttpURLConnection.HTTP_OK) {
+            return gson.fromJson(response.getPayload(), UserEvent[].class);
         }
-        return null;
+        else{
+            throw new ServerSideException(response.getPayload());
+        }
     }
+
+
+    public static void joinEvent(User user, String event_id) throws Exception{
+        HashMap<String, Object> payloadData = new HashMap<String, Object>();
+        payloadData.put("_id", user.getId());
+        AsyncHttpRequest task = new AsyncHttpRequest("events/"+event_id+"/joinEvent",  payloadData, "PATCH");
+        task.execute();
+        task.get();
+        ServerResponse response = task.getServerResponse();
+        if (response.getReturnCode() != HttpURLConnection.HTTP_NO_CONTENT) {
+            throw new ServerSideException(response.getPayload());
+        }
+
+    }
+
 }

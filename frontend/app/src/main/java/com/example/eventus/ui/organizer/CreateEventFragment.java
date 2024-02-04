@@ -15,7 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import com.example.eventus.R;
-import com.example.eventus.ui.events.EventModel;
+import com.example.eventus.ui.events.UserEventDisplay;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -87,7 +87,7 @@ public class CreateEventFragment extends Fragment {
         String eventDescription = eventDescriptionEditText.getText().toString();
 
         // Create an EventModel object with the entered data
-        EventModel newEvent = new EventModel(eventName, eventDate, eventLocation, eventDescription);
+        UserEventDisplay newEvent = new UserEventDisplay(eventName, eventDate, eventLocation, eventDescription);
 
         // TODO: Add logic to save the new event to the database or perform any other necessary actions
     }
