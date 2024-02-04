@@ -19,6 +19,7 @@
         <action
             android:id="@+id/action_loginFragment_to_organizerEvents"
             app:destination="@id/organizerEvents" />
+
     </fragment>
 
     <fragment

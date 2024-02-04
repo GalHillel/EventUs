@@ -71,11 +71,10 @@ public class CreateEventFragment extends Fragment {
         // Initialize Calendar
         calendar = Calendar.getInstance();
 
-        createEventButton.setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.pickDateButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Handle the event creation logic here
-                createEvent();
+                showDatePickerDialog(v);
             }
         });
     }

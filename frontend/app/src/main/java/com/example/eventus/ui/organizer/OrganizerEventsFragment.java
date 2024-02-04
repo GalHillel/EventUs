@@ -22,8 +22,6 @@ import java.util.List;
 public class OrganizerEventsFragment extends Fragment {
 
     private RecyclerView upcomingEventsRecyclerView;
-
-    // Replace with your actual data model for events
     private List<EventModel> upcomingEventsList = new ArrayList<>();
 
     public OrganizerEventsFragment() {
@@ -34,7 +32,12 @@ public class OrganizerEventsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_organizer_event, container, false);
+        return inflater.inflate(R.layout.fragment_organizer_event, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         // Set up click listeners for buttons
         view.findViewById(R.id.messages).setOnClickListener(v -> {
@@ -47,26 +50,25 @@ public class OrganizerEventsFragment extends Fragment {
             Navigation.findNavController(v).navigate(R.id.action_organizerEvents_to_organizerProfileFragment);
         });
 
-        view.findViewById(R.id.createEventFragment).setOnClickListener(v -> {
-            // Navigate to OrganizerProfileFragment
+        view.findViewById(R.id.newEvent).setOnClickListener(v -> {
+            // Navigate to CreateEventFragment
             Navigation.findNavController(v).navigate(R.id.action_organizerEvents_to_createEventFragment);
         });
 
+
         upcomingEventsRecyclerView = view.findViewById(R.id.eventsList);
 
-        // Replace with your logic to populate upcomingEventsList and pastEventsList
-        populateDummyData();
+        // Populate upcomingEventsList with actual data retrieval logic
+        populateEventData();
 
         // Set up RecyclerView for Upcoming Events
         EventAdapter upcomingEventsAdapter = new EventAdapter(upcomingEventsList);
         upcomingEventsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         upcomingEventsRecyclerView.setAdapter(upcomingEventsAdapter);
-
-        return view;
     }
 
-    // TODO:Replace this with actual data retrieval logic
-    private void populateDummyData() {
+    // TODO: Replace this with actual data retrieval logic
+    private void populateEventData() {
         // Example: Adding dummy data
         upcomingEventsList.add(new EventModel("Event 1", "2024-02-01", "Location 1", "description"));
         upcomingEventsList.add(new EventModel("Event 2", "2024-03-15", "Location 2", "description"));
