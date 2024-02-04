@@ -9,13 +9,13 @@ def addUserTest():
     print("-----------------Add user test-----------------")
     data_user1 = {
         "name": "ziv",
-        "email": "ziv.morgan3@gmail.com",
+        "email": "ziv.morgan@gmail.com",
         "password": "newPass",
         "user_type": "Organizer"
     }
     data_user2 = {
-        "name": "user2",
-        "email": "user2@gmail.com",
+        "name": "user1",
+        "email": "user1@gmail.com",
         "password": "userPass",
         "user_type": "Participant"
     }

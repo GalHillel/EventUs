@@ -72,7 +72,7 @@ public class AsyncHttpRequest extends AsyncTask<Void, Void, ServerResponse> {
         if(this.method.equals("GET")){
             url = url + "?" + getQueryString(this.payloadData);
         }
-        else if (this.method.equals("POST")) {
+        else if (this.method.equals("POST") || this.method.equals("PATCH")) {
             payloadStr = gson.toJson(this.payloadData);
         }
 
@@ -85,7 +85,7 @@ public class AsyncHttpRequest extends AsyncTask<Void, Void, ServerResponse> {
         // Set the request method
         connection.setRequestMethod(this.method);
 
-        if (this.method.equals("POST")) {
+        if (this.method.equals("POST") || this.method.equals("PATCH")) {
             // Enable input/output streams
             connection.setDoOutput(true);
             // Set the content type to JSON
@@ -101,17 +101,20 @@ public class AsyncHttpRequest extends AsyncTask<Void, Void, ServerResponse> {
 
         // Get the response code
         int responseCode = connection.getResponseCode();
-        String responseStr;
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
-            StringBuilder responseBuilder = new StringBuilder();
-            String line;
-            while ((line = reader.readLine()) != null) {
-                responseBuilder.append(line);
-            }
+        String responseStr = "";
+        if(responseCode != HttpURLConnection.HTTP_NO_CONTENT){
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+                StringBuilder responseBuilder = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    responseBuilder.append(line);
+                }
 
-            // Print the response from the server
-            responseStr = responseBuilder.toString();
+                // Print the response from the server
+                responseStr = responseBuilder.toString();
+            }
         }
+
 
         // Close the connection
         connection.disconnect();
