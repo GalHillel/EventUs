@@ -34,7 +34,7 @@ export class EventController {
   @Get("search")
   @UsePipes(new ValidationPipe({ transform: true }))
   async searchEvent(@Query() searchTerms: searchEventDto): Promise<UserEvent[]>{
-    
+    console.log(searchTerms)
     return this.eventService.search(searchTerms);
   }
   
