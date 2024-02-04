@@ -30,20 +30,7 @@ public class MinimumDataToShow  extends Fragment {
         return view;
     }
 
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        Button showMoreDetailsButton = view.findViewById(R.id.showMoreDetails);
-        showMoreDetailsButton.setOnClickListener(v -> {
-            // Navigate to UserEventDetailsShow fragment passing event details
-            Navigation.findNavController(v).navigate(
-                    R.id.action_organizerEvents_to_userEventDetailsShow,
-                    createEventDetailsBundle());
-        });
-
-
-    }
-
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {}
     private Bundle createEventDetailsBundle() {
         Bundle bundle = new Bundle();
         // Add event details to the bundle
