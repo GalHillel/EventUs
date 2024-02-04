@@ -33,7 +33,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
         UserEventDisplay event = eventList.get(position);
 
         holder.eventNameTextView.setText(event.getEventName());
-        holder.eventDateTextView.setText(event.getEventDate());
+        holder.eventDateTextView.setText(event.getEventDate().toString());
         holder.eventLocationTextView.setText(event.getEventLocation());
     }
 

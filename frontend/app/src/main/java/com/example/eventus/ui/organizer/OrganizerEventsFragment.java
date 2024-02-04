@@ -69,8 +69,6 @@ public class OrganizerEventsFragment extends Fragment {
 
     // TODO: Replace this with actual data retrieval logic
     private void populateEventData() {
-        // Example: Adding dummy data
-        upcomingEventsList.add(new UserEventDisplay("Event 1", "2024-02-01", "Location 1", "description"));
-        upcomingEventsList.add(new UserEventDisplay("Event 2", "2024-03-15", "Location 2", "description"));
+
     }
 }

@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,6 +16,8 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import com.example.eventus.R;
+import com.example.eventus.data.Database;
+import com.example.eventus.data.model.UserEvent;
 import com.example.eventus.ui.events.UserEventDisplay;
 
 import java.text.SimpleDateFormat;
@@ -77,6 +80,9 @@ public class CreateEventFragment extends Fragment {
                 showDatePickerDialog(v);
             }
         });
+
+        // Set up click listener for the create event button
+        createEventButton.setOnClickListener(v -> createEvent());
     }
 
     private void createEvent() {
@@ -86,10 +92,37 @@ public class CreateEventFragment extends Fragment {
         String eventLocation = eventLocationEditText.getText().toString();
         String eventDescription = eventDescriptionEditText.getText().toString();
 
-        // Create an EventModel object with the entered data
-        UserEventDisplay newEvent = new UserEventDisplay(eventName, eventDate, eventLocation, eventDescription);
+        try {
+            // Call the Database method to add the event
+            UserEvent userEvent = Database.addEvent("creator_id_placeholder", eventName, eventDate, eventLocation, eventDescription);
 
-        // TODO: Add logic to save the new event to the database or perform any other necessary actions
+            // Convert UserEvent to UserEventDisplay for display purposes
+            UserEventDisplay userEventDisplay = new UserEventDisplay(
+                    userEvent.getId(),
+                    userEvent.getName(),
+                    userEvent.getDate(),
+                    userEvent.getLocation()
+            );
+
+            // Display information about the created event using UserEventDisplay
+            displayEventDetails(userEventDisplay);
+
+        } catch (Exception e) {
+            // Handle the exception, e.g., show an error message
+            Toast.makeText(requireContext(), "Error creating event: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void displayEventDetails(UserEventDisplay userEventDisplay) {
+        // Example: Displaying event details in a Toast message
+        String message = "Event created:\n" +
+                "Name: " + userEventDisplay.getEventName() + "\n" +
+                "Date: " + userEventDisplay.getEventDate() + "\n" +
+                "Location: " + userEventDisplay.getEventLocation();
+
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
+
+        // You can also perform other actions, such as updating UI elements or navigating to another fragment
     }
 
     public void showDatePickerDialog(View view) {

@@ -57,7 +57,5 @@ public class UserEventsFragment extends Fragment {
 
     private void populateDummyData() {
         // Example: Adding EVENTS
-        eventsList.add(new UserEventDisplay("Lior & Eden Wedding", "2024-02-01", "Lago - Rishon Lezion", "first time"));
-        eventsList.add(new UserEventDisplay("Shar 25 Birthday", "2024-03-15", "58 - Petach Tikva", "somthing"));
     }
 }
