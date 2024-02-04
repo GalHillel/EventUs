@@ -27,4 +27,6 @@ export class UserEvent extends Document {
     attendents: Id[];
 }
 
+export const userEventDisplayFields = "_id name date location"
+
 export const UserEventSchema = SchemaFactory.createForClass(UserEvent);

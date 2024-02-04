@@ -3,7 +3,7 @@ import { EventService } from './event.service';
 import { CreateEventDto } from '../dto/event.dto';
 import { UserEvent } from './event.model';
 import {Id} from '../dto/id.dto'
-import { User } from '../user/user.model';
+import { User, userDisplayFields } from '../user/user.model';
 import { UserService } from '../user/user.service';
 import { Schema as mongooseSchema } from "mongoose";
 
@@ -32,17 +32,23 @@ export class EventController {
     return this.eventService.getUserEvent(_id);
   }
   
+  /**
+   * events/<event id>/users, returns a list of users
+   * @param _id event id
+   * @returns list of users with only display user fields
+   */
   @Get(":id/users")
   async getEventUsers(@Param("id") _id: Id): Promise<User[]>{
-    return  this.eventService.getUserIds(_id).then((ids) => this.userService.getUsers(ids))
+    return  this.eventService.getUserIds(_id).then((ids) => this.userService.getUsers(ids,userDisplayFields))
   }
+
   @Get(":id/creator")
   async getEventCreator_id(@Param("id") _id: Id): Promise<User>{
     return  this.eventService.getCreator_id(_id).then((creator) => this.userService.getUser(creator))
   }
   
   /**
-   * events/<event id>/joinEvent, Put request should contain a json in the form {_id:<user id>}
+   * events/<event id>/joinEvent, patch request should contain a json in the form {_id:<user id>}
    * @param _id event id
    * @param userId user id
    */

@@ -2,7 +2,7 @@ import { Controller, Post, Body, Get, Param, ValidationPipe, UseInterceptors,Cla
 import { UserService } from './user.service';
 import { CreateUserDto, LoginUserDto } from '../dto/user.dto';
 import { User } from './user.model';
-import { UserEvent } from '../event/event.model';
+import { UserEvent, userEventDisplayFields } from '../event/event.model';
 import { Id } from '../dto/id.dto'
 import { Message } from '../message/message.model';
 import { EventService } from '../event/event.service';
@@ -60,7 +60,7 @@ export class UserController {
   
   @Get(':id/events')
   async getUserEvents(@Param('id') _id: Id): Promise<UserEvent[]>{
-    return this.userService.getEventIds(_id).then((ids) => this.eventService.getUserEvents(ids,"_id name date location"));
+    return this.userService.getEventIds(_id).then((ids) => this.eventService.getUserEvents(ids,userEventDisplayFields));
   }
   @Get(':id/profilepic')
   async getUserProfilePicIcon(@Param('id') _id: Id): Promise<Buffer>{

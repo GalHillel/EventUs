@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { User } from './user.model';
+import { User, userDisplayFields } from './user.model';
 import { UserEvent } from '../event/event.model';
 import { ProfilePic } from '../profilePic/profilePic.model';
 
@@ -37,13 +37,13 @@ export class UserService {
   /**
    * Gets a user with matching email, password, and user_type from the database 
    * @param loginUserDto DTO containing email, password and user_type
-   * @returns user object from the database or null if doesn't exist
+   * @returns user object from the database with only the user display fields or null if doesn't exist
    */
   async loginUser(loginUserDto: LoginUserDto): Promise<User>{
     if(Object.keys(loginUserDto).length === 0){
       throw new HttpException("Empty!",HttpStatus.NOT_ACCEPTABLE)
     }
-    return this.userModel.findOne(loginUserDto,"_id name").exec().then((user)=>{
+    return this.userModel.findOne(loginUserDto,userDisplayFields).exec().then((user)=>{
       if(user == null){
         throw new HttpException("Incorrect credentials!",HttpStatus.FORBIDDEN)
       }
@@ -69,10 +69,11 @@ export class UserService {
   /**
    * Get all users by ids
    * @param _ids List of _id field of desired users
+   * @param fields get only selected fields from each user
    * @returns List of desired users
    */
-  async getUsers(_ids:Id[]): Promise<User[]>{
-    return await this.userModel.find({ _id: { $in: _ids } }).exec();
+  async getUsers(_ids:Id[],fields?:string): Promise<User[]>{
+    return await this.userModel.find({ _id: { $in: _ids } },fields).exec();
   }
   /**
    * Get user by user Id
