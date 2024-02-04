@@ -1,4 +1,5 @@
 package com.example.eventus.ui.user;
+
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -6,6 +7,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -43,44 +45,36 @@ public class UserProfileFragment extends Fragment {
         savePasswordButton = view.findViewById(R.id.savePassword);
 
         // Set up click listeners for buttons in user_navigation
-        view.findViewById(R.id.discover).setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_userProfileFragment_to_userDiscoverFragment));
+        view.findViewById(R.id.discover).setOnClickListener(v ->
+                Navigation.findNavController(v).navigate(R.id.action_userProfileFragment_to_userDiscoverFragment, createNavigationBundle()));
 
-        view.findViewById(R.id.myevents).setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_userProfileFragment_to_userEventsFragment));
+        view.findViewById(R.id.myevents).setOnClickListener(v ->
+                Navigation.findNavController(v).navigate(R.id.action_userProfileFragment_to_userEventsFragment, createNavigationBundle()));
 
         view.findViewById(R.id.messages).setOnClickListener(v ->
-                Navigation.findNavController(v).navigate(R.id.action_userProfileFragment_to_userMessagesFragment));
+                Navigation.findNavController(v).navigate(R.id.action_userProfileFragment_to_userMessagesFragment, createNavigationBundle()));
 
         MaterialButton logoutButton = view.findViewById(R.id.logout);
-
-        logoutButton.setOnClickListener(v -> {Navigation.findNavController(v).navigate(R.id.action_userProfileFragment_to_loginFragment);});
-
+        logoutButton.setOnClickListener(v ->
+                Navigation.findNavController(v).navigate(R.id.action_userProfileFragment_to_loginFragment));
 
         // Set up text change listeners
         setUpTextListeners();
 
         // Set up click listeners for buttons
-        saveNameButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Handle Save Name button click
-                // Implement logic to save name
-            }
+        saveNameButton.setOnClickListener(v -> {
+            // Handle Save Name button click
+            // Implement logic to save name
         });
 
-        saveContactButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Handle Save Contact button click
-                // Implement logic to save contacts
-            }
+        saveContactButton.setOnClickListener(v -> {
+            // Handle Save Contact button click
+            // Implement logic to save contacts
         });
 
-        savePasswordButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Handle Save Password button click
-                // Implement logic to save password
-            }
+        savePasswordButton.setOnClickListener(v -> {
+            // Handle Save Password button click
+            // Implement logic to save password
         });
     }
 
@@ -119,5 +113,13 @@ public class UserProfileFragment extends Fragment {
         boolean isPasswordNotEmpty = !TextUtils.isEmpty(oldPasswordEditText.getText())
                 && !TextUtils.isEmpty(newPasswordEditText.getText());
         savePasswordButton.setEnabled(isPasswordNotEmpty);
+    }
+
+    // Method to create a common bundle for navigation
+    private Bundle createNavigationBundle() {
+        Bundle bundle = new Bundle();
+        bundle.putString("userId", getArguments().getString("userId", ""));
+        bundle.putString("userName", getArguments().getString("userName", ""));
+        return bundle;
     }
 }

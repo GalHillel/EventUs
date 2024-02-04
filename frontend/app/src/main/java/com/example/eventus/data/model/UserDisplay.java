@@ -1,13 +1,21 @@
 package com.example.eventus.data.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
 public class UserDisplay implements Serializable {
-    String _id, name;
-    
-    public UserDisplay(String name, String email, String password, String user_type) {
-        this._id = "";
+    private String _id;
+    private String name;
+
+    public UserDisplay(String _id, String name) {
+        this._id = _id;
         this.name = name;
+    }
+
+    public String get_id() {
+        return _id;
+    }
+
+    public String getName() {
+        return name;
     }
 }

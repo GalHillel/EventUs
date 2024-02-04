@@ -2,6 +2,7 @@ package com.example.eventus.ui.organizer;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +32,8 @@ public class CreateEventFragment extends Fragment {
     private EditText eventLocationEditText;
     private EditText eventDescriptionEditText;
     private Button createEventButton;
+    private String userId;
+    private String userName;
 
     private Calendar calendar;
 
@@ -49,6 +52,12 @@ public class CreateEventFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        if (getArguments() != null) {
+            userId = getArguments().getString("userId", "");
+            userName = getArguments().getString("userName", "");
+        }
+        Log.d("CreateEventFragment", "User ID: " + userId);
+
         eventNameEditText = view.findViewById(R.id.eventNameEditText);
         eventDateEditText = view.findViewById(R.id.eventDateEditText);
         eventLocationEditText = view.findViewById(R.id.eventLocationEditText);
@@ -56,30 +65,19 @@ public class CreateEventFragment extends Fragment {
         createEventButton = view.findViewById(R.id.createEventButton);
 
         // Set up click listeners for buttons
-        view.findViewById(R.id.messages).setOnClickListener(v -> {
-            // Navigate to OrganizerMessagesFragment
-            Navigation.findNavController(v).navigate(R.id.action_createEventFragment_to_organizerMessages);
-        });
+        view.findViewById(R.id.messages).setOnClickListener(v ->
+                Navigation.findNavController(v).navigate(R.id.action_createEventFragment_to_organizerMessages, createNavigationBundle()));
 
-        view.findViewById(R.id.profile).setOnClickListener(v -> {
-            // Navigate to OrganizerProfileFragment
-            Navigation.findNavController(v).navigate(R.id.action_createEventFragment_to_organizerProfileFragment);
-        });
+        view.findViewById(R.id.profile).setOnClickListener(v ->
+                Navigation.findNavController(v).navigate(R.id.action_createEventFragment_to_organizerProfileFragment, createNavigationBundle()));
 
-        view.findViewById(R.id.myevents).setOnClickListener(v -> {
-            // Navigate to OrganizerProfileFragment
-            Navigation.findNavController(v).navigate(R.id.action_createEventFragment_to_organizerEvents);
-        });
+        view.findViewById(R.id.myevents).setOnClickListener(v ->
+                Navigation.findNavController(v).navigate(R.id.action_createEventFragment_to_organizerEvents, createNavigationBundle()));
 
         // Initialize Calendar
         calendar = Calendar.getInstance();
 
-        view.findViewById(R.id.pickDateButton).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDatePickerDialog(v);
-            }
-        });
+        view.findViewById(R.id.pickDateButton).setOnClickListener(v -> showDatePickerDialog(v));
 
         // Set up click listener for the create event button
         createEventButton.setOnClickListener(v -> createEvent());
@@ -93,8 +91,8 @@ public class CreateEventFragment extends Fragment {
         String eventDescription = eventDescriptionEditText.getText().toString();
 
         try {
-            // Call the Database method to add the event
-            UserEvent userEvent = Database.addEvent("65b91bfb1800bf3124779178", eventName, eventDate, eventLocation, eventDescription);
+            // Call the Database method to add the event with the correct creator_id
+            UserEvent userEvent = Database.addEvent(userId, eventName, eventDate, eventLocation, eventDescription);
 
             // Convert UserEvent to UserEventDisplay for display purposes
             UserEventDisplay userEventDisplay = new UserEventDisplay(
@@ -150,5 +148,13 @@ public class CreateEventFragment extends Fragment {
         String dateFormat = "yyyy-MM-dd";
         SimpleDateFormat sdf = new SimpleDateFormat(dateFormat, Locale.getDefault());
         eventDateEditText.setText(sdf.format(calendar.getTime()));
+    }
+
+    // Method to create a common bundle for navigation
+    private Bundle createNavigationBundle() {
+        Bundle bundle = new Bundle();
+        bundle.putString("userId", userId);
+        bundle.putString("userName", userName);
+        return bundle;
     }
 }

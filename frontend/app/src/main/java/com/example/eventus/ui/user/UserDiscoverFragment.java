@@ -26,17 +26,21 @@ public class UserDiscoverFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         // Set up click listeners for buttons
-        view.findViewById(R.id.profile).setOnClickListener(v -> {
-            // Navigate to Profile screen
-            Navigation.findNavController(v).navigate(R.id.action_userDiscoverFragment_to_profileFragment);
-        });
+        view.findViewById(R.id.profile).setOnClickListener(v ->
+                Navigation.findNavController(v).navigate(R.id.action_userDiscoverFragment_to_profileFragment, createNavigationBundle()));
 
-        view.findViewById(R.id.myevents).setOnClickListener(v -> {
-            // Navigate to Events screen
-            Navigation.findNavController(v).navigate(R.id.action_userDiscoverFragment_to_userEventsFragment);
-        });
+        view.findViewById(R.id.myevents).setOnClickListener(v ->
+                Navigation.findNavController(v).navigate(R.id.action_userDiscoverFragment_to_userEventsFragment, createNavigationBundle()));
 
         view.findViewById(R.id.messages).setOnClickListener(v ->
-                Navigation.findNavController(v).navigate(R.id.action_userDiscoverFragment_to_userMessagesFragment));
+                Navigation.findNavController(v).navigate(R.id.action_userDiscoverFragment_to_userMessagesFragment, createNavigationBundle()));
+    }
+
+    // Method to create a common bundle for navigation
+    private Bundle createNavigationBundle() {
+        Bundle bundle = new Bundle();
+        bundle.putString("userId", getArguments().getString("userId", ""));
+        bundle.putString("userName", getArguments().getString("userName", ""));
+        return bundle;
     }
 }
