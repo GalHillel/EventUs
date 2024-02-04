@@ -46,13 +46,14 @@
             android:gravity="center_vertical"
             android:layout_marginBottom="4dp" />
 
-        <TextView
-            android:id="@+id/eventMoreTextView"
-            style="@style/TextAppearance.AppCompat.Body1"
+        <Button
+            android:id="@+id/showMoreDetails"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:drawableStart="@drawable/ic_more"
             android:drawablePadding="4dp"
+            android:text="More Details"
+            android:textColor="@color/black"
+            android:background="f0000000"
             android:gravity="center_vertical" />
     </LinearLayout>
 </LinearLayout>

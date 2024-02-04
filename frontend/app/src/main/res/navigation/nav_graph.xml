@@ -57,6 +57,7 @@
         <action
             android:id="@+id/action_userEventsFragment_to_userMessagesFragment"
             app:destination="@id/userMessagesFragment" />
+
     </fragment>
 
     <fragment
@@ -180,6 +181,16 @@
         <action
             android:id="@+id/action_createEventFragment_to_organizerEvents"
             app:destination="@id/organizerEvents" />
+    </fragment>
+
+
+
+
+    <fragment
+        android:id="@+id/userEventDetailsShow"
+        android:name="com.example.eventus.ui.user.UserEventDetailsShow"
+        android:label="fragment_user_event_details_show"
+        tools:layout="@layout/fragment_user_event_details_show">
     </fragment>
 
 </navigation>

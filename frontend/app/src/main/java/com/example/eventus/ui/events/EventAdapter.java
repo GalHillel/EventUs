@@ -3,6 +3,7 @@ package com.example.eventus.ui.events;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,6 +16,7 @@ import java.util.List;
 public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHolder> {
 
     private List<UserEventDisplay> eventList;
+
 
     public EventAdapter(List<UserEventDisplay> eventList) {
         this.eventList = eventList;

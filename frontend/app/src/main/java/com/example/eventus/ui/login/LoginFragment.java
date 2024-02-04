@@ -169,10 +169,10 @@ public class LoginFragment extends Fragment {
 
             try {
                 UserDisplay userToLogIn =Database.userLogin(emailToSendToLoginFunction,passwordToSendToLoginFunction,userType) ;
-                emailFromTheUser.setText("");
-                passwordFromTheUser.setText("");
+//                emailFromTheUser.setText("");
+//                passwordFromTheUser.setText("");
 
-                if (checkOrganizer.isChecked()) {
+                if (userType == "Organizer" ) {
                     NavHostFragment.findNavController(LoginFragment.this)
                             .navigate(R.id.action_loginFragment_to_organizerEvents);
                 } else {
