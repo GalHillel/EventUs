@@ -147,6 +147,9 @@
         <action
             android:id="@+id/action_organizerEvents_to_createEventFragment"
             app:destination="@id/createEventFragment" />
+        <action
+            android:id="@+id/action_organizerEvents_to_userEventDetailsShow"
+            app:destination="@id/userEventDetailsShow" />
     </fragment>
 
     <fragment
@@ -191,6 +194,13 @@
         android:name="com.example.eventus.ui.user.UserEventDetailsShow"
         android:label="fragment_user_event_details_show"
         tools:layout="@layout/fragment_user_event_details_show">
+    </fragment>
+
+    <fragment
+        android:id="@+id/minimumData"
+        android:name="com.example.eventus.ui.user.UserEventDetailsShow"
+        android:label="fragment_user_event_details_show"
+        tools:layout="@layout/item_event">
     </fragment>
 
 </navigation>

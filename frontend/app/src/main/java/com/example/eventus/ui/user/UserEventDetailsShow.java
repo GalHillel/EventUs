@@ -23,7 +23,7 @@ public class UserEventDetailsShow extends Fragment {
 
         Bundle args = getArguments();
         if (args != null) {
-            UserEventDisplay selectedEvent = (UserEventDisplay) args.getSerializable("selectedEvent");
+            UserEventDisplay selectedEvent = args.getParcelable("selectedEvent");
 
             if (selectedEvent != null) {
                 eventNameDisplay.setText(selectedEvent.getEventName());
