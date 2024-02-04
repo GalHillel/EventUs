@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.eventus.R;
@@ -18,16 +19,18 @@ import com.example.eventus.data.Database;
 import com.example.eventus.ui.events.EventAdapter;
 import com.example.eventus.ui.events.UserEventDisplay;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class UserDiscoverFragment extends Fragment {
+public class UserDiscoverFragment extends Fragment implements EventAdapter.OnShowMoreDetailsClickListener{
 
     private EditText searchEditText;
     private Button searchButton;
+    private List<UserEventDisplay> searchResults = new ArrayList<>();
     private RecyclerView eventsRecyclerView;
     private EventAdapter eventAdapter;
 
@@ -80,22 +83,21 @@ public class UserDiscoverFragment extends Fragment {
         searchParams.put("name", searchQuery);
 
         // Execute the search in the background using ExecutorService
-        executorService.execute(() -> {
-            try {
-                UserEventDisplay[] searchResults = Database.searchEvents(searchParams);
+        try {
+            UserEventDisplay[] temp = Database.searchEvents(searchParams);
+            this.searchResults = Arrays.asList(temp);
+            // Update UI on the main thread with the search results
 
-                // Update UI on the main thread with the search results
-                requireActivity().runOnUiThread(() -> {
-                    eventAdapter = new EventAdapter(Arrays.asList(searchResults));
-                    eventsRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-                    eventsRecyclerView.setAdapter(eventAdapter);
-                });
+            this.eventAdapter = new EventAdapter(this.searchResults);
+            this.eventAdapter.setOnShowMoreDetailsClickListener(this);
+            this.eventsRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+            this.eventsRecyclerView.setAdapter(this.eventAdapter);
 
-            } catch (Exception e) {
-                // Handle the exception, e.g., show an error message
-                e.printStackTrace();
-            }
-        });
+
+        } catch (Exception e) {
+            // Handle the exception, e.g., show an error message
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -103,5 +105,15 @@ public class UserDiscoverFragment extends Fragment {
         super.onDestroyView();
         // Shutdown the ExecutorService when the fragment is destroyed
         executorService.shutdown();
+    }
+
+    @Override
+    public void onShowMoreDetailsClick(int position) {
+        UserEventDisplay clickedEvent = searchResults.get(position);
+        Bundle args = createNavigationBundle();
+        args.putString("eventId",clickedEvent.getId());
+        NavHostFragment.findNavController(UserDiscoverFragment.this)
+                .navigate(R.id.eventDetailsFragment,args);
+
     }
 }

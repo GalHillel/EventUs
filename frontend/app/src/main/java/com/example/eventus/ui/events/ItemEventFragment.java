@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 import com.example.eventus.R;
 
-public class ItemEventFragment extends Fragment {
+public class ItemEventFragment extends Fragment{
 
     @Nullable
     @Override
@@ -22,7 +22,7 @@ public class ItemEventFragment extends Fragment {
 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        /*
         // Handle item click events or perform any necessary initialization here
         view.findViewById(R.id.showMoreDetails).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -35,6 +35,6 @@ public class ItemEventFragment extends Fragment {
                     e.printStackTrace();
                 }
             }
-        });
+        });*/
     }
 }

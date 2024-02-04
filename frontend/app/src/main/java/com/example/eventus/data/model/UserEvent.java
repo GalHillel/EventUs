@@ -2,6 +2,7 @@ package com.example.eventus.data.model;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class UserEvent {
 
@@ -41,5 +42,11 @@ public class UserEvent {
 
     public String getLocation() {
         return this.location;
+    }
+    public String getDescription(){
+        return this.description;
+    }
+    public List<String> getAttendents(){
+        return this.attendents;
     }
 }

@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,13 +17,14 @@ import com.example.eventus.R;
 import com.example.eventus.data.Database;
 import com.example.eventus.data.ServerSideException;
 import com.example.eventus.ui.events.EventAdapter;
+import com.example.eventus.ui.events.ItemEventFragment;
 import com.example.eventus.ui.events.UserEventDisplay;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class UserEventsFragment extends Fragment {
+public class UserEventsFragment extends Fragment  implements EventAdapter.OnShowMoreDetailsClickListener{
 
     private RecyclerView upcomingEventsRecyclerView;
     private List<UserEventDisplay> upcomingEventsList = new ArrayList<>();
@@ -73,6 +75,7 @@ public class UserEventsFragment extends Fragment {
         // Set up RecyclerView for Events
         upcomingEventsRecyclerView = view.findViewById(R.id.eventsList);
         EventAdapter eventAdapter = new EventAdapter(upcomingEventsList);
+        eventAdapter.setOnShowMoreDetailsClickListener(this);
         upcomingEventsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         upcomingEventsRecyclerView.setAdapter(eventAdapter);
     }
@@ -82,6 +85,20 @@ public class UserEventsFragment extends Fragment {
         Bundle bundle = new Bundle();
         bundle.putString("userId", userId);
         bundle.putString("userName", userName);
+
         return bundle;
+    }
+
+    @Override
+    public void onShowMoreDetailsClick(int position) {
+        UserEventDisplay clickedEvent = upcomingEventsList.get(position);
+        Bundle args = createNavigationBundle();
+        args.putString("eventId",clickedEvent.getId());
+        NavHostFragment.findNavController(UserEventsFragment.this)
+                .navigate(R.id.eventDetailsFragment,args);
+
+
+
+
     }
 }

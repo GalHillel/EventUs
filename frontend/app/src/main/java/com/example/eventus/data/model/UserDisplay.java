@@ -1,6 +1,7 @@
 package com.example.eventus.data.model;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class UserDisplay implements Serializable {
     private String _id;
@@ -20,4 +21,17 @@ public class UserDisplay implements Serializable {
         return name;
     }
     public String getUser_type(){return user_type;}
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserDisplay that = (UserDisplay) o;
+        return Objects.equals(_id, that._id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(_id);
+    }
 }

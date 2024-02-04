@@ -4,7 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.events.EventDetailsFragment">
+    tools:context=".ui.events.EventDetailsFragment"
+    android:background="@color/white">>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -56,15 +57,22 @@
             android:layout_below="@id/eventLocationTextView"
             android:layout_marginTop="8dp"/>
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/eventListRecycleView"
+            android:layout_width="386dp"
+            android:layout_height="382dp"
+            android:layout_below="@id/eventDescriptionTextView"
+            android:layout_marginTop="0dp" />
+
         <Button
             android:id="@+id/joinEventButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Join Event"
-            android:layout_below="@id/eventDescriptionTextView"
+            android:layout_below="@id/eventListRecycleView"
             app:backgroundTint="#00bbff"
             android:layout_marginTop="16dp"
-            android:onClick="onJoinEventClick"/>
+            />
 
         <Button
             android:id="@+id/leaveEventButton"
@@ -78,12 +86,12 @@
 
         <ImageButton
             android:id="@+id/backButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="97dp"
+            android:layout_height="62dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_marginStart="346dp"
-            android:layout_marginTop="223dp"
+            android:layout_marginStart="302dp"
+            android:layout_marginTop="638dp"
             android:contentDescription="Back"
             android:onClick="onBackButtonClick"
             android:src="@drawable/ic_back" />

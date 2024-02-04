@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,9 +15,12 @@ import com.example.eventus.R;
 import java.util.List;
 
 public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHolder> {
+    public interface OnShowMoreDetailsClickListener {
+        void onShowMoreDetailsClick(int position);
+    }
 
     private List<UserEventDisplay> eventList;
-
+    private OnShowMoreDetailsClickListener listener;
 
     public EventAdapter(List<UserEventDisplay> eventList) {
         this.eventList = eventList;
@@ -37,6 +41,19 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
         holder.eventNameTextView.setText(event.getEventName());
         holder.eventDateTextView.setText(event.getEventDate().toString());
         holder.eventLocationTextView.setText(event.getEventLocation());
+
+        holder.showMoreDetailsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Notify the listener that the button was clicked
+                if (listener != null) {
+                    listener.onShowMoreDetailsClick(holder.getAdapterPosition());
+                }
+            }
+        });
+    }
+    public void setOnShowMoreDetailsClickListener(OnShowMoreDetailsClickListener listener) {
+        this.listener = listener;
     }
 
     @Override
@@ -48,12 +65,14 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
         TextView eventNameTextView;
         TextView eventDateTextView;
         TextView eventLocationTextView;
+        Button showMoreDetailsButton;
 
         public EventViewHolder(@NonNull View itemView) {
             super(itemView);
             eventNameTextView = itemView.findViewById(R.id.eventNameTextView);
             eventDateTextView = itemView.findViewById(R.id.eventDateTextView);
             eventLocationTextView = itemView.findViewById(R.id.eventLocationTextView);
+            showMoreDetailsButton = itemView.findViewById(R.id.showMoreDetails);
         }
     }
 }
