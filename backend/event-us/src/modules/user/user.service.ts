@@ -43,7 +43,7 @@ export class UserService {
     if(Object.keys(loginUserDto).length === 0){
       throw new HttpException("Empty!",HttpStatus.NOT_ACCEPTABLE)
     }
-    return this.userModel.findOne(loginUserDto).exec().then((user)=>{
+    return this.userModel.findOne(loginUserDto,"_id name").exec().then((user)=>{
       if(user == null){
         throw new HttpException("Incorrect credentials!",HttpStatus.FORBIDDEN)
       }

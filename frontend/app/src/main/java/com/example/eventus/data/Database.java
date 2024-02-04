@@ -10,6 +10,7 @@ import java.nio.charset.StandardCharsets;
 
 import com.example.eventus.data.model.ServerResponse;
 import com.example.eventus.data.model.User;
+import com.example.eventus.data.model.UserDisplay;
 import com.example.eventus.data.model.UserEvent;
 import com.example.eventus.ui.events.UserEventDisplay;
 import com.google.gson.Gson;
@@ -59,7 +60,7 @@ public class Database {
      * @return User entry in the database
      * @throws Exception response error
      */
-    public static User userLogin(String email, String password, String user_type) throws Exception{
+    public static UserDisplay userLogin(String email, String password, String user_type) throws Exception{
         HashMap<String, Object> payloadData = new HashMap<String, Object>();
         payloadData.put("email", email);
         payloadData.put("password", password);
@@ -70,7 +71,7 @@ public class Database {
         task.get();
         ServerResponse response = task.getServerResponse();
         if (response.getReturnCode() == HttpURLConnection.HTTP_OK) {
-            return gson.fromJson(response.getPayload(), User.class);
+            return gson.fromJson(response.getPayload(), UserDisplay.class);
         }
         else{
             throw new ServerSideException(response.getPayload());
@@ -126,6 +127,21 @@ public class Database {
         }
     }
 
+
+    public static UserEvent loadEvent(String event_id) throws Exception{
+        HashMap<String, Object> payloadData = new HashMap<String, Object>();
+        payloadData.put("_id", event_id);
+        AsyncHttpRequest task = new AsyncHttpRequest("events/"+event_id,  payloadData, "GET");
+        task.execute();
+        task.get();
+        ServerResponse response = task.getServerResponse();
+        if (response.getReturnCode() == HttpURLConnection.HTTP_OK) {
+            return gson.fromJson(response.getPayload(), UserEvent.class);
+        }
+        else{
+            throw new ServerSideException(response.getPayload());
+        }
+    }
 
     public static void joinEvent(User user, String event_id) throws Exception{
         HashMap<String, Object> payloadData = new HashMap<String, Object>();

@@ -25,6 +25,12 @@ export class EventController {
     this.eventService.printAllEvents();
     return this.eventService.findAllEvents();
   }
+
+  @Get(":id")
+  async getEventInfo(@Param("id") _id: Id): Promise<UserEvent> {
+    
+    return this.eventService.getUserEvent(_id);
+  }
   
   @Get(":id/users")
   async getEventUsers(@Param("id") _id: Id): Promise<User[]>{
