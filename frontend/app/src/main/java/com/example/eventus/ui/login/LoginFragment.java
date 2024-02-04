@@ -155,9 +155,9 @@ public class LoginFragment extends Fragment {
             String emailToSendToLoginFunction = emailFromTheUser.getText().toString().trim();
             String passwordToSendToLoginFunction = passwordFromTheUser.getText().toString().trim();
 
-            userType = "Participant";
-            emailToSendToLoginFunction = "user1@gmail.com";
-            passwordToSendToLoginFunction = "userPass";
+            //userType = "Participant";
+            //emailToSendToLoginFunction = "user1@gmail.com";
+            //passwordToSendToLoginFunction = "userPass";
 
             if (passwordToSendToLoginFunction.length() <= 5) {
                 // Show a message indicating incorrect password length
