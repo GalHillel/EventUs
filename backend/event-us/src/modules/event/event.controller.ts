@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, Param, Patch, Delete, Query, HttpCode } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param, Patch, Delete, Query, HttpCode, UsePipes, ValidationPipe } from '@nestjs/common';
 import { EventService } from './event.service';
 import { CreateEventDto, editEventDto, searchEventDto } from '../dto/event.dto';
 import { UserEvent } from './event.model';
@@ -32,6 +32,7 @@ export class EventController {
     return this.eventService.getUserEvent(_id);
   }
   @Get("search")
+  @UsePipes(new ValidationPipe({ transform: true }))
   async searchEvent(@Query() searchTerms: searchEventDto): Promise<UserEvent[]>{
     
     return this.eventService.search(searchTerms);
