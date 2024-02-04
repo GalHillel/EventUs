@@ -1,13 +1,19 @@
+import { OmitType, PartialType, PickType } from '@nestjs/swagger';
 import {Id} from './id.dto'
 
-export class CreateUserDto {
-    readonly name: string;
-    readonly email: string;
-    readonly password: string;
-    readonly user_type: string;
-  }
-  export class LoginUserDto {
-    readonly email: string;
-    readonly password: string;
-    readonly user_type: string;
-  }
+
+export class UserDto{
+  readonly _id: Id;
+  readonly name: string;
+  readonly email: string;
+  readonly password: string;
+  readonly user_type: string;
+  readonly profile_pic: Id;
+  readonly messages: Id[];
+  readonly events: Id[];
+}
+export class CreateUserDto extends PartialType(OmitType(UserDto,['_id','profile_pic','messages','events'])){}
+export class LoginUserDto extends PartialType(PickType(UserDto,['email','password','user_type'])){}
+export class editUserDto extends PartialType(PickType(UserDto,['name','email','password','profile_pic'])){}
+
+  

@@ -1,6 +1,6 @@
-import { Controller, Post, Body, Get, Param, Patch, Delete } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param, Patch, Delete, Query } from '@nestjs/common';
 import { EventService } from './event.service';
-import { CreateEventDto } from '../dto/event.dto';
+import { CreateEventDto, searchEventDto } from '../dto/event.dto';
 import { UserEvent } from './event.model';
 import {Id} from '../dto/id.dto'
 import { User, userDisplayFields } from '../user/user.model';
@@ -26,10 +26,15 @@ export class EventController {
     return this.eventService.findAllEvents();
   }
 
-  @Get(":id")
+  @Get("event/:id")
   async getEventInfo(@Param("id") _id: Id): Promise<UserEvent> {
     
     return this.eventService.getUserEvent(_id);
+  }
+  @Get("search")
+  async searchEvent(@Query() searchTerms: searchEventDto): Promise<UserEvent[]>{
+    console.log(searchTerms)
+    return this.eventService.search(searchTerms);
   }
   
   /**

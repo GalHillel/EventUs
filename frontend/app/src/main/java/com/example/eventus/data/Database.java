@@ -145,7 +145,7 @@ public class Database {
     public static UserEvent loadEvent(String event_id) throws Exception{
         HashMap<String, Object> payloadData = new HashMap<String, Object>();
         payloadData.put("_id", event_id);
-        AsyncHttpRequest task = new AsyncHttpRequest("events/"+event_id,  payloadData, "GET");
+        AsyncHttpRequest task = new AsyncHttpRequest("events/event/"+event_id,  payloadData, "GET");
         task.execute();
         task.get();
         ServerResponse response = task.getServerResponse();

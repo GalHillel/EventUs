@@ -3,7 +3,7 @@ import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestj
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { UserEvent } from './event.model';
-import { CreateEventDto } from '../dto/event.dto';
+import { CreateEventDto, searchEventDto } from '../dto/event.dto';
 import { ObjectId } from 'mongoose';
 
 import { User } from '../user/user.model';
@@ -61,6 +61,13 @@ export class EventService {
   }
   async getCreator_id(_id: Id): Promise<Id> {
     return (await this.getUserEvent(_id,'creator_id')).creator_id; 
+  }
+
+
+  async search(searchTerms: searchEventDto): Promise<UserEvent[]>{
+    console.log(searchTerms);
+    return null;
+    //return this.userEventModel.find(searchTerms).exec();
   }
 
   /**
