@@ -40,6 +40,9 @@ export class UserService {
    * @returns user object from the database or null if doesn't exist
    */
   async loginUser(loginUserDto: LoginUserDto): Promise<User>{
+    if(Object.keys(loginUserDto).length === 0){
+      throw new HttpException("Empty!",HttpStatus.NOT_ACCEPTABLE)
+    }
     return this.userModel.findOne(loginUserDto).exec().then((user)=>{
       if(user == null){
         throw new HttpException("Incorrect credentials!",HttpStatus.FORBIDDEN)

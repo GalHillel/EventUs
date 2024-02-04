@@ -153,7 +153,7 @@ public class LoginFragment extends Fragment {
             String emailToSendToLoginFunction = emailFromTheUser.getText().toString().trim();
             String passwordToSendToLoginFunction = passwordFromTheUser.getText().toString().trim();
 
-            if (passwordFromTheUser.getText().length() <= 5) {
+            if (passwordToSendToLoginFunction.length() <= 5) {
                 // Show a message indicating incorrect password length
                 Toast.makeText(requireContext(), "The password length must be greater than 5", Toast.LENGTH_SHORT).show();
                 loadingProgressBar.setVisibility(View.GONE); // Hide loading indicator

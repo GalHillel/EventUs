@@ -2,8 +2,6 @@ package com.example.eventus.data;
 
 import java.io.*;
 
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -14,7 +12,6 @@ import com.example.eventus.data.model.ServerResponse;
 import com.example.eventus.data.model.User;
 import com.example.eventus.data.model.UserEvent;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 
 public class Database {
@@ -110,8 +107,13 @@ public class Database {
         payloadData.put("password", password);
         payloadData.put("user_type", user_type);
 
-        ServerResponse response = sendHttpRequest("users/login", payloadData, "GET");
-        if (response.getReturnCode() == 200) {
+        AsyncHttpRequest task = new AsyncHttpRequest("users/login", payloadData, "GET");
+        task.execute();
+        task.get();
+        ServerResponse response = task.getServerResponse();
+
+        //ServerResponse response = sendHttpRequest("users/login", payloadData, "GET");
+        if (response.getReturnCode() == 201) {
             return gson.fromJson(response.getPayload(), User.class);
         }
         else{

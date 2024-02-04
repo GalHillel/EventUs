@@ -42,12 +42,15 @@ export class UserController {
    * @param loginUserDto 
    * @returns 
    */
-  @Get("login")
+  @Post("login")
   async login(@Body() loginUserDto: LoginUserDto): Promise<User>{
-    
+    console.log(loginUserDto);
     try{
+
       return await this.userService.loginUser(loginUserDto);
+
     } catch(e){
+      console.log("error: "+e.message)
       throw e;
     }
     

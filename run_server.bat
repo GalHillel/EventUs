@@ -1,2 +1,2 @@
 cd backend\event-us\src
-npm run start
+npm run start:dev
