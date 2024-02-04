@@ -52,8 +52,8 @@ export class EventService {
    * @param _ids List of _id field of desired event
    * @returns List of desired event
    */
-  async getUserEvents(_ids:Id[]): Promise<UserEvent[]>{
-    return this.userEventModel.find({ _id: { $in: _ids } }).exec();
+  async getUserEvents(_ids:Id[],fields?:string): Promise<UserEvent[]>{
+    return this.userEventModel.find({ _id: { $in: _ids } },fields).exec();
   }
   
   async getUserIds(_id: Id): Promise<Id[]> {

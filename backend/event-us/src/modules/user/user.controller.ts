@@ -60,7 +60,7 @@ export class UserController {
   
   @Get(':id/events')
   async getUserEvents(@Param('id') _id: Id): Promise<UserEvent[]>{
-    return this.userService.getEventIds(_id).then((ids) => this.eventService.getUserEvents(ids));
+    return this.userService.getEventIds(_id).then((ids) => this.eventService.getUserEvents(ids,"_id name date location"));
   }
   @Get(':id/profilepic')
   async getUserProfilePicIcon(@Param('id') _id: Id): Promise<Buffer>{
@@ -76,12 +76,13 @@ export class UserController {
    * @param _id user id
    * @param eventId event id
    * 
-   */
+   *//*
   @Patch(':id/joinEvent')
   async joinEvent(@Param('id') _id: Id, @Body('_id') eventId: Id): Promise<void>{
     await this.eventService.addUser(eventId,_id);
     await this.userService.addEvent(_id,eventId);
-  }
+  }*/
+  
   /** TODO add guard for event creator
    * users/<user id>/exitEvent, Patch request should contain a json in the form {_id:<event id>}
    * @param _id user id

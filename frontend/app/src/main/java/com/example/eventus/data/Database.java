@@ -11,6 +11,7 @@ import java.nio.charset.StandardCharsets;
 import com.example.eventus.data.model.ServerResponse;
 import com.example.eventus.data.model.User;
 import com.example.eventus.data.model.UserEvent;
+import com.example.eventus.ui.events.UserEventDisplay;
 import com.google.gson.Gson;
 
 
@@ -112,13 +113,13 @@ public class Database {
      * @param user the user we want to get the events from
      * @return array of events or null if not found
      */
-    public static UserEvent[] getEventList(User user) throws Exception{
+    public static UserEventDisplay[] getEventList(User user) throws Exception{
         AsyncHttpRequest task = new AsyncHttpRequest("users/"+user.getId()+"/events",  new HashMap<String, Object>(), "GET");
         task.execute();
         task.get();
         ServerResponse response = task.getServerResponse();
         if (response.getReturnCode() == HttpURLConnection.HTTP_OK) {
-            return gson.fromJson(response.getPayload(), UserEvent[].class);
+            return gson.fromJson(response.getPayload(), UserEventDisplay[].class);
         }
         else{
             throw new ServerSideException(response.getPayload());
