@@ -186,12 +186,7 @@
             app:destination="@id/organizerEvents" />
     </fragment>
 
-    <fragment
-        android:id="@+id/userEventDetailsShow"
-        android:name="com.example.eventus.ui.user.UserEventDetailsShow"
-        android:label="fragment_user_event_details_show"
-        tools:layout="@layout/fragment_user_event_details_show">
-    </fragment>
+
 
     <fragment
         android:id="@+id/itemEventFragment"

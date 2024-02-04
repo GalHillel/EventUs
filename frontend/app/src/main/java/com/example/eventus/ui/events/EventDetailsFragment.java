@@ -69,8 +69,6 @@ public class EventDetailsFragment extends Fragment implements UserAdaptor.Button
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
-
         eventNameView = view.findViewById(R.id.eventNameTextView);
         eventDateView = view.findViewById(R.id.eventDateTextView);
         eventLocationview = view.findViewById(R.id.eventLocationTextView);
@@ -90,6 +88,7 @@ public class EventDetailsFragment extends Fragment implements UserAdaptor.Button
                 this.users.clear();
                 this.users.addAll(Arrays.asList(tmp));
 
+                //TODO: set editable if the user is the organizer
                 eventNameView.setText(this.userEvent.getName());
                 eventDateView.setText(this.userEvent.getDate().toString());
                 eventLocationview.setText(this.userEvent.getLocation());
@@ -146,23 +145,26 @@ public class EventDetailsFragment extends Fragment implements UserAdaptor.Button
             //delete event
         }
         else{
-            try{
-                Database.exitEvent(this.userId,this.userEvent.getId());
-                this.exitEventButton.setVisibility(View.GONE);
-                this.joinEventButton.setVisibility(View.VISIBLE);
-                int idx = this.users.indexOf(new UserDisplay(userId,userName,(this.userId.equals(this.userEvent.getId()))? "Organizer": "Participant"));
-                this.users.remove(idx);
-                this.userAdaptor.notifyItemRemoved(idx);
-            }catch(Exception e){
-                //handle
-            }
-
+            UserDisplay u = new UserDisplay(userId,userName,(this.userId.equals(this.userEvent.getId()))? "Organizer": "Participant");
+            removeUser(u);
+            this.exitEventButton.setVisibility(View.GONE);
+            this.joinEventButton.setVisibility(View.VISIBLE);
         }
     }
-
+    private void removeUser(UserDisplay user){
+        try{
+            Database.exitEvent(user.get_id(),this.userEvent.getId());
+            int idx = this.users.indexOf(user);
+            this.users.remove(idx);
+            this.userAdaptor.notifyItemRemoved(idx);
+        }catch(Exception e){
+            //handle
+        }
+    }
     @Override
     public void onKickClick(int position) {
-        //handle kick button click
+
+        removeUser(this.users.get(position));
     }
 
     @Override
