@@ -1,8 +1,9 @@
 package com.example.eventus.ui.events;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class UserEventDisplay {
+public class UserEventDisplay implements Serializable {
     private String _id, name, location;
     private Date date;
 

@@ -110,11 +110,11 @@ public class Database {
     /**
      * TODO Test and add error handling
      * Get user events for some user
-     * @param user the user we want to get the events from
+     * @param user_id the user we want to get the events from
      * @return array of events or null if not found
      */
-    public static UserEventDisplay[] getEventList(User user) throws Exception{
-        AsyncHttpRequest task = new AsyncHttpRequest("users/"+user.getId()+"/events",  new HashMap<String, Object>(), "GET");
+    public static UserEventDisplay[] getEventList(String user_id) throws Exception{
+        AsyncHttpRequest task = new AsyncHttpRequest("users/"+user_id+"/events",  new HashMap<String, Object>(), "GET");
         task.execute();
         task.get();
         ServerResponse response = task.getServerResponse();
