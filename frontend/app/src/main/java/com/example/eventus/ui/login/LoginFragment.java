@@ -33,7 +33,7 @@ import com.example.eventus.ui.registration.RegistrationFragment;
 
 public class LoginFragment extends Fragment {
 
-//    private LoginViewModel loginViewModel;
+    //    private LoginViewModel loginViewModel;
     private FragmentLoginBinding binding;
 
 
@@ -63,9 +63,7 @@ public class LoginFragment extends Fragment {
         final ProgressBar loadingProgressBar = binding.loading;
         final CheckBox checkOrganizer = binding.checkOrganizer;
 
-        final String userType = (checkOrganizer.isChecked())? "Organizer": "Participant";
-        final String emailToSendToLoginFunction = emailFromTheUser.getText().toString().trim();
-        final String passwordToSendToLoginFunction = emailFromTheUser.getText().toString().trim();
+
 
 //        loginViewModel.getLoginFormState().observe(getViewLifecycleOwner(), loginFormState -> {
 //            if (loginFormState == null) {
@@ -151,6 +149,9 @@ public class LoginFragment extends Fragment {
         TextView loginBtn = view.findViewById(R.id.login);
         loginBtn.setOnClickListener(v -> {
 //            loadingProgressBar.setVisibility(View.VISIBLE);
+            String userType = (checkOrganizer.isChecked())? "Organizer": "Participant";
+            String emailToSendToLoginFunction = emailFromTheUser.getText().toString().trim();
+            String passwordToSendToLoginFunction = passwordFromTheUser.getText().toString().trim();
 
             if (passwordFromTheUser.getText().length() <= 5) {
                 // Show a message indicating incorrect password length
@@ -159,9 +160,9 @@ public class LoginFragment extends Fragment {
                 return; // Do not proceed with login
             }
 
-            User userToLogIn ;
+
             try {
-                userToLogIn =Database.userLogin(emailToSendToLoginFunction,passwordToSendToLoginFunction,userType) ;
+                User userToLogIn =Database.userLogin(emailToSendToLoginFunction,passwordToSendToLoginFunction,userType) ;
                 emailFromTheUser.setText("");
                 passwordFromTheUser.setText("");
 
@@ -177,7 +178,6 @@ public class LoginFragment extends Fragment {
                 Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show();
                 passwordFromTheUser.setText("");
             }
-
 
         });
 
