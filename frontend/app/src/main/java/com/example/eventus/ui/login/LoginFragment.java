@@ -27,6 +27,7 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.eventus.R;
 import com.example.eventus.data.Database;
+import com.example.eventus.data.ServerSideException;
 import com.example.eventus.data.model.User;
 import com.example.eventus.databinding.FragmentLoginBinding;
 import com.example.eventus.ui.registration.RegistrationFragment;
@@ -153,6 +154,8 @@ public class LoginFragment extends Fragment {
             String emailToSendToLoginFunction = emailFromTheUser.getText().toString().trim();
             String passwordToSendToLoginFunction = passwordFromTheUser.getText().toString().trim();
 
+            
+
             if (passwordToSendToLoginFunction.length() <= 5) {
                 // Show a message indicating incorrect password length
                 Toast.makeText(requireContext(), "The password length must be greater than 5", Toast.LENGTH_SHORT).show();
@@ -174,9 +177,12 @@ public class LoginFragment extends Fragment {
                             .navigate(R.id.action_loginFragment_to_userEventsFragment);
                 }
             } catch (Exception e) {
-                String errorMessage = e.toString().trim();
-                Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show();
-                passwordFromTheUser.setText("");
+                if(e instanceof  ServerSideException){
+                    String errorMessage = e.toString().trim();
+                    Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show();
+                    passwordFromTheUser.setText("");
+                }
+                //handle other exceptions
             }
 
         });

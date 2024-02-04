@@ -75,21 +75,22 @@ public class Database {
      * @param user_type creator/user
      *
      */
-    public static User addUser(String email, String name, String password, String user_type) {
+    public static User addUser(String email, String name, String password, String user_type) throws Exception {
         HashMap<String, Object> payloadData = new HashMap<String, Object>();
         payloadData.put("name", name);
         payloadData.put("email", email);
         payloadData.put("password", password);
         payloadData.put("user_type", user_type);
-        try {
-            ServerResponse response = sendHttpRequest("users", payloadData, "POST");
-            if (response.getReturnCode() == 201) {
-                return gson.fromJson(response.getPayload(), User.class);
-            }
-        } catch (Exception e) {
 
+        ServerResponse response = sendHttpRequest("users", payloadData, "POST");
+        if (response.getReturnCode() == 201) {
+            return gson.fromJson(response.getPayload(), User.class);
         }
-        return null;
+        else{
+            throw new ServerSideException(response.getPayload());
+        }
+
+
     }
     /**
      * TODO Test and add error handling
@@ -117,7 +118,7 @@ public class Database {
             return gson.fromJson(response.getPayload(), User.class);
         }
         else{
-            throw new Exception(response.getPayload());
+            throw new ServerSideException(response.getPayload());
         }
 
     }
@@ -130,7 +131,7 @@ public class Database {
      * @param location    location of the event
      * @param description description of the event
      */
-    public static UserEvent addEvent(String creator_id, String name, String date, String location, String description) {
+    public static UserEvent addEvent(String creator_id, String name, String date, String location, String description) throws Exception{
         HashMap<String, Object> payloadData = new HashMap<String, Object>();
         payloadData.put("name", name);
         payloadData.put("creator_id", creator_id);
@@ -138,15 +139,16 @@ public class Database {
         payloadData.put("location", location);
         payloadData.put("description", description);
 
-        try {
-            ServerResponse response = sendHttpRequest("events", payloadData, "POST");
-            if (response.getReturnCode() == 201) {
-                return gson.fromJson(response.getPayload(), UserEvent.class);
-            }
-        } catch (Exception e) {
 
+        ServerResponse response = sendHttpRequest("events", payloadData, "POST");
+        if (response.getReturnCode() == 201) {
+            return gson.fromJson(response.getPayload(), UserEvent.class);
         }
-        return null;
+        else{
+            throw new Exception(response.getPayload());
+        }
+
+
     }
 
     /**
