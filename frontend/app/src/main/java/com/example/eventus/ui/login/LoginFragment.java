@@ -29,6 +29,7 @@ import com.example.eventus.R;
 import com.example.eventus.data.Database;
 import com.example.eventus.data.ServerSideException;
 import com.example.eventus.data.model.User;
+import com.example.eventus.data.model.UserDisplay;
 import com.example.eventus.databinding.FragmentLoginBinding;
 import com.example.eventus.ui.registration.RegistrationFragment;
 
@@ -167,7 +168,7 @@ public class LoginFragment extends Fragment {
 
 
             try {
-                User userToLogIn =Database.userLogin(emailToSendToLoginFunction,passwordToSendToLoginFunction,userType) ;
+                UserDisplay userToLogIn =Database.userLogin(emailToSendToLoginFunction,passwordToSendToLoginFunction,userType) ;
                 emailFromTheUser.setText("");
                 passwordFromTheUser.setText("");
 
