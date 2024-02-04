@@ -8,10 +8,13 @@ import com.google.gson.Gson;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
+import java.util.Map;
 
 public class AsyncHttpRequest extends AsyncTask<Void, Void, ServerResponse> {
     private String dir;
@@ -44,10 +47,34 @@ public class AsyncHttpRequest extends AsyncTask<Void, Void, ServerResponse> {
         return this.serverResponse;
     }
 
+
+    private String getQueryString(HashMap<String, Object> params) throws UnsupportedEncodingException {
+        StringBuilder result = new StringBuilder();
+        boolean first = true;
+        for (Map.Entry<String, Object> entry : params.entrySet()) {
+            if (first) {
+                first = false;
+            } else {
+                result.append("&");
+            }
+            result.append(URLEncoder.encode(entry.getKey(), "UTF-8"));
+            result.append("=");
+            result.append(URLEncoder.encode(String.valueOf(entry.getValue()), "UTF-8"));
+        }
+        return result.toString();
+    }
+
     private ServerResponse sendHttpRequest() throws Exception {
         String url = "http://10.0.2.2:3000/" + this.dir;
+        String payloadStr = "";
+
         // Prepare the JSON data
-        String payloadStr = gson.toJson(this.payloadData);
+        if(this.method.equals("GET")){
+            url = url + "?" + getQueryString(this.payloadData);
+        }
+        else if (this.method.equals("POST")) {
+            payloadStr = gson.toJson(this.payloadData);
+        }
 
         // Create a URL object
         URL urlObject = new URL(url);
@@ -58,18 +85,19 @@ public class AsyncHttpRequest extends AsyncTask<Void, Void, ServerResponse> {
         // Set the request method
         connection.setRequestMethod(this.method);
 
-        // Enable input/output streams
-        connection.setDoOutput(true);
-
-        // Set the content type to JSON
-        connection.setRequestProperty("Content-Type", "application/json");
-
-        // Get the output stream of the connection
-        try (OutputStream os = connection.getOutputStream()) {
-            // Write the JSON data to the output stream
-            byte[] input = payloadStr.getBytes(StandardCharsets.UTF_8);
-            os.write(input, 0, input.length);
+        if (this.method.equals("POST")) {
+            // Enable input/output streams
+            connection.setDoOutput(true);
+            // Set the content type to JSON
+            connection.setRequestProperty("Content-Type", "application/json");
+            // Get the output stream of the connection
+            try (OutputStream os = connection.getOutputStream()) {
+                // Write the JSON data to the output stream
+                byte[] input = payloadStr.getBytes(StandardCharsets.UTF_8);
+                os.write(input, 0, input.length);
+            }
         }
+
 
         // Get the response code
         int responseCode = connection.getResponseCode();

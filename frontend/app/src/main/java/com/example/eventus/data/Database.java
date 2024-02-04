@@ -113,7 +113,7 @@ public class Database {
         ServerResponse response = task.getServerResponse();
 
         //ServerResponse response = sendHttpRequest("users/login", payloadData, "GET");
-        if (response.getReturnCode() == 201) {
+        if (response.getReturnCode() == 200) {
             return gson.fromJson(response.getPayload(), User.class);
         }
         else{

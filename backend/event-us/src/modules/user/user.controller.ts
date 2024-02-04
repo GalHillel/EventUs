@@ -42,8 +42,8 @@ export class UserController {
    * @param loginUserDto 
    * @returns 
    */
-  @Post("login")
-  async login(@Body() loginUserDto: LoginUserDto): Promise<User>{
+  @Get("login")
+  async login(@Query() loginUserDto: LoginUserDto): Promise<User>{
     console.log(loginUserDto);
     try{
 
