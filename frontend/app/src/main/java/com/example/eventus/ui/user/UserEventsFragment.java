@@ -1,6 +1,7 @@
 package com.example.eventus.ui.user;
 
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import com.example.eventus.ui.events.EventAdapter;
 import com.example.eventus.ui.events.UserEventDisplay;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class UserEventsFragment extends Fragment {
@@ -57,5 +59,7 @@ public class UserEventsFragment extends Fragment {
 
     private void populateDummyData() {
         // Example: Adding EVENTS
+        eventsList.add(new UserEventDisplay("4455552424252558", "Lior & Eden Wedding", new Date(2024,12,10), "Hertselia"));
+        eventsList.add(new UserEventDisplay("484515151213", "Shar 25 Birthday", new Date(2024,3,15), "58 - Petach Tikva"));
     }
 }
