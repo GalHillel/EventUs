@@ -177,8 +177,8 @@ public class LoginFragment extends Fragment {
 
             try {
                 UserDisplay userToLogIn = Database.userLogin(emailToSendToLoginFunction, passwordToSendToLoginFunction, userType);
-                emailFromTheUser.setText("");
-                passwordFromTheUser.setText("");
+//                emailFromTheUser.setText("");
+//                passwordFromTheUser.setText("");
 
                 // Get user ID and name from UserDisplay
                 String userId = userToLogIn.get_id();
@@ -203,8 +203,7 @@ public class LoginFragment extends Fragment {
                             .navigate(R.id.action_loginFragment_to_userEventsFragment, args);
                 }
             } catch (Exception e) {
-                // Handle exceptions
-            }
+                Toast.makeText(requireContext(), e.toString(), Toast.LENGTH_SHORT).show();            }
         });
 
 

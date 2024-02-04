@@ -193,23 +193,6 @@
         tools:layout="@layout/fragment_user_event_details_show">
     </fragment>
 
-    <fragment
-        android:id="@+id/itemEventFragment"
-        android:name="com.example.eventus.ui.events.ItemEventFragment"
-        android:label="ItemEventFragment"
-        tools:layout="@layout/item_event">
 
-        <action
-            android:id="@+id/action_itemEventFragment_to_eventDetailsFragment"
-            app:destination="@id/eventDetailsFragment" />
-
-    </fragment>
-
-    <fragment
-        android:id="@+id/eventDetailsFragment"
-        android:name="com.example.eventus.ui.events.EventDetailsFragment"
-        android:label="EventDetailsFragment"
-        tools:layout="@layout/fragment_event_details">
-    </fragment>
 
 </navigation>
