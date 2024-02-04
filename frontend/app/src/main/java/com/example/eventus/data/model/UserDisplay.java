@@ -4,11 +4,12 @@ import java.io.Serializable;
 
 public class UserDisplay implements Serializable {
     private String _id;
-    private String name;
+    private String name, user_type;
 
-    public UserDisplay(String _id, String name) {
+    public UserDisplay(String _id, String name, String user_type) {
         this._id = _id;
         this.name = name;
+        this.user_type = user_type;
     }
 
     public String get_id() {
@@ -18,4 +19,5 @@ public class UserDisplay implements Serializable {
     public String getName() {
         return name;
     }
+    public String getUser_type(){return user_type;}
 }

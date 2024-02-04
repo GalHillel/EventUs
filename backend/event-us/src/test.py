@@ -71,11 +71,13 @@ def addProfilePicTest():
 def joinExitEventTest(event_id,user_id):
     print("-----------------Join/Exit event test-----------------")
     event1_id_data = {"_id":event_id}
-    r_join = requests.patch(URL+"users/"+user_id+"/joinEvent",json=event1_id_data)
+    r_join = requests.patch(URL+"events/"+event_id+"/joinEvent",json={"_id":user_id})
     time.sleep(1)
     r_exit = requests.patch(URL+"users/"+user_id+"/exitEvent",json=event1_id_data)
     print(r_join)
+    print(r_join.text)
     print(r_exit)
+    print(r_exit.text)
     
 
 
@@ -86,7 +88,7 @@ def loginTest(email,password,user_type):
         "password": password,
         "user_type": user_type
     }
-    r = requests.get(URL+"users/login",json=data)
+    r = requests.get(URL+"users/login?email="+email+"&password="+password+"&user_type="+user_type)
     print(r)
     return r.content
 
@@ -96,10 +98,11 @@ def loginTest(email,password,user_type):
 #event,message = addMessageEventTest(user1["_id"],user2["_id"])
 #pfp,defualtPfp = addProfilePicTest()
 #joinExitEventTest(event["_id"],user2["_id"])
-r_login = loginTest("ziv.morgan@gmail.com","newPass","Organizer")
-print(r_login)
-r_login = loginTest("ziv.morgan@gmail.com","newPass","Participant")
-print(r_login)
+joinExitEventTest("65b909810fc846c08b8a4d4b","65b9477b8c22a314c4681496")
+#r_login = loginTest("ziv.morgan3@gmail.com","newPass","Organizer")
+#print(r_login)
+#r_login = loginTest("ziv.morgan3@gmail.com","newPass","Participant")
+#print(r_login)
 
 # post request example for profile picture
 

@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, Param, ValidationPipe, UseInterceptors,ClassSerializerInterceptor, Query, Put, Patch, ParseUUIDPipe, HttpException, HttpStatus } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param, ValidationPipe, UseInterceptors,ClassSerializerInterceptor, Query, Put, Patch, ParseUUIDPipe, HttpException, HttpStatus, HttpCode } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto, LoginUserDto } from '../dto/user.dto';
 import { User } from './user.model';
@@ -50,7 +50,7 @@ export class UserController {
       return await this.userService.loginUser(loginUserDto);
 
     } catch(e){
-      console.log("error: "+e.message)
+      
       throw e;
     }
     
@@ -88,12 +88,15 @@ export class UserController {
    * @param _id user id
    * @param eventId event id
    */
+  @HttpCode(204)
   @Patch(':id/exitEvent')
   async exitEvent(@Param('id') _id: Id,  @Body('_id') eventId: Id): Promise<void>{
+    
     await this.eventService.removeUser(eventId,_id);
     await this.userService.removeEvent(_id,eventId);
 
   }
+
 
   // Implement other CRUD endpoints as needed
 }
