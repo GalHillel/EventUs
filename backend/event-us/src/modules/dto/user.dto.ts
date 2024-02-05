@@ -3,7 +3,7 @@ import {Id} from './id.dto'
 
 
 export class UserDto{
-  readonly _id: Id;
+  readonly _id: string;
   readonly name: string;
   readonly email: string;
   readonly password: string;
@@ -14,6 +14,6 @@ export class UserDto{
 }
 export class CreateUserDto extends OmitType(UserDto,['_id','profile_pic','messages','events']){}
 export class LoginUserDto extends PickType(UserDto,['email','password','user_type']){}
-export class editUserDto extends PickType(UserDto,['name','email','password','profile_pic']){}
+export class EditUserDto extends PickType(UserDto,['name','email','password','profile_pic']){}
 
   
