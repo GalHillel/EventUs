@@ -1,10 +1,13 @@
 package com.example.eventus.ui.screens;
 
+import android.app.DatePickerDialog;
+import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -20,12 +23,18 @@ import com.example.eventus.data.model.UserDisplay;
 import com.example.eventus.data.model.UserEvent;
 import com.example.eventus.ui.recycleViews.UserAdaptor;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 public class EventDetailsFragment extends Fragment implements UserAdaptor.ButtonListener{
     private UserEvent userEvent;
+    private Button editEventButton, saveEventButton, pickDateButton;
+    private boolean isEditable = false;
+    private Calendar calendar;
     private List<UserDisplay> users = new ArrayList<>();
 
     private UserDisplay currentUser;
@@ -119,7 +128,20 @@ public class EventDetailsFragment extends Fragment implements UserAdaptor.Button
 
 
         }
+        eventDateView = view.findViewById(R.id.eventDateTextView);
+        calendar = Calendar.getInstance();
 
+        editEventButton = view.findViewById(R.id.editEventButton);
+        saveEventButton = view.findViewById(R.id.saveEventButton);
+
+        editEventButton.setOnClickListener(this::onEditEventClick);
+        saveEventButton.setOnClickListener(this::onSaveEventClick);
+
+        pickDateButton = view.findViewById(R.id.pickDateButton);
+        pickDateButton.setVisibility(View.GONE);
+        pickDateButton.setOnClickListener(this::onPickDateClick);
+
+        toggleEditableMode(false);
     }
 
     public void onBackButtonClick(View view) {
@@ -176,5 +198,80 @@ public class EventDetailsFragment extends Fragment implements UserAdaptor.Button
     @Override
     public void onMessageClick(int position) {
         //handle message button click
+    }
+
+    // This method will be called when the "Edit Event" button is clicked
+    public void onEditEventClick(View view) {
+        toggleEditableMode(true);
+        pickDateButton.setVisibility(View.VISIBLE);    }
+
+    // This method will be called when the "Save Event" button is clicked
+    public void onSaveEventClick(View view) {
+        // Get the updated event details and call the editEvent function
+        HashMap<String, Object> updatedEventParams = new HashMap<>();
+        updatedEventParams.put("name", eventNameView.getText().toString());
+        updatedEventParams.put("date", eventDateView.getText().toString());
+        updatedEventParams.put("location", eventLocationview.getText().toString());
+        updatedEventParams.put("description", eventDescription.getText().toString());
+
+        try {
+            Database.editEvent(userEvent.getId(), updatedEventParams);
+            toggleEditableMode(false);
+        } catch (Exception e) {
+            // Handle exception
+        }
+
+        toggleEditableMode(false);
+        pickDateButton.setVisibility(View.GONE);
+    }
+
+    private void toggleEditableMode(boolean editable) {
+        isEditable = editable;
+
+        // Enable or disable editing of TextViews based on the editable flag
+        eventNameView.setEnabled(editable);
+        eventDateView.setEnabled(editable);
+        eventLocationview.setEnabled(editable);
+        eventDescription.setEnabled(editable);
+
+        // Show or hide the buttons based on the editable flag
+        if (editable) {
+            editEventButton.setVisibility(View.GONE);
+            saveEventButton.setVisibility(View.VISIBLE);
+        } else {
+            editEventButton.setVisibility(View.VISIBLE);
+            saveEventButton.setVisibility(View.GONE);
+        }
+    }
+
+    public void onPickDateClick(View view) {
+        showDatePickerDialog(view);
+    }
+
+    public void showDatePickerDialog(View view) {
+        DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                calendar.set(Calendar.YEAR, year);
+                calendar.set(Calendar.MONTH, month);
+                calendar.set(Calendar.DAY_OF_MONTH, day);
+
+                updateDateTextView();
+            }
+        };
+
+        new DatePickerDialog(
+                requireContext(),
+                dateSetListener,
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH)
+        ).show();
+    }
+
+    private void updateDateTextView() {
+        String dateFormat = "dd-MM-yyyy";
+        SimpleDateFormat sdf = new SimpleDateFormat(dateFormat, Locale.getDefault());
+        eventDateView.setText(sdf.format(calendar.getTime()));
     }
 }

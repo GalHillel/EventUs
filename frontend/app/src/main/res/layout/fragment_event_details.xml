@@ -21,24 +21,38 @@
             android:text="Event Details"
             android:layout_marginBottom="16dp"/>
 
-        <TextView
+        <EditText
             android:id="@+id/eventNameTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="18sp"
             android:textStyle="bold"
             android:layout_below="@id/eventDetailsTitle"
-            android:layout_marginTop="8dp"/>
+            android:layout_marginTop="8dp"
+            android:inputType="text" />
 
-        <TextView
+        <EditText
             android:id="@+id/eventDateTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16sp"
             android:layout_below="@id/eventNameTextView"
-            android:layout_marginTop="8dp"/>
+            android:layout_marginTop="8dp"
+            android:inputType="text"
+            android:focusable="false" />
 
-        <TextView
+        <Button
+            android:id="@+id/pickDateButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pick Date"
+            android:layout_below="@id/eventDateTextView"
+            android:layout_marginTop="8dp"
+            app:backgroundTint="#00bbff"
+            android:layout_alignParentEnd="true"
+            android:onClick="onPickDateClick" />
+
+        <EditText
             android:id="@+id/eventLocationTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -46,16 +60,18 @@
             android:drawableStart="@drawable/ic_location"
             android:drawablePadding="4dp"
             android:gravity="center_vertical"
-            android:layout_below="@id/eventDateTextView"
-            android:layout_marginTop="8dp"/>
+            android:layout_below="@id/pickDateButton"
+            android:layout_marginTop="8dp"
+            android:inputType="text" />
 
-        <TextView
+        <EditText
             android:id="@+id/eventDescriptionTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16sp"
             android:layout_below="@id/eventLocationTextView"
-            android:layout_marginTop="8dp"/>
+            android:layout_marginTop="8dp"
+            android:inputType="textMultiLine" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/eventListRecycleView"
@@ -83,6 +99,24 @@
             app:backgroundTint="#00bbff"
             android:layout_marginTop="16dp"/>
 
+        <Button
+            android:id="@+id/editEventButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Edit Event"
+            android:layout_below="@id/leaveEventButton"
+            app:backgroundTint="#00bbff"
+            android:layout_marginTop="16dp" />
+
+        <Button
+            android:id="@+id/saveEventButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Save Event"
+            android:layout_below="@id/editEventButton"
+            app:backgroundTint="#00bbff"
+            android:layout_marginTop="16dp" />
+
         <ImageButton
             android:id="@+id/backButton"
             android:layout_width="97dp"
@@ -94,7 +128,6 @@
             android:contentDescription="Back"
             android:onClick="onBackButtonClick"
             android:src="@drawable/ic_back" />
-
 
     </RelativeLayout>
 </ScrollView>
