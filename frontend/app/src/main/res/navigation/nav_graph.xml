@@ -147,9 +147,6 @@
         <action
             android:id="@+id/action_organizerEvents_to_createEventFragment"
             app:destination="@id/createEventFragment" />
-        <action
-            android:id="@+id/action_organizerEvents_to_userEventDetailsShow"
-            app:destination="@id/userEventDetailsShow" />
     </fragment>
 
     <fragment
