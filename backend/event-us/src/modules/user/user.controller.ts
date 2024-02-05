@@ -26,7 +26,8 @@ export class UserController {
     try{
       return await this.userService.createUser(createUserDto);
     } catch(e){
-      throw e
+      if(e instanceof HttpException)
+        throw new HttpException(e.message,e.getStatus());
     }
 
   }
@@ -52,7 +53,8 @@ export class UserController {
 
     } catch(e){
       
-      throw e;
+      if(e instanceof HttpException)
+        throw new HttpException(e.message,e.getStatus());
     }
     
   }
@@ -110,11 +112,14 @@ export class UserController {
     
     try{
 
-      this.userService.editUser(_id,editUserDto);
+      await this.userService.editUser(_id,editUserDto);
 
     } catch(e){
-      
-      throw e;
+      if(e instanceof HttpException){
+        console.log(e.message)
+        throw new HttpException(e.message,e.getStatus());
+      }
+        
     }
 
   }

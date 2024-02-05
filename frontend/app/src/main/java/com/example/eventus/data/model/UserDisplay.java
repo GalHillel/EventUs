@@ -21,7 +21,9 @@ public class UserDisplay implements Serializable {
         return name;
     }
     public String getUser_type(){return user_type;}
-
+    public void setName(String name){
+        this.name = name;
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

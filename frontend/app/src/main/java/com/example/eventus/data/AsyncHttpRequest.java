@@ -113,8 +113,20 @@ public class AsyncHttpRequest extends AsyncTask<Void, Void, ServerResponse> {
         // Get the response code
         int responseCode = connection.getResponseCode();
         String responseStr = "";
-        if(responseCode != HttpURLConnection.HTTP_NO_CONTENT){
+        if(responseCode != HttpURLConnection.HTTP_NO_CONTENT && responseCode < 400){
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+                StringBuilder responseBuilder = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    responseBuilder.append(line);
+                }
+
+                // Print the response from the server
+                responseStr = responseBuilder.toString();
+            }
+        }
+        else if(responseCode != HttpURLConnection.HTTP_NO_CONTENT){
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getErrorStream()))){
                 StringBuilder responseBuilder = new StringBuilder();
                 String line;
                 while ((line = reader.readLine()) != null) {

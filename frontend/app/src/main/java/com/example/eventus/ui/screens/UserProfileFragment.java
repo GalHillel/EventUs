@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -94,7 +95,10 @@ public class UserProfileFragment extends Fragment {
                     HashMap<String, Object> updatedUserParams = new HashMap<>();
                     updatedUserParams.put("name", newUsername);
                     Database.editUser(user.get_id(), updatedUserParams);
+                    usernameEditText.setText("");
+                    user.setName(newUsername);
                 } catch (Exception e) {
+                    Log.e("Err",e.getMessage());
                 }
             }
         });
@@ -106,12 +110,28 @@ public class UserProfileFragment extends Fragment {
                     HashMap<String, Object> updatedUserParams = new HashMap<>();
                     updatedUserParams.put("email", newEmail);
                     Database.editUser(user.get_id(), updatedUserParams);
-                } catch (Exception e) {}
+                    emailEditText.setText("");
+                } catch (Exception e) {
+                    Log.e("Err",e.getMessage());
+                }
             }
         });
 
         savePasswordButton.setOnClickListener(v -> {
-            
+            String oldPass = oldPasswordEditText.getText().toString();
+            String newPass = newPasswordEditText.getText().toString();
+            if (!TextUtils.isEmpty(oldPass) && !TextUtils.isEmpty(newPass)) {
+                try {
+                    HashMap<String, Object> updatedUserParams = new HashMap<>();
+                    updatedUserParams.put("oldPassword", oldPass);
+                    updatedUserParams.put("password", newPass);
+                    Database.editUser(user.get_id(), updatedUserParams);
+                    oldPasswordEditText.setText("");
+                    newPasswordEditText.setText("");
+                } catch (Exception e) {
+                    Log.e("Err",e.getMessage());
+                }
+            }
         });
 
     }
