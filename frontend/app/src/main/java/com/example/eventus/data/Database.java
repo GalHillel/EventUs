@@ -244,4 +244,16 @@ public class Database {
         }
     }
 
+
+    public static void delEvent(String event_id, HashMap<String,Object> newEventParams) throws Exception{
+
+        AsyncHttpRequest task = new AsyncHttpRequest("events/"+event_id+"/edit",  newEventParams, "PATCH");
+        task.execute();
+        task.get();
+        ServerResponse response = task.getServerResponse();
+        if (response.getReturnCode() != HttpURLConnection.HTTP_NO_CONTENT) {
+            throw new ServerSideException(response.getPayload());
+        }
+    }
+
 }
