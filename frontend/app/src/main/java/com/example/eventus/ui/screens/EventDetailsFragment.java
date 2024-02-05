@@ -122,7 +122,7 @@ public class EventDetailsFragment extends Fragment implements UserAdaptor.Button
 
     public void onBackButtonClick(View view) {
         // Navigate back
-        //NavHostFragment.findNavController(this).popBackStack(R.id.eventDetailsFragment, false);
+        getParentFragmentManager().popBackStack();
     }
 
     // This method will be called when the "Join Event" button is clicked
@@ -140,8 +140,13 @@ public class EventDetailsFragment extends Fragment implements UserAdaptor.Button
 
     // This method will be called when the "Leave Event" button is clicked
     public void onLeaveEventClick(View view) {
-        if(this.currentUser.get_id().equals(this.userEvent.getId())){
-            //delete event
+        if(this.currentUser.get_id().equals(this.userEvent.getCreator_id())){
+            try{
+                Database.delEvent(this.userEvent.getId());
+                onBackButtonClick(this.getView());
+            }catch(Exception e){
+                //handle
+            }
         }
         else{
             UserDisplay u = new UserDisplay(currentUser.get_id(), currentUser.getName(), (this.currentUser.get_id().equals(this.userEvent.getCreator_id()))? "Organizer": "Participant");

@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, Param, Patch, Delete, Query, HttpCode, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param, Patch, Delete, Query, HttpCode, UsePipes, ValidationPipe, HttpStatus } from '@nestjs/common';
 import { EventService } from './event.service';
 import { CreateEventDto, editEventDto, searchEventDto } from '../dto/event.dto';
 import { UserEvent } from './event.model';
@@ -58,7 +58,7 @@ export class EventController {
    * @param _id event id
    * @param userId user id
    */
-  @HttpCode(204)
+  @HttpCode(HttpStatus.NO_CONTENT)
   @Patch(':id/joinEvent')
   async joinEvent(@Param('id') _id: Id, @Body('_id') userId: Id): Promise<void>{
     
@@ -71,13 +71,13 @@ export class EventController {
    * @param _id 
    * @param edit 
    */
-  @HttpCode(204)
+  @HttpCode(HttpStatus.NO_CONTENT)
   @Patch(':id/edit')
   async editEvent(@Param('id') _id: Id, @Body() edit:editEventDto): Promise<void>{
     return this.eventService.editEvent(_id,edit);
   }
 
-
+  @HttpCode(HttpStatus.NO_CONTENT)
   @Delete(':id')
   async delEvent(@Param('id') _id:Id){
     const userIds = await this.eventService.getUserIds(_id)

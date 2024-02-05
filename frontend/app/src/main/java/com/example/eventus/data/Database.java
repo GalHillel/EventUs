@@ -245,9 +245,9 @@ public class Database {
     }
 
 
-    public static void delEvent(String event_id, HashMap<String,Object> newEventParams) throws Exception{
+    public static void delEvent(String event_id) throws Exception{
 
-        AsyncHttpRequest task = new AsyncHttpRequest("events/"+event_id+"/edit",  newEventParams, "PATCH");
+        AsyncHttpRequest task = new AsyncHttpRequest("events/"+event_id, new HashMap<String, Object>(), "DELETE");
         task.execute();
         task.get();
         ServerResponse response = task.getServerResponse();

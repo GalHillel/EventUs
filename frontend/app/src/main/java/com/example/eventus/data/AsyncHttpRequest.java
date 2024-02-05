@@ -69,7 +69,7 @@ public class AsyncHttpRequest extends AsyncTask<Void, Void, ServerResponse> {
         String payloadStr = "";
 
         // Prepare the JSON data
-        if(this.method.equals("GET")){
+        if(this.method.equals("GET") || this.method.equals("DELETE")){
             url = url + "?" + getQueryString(this.payloadData);
         }
         else if (this.method.equals("POST") || this.method.equals("PATCH")) {
