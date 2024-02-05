@@ -29,8 +29,9 @@ import java.util.List;
 public class EventDetailsFragment extends Fragment implements UserAdaptor.ButtonListener{
     private UserEvent userEvent;
     private List<UserDisplay> users = new ArrayList<>();
-    private String userId;
-    private String userName;
+
+    private UserDisplay currentUser;
+
     private String eventId;
     private RecyclerView userListRecyclerView;
     private UserAdaptor userAdaptor;
@@ -79,8 +80,8 @@ public class EventDetailsFragment extends Fragment implements UserAdaptor.Button
         this.exitEventButton.setOnClickListener(this::onLeaveEventClick);
 
         if (getArguments() != null) {
-            this.userId = getArguments().getString("userId", "");
-            this.userName = getArguments().getString("userName", "");
+
+
             this.eventId = getArguments().getString("eventId", "");
             try{
                 userEvent = Database.loadEvent(this.eventId);
@@ -95,13 +96,13 @@ public class EventDetailsFragment extends Fragment implements UserAdaptor.Button
                 eventDescription.setText(this.userEvent.getDescription());
 
                 userListRecyclerView = view.findViewById(R.id.eventListRecycleView);
-                userAdaptor = new UserAdaptor(this.users,(this.userId.equals(this.userEvent.getId()))? "Organizer": "Participant");
+                userAdaptor = new UserAdaptor(this.users,(this.currentUser.get_id().equals(this.userEvent.getId()))? "Organizer": "Participant");
                 userAdaptor.SetonKickClickListener(this);
                 userListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                 userListRecyclerView.setAdapter(userAdaptor);
 
 
-                if(this.userEvent.getAttendents().contains(this.userId)){
+                if(this.userEvent.getAttendents().contains(this.currentUser.get_id())){
                     this.joinEventButton.setVisibility(View.GONE);
                     this.exitEventButton.setVisibility(View.VISIBLE);
                 }
@@ -129,10 +130,10 @@ public class EventDetailsFragment extends Fragment implements UserAdaptor.Button
     // This method will be called when the "Join Event" button is clicked
     public void onJoinEventClick(View view) {
         try{
-            Database.joinEvent(this.userId,this.userEvent.getId());
+            Database.joinEvent(this.currentUser.get_id(),this.userEvent.getId());
             this.joinEventButton.setVisibility(View.GONE);
             this.exitEventButton.setVisibility(View.VISIBLE);
-            this.users.add(new UserDisplay(userId,userName,(this.userId.equals(this.userEvent.getId()))? "Organizer": "Participant"));
+            this.users.add(new UserDisplay(currentUser.get_id(),currentUser.getName(),(this.currentUser.get_id().equals(this.userEvent.getId()))? "Organizer": "Participant"));
             this.userAdaptor.notifyItemInserted(this.users.size()-1);
         }catch(Exception e){
             //handle
@@ -141,11 +142,11 @@ public class EventDetailsFragment extends Fragment implements UserAdaptor.Button
 
     // This method will be called when the "Leave Event" button is clicked
     public void onLeaveEventClick(View view) {
-        if(this.userId.equals(this.userEvent.getId())){
+        if(this.currentUser.get_id().equals(this.userEvent.getId())){
             //delete event
         }
         else{
-            UserDisplay u = new UserDisplay(userId,userName,(this.userId.equals(this.userEvent.getId()))? "Organizer": "Participant");
+            UserDisplay u = new UserDisplay(currentUser.get_id(), currentUser.getName(), (this.currentUser.get_id().equals(this.userEvent.getId()))? "Organizer": "Participant");
             removeUser(u);
             this.exitEventButton.setVisibility(View.GONE);
             this.joinEventButton.setVisibility(View.VISIBLE);

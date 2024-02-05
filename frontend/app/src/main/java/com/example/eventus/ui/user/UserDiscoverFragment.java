@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.eventus.R;
 import com.example.eventus.data.Database;
+import com.example.eventus.data.model.UserDisplay;
 import com.example.eventus.ui.events.EventAdapter;
 import com.example.eventus.ui.events.UserEventDisplay;
 
@@ -33,6 +34,7 @@ public class UserDiscoverFragment extends Fragment implements EventAdapter.OnSho
     private List<UserEventDisplay> searchResults = new ArrayList<>();
     private RecyclerView eventsRecyclerView;
     private EventAdapter eventAdapter;
+    private UserDisplay user;
 
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
@@ -46,6 +48,9 @@ public class UserDiscoverFragment extends Fragment implements EventAdapter.OnSho
 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        if (getArguments() != null) {
+            user = (UserDisplay) getArguments().getSerializable("user");
+        }
 
         searchEditText = view.findViewById(R.id.searchEditText);
         searchButton = view.findViewById(R.id.searchButton);
@@ -70,8 +75,7 @@ public class UserDiscoverFragment extends Fragment implements EventAdapter.OnSho
     // Method to create a common bundle for navigation
     private Bundle createNavigationBundle() {
         Bundle bundle = new Bundle();
-        bundle.putString("userId", getArguments().getString("userId", ""));
-        bundle.putString("userName", getArguments().getString("userName", ""));
+        bundle.putSerializable("user",user);
         return bundle;
     }
 

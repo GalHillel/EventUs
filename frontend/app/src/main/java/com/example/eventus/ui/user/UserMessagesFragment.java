@@ -11,9 +11,10 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import com.example.eventus.R;
+import com.example.eventus.data.model.UserDisplay;
 
 public class UserMessagesFragment extends Fragment {
-
+    private UserDisplay user;
     public UserMessagesFragment() {
         // Required empty public constructor
     }
@@ -24,6 +25,10 @@ public class UserMessagesFragment extends Fragment {
     }
 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        if (getArguments() != null) {
+            this.user = (UserDisplay) getArguments().getSerializable("user");
+        }
+
         super.onViewCreated(view, savedInstanceState);
 
         // Set up click listeners for buttons
@@ -40,8 +45,7 @@ public class UserMessagesFragment extends Fragment {
     // Method to create a common bundle for navigation
     private Bundle createNavigationBundle() {
         Bundle bundle = new Bundle();
-        bundle.putString("userId", getArguments().getString("userId", ""));
-        bundle.putString("userName", getArguments().getString("userName", ""));
+        bundle.putSerializable("user",user);
         return bundle;
     }
 }

@@ -19,7 +19,6 @@ import com.example.eventus.data.ServerSideException;
 import com.example.eventus.data.model.User;
 import com.example.eventus.data.model.UserDisplay;
 import com.example.eventus.ui.events.EventAdapter;
-import com.example.eventus.ui.events.ItemEventFragment;
 import com.example.eventus.ui.events.UserEventDisplay;
 
 import java.util.ArrayList;
