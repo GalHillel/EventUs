@@ -98,7 +98,9 @@ public class EventDetailsFragment extends Fragment implements UserAdaptor.Button
                 userAdaptor.SetonKickClickListener(this);
                 userListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                 userListRecyclerView.setAdapter(userAdaptor);
-
+                if(this.currentUser.get_id().equals(this.userEvent.getCreator_id())){
+                    this.exitEventButton.setText("Delete Event");
+                }
 
                 if(this.userEvent.getAttendents().contains(this.currentUser.get_id())){
                     this.joinEventButton.setVisibility(View.GONE);
