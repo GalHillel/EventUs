@@ -73,11 +73,20 @@
             android:layout_marginTop="8dp"
             android:inputType="textMultiLine" />
 
+        <TextView
+            android:id="@+id/ParticipantText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:layout_below="@id/eventDescriptionTextView"
+            android:text="Participants"
+            android:textSize="24sp" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/eventListRecycleView"
             android:layout_width="match_parent"
             android:layout_height="131dp"
-            android:layout_below="@id/eventDescriptionTextView"
+            android:layout_below="@id/ParticipantText"
             android:layout_marginTop="0dp" />
 
         <Button
