@@ -28,4 +28,10 @@
         android:title="Profile"
         android:icon="@drawable/ic_profile"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/newEvent"
+        android:state_checked="false"
+        android:title="New Event"
+        android:icon="@drawable/ic_create_event"
+        app:showAsAction="always" />
 </menu>

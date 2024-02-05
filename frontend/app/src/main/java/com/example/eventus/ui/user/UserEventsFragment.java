@@ -2,6 +2,7 @@ package com.example.eventus.ui.user;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -20,6 +21,7 @@ import com.example.eventus.data.model.User;
 import com.example.eventus.data.model.UserDisplay;
 import com.example.eventus.ui.events.EventAdapter;
 import com.example.eventus.ui.events.UserEventDisplay;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,9 +44,21 @@ public class UserEventsFragment extends Fragment  implements EventAdapter.OnShow
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        BottomNavigationView bottomNavigationView = view.findViewById(R.id.navigation);
+        Menu navMenu = bottomNavigationView.getMenu();
+
         if (getArguments() != null) {
             user = (UserDisplay) getArguments().getSerializable("user");
+
+            if(user != null && user.getUser_type().equals("Organizer")){
+                navMenu.findItem(R.id.discover).setVisible(false);
+            }
+            else{
+                navMenu.findItem(R.id.newEvent).setVisible(false);
+            }
         }
+
+
 
         // Set up click listeners for buttons
         view.findViewById(R.id.discover).setOnClickListener(v ->

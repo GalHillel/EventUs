@@ -2,6 +2,7 @@ package com.example.eventus.ui.user;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -12,6 +13,7 @@ import androidx.navigation.Navigation;
 
 import com.example.eventus.R;
 import com.example.eventus.data.model.UserDisplay;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class UserMessagesFragment extends Fragment {
     private UserDisplay user;
@@ -25,8 +27,17 @@ public class UserMessagesFragment extends Fragment {
     }
 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        BottomNavigationView bottomNavigationView = view.findViewById(R.id.navigation);
+        Menu navMenu = bottomNavigationView.getMenu();
+
         if (getArguments() != null) {
             this.user = (UserDisplay) getArguments().getSerializable("user");
+            if(user != null && user.getUser_type().equals("Organizer")){
+                navMenu.findItem(R.id.discover).setVisible(false);
+            }
+            else{
+                navMenu.findItem(R.id.newEvent).setVisible(false);
+            }
         }
 
         super.onViewCreated(view, savedInstanceState);

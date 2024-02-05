@@ -5,6 +5,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -15,6 +16,7 @@ import androidx.navigation.Navigation;
 
 import com.example.eventus.R;
 import com.example.eventus.data.model.UserDisplay;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -38,9 +40,21 @@ public class UserProfileFragment extends Fragment {
 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        BottomNavigationView bottomNavigationView = view.findViewById(R.id.navigation);
+        Menu navMenu = bottomNavigationView.getMenu();
+
         if (getArguments() != null) {
             user = (UserDisplay) getArguments().getSerializable("user");
+
+            if(user != null && user.getUser_type().equals("Organizer")){
+                navMenu.findItem(R.id.discover).setVisible(false);
+            }
+            else{
+                navMenu.findItem(R.id.newEvent).setVisible(false);
+            }
         }
+        
         usernameEditText = view.findViewById(R.id.Username);
         emailEditText = view.findViewById(R.id.email);
         oldPasswordEditText = view.findViewById(R.id.oldPassword);

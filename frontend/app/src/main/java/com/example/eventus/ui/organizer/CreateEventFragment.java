@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -18,8 +19,10 @@ import androidx.navigation.Navigation;
 
 import com.example.eventus.R;
 import com.example.eventus.data.Database;
+import com.example.eventus.data.model.UserDisplay;
 import com.example.eventus.data.model.UserEvent;
 import com.example.eventus.ui.events.UserEventDisplay;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -32,8 +35,7 @@ public class CreateEventFragment extends Fragment {
     private EditText eventLocationEditText;
     private EditText eventDescriptionEditText;
     private Button createEventButton;
-    private String userId;
-    private String userName;
+    private UserDisplay user;
 
     private Calendar calendar;
 
@@ -52,11 +54,21 @@ public class CreateEventFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        BottomNavigationView bottomNavigationView = view.findViewById(R.id.navigation);
+        Menu navMenu = bottomNavigationView.getMenu();
+
         if (getArguments() != null) {
-            userId = getArguments().getString("userId", "");
-            userName = getArguments().getString("userName", "");
+            user = (UserDisplay) getArguments().getSerializable("user");
+
+            if(user != null && user.getUser_type().equals("Organizer")){
+                navMenu.findItem(R.id.discover).setVisible(false);
+            }
+            else{
+                navMenu.findItem(R.id.newEvent).setVisible(false);
+            }
         }
-        Log.d("CreateEventFragment", "User ID: " + userId);
+
+        Log.d("CreateEventFragment", "User ID: " + this.user.get_id());
 
         eventNameEditText = view.findViewById(R.id.eventNameEditText);
         eventDateEditText = view.findViewById(R.id.eventDateEditText);
@@ -93,7 +105,7 @@ public class CreateEventFragment extends Fragment {
 
         try {
             // Call the Database method to add the event with the correct creator_id
-            UserEvent userEvent = Database.addEvent(userId, eventName, eventDate, eventLocation, eventDescription);
+            UserEvent userEvent = Database.addEvent(user.get_id(), eventName, eventDate, eventLocation, eventDescription);
 
             // Convert UserEvent to UserEventDisplay for display purposes
             UserEventDisplay userEventDisplay = new UserEventDisplay(
@@ -154,8 +166,7 @@ public class CreateEventFragment extends Fragment {
     // Method to create a common bundle for navigation
     private Bundle createNavigationBundle() {
         Bundle bundle = new Bundle();
-        bundle.putString("userId", userId);
-        bundle.putString("userName", userName);
+        bundle.putSerializable("user",user);
         return bundle;
     }
 }

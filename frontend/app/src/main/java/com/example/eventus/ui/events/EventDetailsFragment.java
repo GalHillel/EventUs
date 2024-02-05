@@ -81,7 +81,7 @@ public class EventDetailsFragment extends Fragment implements UserAdaptor.Button
 
         if (getArguments() != null) {
 
-
+            this.currentUser = (UserDisplay) getArguments().getSerializable("user");
             this.eventId = getArguments().getString("eventId", "");
             try{
                 userEvent = Database.loadEvent(this.eventId);
