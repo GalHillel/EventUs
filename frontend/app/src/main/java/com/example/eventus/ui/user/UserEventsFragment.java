@@ -16,6 +16,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.eventus.R;
 import com.example.eventus.data.Database;
 import com.example.eventus.data.ServerSideException;
+import com.example.eventus.data.model.User;
+import com.example.eventus.data.model.UserDisplay;
 import com.example.eventus.ui.events.EventAdapter;
 import com.example.eventus.ui.events.ItemEventFragment;
 import com.example.eventus.ui.events.UserEventDisplay;
@@ -28,8 +30,7 @@ public class UserEventsFragment extends Fragment  implements EventAdapter.OnShow
 
     private RecyclerView upcomingEventsRecyclerView;
     private List<UserEventDisplay> upcomingEventsList = new ArrayList<>();
-    private String userId;
-    private String userName;
+    private UserDisplay user;
 
     public UserEventsFragment() {}
 
@@ -43,8 +44,7 @@ public class UserEventsFragment extends Fragment  implements EventAdapter.OnShow
         super.onViewCreated(view, savedInstanceState);
 
         if (getArguments() != null) {
-            userId = getArguments().getString("userId", "");
-            userName = getArguments().getString("userName", "");
+            user = (UserDisplay) getArguments().getSerializable("user");
         }
 
         // Set up click listeners for buttons
@@ -59,7 +59,7 @@ public class UserEventsFragment extends Fragment  implements EventAdapter.OnShow
 
         // Fetch user events using the database function
         try {
-            UserEventDisplay[] userEvents = Database.getEventList(userId);
+            UserEventDisplay[] userEvents = Database.getEventList(user.get_id());
 
             // Clear the existing list and add the fetched events
             upcomingEventsList.clear();
@@ -83,8 +83,7 @@ public class UserEventsFragment extends Fragment  implements EventAdapter.OnShow
     // Method to create a common bundle for navigation
     private Bundle createNavigationBundle() {
         Bundle bundle = new Bundle();
-        bundle.putString("userId", userId);
-        bundle.putString("userName", userName);
+        bundle.putSerializable("user",user);
 
         return bundle;
     }
