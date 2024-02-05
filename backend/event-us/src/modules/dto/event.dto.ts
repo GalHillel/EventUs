@@ -12,6 +12,7 @@ export class EventDto{
   readonly attendents: Id[];
 }
 
+
 export class CreateEventDto extends OmitType(EventDto,['_id','attendents']){}
 
 export class SearchEventDto extends PickType(EventDto,['_id','name']){}

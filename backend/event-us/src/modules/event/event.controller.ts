@@ -34,7 +34,7 @@ export class EventController {
   @Get("search")
   @UsePipes(new ValidationPipe({ transform: true }))
   async searchEvent(@Query() searchTerms: SearchEventDto): Promise<UserEvent[]>{
-    console.log(searchTerms)
+    
     return this.eventService.search(searchTerms);
   }
   
@@ -67,7 +67,7 @@ export class EventController {
   }
 
   /**
-   * events/<event id>/edit, patch request should contain a json with the new fields to be updated
+   * events/edit, patch request should contain a json with the new fields to be updated
    * @param _id 
    * @param edit 
    */
@@ -75,6 +75,7 @@ export class EventController {
   @Patch('edit')
   @UsePipes(new ValidationPipe({ transform: true }))
   async editEvent(@Query() _id: Id, @Body() edit:EditEventDto): Promise<void>{
+    console.log(edit);
     return this.eventService.editEvent(_id,edit);
   }
 

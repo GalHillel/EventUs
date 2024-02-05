@@ -74,17 +74,7 @@ export class UserController {
     return this.userService.getMessageIds(_id).then((ids) => this.messageService.getMessages(ids));
   }
 
-  /**
-   * users/<user id>/joinEvent, Patch request should contain a json in the form {_id:<event id>}
-   * @param _id user id
-   * @param eventId event id
-   * 
-   *//*
-  @Patch(':id/joinEvent')
-  async joinEvent(@Param('id') _id: Id, @Body('_id') eventId: Id): Promise<void>{
-    await this.eventService.addUser(eventId,_id);
-    await this.userService.addEvent(_id,eventId);
-  }*/
+ 
   
   /** TODO add guard for event creator
    * users/<user id>/exitEvent, Patch request should contain a json in the form {_id:<event id>}
@@ -116,7 +106,7 @@ export class UserController {
 
     } catch(e){
       if(e instanceof HttpException){
-        console.log(e.message)
+        
         throw new HttpException(e.message,e.getStatus());
       }
         
