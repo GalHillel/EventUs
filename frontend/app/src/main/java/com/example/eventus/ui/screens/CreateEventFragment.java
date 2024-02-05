@@ -122,6 +122,11 @@ public class CreateEventFragment extends Fragment {
             // Handle the exception, e.g., show an error message
             Toast.makeText(requireContext(), "Error creating event: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
+
+        eventNameEditText.setText("");
+        eventDateEditText.setText("");
+        eventLocationEditText.setText("");
+        eventDescriptionEditText.setText("");
     }
 
     private void displayEventDetails(UserEventDisplay userEventDisplay) {
