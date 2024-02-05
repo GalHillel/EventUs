@@ -1,4 +1,4 @@
-package com.example.eventus.ui.events;
+package com.example.eventus.ui.screens;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,16 +11,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.eventus.R;
 import com.example.eventus.data.Database;
-import com.example.eventus.data.ServerSideException;
-import com.example.eventus.data.model.User;
 import com.example.eventus.data.model.UserDisplay;
 import com.example.eventus.data.model.UserEvent;
+import com.example.eventus.ui.recycleViews.UserAdaptor;
 
 import java.util.ArrayList;
 import java.util.Arrays;

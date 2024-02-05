@@ -1,4 +1,4 @@
-package com.example.eventus.ui.user;
+package com.example.eventus.ui.screens;
 
 import android.os.Bundle;
 import android.text.Editable;

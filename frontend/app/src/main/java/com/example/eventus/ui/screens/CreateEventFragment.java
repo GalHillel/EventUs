@@ -1,4 +1,4 @@
-package com.example.eventus.ui.organizer;
+package com.example.eventus.ui.screens;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
@@ -21,7 +21,7 @@ import com.example.eventus.R;
 import com.example.eventus.data.Database;
 import com.example.eventus.data.model.UserDisplay;
 import com.example.eventus.data.model.UserEvent;
-import com.example.eventus.ui.events.UserEventDisplay;
+import com.example.eventus.data.model.UserEventDisplay;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.text.SimpleDateFormat;

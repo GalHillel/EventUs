@@ -1,4 +1,4 @@
-package com.example.eventus.ui.user;
+package com.example.eventus.ui.screens;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,10 +17,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.eventus.R;
 import com.example.eventus.data.Database;
 import com.example.eventus.data.ServerSideException;
-import com.example.eventus.data.model.User;
 import com.example.eventus.data.model.UserDisplay;
-import com.example.eventus.ui.events.EventAdapter;
-import com.example.eventus.ui.events.UserEventDisplay;
+import com.example.eventus.ui.recycleViews.EventAdapter;
+import com.example.eventus.data.model.UserEventDisplay;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;

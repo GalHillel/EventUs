@@ -1,18 +1,13 @@
 package com.example.eventus.data;
 
-import java.io.*;
-
 import java.util.HashMap;
-import java.io.OutputStream;
 import java.net.HttpURLConnection;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
 
 import com.example.eventus.data.model.ServerResponse;
 import com.example.eventus.data.model.User;
 import com.example.eventus.data.model.UserDisplay;
 import com.example.eventus.data.model.UserEvent;
-import com.example.eventus.ui.events.UserEventDisplay;
+import com.example.eventus.data.model.UserEventDisplay;
 import com.google.gson.Gson;
 
 

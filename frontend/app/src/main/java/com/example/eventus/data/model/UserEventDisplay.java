@@ -1,4 +1,4 @@
-package com.example.eventus.ui.events;
+package com.example.eventus.data.model;
 
 import java.io.Serializable;
 import java.util.Date;

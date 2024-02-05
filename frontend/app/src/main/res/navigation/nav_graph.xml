@@ -43,7 +43,7 @@
 
     <fragment
         android:id="@+id/userEventsFragment"
-        android:name="com.example.eventus.ui.user.UserEventsFragment"
+        android:name="com.example.eventus.ui.screens.UserEventsFragment"
         android:label="UserEventsFragment"
         tools:layout="@layout/fragment_user_events">
         <action
@@ -63,7 +63,7 @@
 
     <fragment
         android:id="@+id/userDiscoverFragment"
-        android:name="com.example.eventus.ui.user.UserDiscoverFragment"
+        android:name="com.example.eventus.ui.screens.UserDiscoverFragment"
         android:label="UserDiscoverFragment"
         tools:layout="@layout/fragment_user_discover">
         <action
@@ -79,7 +79,7 @@
 
     <fragment
         android:id="@+id/userProfileFragment"
-        android:name="com.example.eventus.ui.user.UserProfileFragment"
+        android:name="com.example.eventus.ui.screens.UserProfileFragment"
         android:label="UserProfileFragment"
         tools:layout="@layout/fragment_user_profile">
         <action
@@ -104,7 +104,7 @@
 
     <fragment
         android:id="@+id/userMessagesFragment"
-        android:name="com.example.eventus.ui.user.UserMessagesFragment"
+        android:name="com.example.eventus.ui.screens.UserMessagesFragment"
         android:label="UserMessagesFragment"
         tools:layout="@layout/fragment_user_messages">
 
@@ -124,7 +124,7 @@
 
     <fragment
         android:id="@+id/createEventFragment"
-        android:name="com.example.eventus.ui.organizer.CreateEventFragment"
+        android:name="com.example.eventus.ui.screens.CreateEventFragment"
         android:label="CreateEventFragment"
         tools:layout="@layout/fragment_create_event">
 
@@ -140,7 +140,7 @@
     </fragment>
     <fragment
         android:id="@+id/itemEventFragment"
-        android:name="com.example.eventus.ui.events.ItemEventFragment"
+        android:name="com.example.eventus.ui.recycleViews.ItemEventFragment"
         android:label="ItemEventFragment"
         tools:layout="@layout/item_event">
 
@@ -151,7 +151,7 @@
     </fragment>
     <fragment
         android:id="@+id/eventDetailsFragment"
-        android:name="com.example.eventus.ui.events.EventDetailsFragment"
+        android:name="com.example.eventus.ui.screens.EventDetailsFragment"
         android:label="EventDetailsFragment"
         tools:layout="@layout/fragment_event_details">
     </fragment>

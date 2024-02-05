@@ -27,18 +27,18 @@ public class RegistrationViewModel extends ViewModel {
 
 
         // Use a background thread or AsyncTask to perform network operations
-        new Thread(() -> {
-            try {
-                User user = Database.addUser(email, username, password, userType);
 
-                // Use postValue to update LiveData on the main thread
-                registrationSuccess.postValue(user != null);
-                errorMessage.postValue(user == null ? "Registration failed. Please try again." : null);
-            } catch (Exception e) {
-                // Handle exceptions, log them, or show appropriate error messages
-                errorMessage.postValue("An error occurred during registration.");
-            }
-        }).start();
+        try {
+            User user = Database.addUser(email, username, password, userType);
+
+            // Use postValue to update LiveData on the main thread
+            registrationSuccess.postValue(user != null);
+            errorMessage.postValue(user == null ? "Registration failed. Please try again." : null);
+        } catch (Exception e) {
+            // Handle exceptions, log them, or show appropriate error messages
+            errorMessage.postValue("An error occurred during registration.");
+        }
+
     }
 
 }
