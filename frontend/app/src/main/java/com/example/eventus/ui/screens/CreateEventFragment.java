@@ -165,7 +165,7 @@ public class CreateEventFragment extends Fragment {
     private void updateDateEditText() {
         String dateFormat = "yyyy-MM-dd";
         SimpleDateFormat sdf = new SimpleDateFormat(dateFormat, Locale.getDefault());
-        eventDateEditText.setText(sdf.format(calendar.getTime()));
+        eventDateEditText.setText(calendar.getTime().toString());
     }
 
     // Method to create a common bundle for navigation

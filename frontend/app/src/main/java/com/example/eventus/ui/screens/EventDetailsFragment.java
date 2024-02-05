@@ -114,11 +114,8 @@ public class EventDetailsFragment extends Fragment implements UserAdaptor.Button
                 this.users.clear();
                 this.users.addAll(Arrays.asList(tmp));
 
-                //TODO: set editable if the user is the organizer
-                eventNameView.setText(this.userEvent.getName());
-                eventDateView.setText(this.userEvent.getDate().toString());
-                eventLocationview.setText(this.userEvent.getLocation());
-                eventDescription.setText(this.userEvent.getDescription());
+
+                updateFields();
 
                 userListRecyclerView = view.findViewById(R.id.eventListRecycleView);
                 userAdaptor = new UserAdaptor(this.users,(this.currentUser.get_id().equals(this.userEvent.getCreator_id()))? "Organizer": "Participant");
@@ -153,7 +150,12 @@ public class EventDetailsFragment extends Fragment implements UserAdaptor.Button
 
 
     }
-
+    private void updateFields(){
+        eventNameView.setText(this.userEvent.getName());
+        eventDateView.setText(this.userEvent.getDate().toString());
+        eventLocationview.setText(this.userEvent.getLocation());
+        eventDescription.setText(this.userEvent.getDescription());
+    }
     public void onBackButtonClick(View view) {
         // Navigate back
         getParentFragmentManager().popBackStack();
@@ -227,6 +229,13 @@ public class EventDetailsFragment extends Fragment implements UserAdaptor.Button
         try {
             Database.editEvent(userEvent.getId(), updatedEventParams);
             toggleEditableMode(false);
+
+            this.userEvent.setName(eventNameView.getText().toString());
+            this.userEvent.setDate(calendar.getTime());
+            this.userEvent.setLocation(eventLocationview.getText().toString());
+            this.userEvent.setDescription(eventDescription.getText().toString());
+            updateFields();
+
         } catch (Exception e) {
             // Handle exception
         }
@@ -238,19 +247,10 @@ public class EventDetailsFragment extends Fragment implements UserAdaptor.Button
     private void toggleEditableMode(boolean isEdit) {
 
         // Enable or disable editing of TextViews based on the editable flag
-        /*
-        eventNameView.setEnabled(isEdit);
-        eventDateView.setEnabled(isEdit);
-        eventLocationview.setEnabled(isEdit);
-        eventDescription.setEnabled(isEdit);
-        */
         setAsTextView(eventNameView,isEdit);
         setAsTextView(eventDateView,isEdit);
         setAsTextView(eventLocationview,isEdit);
         setAsTextView(eventDescription,isEdit);
-
-
-
         // Show or hide the buttons based on the editable flag
         if (isEdit) {
             editEventButton.setVisibility(View.GONE);
@@ -266,8 +266,6 @@ public class EventDetailsFragment extends Fragment implements UserAdaptor.Button
             }
             saveEventButton.setVisibility(View.GONE);
             pickDateButton.setVisibility(View.GONE);
-
-
             }
 
 
@@ -285,19 +283,6 @@ public class EventDetailsFragment extends Fragment implements UserAdaptor.Button
             tv.setBackground(null);
         }
 
-
-
-        /*
-        tv.setFocusable(flg);
-        tv.setFocusableInTouchMode(flg);
-        tv.setClickable(flg);
-
-
-
-        //tv.setTextAppearance(tv.getContext(), R.attr.);
-        //tv.setTextColor(Color.BLACK); // I'm not sure how to get the default here.
-        tv.setGravity(Gravity.TOP | Gravity.START);
-        */
     }
 
     public void onPickDateClick(View view) {
@@ -328,6 +313,6 @@ public class EventDetailsFragment extends Fragment implements UserAdaptor.Button
     private void updateDateTextView() {
         String dateFormat = "yyyy-MM-dd";
         SimpleDateFormat sdf = new SimpleDateFormat(dateFormat, Locale.getDefault());
-        eventDateView.setText(sdf.format(calendar.getTime()));
+        eventDateView.setText(calendar.getTime().toString());
     }
 }

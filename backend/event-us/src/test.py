@@ -5,6 +5,41 @@ import json
 # api-endpoint
 URL = "http://localhost:3000/"
 
+
+
+def addUser(name,email,password,user_type):
+    print("-----------------Add user-----------------")
+    data_user1 = {
+        "name": name,
+        "email": email,
+        "password": password,
+        "user_type": user_type
+    }
+    r_user1 = requests.post(url = URL+"users",json=data_user1)
+    
+
+
+names = ["user1","user2","user3","user4","user5","ziv","gal"]
+o_names = [i+"O" for i in names]
+emails = [i+"@gmail.com" for i in names]
+o_emails = [i+"@gmail.com" for i in o_names]
+passwords = [i+"Pass" for i in names]
+o_passwords = [i+"Pass" for i in o_names]
+
+for i in range(len(names)):
+    addUser(names[i],emails[i],passwords[i],"Participant")
+    time.sleep(1)
+    addUser(o_names[i],o_emails[i],o_passwords[i],"Organizer")
+    time.sleep(1)
+
+
+
+
+
+
+
+
+
 def addUserTest():
     print("-----------------Add user test-----------------")
     data_user1 = {
@@ -98,7 +133,7 @@ def loginTest(email,password,user_type):
 #event,message = addMessageEventTest(user1["_id"],user2["_id"])
 #pfp,defualtPfp = addProfilePicTest()
 #joinExitEventTest(event["_id"],user2["_id"])
-joinExitEventTest("65b909810fc846c08b8a4d4b","65b9477b8c22a314c4681496")
+#joinExitEventTest("65b909810fc846c08b8a4d4b","65b9477b8c22a314c4681496")
 #r_login = loginTest("ziv.morgan3@gmail.com","newPass","Organizer")
 #print(r_login)
 #r_login = loginTest("ziv.morgan3@gmail.com","newPass","Participant")

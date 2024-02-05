@@ -1,8 +1,11 @@
 package com.example.eventus.data.model;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class UserEvent {
 
@@ -50,4 +53,21 @@ public class UserEvent {
         return this.attendents;
     }
     public String getCreator_id(){return this.creator_id;}
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
 }
