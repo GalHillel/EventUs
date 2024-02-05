@@ -73,7 +73,7 @@ export class EventService {
   }
 
   async editEvent(_id:Id,edit: EditEventDto): Promise<void>{
-    this.userEventModel.updateOne({_id:_id},edit).exec();
+    this.userEventModel.updateOne(_id,edit).exec();
   }
 
   /**

@@ -31,7 +31,7 @@ public class Database {
         payloadData.put("email", email);
         payloadData.put("password", password);
         payloadData.put("user_type", user_type);
-        AsyncHttpRequest task = new AsyncHttpRequest("users", payloadData, "POST");
+        AsyncHttpRequest task = new AsyncHttpRequest("users", payloadData, null, "POST");
         task.execute();
         task.get();
         ServerResponse response = task.getServerResponse();
@@ -61,7 +61,7 @@ public class Database {
         payloadData.put("location", location);
         payloadData.put("description", description);
 
-        AsyncHttpRequest task = new AsyncHttpRequest("events", payloadData, "POST");
+        AsyncHttpRequest task = new AsyncHttpRequest("events", payloadData, null, "POST");
         task.execute();
         task.get();
         ServerResponse response = task.getServerResponse();
@@ -92,7 +92,7 @@ public class Database {
         payloadData.put("password", password);
         payloadData.put("user_type", user_type);
 
-        AsyncHttpRequest task = new AsyncHttpRequest("users/login", payloadData, "GET");
+        AsyncHttpRequest task = new AsyncHttpRequest("users/login", payloadData, null, "GET");
         task.execute();
         task.get();
         ServerResponse response = task.getServerResponse();
@@ -112,7 +112,7 @@ public class Database {
      * @return array of eventDisplay
      */
     public static UserEventDisplay[] getEventList(String user_id) throws Exception{
-        AsyncHttpRequest task = new AsyncHttpRequest("users/"+user_id+"/events",  new HashMap<String, Object>(), "GET");
+        AsyncHttpRequest task = new AsyncHttpRequest("users/"+user_id+"/events",  null, null, "GET");
         task.execute();
         task.get();
         ServerResponse response = task.getServerResponse();
@@ -132,7 +132,7 @@ public class Database {
      * @throws Exception ServerSideException or other exception
      */
     public static UserDisplay[] getUserList(String event_id) throws Exception{
-        AsyncHttpRequest task = new AsyncHttpRequest("events/"+event_id+"/users",  new HashMap<String, Object>(), "GET");
+        AsyncHttpRequest task = new AsyncHttpRequest("events/"+event_id+"/users",  null, null, "GET");
         task.execute();
         task.get();
         ServerResponse response = task.getServerResponse();
@@ -154,7 +154,7 @@ public class Database {
      */
     public static UserEvent loadEvent(String event_id) throws Exception{
 
-        AsyncHttpRequest task = new AsyncHttpRequest("events/event/"+event_id,  new HashMap<String, Object>(), "GET");
+        AsyncHttpRequest task = new AsyncHttpRequest("events/event/"+event_id,  null, null, "GET");
         task.execute();
         task.get();
         ServerResponse response = task.getServerResponse();
@@ -174,7 +174,7 @@ public class Database {
      */
     public static UserEventDisplay[] searchEvents(HashMap<String,Object> search) throws Exception{
 
-        AsyncHttpRequest task = new AsyncHttpRequest("events/search",  search, "GET");
+        AsyncHttpRequest task = new AsyncHttpRequest("events/search",  search, null, "GET");
         task.execute();
         task.get();
         ServerResponse response = task.getServerResponse();
@@ -196,7 +196,7 @@ public class Database {
     public static void joinEvent(String user_id, String event_id) throws Exception{
         HashMap<String, Object> payloadData = new HashMap<String, Object>();
         payloadData.put("_id", user_id);
-        AsyncHttpRequest task = new AsyncHttpRequest("events/"+event_id+"/joinEvent",  payloadData, "PATCH");
+        AsyncHttpRequest task = new AsyncHttpRequest("events/"+event_id+"/joinEvent",  payloadData, null, "PATCH");
         task.execute();
         task.get();
         ServerResponse response = task.getServerResponse();
@@ -216,7 +216,7 @@ public class Database {
     public static void exitEvent(String user_id, String event_id) throws Exception{
         HashMap<String, Object> payloadData = new HashMap<String, Object>();
         payloadData.put("_id", event_id);
-        AsyncHttpRequest task = new AsyncHttpRequest("users/"+user_id+"/exitEvent",  payloadData, "PATCH");
+        AsyncHttpRequest task = new AsyncHttpRequest("users/"+user_id+"/exitEvent",  payloadData, null, "PATCH");
         task.execute();
         task.get();
         ServerResponse response = task.getServerResponse();
@@ -234,8 +234,30 @@ public class Database {
      * @throws Exception ServerSideException or other exception
      */
     public static void editEvent(String event_id, HashMap<String,Object> newEventParams) throws Exception{
+        HashMap<String,Object> query = new HashMap<>();
+        query.put("_id",event_id);
 
-        AsyncHttpRequest task = new AsyncHttpRequest("events/"+event_id+"/edit",  newEventParams, "PATCH");
+        AsyncHttpRequest task = new AsyncHttpRequest("events/edit",  newEventParams, query, "PATCH");
+        task.execute();
+        task.get();
+        ServerResponse response = task.getServerResponse();
+        if (response.getReturnCode() != HttpURLConnection.HTTP_NO_CONTENT) {
+            throw new ServerSideException(response.getPayload());
+        }
+    }
+
+    /**
+     * TODO error handling and testing
+     * removes a user to an event, only use for participants
+     * @param user_id _id of event
+     * @param newEventParams hashmap keys are the field UserEvent we want to update, values are the new field
+     * @throws Exception ServerSideException or other exception
+     */
+    public static void editUser(String user_id, HashMap<String,Object> newEventParams) throws Exception{
+        HashMap<String,Object> query = new HashMap<>();
+        query.put("_id",user_id);
+        String url = "users/edit";
+        AsyncHttpRequest task = new AsyncHttpRequest("users/edit",  newEventParams,query, "PATCH");
         task.execute();
         task.get();
         ServerResponse response = task.getServerResponse();
@@ -245,9 +267,14 @@ public class Database {
     }
 
 
+    /**
+     * TODO error handling and testing
+     * Deletes an event from the database
+     * @param event_id _id of event
+     * @throws Exception ServerSideException or other exception
+     */
     public static void delEvent(String event_id) throws Exception{
-
-        AsyncHttpRequest task = new AsyncHttpRequest("events/"+event_id, new HashMap<String, Object>(), "DELETE");
+        AsyncHttpRequest task = new AsyncHttpRequest("events/"+event_id, null, null, "DELETE");
         task.execute();
         task.get();
         ServerResponse response = task.getServerResponse();

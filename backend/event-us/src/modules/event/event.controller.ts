@@ -72,8 +72,9 @@ export class EventController {
    * @param edit 
    */
   @HttpCode(HttpStatus.NO_CONTENT)
-  @Patch(':id/edit')
-  async editEvent(@Param('id') _id: Id, @Body() edit:EditEventDto): Promise<void>{
+  @Patch('edit')
+  @UsePipes(new ValidationPipe({ transform: true }))
+  async editEvent(@Query() _id: Id, @Body() edit:EditEventDto): Promise<void>{
     return this.eventService.editEvent(_id,edit);
   }
 

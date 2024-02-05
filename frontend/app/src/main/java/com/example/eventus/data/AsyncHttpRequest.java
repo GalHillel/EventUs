@@ -18,15 +18,16 @@ import java.util.Map;
 
 public class AsyncHttpRequest extends AsyncTask<Void, Void, ServerResponse> {
     private String dir;
-    private HashMap<String, Object> payloadData;
+    private HashMap<String, Object> payloadData, query;
     private String method;
     private ServerResponse serverResponse;
     private final Gson gson;
 
-    public AsyncHttpRequest(String dir, HashMap<String, Object> payloadStr, String method) {
+    public AsyncHttpRequest(String dir, HashMap<String, Object> payloadData, HashMap<String, Object> query, String method) {
         this.dir = dir;
-        this.payloadData = payloadStr;
+        this.payloadData = (payloadData != null)? payloadData:new HashMap<>();
         this.method = method;
+        this.query = query;
         gson = new Gson();
     }
 
@@ -48,7 +49,7 @@ public class AsyncHttpRequest extends AsyncTask<Void, Void, ServerResponse> {
     }
 
 
-    private String getQueryString(HashMap<String, Object> params) throws UnsupportedEncodingException {
+    public static String getQueryString(HashMap<String, Object> params) throws UnsupportedEncodingException {
         StringBuilder result = new StringBuilder();
         boolean first = true;
         for (Map.Entry<String, Object> entry : params.entrySet()) {
@@ -67,14 +68,24 @@ public class AsyncHttpRequest extends AsyncTask<Void, Void, ServerResponse> {
     private ServerResponse sendHttpRequest() throws Exception {
         String url = "http://10.0.2.2:3000/" + this.dir;
         String payloadStr = "";
+        String query ="";
 
+        if(this.query != null){
+            query = getQueryString((this.query));
+        }
         // Prepare the JSON data
         if(this.method.equals("GET") || this.method.equals("DELETE")){
-            url = url + "?" + getQueryString(this.payloadData);
+            String payloadQuery = getQueryString(this.payloadData);
+            if(query.length() > 0 && payloadQuery.length() > 0)
+                query = query + "&" + payloadQuery;
+            else if(query.length() == 0)
+                query = payloadQuery;
         }
         else if (this.method.equals("POST") || this.method.equals("PATCH")) {
             payloadStr = gson.toJson(this.payloadData);
         }
+        if(query.length() > 0)
+            url = url + "?" + query;
 
         // Create a URL object
         URL urlObject = new URL(url);

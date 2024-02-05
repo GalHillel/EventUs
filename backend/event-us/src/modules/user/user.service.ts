@@ -5,7 +5,7 @@ import { User, userDisplayFields } from './user.model';
 import { UserEvent } from '../event/event.model';
 import { ProfilePic } from '../profilePic/profilePic.model';
 
-import { CreateUserDto, LoginUserDto } from '../dto/user.dto';
+import { CreateUserDto, EditUserDto, LoginUserDto } from '../dto/user.dto';
 import { Id } from '../dto/id.dto';
 import { Message } from '../message/message.model';
 import { CreateMessageDto } from '../dto/message.dto';
@@ -13,6 +13,7 @@ import { CreateMessageDto } from '../dto/message.dto';
 
 @Injectable()
 export class UserService {
+  
   constructor(
     @InjectModel(User.name) private readonly userModel: Model<User>,
   ) {}
@@ -26,7 +27,7 @@ export class UserService {
   async createUser(createUserDto: CreateUserDto): Promise<User> {
     
     if(await this.userModel.findOne({email:createUserDto.email, user_type:createUserDto.user_type}).exec() != null){
-      throw new HttpException(createUserDto.user_type+" with this email already exists!",HttpStatus.FORBIDDEN)
+      throw new HttpException(createUserDto.user_type+" with this email already exists!",HttpStatus.CONFLICT)
     }
     console.log("creating user" + createUserDto);
     const createdUser = new this.userModel(createUserDto);
@@ -125,6 +126,29 @@ export class UserService {
    */
   async removeEvent(_id:Id,eventId:Id): Promise<void>{
     await this.userModel.findById(_id).updateOne({},{ $pull: {events: eventId} }).exec();
+  }
+
+  async editUser(_id: Id, edit: EditUserDto) {
+    const user = await this.getUser(_id,"user_type password");
+
+    if(edit.password != null){
+      if(edit.oldPassword == null){
+        throw new HttpException("No old password provided!",HttpStatus.FAILED_DEPENDENCY)
+      }
+      else{
+        if(edit.oldPassword != user.password){
+          throw new HttpException("Wrong password!",HttpStatus.FAILED_DEPENDENCY)
+        }
+      }
+    }
+    if(edit.email != null){
+      if(await this.userModel.findOne({email:edit.email, user_type:user.user_type}).exec() != null){
+        throw new HttpException(user.user_type+" with this email already exists!",HttpStatus.CONFLICT)
+      }
+    }
+
+    this.userModel.updateOne(_id,edit).exec();
+    
   }
 
 

@@ -14,6 +14,8 @@ export class UserDto{
 }
 export class CreateUserDto extends OmitType(UserDto,['_id','profile_pic','messages','events']){}
 export class LoginUserDto extends PickType(UserDto,['email','password','user_type']){}
-export class EditUserDto extends PickType(UserDto,['name','email','password','profile_pic']){}
+export class EditUserDto extends PickType(UserDto,['name','email','password','profile_pic']){
+  readonly oldPassword: string;
+}
 
   
