@@ -163,7 +163,7 @@ public class CreateEventFragment extends Fragment {
     }
 
     private void updateDateEditText() {
-        String dateFormat = "dd-MM-yyyy";
+        String dateFormat = "yyyy-MM-dd";
         SimpleDateFormat sdf = new SimpleDateFormat(dateFormat, Locale.getDefault());
         eventDateEditText.setText(sdf.format(calendar.getTime()));
     }

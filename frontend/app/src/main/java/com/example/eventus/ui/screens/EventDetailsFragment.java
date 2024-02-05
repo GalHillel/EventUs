@@ -326,7 +326,7 @@ public class EventDetailsFragment extends Fragment implements UserAdaptor.Button
     }
 
     private void updateDateTextView() {
-        String dateFormat = "dd-MM-yyyy";
+        String dateFormat = "yyyy-MM-dd";
         SimpleDateFormat sdf = new SimpleDateFormat(dateFormat, Locale.getDefault());
         eventDateView.setText(sdf.format(calendar.getTime()));
     }
