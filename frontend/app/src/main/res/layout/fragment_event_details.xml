@@ -75,8 +75,8 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/eventListRecycleView"
-            android:layout_width="386dp"
-            android:layout_height="382dp"
+            android:layout_width="match_parent"
+            android:layout_height="131dp"
             android:layout_below="@id/eventDescriptionTextView"
             android:layout_marginTop="0dp" />
 

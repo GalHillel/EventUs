@@ -1,18 +1,23 @@
 package com.example.eventus.ui.screens;
 
 import android.app.DatePickerDialog;
+import android.graphics.drawable.Drawable;
 import android.icu.util.Calendar;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatEditText;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -33,7 +38,7 @@ import java.util.Locale;
 public class EventDetailsFragment extends Fragment implements UserAdaptor.ButtonListener{
     private UserEvent userEvent;
     private Button editEventButton, saveEventButton, pickDateButton;
-    private boolean isEditable = false;
+
     private Calendar calendar;
     private List<UserDisplay> users = new ArrayList<>();
 
@@ -43,7 +48,7 @@ public class EventDetailsFragment extends Fragment implements UserAdaptor.Button
     private RecyclerView userListRecyclerView;
     private UserAdaptor userAdaptor;
 
-    private TextView eventNameView, eventDateView, eventLocationview, eventDescription;
+    private EditText eventNameView, eventDateView, eventLocationview, eventDescription;
     private Button exitEventButton, joinEventButton;
 
     @Nullable
@@ -83,8 +88,21 @@ public class EventDetailsFragment extends Fragment implements UserAdaptor.Button
         eventDescription = view.findViewById(R.id.eventDescriptionTextView);
         this.joinEventButton = view.findViewById(R.id.joinEventButton);
         this.exitEventButton = view.findViewById(R.id.leaveEventButton);
+        //eventDateView = view.findViewById(R.id.eventDateTextView);
+        this.calendar = Calendar.getInstance();
+        this.editEventButton = view.findViewById(R.id.editEventButton);
+        this.saveEventButton = view.findViewById(R.id.saveEventButton);
+        this.pickDateButton = view.findViewById(R.id.pickDateButton);
+
+
+
+
+
+        this.pickDateButton.setOnClickListener(this::onPickDateClick);
         this.joinEventButton.setOnClickListener(this::onJoinEventClick);
         this.exitEventButton.setOnClickListener(this::onLeaveEventClick);
+        this.editEventButton.setOnClickListener(this::onEditEventClick);
+        this.saveEventButton.setOnClickListener(this::onSaveEventClick);
 
         if (getArguments() != null) {
 
@@ -109,7 +127,10 @@ public class EventDetailsFragment extends Fragment implements UserAdaptor.Button
                 userListRecyclerView.setAdapter(userAdaptor);
                 if(this.currentUser.get_id().equals(this.userEvent.getCreator_id())){
                     this.exitEventButton.setText("Delete Event");
+
                 }
+
+                toggleEditableMode(false);
 
                 if(this.userEvent.getAttendents().contains(this.currentUser.get_id())){
                     this.joinEventButton.setVisibility(View.GONE);
@@ -128,20 +149,9 @@ public class EventDetailsFragment extends Fragment implements UserAdaptor.Button
 
 
         }
-        eventDateView = view.findViewById(R.id.eventDateTextView);
-        calendar = Calendar.getInstance();
 
-        editEventButton = view.findViewById(R.id.editEventButton);
-        saveEventButton = view.findViewById(R.id.saveEventButton);
 
-        editEventButton.setOnClickListener(this::onEditEventClick);
-        saveEventButton.setOnClickListener(this::onSaveEventClick);
 
-        pickDateButton = view.findViewById(R.id.pickDateButton);
-        pickDateButton.setVisibility(View.GONE);
-        pickDateButton.setOnClickListener(this::onPickDateClick);
-
-        toggleEditableMode(false);
     }
 
     public void onBackButtonClick(View view) {
@@ -221,27 +231,73 @@ public class EventDetailsFragment extends Fragment implements UserAdaptor.Button
             // Handle exception
         }
 
-        toggleEditableMode(false);
-        pickDateButton.setVisibility(View.GONE);
+
+
     }
 
-    private void toggleEditableMode(boolean editable) {
-        isEditable = editable;
+    private void toggleEditableMode(boolean isEdit) {
 
         // Enable or disable editing of TextViews based on the editable flag
-        eventNameView.setEnabled(editable);
-        eventDateView.setEnabled(editable);
-        eventLocationview.setEnabled(editable);
-        eventDescription.setEnabled(editable);
+        /*
+        eventNameView.setEnabled(isEdit);
+        eventDateView.setEnabled(isEdit);
+        eventLocationview.setEnabled(isEdit);
+        eventDescription.setEnabled(isEdit);
+        */
+        setAsTextView(eventNameView,isEdit);
+        setAsTextView(eventDateView,isEdit);
+        setAsTextView(eventLocationview,isEdit);
+        setAsTextView(eventDescription,isEdit);
+
+
 
         // Show or hide the buttons based on the editable flag
-        if (editable) {
+        if (isEdit) {
             editEventButton.setVisibility(View.GONE);
             saveEventButton.setVisibility(View.VISIBLE);
+            pickDateButton.setVisibility(View.VISIBLE);
         } else {
-            editEventButton.setVisibility(View.VISIBLE);
+            //enable the edit button only for creator
+            if(this.currentUser.get_id().equals(this.userEvent.getCreator_id())){
+                editEventButton.setVisibility(View.VISIBLE);
+            }
+            else{
+                editEventButton.setVisibility(View.GONE);
+            }
             saveEventButton.setVisibility(View.GONE);
+            pickDateButton.setVisibility(View.GONE);
+
+
+            }
+
+
+    }
+
+    private void setAsTextView(EditText tv,boolean flg){
+        ;
+        if(flg){
+            tv.setInputType(EditorInfo.TYPE_CLASS_TEXT);
+            tv.setBackground(new AppCompatEditText(tv.getContext()).getBackground());
         }
+
+        else{
+            tv.setInputType(EditorInfo.TYPE_NULL);
+            tv.setBackground(null);
+        }
+
+
+
+        /*
+        tv.setFocusable(flg);
+        tv.setFocusableInTouchMode(flg);
+        tv.setClickable(flg);
+
+
+
+        //tv.setTextAppearance(tv.getContext(), R.attr.);
+        //tv.setTextColor(Color.BLACK); // I'm not sure how to get the default here.
+        tv.setGravity(Gravity.TOP | Gravity.START);
+        */
     }
 
     public void onPickDateClick(View view) {
