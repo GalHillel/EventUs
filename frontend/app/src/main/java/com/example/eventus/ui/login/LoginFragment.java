@@ -186,22 +186,23 @@ public class LoginFragment extends Fragment {
 
                 // Now you can use the userId and userName as needed
                 // For example, you might want to pass them to another fragment or activity
-
+                Bundle args = new Bundle();
+                args.putSerializable("user",userToLogIn);
                 if (checkOrganizer.isChecked()) {
-                    Bundle args = new Bundle();
-                    args.putString("userId", userId);
-                    args.putString("userName", userName);
-
+                    /* Organizer login
                     NavHostFragment.findNavController(LoginFragment.this)
                             .navigate(R.id.action_loginFragment_to_organizerEvents, args);
-                } else {
-                    Bundle args = new Bundle();
-                    args.putString("userId", userId);
-                    args.putString("userName", userName);
 
+                     */
+                } else {
+                    /* Participant login
                     NavHostFragment.findNavController(LoginFragment.this)
                             .navigate(R.id.action_loginFragment_to_userEventsFragment, args);
+
+                     */
                 }
+                NavHostFragment.findNavController(LoginFragment.this)
+                        .navigate(R.id.action_loginFragment_to_userEventsFragment, args);
             } catch (Exception e) {
                 Toast.makeText(requireContext(), e.toString(), Toast.LENGTH_SHORT).show();            }
         });
