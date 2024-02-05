@@ -22,18 +22,5 @@ public class ItemEventFragment extends Fragment{
 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        /*
-        // Handle item click events or perform any necessary initialization here
-        view.findViewById(R.id.showMoreDetails).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    // Navigate to EventDetailsFragment directly
-                    NavHostFragment.findNavController(ItemEventFragment.this)
-                            .navigate(R.id.eventDetailsFragment);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });*/
+
     }}

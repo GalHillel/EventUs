@@ -77,20 +77,20 @@ public class CreateEventFragment extends Fragment {
         createEventButton = view.findViewById(R.id.createEventButton);
 
         // Set up click listeners for buttons
-        /*
+
         view.findViewById(R.id.messages).setOnClickListener(v ->
-                Navigation.findNavController(v).navigate(R.id.action_createEventFragment_to_organizerMessages, createNavigationBundle()));
+                Navigation.findNavController(v).navigate(R.id.action_createEventFragment_to_userMessagesFragment, createNavigationBundle()));
 
         view.findViewById(R.id.profile).setOnClickListener(v ->
-                Navigation.findNavController(v).navigate(R.id.action_createEventFragment_to_organizerProfileFragment, createNavigationBundle()));
+                Navigation.findNavController(v).navigate(R.id.action_createEventFragment_to_userProfileFragment, createNavigationBundle()));
 
         view.findViewById(R.id.myevents).setOnClickListener(v ->
-                Navigation.findNavController(v).navigate(R.id.action_createEventFragment_to_organizerEvents, createNavigationBundle()));
-        */
+                Navigation.findNavController(v).navigate(R.id.action_createEventFragment_to_userEventsFragment, createNavigationBundle()));
+
         // Initialize Calendar
         calendar = Calendar.getInstance();
 
-        view.findViewById(R.id.pickDateButton).setOnClickListener(v -> showDatePickerDialog(v));
+        view.findViewById(R.id.pickDateButton).setOnClickListener(this::showDatePickerDialog);
 
         // Set up click listener for the create event button
         createEventButton.setOnClickListener(v -> createEvent());
@@ -169,4 +169,6 @@ public class CreateEventFragment extends Fragment {
         bundle.putSerializable("user",user);
         return bundle;
     }
+
+
 }

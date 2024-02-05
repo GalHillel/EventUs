@@ -8,7 +8,7 @@
     android:padding="16dp"
     tools:context=".ui.organizer.CreateEventFragment">
 
-    <include layout="@layout/organizer_navigation" />
+    <include layout="@layout/user_navigation" />
 
     <TextView
         android:id="@+id/createEventTitle"

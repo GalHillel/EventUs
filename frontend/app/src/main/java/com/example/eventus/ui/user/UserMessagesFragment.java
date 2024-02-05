@@ -27,6 +27,8 @@ public class UserMessagesFragment extends Fragment {
     }
 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
         BottomNavigationView bottomNavigationView = view.findViewById(R.id.navigation);
         Menu navMenu = bottomNavigationView.getMenu();
 
@@ -40,8 +42,6 @@ public class UserMessagesFragment extends Fragment {
             }
         }
 
-        super.onViewCreated(view, savedInstanceState);
-
         // Set up click listeners for buttons
         view.findViewById(R.id.discover).setOnClickListener(v ->
                 Navigation.findNavController(v).navigate(R.id.action_userMessagesFragment_to_userDiscoverFragment, createNavigationBundle()));
@@ -51,6 +51,9 @@ public class UserMessagesFragment extends Fragment {
 
         view.findViewById(R.id.myevents).setOnClickListener(v ->
                 Navigation.findNavController(v).navigate(R.id.action_userMessagesFragment_to_userEventsFragment, createNavigationBundle()));
+
+        view.findViewById(R.id.newEvent).setOnClickListener(v ->
+                Navigation.findNavController(v).navigate(R.id.action_userMessagesFragment_to_createEventFragment, createNavigationBundle()));
     }
 
     // Method to create a common bundle for navigation

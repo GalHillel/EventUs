@@ -48,7 +48,7 @@ public class UserAdaptor extends RecyclerView.Adapter<UserAdaptor.UserViewHolder
         holder.userName.setText(user.getName());
 
         //kick and message only for organizer
-        if(this.mode.equals("Organizer")){
+        if(this.mode.equals("Organizer") && !this.userList.get(position).getUser_type().equals("Organizer")){
             holder.kickButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

@@ -177,12 +177,10 @@ public class LoginFragment extends Fragment {
 
             try {
                 UserDisplay userToLogIn = Database.userLogin(emailToSendToLoginFunction, passwordToSendToLoginFunction, userType);
-//                emailFromTheUser.setText("");
-//                passwordFromTheUser.setText("");
+                emailFromTheUser.setText("");
+                passwordFromTheUser.setText("");
 
-                // Get user ID and name from UserDisplay
-                String userId = userToLogIn.get_id();
-                String userName = userToLogIn.getName();
+
 
                 // Now you can use the userId and userName as needed
                 // For example, you might want to pass them to another fragment or activity

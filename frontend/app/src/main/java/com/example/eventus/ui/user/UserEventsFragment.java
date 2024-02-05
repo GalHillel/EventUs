@@ -70,6 +70,9 @@ public class UserEventsFragment extends Fragment  implements EventAdapter.OnShow
         view.findViewById(R.id.messages).setOnClickListener(v ->
                 Navigation.findNavController(v).navigate(R.id.action_userEventsFragment_to_userMessagesFragment, createNavigationBundle()));
 
+        view.findViewById(R.id.newEvent).setOnClickListener(v ->
+                Navigation.findNavController(v).navigate(R.id.action_userEventsFragment_to_createEventFragment, createNavigationBundle()));
+
         // Fetch user events using the database function
         try {
             UserEventDisplay[] userEvents = Database.getEventList(user.get_id());

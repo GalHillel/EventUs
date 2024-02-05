@@ -55,6 +55,9 @@
         <action
             android:id="@+id/action_userEventsFragment_to_userMessagesFragment"
             app:destination="@id/userMessagesFragment" />
+        <action
+            android:id="@+id/action_userEventsFragment_to_createEventFragment"
+            app:destination="@id/createEventFragment" />
 
     </fragment>
 
@@ -91,6 +94,9 @@
         <action
             android:id="@+id/action_userProfileFragment_to_userMessagesFragment"
             app:destination="@id/userMessagesFragment" />
+        <action
+            android:id="@+id/action_userProfileFragment_to_createEventFragment"
+            app:destination="@id/createEventFragment" />
 
     </fragment>
 
@@ -111,6 +117,9 @@
         <action
             android:id="@+id/action_userMessagesFragment_to_userProfileFragment"
             app:destination="@id/userProfileFragment" />
+        <action
+            android:id="@+id/action_userMessagesFragment_to_createEventFragment"
+            app:destination="@id/createEventFragment" />
     </fragment>
 
     <fragment
@@ -119,6 +128,15 @@
         android:label="CreateEventFragment"
         tools:layout="@layout/fragment_create_event">
 
+        <action
+            android:id="@+id/action_createEventFragment_to_userProfileFragment"
+            app:destination="@id/userProfileFragment" />
+        <action
+            android:id="@+id/action_createEventFragment_to_userEventsFragment"
+            app:destination="@id/userEventsFragment" />
+        <action
+            android:id="@+id/action_createEventFragment_to_userMessagesFragment"
+            app:destination="@id/userMessagesFragment" />
     </fragment>
     <fragment
         android:id="@+id/itemEventFragment"

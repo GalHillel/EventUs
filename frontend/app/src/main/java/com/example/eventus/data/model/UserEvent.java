@@ -49,4 +49,5 @@ public class UserEvent {
     public List<String> getAttendents(){
         return this.attendents;
     }
+    public String getCreator_id(){return this.creator_id;}
 }
