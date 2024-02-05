@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.screens.UserProfileFragment"
     android:background="@color/white">
-    <include layout="@layout/user_navigation" />
 
+    <include layout="@layout/user_navigation" />
 
     <TextView
         android:layout_width="match_parent"
@@ -19,12 +20,14 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/logout"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
         style="@style/Widget.MaterialComponents.Button.Icon"
-        app:backgroundTint="@color/ButtonType2"
-        android:layout_marginTop="60dp"
-        android:text="Log out"/>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/savePassword"
+        android:layout_marginTop="10dp"
+        android:layout_alignParentEnd="true"
+    android:text="Log out"
+    app:backgroundTint="@color/ButtonType2" />
 
     <TextView
         android:layout_width="match_parent"
@@ -50,7 +53,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"
-            />
+                />
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 
@@ -61,43 +64,31 @@
         style="@style/Widget.MaterialComponents.Button.Icon"
         app:backgroundTint="#00bbff"
         android:layout_marginTop="215dp"
-        android:text="Save" />
+        android:layout_alignParentEnd="true"
+    android:text="Save" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="280dp"
-        android:text="Change Contacts"
+        android:text="Change Email"
         android:textColor="@color/black"
         android:textSize="20sp" />
 
-    <LinearLayout
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="310dp">
+        android:layout_marginTop="310dp"
+        android:hint="Email">
 
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Email">
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/email"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textEmailAddress"
+            android:inputType="textEmailAddress"
             />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="175dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:hint="Phone Number">
-        </com.google.android.material.textfield.TextInputLayout>
-    </LinearLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/saveContact"
@@ -106,8 +97,8 @@
         style="@style/Widget.MaterialComponents.Button.Icon"
         app:backgroundTint="#00bbff"
         android:layout_marginTop="375dp"
-        android:text="Save"
-    />
+        android:layout_alignParentEnd="true"
+    android:text="Save" />
 
     <TextView
         android:layout_width="match_parent"
@@ -125,10 +116,12 @@
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="175dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:hint="Old Password"
             app:endIconMode="password_toggle">
+
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/oldPassword"
                 android:layout_width="match_parent"
@@ -138,11 +131,13 @@
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="175dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:layout_marginLeft="15dp"
             android:hint="New Password"
             app:endIconMode="password_toggle">
+
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/newPassword"
                 android:layout_width="match_parent"
@@ -158,5 +153,7 @@
         style="@style/Widget.MaterialComponents.Button.Icon"
         app:backgroundTint="#00bbff"
         android:layout_marginTop="540dp"
-        android:text="Save" />
-</FrameLayout>
+        android:layout_alignParentEnd="true"
+    android:text="Save" />
+
+</RelativeLayout>
