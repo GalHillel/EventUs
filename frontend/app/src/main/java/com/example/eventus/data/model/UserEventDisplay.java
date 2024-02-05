@@ -3,7 +3,7 @@ package com.example.eventus.data.model;
 import java.io.Serializable;
 import java.util.Date;
 
-public class UserEventDisplay implements Serializable {
+public class UserEventDisplay implements Serializable, Comparable<UserEventDisplay> {
     private String _id, name, location;
     private Date date;
 
@@ -26,8 +26,12 @@ public class UserEventDisplay implements Serializable {
         return this.location;
     }
 
-    public String getId(){ return this._id;}
+    public String getId() {
+        return this._id;
+    }
 
-
+    @Override
+    public int compareTo(UserEventDisplay other) {
+        return this.date.compareTo(other.date);
+    }
 }
-

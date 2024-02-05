@@ -24,6 +24,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class UserEventsFragment extends Fragment  implements EventAdapter.OnShowMoreDetailsClickListener{
@@ -79,6 +81,9 @@ public class UserEventsFragment extends Fragment  implements EventAdapter.OnShow
             // Clear the existing list and add the fetched events
             upcomingEventsList.clear();
             upcomingEventsList.addAll(Arrays.asList(userEvents));
+
+            Collections.sort(upcomingEventsList, (event1, event2) -> event1.getEventDate().compareTo(event2.getEventDate()));
+
         } catch (ServerSideException e) {
             // Handle the exception (e.g., show an error message)
             e.printStackTrace();
