@@ -67,3 +67,7 @@ lerna-debug.log*
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
+
+frontend/app/src/main/java/com/example/appExample/
+frontend/app/src/main/java/com/example/appExample/data/LoginDataSource.java
