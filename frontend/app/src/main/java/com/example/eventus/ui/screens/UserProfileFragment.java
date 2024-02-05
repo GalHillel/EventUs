@@ -15,10 +15,13 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import com.example.eventus.R;
+import com.example.eventus.data.Database;
 import com.example.eventus.data.model.UserDisplay;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
+
+import java.util.HashMap;
 
 public class UserProfileFragment extends Fragment {
 
@@ -85,19 +88,32 @@ public class UserProfileFragment extends Fragment {
 
         // Set up click listeners for buttons
         saveNameButton.setOnClickListener(v -> {
-            // Handle Save Name button click
-            // Implement logic to save name
+            String newUsername = usernameEditText.getText().toString();
+            if (!TextUtils.isEmpty(newUsername)) {
+                try {
+                    HashMap<String, Object> updatedUserParams = new HashMap<>();
+                    updatedUserParams.put("name", newUsername);
+                    Database.editUser(user.get_id(), updatedUserParams);
+                } catch (Exception e) {
+                }
+            }
         });
 
         saveContactButton.setOnClickListener(v -> {
-            // Handle Save Contact button click
-            // Implement logic to save contacts
+            String newEmail = emailEditText.getText().toString();
+            if (!TextUtils.isEmpty(newEmail)) {
+                try {
+                    HashMap<String, Object> updatedUserParams = new HashMap<>();
+                    updatedUserParams.put("email", newEmail);
+                    Database.editUser(user.get_id(), updatedUserParams);
+                } catch (Exception e) {}
+            }
         });
 
         savePasswordButton.setOnClickListener(v -> {
-            // Handle Save Password button click
-            // Implement logic to save password
+            
         });
+
     }
 
     private void setUpTextListeners() {
