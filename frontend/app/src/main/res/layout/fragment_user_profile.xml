@@ -22,9 +22,9 @@
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         style="@style/Widget.MaterialComponents.Button.Icon"
-        app:backgroundTint="#00bbff"
+        app:backgroundTint="@color/ButtonType2"
         android:layout_marginTop="60dp"
-        android:text="Log out" />
+        android:text="Log out"/>
 
     <TextView
         android:layout_width="match_parent"
