@@ -65,6 +65,7 @@ public class CreateEventFragment extends Fragment {
         createEventButton = view.findViewById(R.id.createEventButton);
 
         // Set up click listeners for buttons
+        /*
         view.findViewById(R.id.messages).setOnClickListener(v ->
                 Navigation.findNavController(v).navigate(R.id.action_createEventFragment_to_organizerMessages, createNavigationBundle()));
 
@@ -73,7 +74,7 @@ public class CreateEventFragment extends Fragment {
 
         view.findViewById(R.id.myevents).setOnClickListener(v ->
                 Navigation.findNavController(v).navigate(R.id.action_createEventFragment_to_organizerEvents, createNavigationBundle()));
-
+        */
         // Initialize Calendar
         calendar = Calendar.getInstance();
 
