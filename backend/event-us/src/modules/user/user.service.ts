@@ -87,6 +87,7 @@ export class UserService {
   }
 
 
+  
   async getEventIds(_id: string): Promise<string[]> {
     return (await this.getUser(_id,'events')).events; 
   }

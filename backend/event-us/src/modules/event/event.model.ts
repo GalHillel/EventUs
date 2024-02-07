@@ -7,7 +7,6 @@ import { Document } from 'mongoose';
 @Schema()
 export class UserEvent extends Document {    
     
-    
     @Prop({ required: true })
     name: string;
     
@@ -23,8 +22,17 @@ export class UserEvent extends Document {
     @Prop({ required: true })
     creator_id: string;
     
-    @Prop({ default: [] })
-    attendents: string[];
+    @Prop({ default: {} })
+    attendents: Map<string,boolean>;
+
+    @Prop({default: 0})
+    rating: number;
+
+    @Prop({default: 0})
+    num_ratings: number;
+
+    @Prop({default: false})
+    isPrivate: boolean;
 }
 
 export const userEventDisplayFields = "_id name date location"

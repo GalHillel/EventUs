@@ -60,7 +60,10 @@ export class EventController {
    */
   @Get(":id/users")
   async getEventUsers(@Param("id") _id: string): Promise<User[]>{
-    return  this.eventService.getUserIds(_id).then((ids) => this.userService.getUsers(ids,userDisplayFields))
+    return  this.eventService.getUserIds(_id).then((ids) => {
+      console.log(ids)
+      return this.userService.getUsers(ids,userDisplayFields)
+    })
   }
 
   @Get(":id/creator")

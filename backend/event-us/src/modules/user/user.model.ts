@@ -20,6 +20,9 @@ export class User extends Document {
     @Prop({ required: true })
     user_type: string;
     
+    @Prop({default: ""})
+    bio: string;
+
     //@Prop({ type: [{ type: Id, ref: 'message' }], default: [] })
     @Prop({ default: [] })
     messages: string[];
@@ -27,6 +30,12 @@ export class User extends Document {
     //@Prop({ type: [{ type: Id, ref: 'userevents' }], default: [] })
     @Prop({ default: [] })
     events: string[];
+
+    @Prop({default: 0})
+    rating: number;
+
+    @Prop({default: 0})
+    num_ratings: number;
 
 
 }

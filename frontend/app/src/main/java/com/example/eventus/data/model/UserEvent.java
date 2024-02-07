@@ -1,17 +1,14 @@
 package com.example.eventus.data.model;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-import java.util.Locale;
+import java.util.HashMap;
+import java.util.Map;
 
 public class UserEvent {
 
     String _id, creator_id, name, location, description;
     Date date;
-    ArrayList<String> attendents;
+    Map<String,Boolean> attendents;
 
     public UserEvent(String creator_id, String name, String location, String description, Date date) {
         this._id = "";
@@ -20,7 +17,7 @@ public class UserEvent {
         this.location = location;
         this.description = description;
         this.date = date;
-        this.attendents = new ArrayList<String>();
+        this.attendents = new HashMap<>();
 
     }
 
@@ -49,7 +46,7 @@ public class UserEvent {
     public String getDescription(){
         return this.description;
     }
-    public List<String> getAttendents(){
+    public Map<String,Boolean> getAttendents(){
         return this.attendents;
     }
     public String getCreator_id(){return this.creator_id;}

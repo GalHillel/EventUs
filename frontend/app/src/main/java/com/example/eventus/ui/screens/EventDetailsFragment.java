@@ -1,10 +1,8 @@
 package com.example.eventus.ui.screens;
 
 import android.app.DatePickerDialog;
-import android.graphics.drawable.Drawable;
 import android.icu.util.Calendar;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +11,6 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -129,7 +126,7 @@ public class EventDetailsFragment extends Fragment implements UserAdaptor.Button
 
                 toggleEditableMode(false);
 
-                if(this.userEvent.getAttendents().contains(this.currentUser.get_id())){
+                if(this.userEvent.getAttendents().containsKey(this.currentUser.get_id())){
                     this.joinEventButton.setVisibility(View.GONE);
                     this.exitEventButton.setVisibility(View.VISIBLE);
                 }

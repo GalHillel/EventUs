@@ -15,7 +15,7 @@ def addUser(name,email,password,user_type):
         "password": password,
         "user_type": user_type
     }
-    r_user1 = requests.post(url = URL+"users",json=data_user1)
+    r_user1 = requests.post(url = URL+"users/register",json=data_user1)
     
 
 
@@ -48,8 +48,8 @@ def addUserTest():
         "user_type": "Participant"
     }
 
-    r_user1 = requests.post(url = URL+"users",json=data_user1)
-    r_user2 = requests.post(url = URL+"users",json=data_user2)
+    r_user1 = requests.post(url = URL+"users/register",json=data_user1)
+    r_user2 = requests.post(url = URL+"users/register",json=data_user2)
     print(r_user1)
     print(r_user2)
     return r_user1.json(), r_user2.json()
@@ -70,7 +70,7 @@ def addMessageEventTest(u1_id,u2_id):
         "content":"this is a test message from ziv to user1"
     }
     
-    r_event = requests.post(url = URL+"events",json=data_event)
+    r_event = requests.post(url = URL+"events/create",json=data_event)
     r_messages = requests.post(url = URL+"messages",json=data_message)
     print(r_event)
     print(r_messages)

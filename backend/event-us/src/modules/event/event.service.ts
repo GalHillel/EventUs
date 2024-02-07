@@ -19,7 +19,7 @@ export class EventService {
   async createEvent(createEventDto: CreateEventDto): Promise<UserEvent> {
     console.log("creating event" + createEventDto);
     const createdEvent = new this.userEventModel(createEventDto);
-    createdEvent.attendents.push(createdEvent.creator_id)
+    createdEvent.attendents.set(createdEvent.creator_id,true)
     return createdEvent.save();
   }
 
@@ -57,7 +57,7 @@ export class EventService {
   }
   
   async getUserIds(_id: string): Promise<string[]> {
-    return (await this.getUserEvent(_id,'attendents')).attendents; 
+    return Array.from((await this.getUserEvent(_id,'attendents')).attendents.keys()); 
   }
   async getCreator_id(_id: string): Promise<string> {
     return (await this.getUserEvent(_id,'creator_id')).creator_id; 
@@ -85,10 +85,10 @@ export class EventService {
   async addUser(_id:string,userId:string): Promise<UserEvent>{
     const userEvent = await this.getUserEvent(_id);
     //dupe check
-    if (userEvent.attendents.includes(userId)){
+    if (userEvent.attendents.has(userId)){
       throw new HttpException("User exists in event!",HttpStatus.CONFLICT);
     } 
-    userEvent.attendents.push(userId);
+    userEvent.attendents.set(userId,false);
     await userEvent.save();
     return userEvent;
   }
