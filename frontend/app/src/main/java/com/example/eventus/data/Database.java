@@ -31,7 +31,7 @@ public class Database {
         payloadData.put("email", email);
         payloadData.put("password", password);
         payloadData.put("user_type", user_type);
-        AsyncHttpRequest task = new AsyncHttpRequest("users", payloadData, null, "POST");
+        AsyncHttpRequest task = new AsyncHttpRequest("users/register", payloadData, null, "POST");
         task.execute();
         task.get();
         ServerResponse response = task.getServerResponse();
@@ -61,7 +61,7 @@ public class Database {
         payloadData.put("location", location);
         payloadData.put("description", description);
 
-        AsyncHttpRequest task = new AsyncHttpRequest("events", payloadData, null, "POST");
+        AsyncHttpRequest task = new AsyncHttpRequest("events/create", payloadData, null, "POST");
         task.execute();
         task.get();
         ServerResponse response = task.getServerResponse();
@@ -154,7 +154,7 @@ public class Database {
      */
     public static UserEvent loadEvent(String event_id) throws Exception{
 
-        AsyncHttpRequest task = new AsyncHttpRequest("events/event/"+event_id,  null, null, "GET");
+        AsyncHttpRequest task = new AsyncHttpRequest("events/"+event_id+"/info",  null, null, "GET");
         task.execute();
         task.get();
         ServerResponse response = task.getServerResponse();
@@ -173,8 +173,7 @@ public class Database {
      * @throws Exception ServerSideException or other exception
      */
     public static UserEventDisplay[] searchEvents(HashMap<String,Object> search) throws Exception{
-
-        AsyncHttpRequest task = new AsyncHttpRequest("events/search",  search, null, "GET");
+        AsyncHttpRequest task = new AsyncHttpRequest("events",  search, null, "GET");
         task.execute();
         task.get();
         ServerResponse response = task.getServerResponse();
@@ -234,10 +233,7 @@ public class Database {
      * @throws Exception ServerSideException or other exception
      */
     public static void editEvent(String event_id, HashMap<String,Object> newEventParams) throws Exception{
-        HashMap<String,Object> query = new HashMap<>();
-        query.put("_id",event_id);
-
-        AsyncHttpRequest task = new AsyncHttpRequest("events/edit",  newEventParams, query, "PATCH");
+        AsyncHttpRequest task = new AsyncHttpRequest("users/"+event_id+"/edit",  newEventParams, null, "PATCH");
         task.execute();
         task.get();
         ServerResponse response = task.getServerResponse();

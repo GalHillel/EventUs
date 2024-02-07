@@ -5,8 +5,8 @@ import { User, userDisplayFields } from './user.model';
 import { UserEvent } from '../event/event.model';
 import { ProfilePic } from '../profilePic/profilePic.model';
 
-import { CreateUserDto, EditUserDto, LoginUserDto } from '../dto/user.dto';
-import { Id } from '../dto/id.dto';
+import { CreateUserDto, EditUserDto, LoginUserDto, SearchUserDto } from '../dto/user.dto';
+//import { string } from '../dto/id.dto';
 import { Message } from '../message/message.model';
 import { CreateMessageDto } from '../dto/message.dto';
 
@@ -54,18 +54,6 @@ export class UserService {
   }
 
 
-  async findAllUsers(): Promise<User[]> {
-    return this.userModel.find().exec();
-  }
-  async printAllUsers(): Promise<void>{
-    const users: User[] = await this.userModel.find().exec();
-    
-    users.forEach( (user,index)=>{
-      console.log(user);
-    });
-  }
-
-
   // TODO: error handling
   /**
    * Get all users by ids
@@ -73,7 +61,7 @@ export class UserService {
    * @param fields get only selected fields from each user
    * @returns List of desired users
    */
-  async getUsers(_ids:Id[],fields?:string): Promise<User[]>{
+  async getUsers(_ids:string[],fields?:string): Promise<User[]>{
     return await this.userModel.find({ _id: { $in: _ids } },fields).exec();
   }
   /**
@@ -82,21 +70,30 @@ export class UserService {
    * @param field get only selected fields from user
    * @returns Desired user
    */
-  async getUser(_id:Id, field?:string): Promise<User>{
+  async getUser(_id:string, field?:string): Promise<User>{
     return this.userModel.findById(_id,field).exec().then((user) => { 
       if (!user) throw new NotFoundException('User '+_id+' not Found');
       return user;
     })
   }
+  /**
+   * get a list of users matching the search term
+   * @param searchTerms 
+   * @param fields 
+   * @returns 
+   */
+  async search(searchTerms: SearchUserDto,fields?:string): Promise<User[]>{
+    return this.userModel.find(searchTerms,fields).exec();
+  }
 
 
-  async getEventIds(_id: Id): Promise<Id[]> {
+  async getEventIds(_id: string): Promise<string[]> {
     return (await this.getUser(_id,'events')).events; 
   }
-  async getProfilePicId(_id: Id): Promise<Id> {
+  async getProfilePicId(_id: string): Promise<string> {
     return (await this.getUser(_id,'profile_pic')).profile_pic;
   }
-  async getMessageIds(_id: Id): Promise<Id[]> {
+  async getMessageIds(_id: string): Promise<string[]> {
     return (await this.getUser(_id,'messages')).messages;
   }
 
@@ -107,7 +104,7 @@ export class UserService {
    * @param eventId event _id
    * @returns updated user
    */
-  async addEvent(_id:Id,eventId:Id): Promise<User>{
+  async addEvent(_id:string,eventId:string): Promise<User>{
     const user = await this.getUser(_id);
     //dupe check
     if (user.events.includes(eventId)){
@@ -118,17 +115,18 @@ export class UserService {
     return user;
   }
 
+
   /**
    * removes an event id from the users events list
    * @param _id user _id
    * @param eventId event _id
    * @returns updated user
    */
-  async removeEvent(_id:Id,eventId:Id): Promise<void>{
+  async removeEvent(_id:string,eventId:string): Promise<void>{
     await this.userModel.findById(_id).updateOne({},{ $pull: {events: eventId} }).exec();
   }
 
-  async editUser(_id: Id, edit: EditUserDto) {
+  async editUser(_id: string, edit: EditUserDto) {
     const user = await this.getUser(_id,"user_type password");
 
     if(edit.password != null){
@@ -147,7 +145,7 @@ export class UserService {
       }
     }
 
-    this.userModel.updateOne(_id,edit).exec();
+    this.userModel.updateOne({_id:_id},edit).exec();
     
   }
 
@@ -157,7 +155,7 @@ export class UserService {
    * @param userIds user id's
    * @param msgId msg id
    */
-  async addMessages(userIds: Id[],msgId:Id): Promise<void>{
+  async addMessages(userIds: string[],msgId:string): Promise<void>{
     //no need to check for duplicate messages as this function gets called only on message creation
     await this.userModel.find({ _id: { $in: userIds } }).updateMany({},{ $push: {messages: msgId} }).exec()
   }

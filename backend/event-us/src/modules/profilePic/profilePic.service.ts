@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { ProfilePic } from './profilePic.model';
 import { CreateProfilePicDto } from '../dto/profilePic.dto';
-import { Id } from '../dto/id.dto';
+//import { string } from '../dto/id.dto';
 
 @Injectable()
 export class ProfilePicService {
@@ -32,7 +32,7 @@ export class ProfilePicService {
    * @param field get only selected fields from profilePic
    * @returns Desired profilePic
    */
-  async getProfilePic(_id:Id, field?:string): Promise<ProfilePic>{
+  async getProfilePic(_id:string, field?:string): Promise<ProfilePic>{
     return this.profilePicModel.findById(_id,field).exec().then((pic) => { 
         if (!pic) throw new NotFoundException('profile pic '+_id+' not Found');
         return pic;
@@ -44,7 +44,7 @@ export class ProfilePicService {
    * @param _id _id field of the desired profilePic
    * @returns profile pic icon
    */
-  async getIcon(_id:Id): Promise<Buffer>{
+  async getIcon(_id:string): Promise<Buffer>{
     
     return (await this.getProfilePic(_id,'icon')).icon; 
   }

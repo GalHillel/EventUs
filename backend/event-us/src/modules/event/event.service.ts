@@ -7,7 +7,7 @@ import { CreateEventDto, EditEventDto, SearchEventDto } from '../dto/event.dto';
 import { ObjectId } from 'mongoose';
 
 import { User } from '../user/user.model';
-import { Id } from '../dto/id.dto';
+//import { string } from '../dto/id.dto';
 
 @Injectable()
 export class EventService {
@@ -35,12 +35,12 @@ export class EventService {
   }
 
   /**
-   * Get event by event Id
+   * Get a single event by event Id
    * @param _id _id field of the desired event
    * @param field get only selected fields from event
    * @returns Desired event
    */
-  async getUserEvent(_id:Id,field?:string): Promise<UserEvent>{
+  async getUserEvent(_id:string,field?:string): Promise<UserEvent>{
     return this.userEventModel.findById(_id,field).exec().then((userEvent) => { 
       if (!userEvent) throw new NotFoundException('Event '+_id+' not Found');
       return userEvent;
@@ -52,14 +52,14 @@ export class EventService {
    * @param _ids List of _id field of desired event
    * @returns List of desired event
    */
-  async getUserEvents(_ids:Id[],fields?:string): Promise<UserEvent[]>{
+  async getUserEvents(_ids:string[],fields?:string): Promise<UserEvent[]>{
     return this.userEventModel.find({ _id: { $in: _ids } },fields).exec();
   }
   
-  async getUserIds(_id: Id): Promise<Id[]> {
+  async getUserIds(_id: string): Promise<string[]> {
     return (await this.getUserEvent(_id,'attendents')).attendents; 
   }
-  async getCreator_id(_id: Id): Promise<Id> {
+  async getCreator_id(_id: string): Promise<string> {
     return (await this.getUserEvent(_id,'creator_id')).creator_id; 
   }
 
@@ -68,12 +68,12 @@ export class EventService {
    * @param searchTerms search fields
    * @returns List of userEvents
    */
-  async search(searchTerms: SearchEventDto): Promise<UserEvent[]>{
-    return this.userEventModel.find(searchTerms).exec();
+  async search(searchTerms: SearchEventDto,fields?:string): Promise<UserEvent[]>{
+    return this.userEventModel.find(searchTerms,fields).exec();
   }
 
-  async editEvent(_id:Id,edit: EditEventDto): Promise<void>{
-    this.userEventModel.updateOne(_id,edit).exec();
+  async editEvent(_id:string,edit: EditEventDto): Promise<void>{
+    this.userEventModel.updateOne({_id:_id},edit).exec();
   }
 
   /**
@@ -82,7 +82,7 @@ export class EventService {
    * @param userId user _id
    * @returns updated event
    */
-  async addUser(_id:Id,userId:Id): Promise<UserEvent>{
+  async addUser(_id:string,userId:string): Promise<UserEvent>{
     const userEvent = await this.getUserEvent(_id);
     //dupe check
     if (userEvent.attendents.includes(userId)){
@@ -97,9 +97,9 @@ export class EventService {
    * @param _id event _id
    * @param userId user _id
    */
-  async removeUser(_id:Id,userId:Id): Promise<void>{
+  async removeUser(_id:string,userId:string): Promise<void>{
     
-    await this.userEventModel.findOne({ _id: _id }).updateOne({},{ $pull: {attendents: userId} }).exec();
+    await this.userEventModel.updateOne({ _id: _id },{ $pull: {attendents: userId} }).exec();
    
   }
 
@@ -108,7 +108,7 @@ export class EventService {
    * Deletes event from database
    * @param _id event id
    */
-  async deleteEvent(_id:Id): Promise<void>{
+  async deleteEvent(_id:string): Promise<void>{
     await this.userEventModel.findById(_id).deleteOne().exec();
   }
 

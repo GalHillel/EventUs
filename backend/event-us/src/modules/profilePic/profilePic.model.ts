@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import { Id } from '../dto/id.dto';
+//import { string } from '../dto/id.dto';
 
 @Schema()
 export class ProfilePic extends Document {    

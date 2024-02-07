@@ -1,9 +1,8 @@
 import { Controller, Post, Body, Get, Param, ValidationPipe, UseInterceptors,ClassSerializerInterceptor, Query, Put, Patch, ParseUUIDPipe, HttpException, HttpStatus, HttpCode, UsePipes } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserDto, EditUserDto, LoginUserDto } from '../dto/user.dto';
-import { User } from './user.model';
+import { CreateUserDto, EditUserDto, LoginUserDto, SearchUserDto } from '../dto/user.dto';
+import { User, userDisplayFields } from './user.model';
 import { UserEvent, userEventDisplayFields } from '../event/event.model';
-import { Id } from '../dto/id.dto'
 import { Message } from '../message/message.model';
 import { EventService } from '../event/event.service';
 import { ProfilePicService } from '../profilePic/profilePic.service';
@@ -21,7 +20,7 @@ export class UserController {
     private readonly messageService: MessageService,
   ) {}
 
-  @Post()
+  @Post("register")
   async createUser(@Body() createUserDto: CreateUserDto): Promise<User> {
     try{
       return await this.userService.createUser(createUserDto);
@@ -32,17 +31,42 @@ export class UserController {
 
   }
   
-
+  /**
+   * users, get a list of users matching the search terms
+   * @param searchTerms 
+   * @returns list of users with full details
+   */
   @Get()
-  async findAllUsers(): Promise<User[]> {
-    this.userService.printAllUsers();
-    return this.userService.findAllUsers();
+  @UsePipes(new ValidationPipe({ transform: true }))
+  async findAllUsers(@Query() searchTerms: SearchUserDto): Promise<User[]> {
+    return this.userService.search(searchTerms);
   }
 
   /**
-   * 
-   * @param loginUserDto 
-   * @returns 
+   * users/search, get a list of only the display fields of users matching the search terms
+   * @param searchTerms 
+   * @returns list of users with partial details
+   */
+  @Get("search")
+  @UsePipes(new ValidationPipe({ transform: true }))
+  async searchEvent(@Query() searchTerms: SearchUserDto): Promise<User[]>{
+    return this.userService.search(searchTerms,userDisplayFields);
+  }
+
+  /**
+   * users/<user id>/profile, get full profile details by id
+   * @param _id 
+   * @returns full details of one user
+   */
+  @Get(":id/profile")
+  async getEventInfo(@Param('id') _id: string): Promise<UserEvent> {
+    return this.eventService.getUserEvent(_id);
+  }
+
+  /**
+   * users/login
+   * @param loginUserDto dict containing {email:<user email>, password:<user password>, user_type:<Organizer or Participant>}
+   * @returns user on success (200), http error otherwise
    */
   @Get("login")
   async login(@Query() loginUserDto: LoginUserDto): Promise<User>{
@@ -62,28 +86,27 @@ export class UserController {
 
   
   @Get(':id/events')
-  async getUserEvents(@Param('id') _id: Id): Promise<UserEvent[]>{
+  async getUserEvents(@Param('id') _id: string): Promise<UserEvent[]>{
     return this.userService.getEventIds(_id).then((ids) => this.eventService.getUserEvents(ids,userEventDisplayFields));
   }
   @Get(':id/profilepic')
-  async getUserProfilePicIcon(@Param('id') _id: Id): Promise<Buffer>{
+  async getUserProfilePicIcon(@Param('id') _id: string): Promise<Buffer>{
     return this.userService.getProfilePicId(_id).then((profile_id) => this.profilePicService.getIcon(profile_id));
   }
   @Get(':id/messages')
-  async getUserMessages(@Param('id') _id: Id): Promise<Message[]>{
+  async getUserMessages(@Param('id') _id: string): Promise<Message[]>{
     return this.userService.getMessageIds(_id).then((ids) => this.messageService.getMessages(ids));
   }
 
- 
   
-  /** TODO add guard for event creator
+  /** TODO error handling
    * users/<user id>/exitEvent, Patch request should contain a json in the form {_id:<event id>}
    * @param _id user id
    * @param eventId event id
    */
   @HttpCode(HttpStatus.NO_CONTENT)
   @Patch(':id/exitEvent')
-  async exitEvent(@Param('id') _id: Id,  @Body('_id') eventId: Id): Promise<void>{
+  async exitEvent(@Param('id') _id: string,  @Body('_id') eventId: string): Promise<void>{
     
     await this.eventService.removeUser(eventId,_id);
     await this.userService.removeEvent(_id,eventId);
@@ -91,17 +114,16 @@ export class UserController {
   }
 
   /** TODO add guard for event creator
-   * users/<user id>/exitEvent, Patch request should contain a json in the form {_id:<event id>}
+   * users/<user id>/edit, patch request should contain a json with the new fields to be updated
    * @param _id user id
    * @param eventId event id
    */
   @HttpCode(HttpStatus.NO_CONTENT)
-  @Patch('edit')
+  @Patch(':id/edit')
   @UsePipes(new ValidationPipe({ transform: true }))
-  async editUser(@Query() _id:Id, @Body() editUserDto:EditUserDto): Promise<void>{
+  async editUser(@Query() _id:string, @Body() editUserDto:EditUserDto): Promise<void>{
     
     try{
-
       await this.userService.editUser(_id,editUserDto);
 
     } catch(e){

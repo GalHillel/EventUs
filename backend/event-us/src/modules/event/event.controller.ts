@@ -1,42 +1,57 @@
 import { Controller, Post, Body, Get, Param, Patch, Delete, Query, HttpCode, UsePipes, ValidationPipe, HttpStatus } from '@nestjs/common';
 import { EventService } from './event.service';
 import { CreateEventDto, EditEventDto, SearchEventDto } from '../dto/event.dto';
-import { UserEvent } from './event.model';
-import {Id} from '../dto/id.dto'
+import { UserEvent, userEventDisplayFields } from './event.model';
+
 import { User, userDisplayFields } from '../user/user.model';
 import { UserService } from '../user/user.service';
 import { Schema as mongooseSchema } from "mongoose";
+import { UserDto } from '../dto/user.dto';
 
 
 @Controller('events')
 export class EventController {
   constructor(private readonly eventService: EventService,private readonly userService: UserService) {}
 
-  @Post()
+  @Post("create")
   async createEvent(@Body() createEventDto: CreateEventDto): Promise<UserEvent> {
     const userEvent = await this.eventService.createEvent(createEventDto);
     this.userService.addEvent(createEventDto.creator_id,userEvent.id)
     return userEvent
   }
 
-
+  /**
+   * events, get a list of events matching the search terms
+   * @param searchTerms 
+   * @returns list of events with full details
+   */
   @Get()
-  async findAllEvents(): Promise<UserEvent[]> {
-    this.eventService.printAllEvents();
-    return this.eventService.findAllEvents();
+  @UsePipes(new ValidationPipe({ transform: true }))
+  async getEvent(@Query() searchTerms: SearchEventDto): Promise<UserEvent[]>{
+    return this.eventService.search(searchTerms);
   }
 
-  @Get("event/:id")
-  async getEventInfo(@Param("id") _id: Id): Promise<UserEvent> {
-    
-    return this.eventService.getUserEvent(_id);
-  }
+  /**
+   * events/search, get a list of only the display fields of events matching the search terms
+   * @param searchTerms 
+   * @returns list of events with partial details
+   */
   @Get("search")
   @UsePipes(new ValidationPipe({ transform: true }))
   async searchEvent(@Query() searchTerms: SearchEventDto): Promise<UserEvent[]>{
-    
-    return this.eventService.search(searchTerms);
+    return this.eventService.search(searchTerms,userEventDisplayFields);
   }
+
+  /**
+   * events/<event id>/info, get full event details by id
+   * @param _id 
+   * @returns full details of one event
+   */
+  @Get(":id/info")
+  async getEventInfo(@Param('id') _id: string): Promise<UserEvent> {
+    return this.eventService.getUserEvent(_id);
+  }
+  
   
   /**
    * events/<event id>/users, returns a list of users
@@ -44,47 +59,46 @@ export class EventController {
    * @returns list of users with only display user fields
    */
   @Get(":id/users")
-  async getEventUsers(@Param("id") _id: Id): Promise<User[]>{
+  async getEventUsers(@Param("id") _id: string): Promise<User[]>{
     return  this.eventService.getUserIds(_id).then((ids) => this.userService.getUsers(ids,userDisplayFields))
   }
 
   @Get(":id/creator")
-  async getEventCreator_id(@Param("id") _id: Id): Promise<User>{
+  async getEventCreator_id(@Param("id") _id: string): Promise<User>{
     return  this.eventService.getCreator_id(_id).then((creator) => this.userService.getUser(creator,userDisplayFields))
   }
   
-  /**
+  /**TODO error handling
    * events/<event id>/joinEvent, patch request should contain a json in the form {_id:<user id>}
-   * @param _id event id
+   * @param idStr event id
    * @param userId user id
    */
   @HttpCode(HttpStatus.NO_CONTENT)
   @Patch(':id/joinEvent')
-  async joinEvent(@Param('id') _id: Id, @Body('_id') userId: Id): Promise<void>{
+  async joinEvent(@Param('id') _id: string, @Body('_id') userId: string): Promise<void>{
     
     this.userService.addEvent(userId, _id);
     this.eventService.addUser(_id,userId);
   }
 
   /**
-   * events/edit, patch request should contain a json with the new fields to be updated
+   * events/<event id>/edit, patch request should contain a json with the new fields to be updated
    * @param _id 
    * @param edit 
    */
   @HttpCode(HttpStatus.NO_CONTENT)
-  @Patch('edit')
-  @UsePipes(new ValidationPipe({ transform: true }))
-  async editEvent(@Query() _id: Id, @Body() edit:EditEventDto): Promise<void>{
+  @Patch(':id/edit')
+  async editEvent(@Param('id') _id: string, @Body() edit:EditEventDto): Promise<void>{
     console.log(edit);
-    return this.eventService.editEvent(_id,edit);
+    this.eventService.editEvent(_id,edit);
   }
 
   @HttpCode(HttpStatus.NO_CONTENT)
   @Delete(':id')
-  async delEvent(@Param('id') _id:Id){
-    const userIds = await this.eventService.getUserIds(_id)
-    this.eventService.deleteEvent(_id);
-    userIds.forEach((userId) => this.userService.removeEvent(userId,_id))
+  async delEvent(@Param('id') idStr:string){
+    const userIds = await this.eventService.getUserIds(idStr)
+    this.eventService.deleteEvent(idStr);
+    userIds.forEach((userId) => this.userService.removeEvent(userId,idStr))
   }
 
   // Implement other CRUD endpoints as needed

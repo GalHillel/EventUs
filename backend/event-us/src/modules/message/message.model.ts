@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Schema as MongoScheme } from "mongoose";
 import { Document } from 'mongoose';
 import { Schema as mongooseSchema } from "mongoose";
-import { Id } from '../dto/id.dto';
+//import { string } from '../dto/id.dto';
 
 
 
@@ -10,10 +10,10 @@ import { Id } from '../dto/id.dto';
 export class Message extends Document {    
     
     @Prop({ required: true })
-    sender_id: Id;
+    sender_id: string;
     
     @Prop({ required: true })
-    receiver_ids: Id[];
+    receiver_ids: string[];
 
     @Prop({ default: "" })
     title: string;

@@ -1,12 +1,12 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Schema as mongooseSchema } from 'mongoose';
-import { Id } from '../dto/id.dto';
+//import { string } from '../dto/id.dto';
 
 @Schema()
 export class User extends Document {    
     
     @Prop({default: ""})
-    profile_pic: Id;
+    profile_pic: string;
     
     @Prop({ required: true })
     name: string;
@@ -22,11 +22,11 @@ export class User extends Document {
     
     //@Prop({ type: [{ type: Id, ref: 'message' }], default: [] })
     @Prop({ default: [] })
-    messages: Id[];
+    messages: string[];
     
     //@Prop({ type: [{ type: Id, ref: 'userevents' }], default: [] })
     @Prop({ default: [] })
-    events: Id[];
+    events: string[];
 
 
 }

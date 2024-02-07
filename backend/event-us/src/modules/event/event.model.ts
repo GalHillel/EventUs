@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import { Id } from '../dto/id.dto';
+//import { string } from '../dto/id.dto';
 
 
 
@@ -21,10 +21,10 @@ export class UserEvent extends Document {
     description: string;
     
     @Prop({ required: true })
-    creator_id: Id;
+    creator_id: string;
     
     @Prop({ default: [] })
-    attendents: Id[];
+    attendents: string[];
 }
 
 export const userEventDisplayFields = "_id name date location"

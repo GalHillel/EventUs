@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Message } from './message.model';
 import { CreateMessageDto } from '../dto/message.dto';
-import { Id } from '../dto/id.dto';
+//import { string } from '../dto/id.dto';
 
 @Injectable()
 export class MessageService {
@@ -38,7 +38,7 @@ export class MessageService {
    * @param field get only selected fields from message
    * @returns Desired message
    */
-  async getMessage(_id:Id,field?:string): Promise<Message>{
+  async getMessage(_id:string,field?:string): Promise<Message>{
     return this.messageModel.findById(_id,field).exec().then((message) => { 
       if (!message) throw new NotFoundException('Message '+_id+' not Found');
       return message;
@@ -52,7 +52,7 @@ export class MessageService {
    * @param _ids List of _id field of desired messages
    * @returns List of desired messages
    */
-  async getMessages(_ids:Id[]): Promise<Message[]>{
+  async getMessages(_ids:string[]): Promise<Message[]>{
     return await this.messageModel.find({ _id: { $in: _ids } }).exec();
   }
 
@@ -61,7 +61,7 @@ export class MessageService {
    * @param _id _id field of the desired message
    * @returns contents of desired message
    */
-  async getMessageContent(_id:Id): Promise<string>{
+  async getMessageContent(_id:string): Promise<string>{
     return (await this.getMessage(_id)).content;
   }
   /**
@@ -69,7 +69,7 @@ export class MessageService {
    * @param _id message id
    * @returns sender Id
    */
-  async getSenderId(_id:Id): Promise<Id>{
+  async getSenderId(_id:string): Promise<string>{
     return (await this.getMessage(_id)).sender_id;
   }
   

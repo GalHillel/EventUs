@@ -3,7 +3,7 @@ import { ProfilePicService } from './profilePic.service';
 import { CreateProfilePicDto } from '../dto/profilePic.dto';
 import { ProfilePic } from './profilePic.model';
 import { FileFieldsInterceptor, FileInterceptor } from '@nestjs/platform-express';
-import { Id } from '../dto/id.dto';
+//import { string } from '../dto/id.dto';
 import { Multer } from 'multer';
 
 @Controller('profilepics')

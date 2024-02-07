@@ -33,13 +33,6 @@ for i in range(len(names)):
     time.sleep(1)
 
 
-
-
-
-
-
-
-
 def addUserTest():
     print("-----------------Add user test-----------------")
     data_user1 = {
