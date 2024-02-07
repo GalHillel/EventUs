@@ -66,7 +66,7 @@ public class UserEventsFragment extends Fragment  implements EventAdapter.OnShow
                 Navigation.findNavController(v).navigate(R.id.action_userEventsFragment_to_userDiscoverFragment, createNavigationBundle()));
 
         view.findViewById(R.id.profile).setOnClickListener(v ->
-                Navigation.findNavController(v).navigate(R.id.action_userEventsFragment_to_profileFragment, createNavigationBundle()));
+                Navigation.findNavController(v).navigate(R.id.action_userEventsFragment_to_userProfileFragment, createNavigationBundle()));
 
         view.findViewById(R.id.messages).setOnClickListener(v ->
                 Navigation.findNavController(v).navigate(R.id.action_userEventsFragment_to_userMessagesFragment, createNavigationBundle()));

@@ -1,14 +1,11 @@
 package com.example.eventus.ui.screens;
 
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextUtils;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,25 +13,10 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import com.example.eventus.R;
-import com.example.eventus.data.Database;
 import com.example.eventus.data.model.UserDisplay;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.button.MaterialButton;
-import com.google.android.material.textfield.TextInputEditText;
-
-import java.util.HashMap;
 
 public class UserProfileFragment extends Fragment {
-
-    private TextInputEditText usernameEditText;
-    private TextInputEditText emailEditText;
-    private TextInputEditText oldPasswordEditText;
-    private TextInputEditText newPasswordEditText;
-
-    private MaterialButton saveNameButton;
-    private MaterialButton saveContactButton;
-    private MaterialButton savePasswordButton;
-
     private UserDisplay user;
 
     @Override
@@ -45,27 +27,42 @@ public class UserProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        BottomNavigationView bottomNavigationView = view.findViewById(R.id.navigation);
-        Menu navMenu = bottomNavigationView.getMenu();
-
+        // Get the user data from arguments
         if (getArguments() != null) {
             user = (UserDisplay) getArguments().getSerializable("user");
-
-            if(user != null && user.getUser_type().equals("Organizer")){
-                navMenu.findItem(R.id.discover).setVisible(false);
-            }
-            else{
-                navMenu.findItem(R.id.newEvent).setVisible(false);
-            }
         }
-        
-        usernameEditText = view.findViewById(R.id.Username);
-        emailEditText = view.findViewById(R.id.email);
-        oldPasswordEditText = view.findViewById(R.id.oldPassword);
-        newPasswordEditText = view.findViewById(R.id.newPassword);
-        saveNameButton = view.findViewById(R.id.saveName);
-        saveContactButton = view.findViewById(R.id.saveContact);
-        savePasswordButton = view.findViewById(R.id.savePassword);
+
+        // Hide or show bottom navigation items based on user type
+        if (user != null && user.getUser_type().equals("Organizer")) {
+            hideNavigationItem(view, R.id.discover);
+        } else {
+            hideNavigationItem(view, R.id.newEvent);
+        }
+
+
+        // Set actual user name and bio
+        TextView usernameTextView = view.findViewById(R.id.usernameTextView);
+        TextView bioTextView = view.findViewById(R.id.bioTextView);
+        if (user != null) {
+            usernameTextView.setText(user.getName());
+            //bioTextView.setText(user.getBio());
+        }
+
+        // Hide "Send Message" button if viewing own profile
+        if (isViewingOwnProfile()) {
+            view.findViewById(R.id.sendMessageButton).setVisibility(View.GONE);
+        } else {
+            view.findViewById(R.id.sendMessageButton).setOnClickListener(v -> {
+            });
+        }
+
+        // Hide "Edit Profile" button if viewing other user's profile
+        if (!isViewingOwnProfile()) {
+            view.findViewById(R.id.editProfileButton).setVisibility(View.GONE);
+        } else {
+            view.findViewById(R.id.editProfileButton).setOnClickListener(v ->
+                    Navigation.findNavController(v).navigate(R.id.action_userProfileFragment_to_editProfileFragment, createNavigationBundle()));
+        }
 
         // Set up click listeners for buttons in user_navigation
         view.findViewById(R.id.discover).setOnClickListener(v ->
@@ -79,104 +76,22 @@ public class UserProfileFragment extends Fragment {
 
         view.findViewById(R.id.newEvent).setOnClickListener(v ->
                 Navigation.findNavController(v).navigate(R.id.action_userProfileFragment_to_createEventFragment, createNavigationBundle()));
-
-        MaterialButton logoutButton = view.findViewById(R.id.logout);
-        logoutButton.setOnClickListener(v ->
-                Navigation.findNavController(v).navigate(R.id.action_userProfileFragment_to_loginFragment));
-
-        // Set up text change listeners
-        setUpTextListeners();
-
-        // Set up click listeners for buttons
-        saveNameButton.setOnClickListener(v -> {
-            String newUsername = usernameEditText.getText().toString();
-            if (!TextUtils.isEmpty(newUsername)) {
-                try {
-                    HashMap<String, Object> updatedUserParams = new HashMap<>();
-                    updatedUserParams.put("name", newUsername);
-                    Database.editUser(user.get_id(), updatedUserParams);
-                    usernameEditText.setText("");
-                    user.setName(newUsername);
-                } catch (Exception e) {
-                    Log.e("Err",e.getMessage());
-                }
-            }
-        });
-
-        saveContactButton.setOnClickListener(v -> {
-            String newEmail = emailEditText.getText().toString();
-            if (!TextUtils.isEmpty(newEmail)) {
-                try {
-                    HashMap<String, Object> updatedUserParams = new HashMap<>();
-                    updatedUserParams.put("email", newEmail);
-                    Database.editUser(user.get_id(), updatedUserParams);
-                    emailEditText.setText("");
-                } catch (Exception e) {
-                    Log.e("Err",e.getMessage());
-                }
-            }
-        });
-
-        savePasswordButton.setOnClickListener(v -> {
-            String oldPass = oldPasswordEditText.getText().toString();
-            String newPass = newPasswordEditText.getText().toString();
-            if (!TextUtils.isEmpty(oldPass) && !TextUtils.isEmpty(newPass)) {
-                try {
-                    HashMap<String, Object> updatedUserParams = new HashMap<>();
-                    updatedUserParams.put("oldPassword", oldPass);
-                    updatedUserParams.put("password", newPass);
-                    Database.editUser(user.get_id(), updatedUserParams);
-                    oldPasswordEditText.setText("");
-                    newPasswordEditText.setText("");
-                } catch (Exception e) {
-                    Log.e("Err",e.getMessage());
-                }
-            }
-        });
-
     }
 
-    private void setUpTextListeners() {
-        TextWatcher textWatcher = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                updateSaveButtonsState();
-            }
-        };
-
-        usernameEditText.addTextChangedListener(textWatcher);
-        emailEditText.addTextChangedListener(textWatcher);
-        oldPasswordEditText.addTextChangedListener(textWatcher);
-        newPasswordEditText.addTextChangedListener(textWatcher);
-
-        // Initial state
-        updateSaveButtonsState();
+    private boolean isViewingOwnProfile() {
+        return true;
     }
 
-    private void updateSaveButtonsState() {
-        boolean isNameNotEmpty = !TextUtils.isEmpty(usernameEditText.getText());
-        saveNameButton.setEnabled(isNameNotEmpty);
-
-        boolean isContactNotEmpty = !TextUtils.isEmpty(emailEditText.getText());
-        saveContactButton.setEnabled(isContactNotEmpty);
-
-        boolean isPasswordNotEmpty = !TextUtils.isEmpty(oldPasswordEditText.getText())
-                && !TextUtils.isEmpty(newPasswordEditText.getText());
-        savePasswordButton.setEnabled(isPasswordNotEmpty);
+    private void hideNavigationItem(View view, int itemId) {
+        BottomNavigationView bottomNavigationView = view.findViewById(R.id.navigation);
+        Menu navMenu = bottomNavigationView.getMenu();
+        navMenu.findItem(itemId).setVisible(false);
     }
 
-    // Method to create a common bundle for navigation
     private Bundle createNavigationBundle() {
         Bundle bundle = new Bundle();
-        bundle.putSerializable("user",user);
+        bundle.putSerializable("user", user);
         return bundle;
     }
 }

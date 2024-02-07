@@ -50,14 +50,14 @@
             android:id="@+id/action_userEventsFragment_to_userDiscoverFragment"
             app:destination="@id/userDiscoverFragment" />
         <action
-            android:id="@+id/action_userEventsFragment_to_profileFragment"
-            app:destination="@id/userProfileFragment" />
-        <action
             android:id="@+id/action_userEventsFragment_to_userMessagesFragment"
             app:destination="@id/userMessagesFragment" />
         <action
             android:id="@+id/action_userEventsFragment_to_createEventFragment"
             app:destination="@id/createEventFragment" />
+        <action
+            android:id="@+id/action_userEventsFragment_to_userProfileFragment"
+            app:destination="@id/userProfileFragment" />
 
     </fragment>
 
@@ -70,11 +70,25 @@
             android:id="@+id/action_userDiscoverFragment_to_userEventsFragment"
             app:destination="@id/userEventsFragment" />
         <action
-            android:id="@+id/action_userDiscoverFragment_to_profileFragment"
-            app:destination="@id/userProfileFragment" />
-        <action
             android:id="@+id/action_userDiscoverFragment_to_userMessagesFragment"
             app:destination="@id/userMessagesFragment" />
+        <action
+            android:id="@+id/action_userDiscoverFragment_to_userProfileFragment"
+            app:destination="@id/userProfileFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/editProfileFragment"
+        android:name="com.example.eventus.ui.screens.EditProfileFragment"
+        android:label="EditProfileFragment"
+        tools:layout="@layout/fragment_edit_profile">
+        <action
+            android:id="@+id/action_userProfileFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_editProfileFragment_to_userProfileFragment"
+            app:destination="@id/userProfileFragment" />
+
     </fragment>
 
     <fragment
@@ -82,22 +96,23 @@
         android:name="com.example.eventus.ui.screens.UserProfileFragment"
         android:label="UserProfileFragment"
         tools:layout="@layout/fragment_user_profile">
+
+
         <action
-            android:id="@+id/action_userProfileFragment_to_userEventsFragment"
-            app:destination="@id/userEventsFragment" />
+            android:id="@+id/action_userProfileFragment_to_editProfileFragment"
+            app:destination="@id/editProfileFragment" />
         <action
             android:id="@+id/action_userProfileFragment_to_userDiscoverFragment"
             app:destination="@id/userDiscoverFragment" />
         <action
-            android:id="@+id/action_userProfileFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
+            android:id="@+id/action_userProfileFragment_to_userEventsFragment"
+            app:destination="@id/userEventsFragment" />
         <action
             android:id="@+id/action_userProfileFragment_to_userMessagesFragment"
             app:destination="@id/userMessagesFragment" />
         <action
             android:id="@+id/action_userProfileFragment_to_createEventFragment"
             app:destination="@id/createEventFragment" />
-
     </fragment>
 
 
@@ -115,11 +130,11 @@
             android:id="@+id/action_userMessagesFragment_to_userEventsFragment"
             app:destination="@id/userEventsFragment" />
         <action
-            android:id="@+id/action_userMessagesFragment_to_userProfileFragment"
-            app:destination="@id/userProfileFragment" />
-        <action
             android:id="@+id/action_userMessagesFragment_to_createEventFragment"
             app:destination="@id/createEventFragment" />
+        <action
+            android:id="@+id/action_userMessagesFragment_to_userProfileFragment"
+            app:destination="@id/userProfileFragment" />
     </fragment>
 
     <fragment
@@ -129,14 +144,14 @@
         tools:layout="@layout/fragment_create_event">
 
         <action
-            android:id="@+id/action_createEventFragment_to_userProfileFragment"
-            app:destination="@id/userProfileFragment" />
-        <action
             android:id="@+id/action_createEventFragment_to_userEventsFragment"
             app:destination="@id/userEventsFragment" />
         <action
             android:id="@+id/action_createEventFragment_to_userMessagesFragment"
             app:destination="@id/userMessagesFragment" />
+        <action
+            android:id="@+id/action_createEventFragment_to_userProfileFragment"
+            app:destination="@id/userProfileFragment" />
     </fragment>
     <fragment
         android:id="@+id/itemEventFragment"

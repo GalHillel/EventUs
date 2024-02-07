@@ -71,7 +71,7 @@ public class UserDiscoverFragment extends Fragment implements EventAdapter.OnSho
 
         // Set up click listeners for buttons
         view.findViewById(R.id.profile).setOnClickListener(v ->
-                Navigation.findNavController(v).navigate(R.id.action_userDiscoverFragment_to_profileFragment, createNavigationBundle()));
+                Navigation.findNavController(v).navigate(R.id.action_userDiscoverFragment_to_userProfileFragment, createNavigationBundle()));
 
         view.findViewById(R.id.myevents).setOnClickListener(v ->
                 Navigation.findNavController(v).navigate(R.id.action_userDiscoverFragment_to_userEventsFragment, createNavigationBundle()));
