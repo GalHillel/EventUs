@@ -4,8 +4,8 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class UserEventDisplay implements Serializable, Comparable<UserEventDisplay> {
-    private String _id, name, location;
-    private Date date;
+    protected String _id, name, location;
+    protected Date date;
 
     public UserEventDisplay(String _id, String name, Date date, String location) {
         this._id = _id;
@@ -18,16 +18,30 @@ public class UserEventDisplay implements Serializable, Comparable<UserEventDispl
         return this.name;
     }
 
-    public Date getEventDate() {
+    public Date getDate() {
         return this.date;
     }
 
-    public String getEventLocation() {
+    public String getLocation() {
         return this.location;
     }
-
     public String getId() {
         return this._id;
+    }
+    public String getName() {
+        return this.name;
+    }
+
+
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+    public void setLocation(String location) {
+        this.location = location;
+    }
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override

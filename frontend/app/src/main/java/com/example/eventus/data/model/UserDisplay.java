@@ -14,6 +14,19 @@ public class UserDisplay implements Serializable {
         this.user_type = user_type;
         this.profile_pic = profile_pic;
     }
+    public UserDisplay(String _id, String name, String user_type) {
+        this._id = _id;
+        this.name = name;
+        this.user_type = user_type;
+        this.profile_pic = "";
+    }
+    public UserDisplay(String name, String user_type) {
+        this._id = "";
+        this.name = name;
+        this.user_type = user_type;
+        this.profile_pic = "";
+    }
+
 
     public String get_id() {
         return _id;

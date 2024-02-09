@@ -164,7 +164,7 @@ public class EventDetailsFragment extends Fragment implements UserAdaptor.Button
             Database.joinEvent(this.currentUser.get_id(),this.userEvent.getId());
             this.joinEventButton.setVisibility(View.GONE);
             this.exitEventButton.setVisibility(View.VISIBLE);
-            this.users.add(new UserDisplay(currentUser.get_id(),currentUser.getName(),(this.currentUser.get_id().equals(this.userEvent.getCreator_id()))? "Organizer": "Participant"));
+            this.users.add(new UserDisplay(currentUser.get_id(),currentUser.getName(), (this.currentUser.get_id().equals(this.userEvent.getCreator_id()))? "Organizer": "Participant"));
             this.userAdaptor.notifyItemInserted(this.users.size()-1);
         }catch(Exception e){
             //handle

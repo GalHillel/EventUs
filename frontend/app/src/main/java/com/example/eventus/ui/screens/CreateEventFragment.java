@@ -133,8 +133,8 @@ public class CreateEventFragment extends Fragment {
         // Example: Displaying event details in a Toast message
         String message = "Event created:\n" +
                 "Name: " + userEventDisplay.getEventName() + "\n" +
-                "Date: " + userEventDisplay.getEventDate() + "\n" +
-                "Location: " + userEventDisplay.getEventLocation();
+                "Date: " + userEventDisplay.getDate() + "\n" +
+                "Location: " + userEventDisplay.getLocation();
 
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
 
