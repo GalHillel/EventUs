@@ -6,12 +6,14 @@ import java.util.Date;
 public class UserEventDisplay implements Serializable, Comparable<UserEventDisplay> {
     protected String _id, name, location;
     protected Date date;
+    protected boolean isPrivate;
 
     public UserEventDisplay(String _id, String name, Date date, String location) {
         this._id = _id;
         this.name = name;
         this.date = date;
         this.location = location;
+        this.isPrivate = false;
     }
 
     public String getEventName() {
@@ -31,8 +33,7 @@ public class UserEventDisplay implements Serializable, Comparable<UserEventDispl
     public String getName() {
         return this.name;
     }
-
-
+    
 
     public void setDate(Date date) {
         this.date = date;

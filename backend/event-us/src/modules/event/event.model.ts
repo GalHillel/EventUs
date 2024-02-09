@@ -35,6 +35,6 @@ export class UserEvent extends Document {
     isPrivate: boolean;
 }
 
-export const userEventDisplayFields = "_id name date location"
+export const userEventDisplayFields = "_id name date location isPrivate"
 
 export const UserEventSchema = SchemaFactory.createForClass(UserEvent);

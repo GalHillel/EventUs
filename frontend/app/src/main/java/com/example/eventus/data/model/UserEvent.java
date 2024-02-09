@@ -6,9 +6,11 @@ import java.util.Map;
 
 public class UserEvent extends UserEventDisplay{
 
-    String creator_id, description;
+    protected String creator_id, description;
 
-    Map<String,Boolean> attendents;
+    protected Map<String,Boolean> attendents;
+    protected int rating, num_rating;
+
 
     public UserEvent(String _id, String creator_id, String name, String location, String description, Date date) {
         super(_id,name,date,location);
@@ -18,6 +20,8 @@ public class UserEvent extends UserEventDisplay{
         this.description = description;
 
         this.attendents = new HashMap<>();
+        this.rating = 0;
+        this.num_rating = 0;
 
     }
 
