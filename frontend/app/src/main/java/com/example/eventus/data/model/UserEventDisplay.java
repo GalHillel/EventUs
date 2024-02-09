@@ -33,7 +33,7 @@ public class UserEventDisplay implements Serializable, Comparable<UserEventDispl
     public String getName() {
         return this.name;
     }
-    
+
 
     public void setDate(Date date) {
         this.date = date;

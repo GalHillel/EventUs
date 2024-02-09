@@ -2,10 +2,6 @@ import { IntersectionType, OmitType, PartialType, PickType } from '@nestjs/swagg
 
 import { Expose } from 'class-transformer';
 
-class userStatus{
-  readonly _id:string;
-  readonly isAccepted:string;
-}
 
 export class EventDto{
   readonly _id: string;
