@@ -4,13 +4,15 @@ import java.io.Serializable;
 import java.util.Objects;
 
 public class UserDisplay implements Serializable {
-    private String _id;
-    private String name, user_type;
+    protected String _id;
+    protected String name, user_type;
+    protected String profile_pic;
 
-    public UserDisplay(String _id, String name, String user_type) {
+    public UserDisplay(String _id, String name, String user_type,String profile_pic) {
         this._id = _id;
         this.name = name;
         this.user_type = user_type;
+        this.profile_pic = profile_pic;
     }
 
     public String get_id() {

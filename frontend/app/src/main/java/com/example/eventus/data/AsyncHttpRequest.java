@@ -33,7 +33,6 @@ public class AsyncHttpRequest extends AsyncTask<Void, Void, ServerResponse> {
 
     @Override
     protected ServerResponse doInBackground(Void... voids) {
-
         try {
             this.serverResponse = sendHttpRequest();
             return this.serverResponse;

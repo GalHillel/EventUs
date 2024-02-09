@@ -1,7 +1,7 @@
-import { Controller, Post, Body, Get } from '@nestjs/common';
+import { Controller, Post, Body, Get, UsePipes, ValidationPipe, Query, Param } from '@nestjs/common';
 import { MessageService } from './message.service';
-import { CreateMessageDto } from '../dto/message.dto';
-import { Message } from './message.model';
+import { CreateMessageDto, SearchMessageDto } from '../dto/message.dto';
+import { Message, messageDisplayFields } from './message.model';
 import { UserService } from '../user/user.service';
 
 @Controller('messages')
@@ -18,11 +18,39 @@ export class MessageController {
     return message
   }
 
+  /**
+   * messages, get a list of messages matching the search terms
+   * @param searchTerms 
+   * @returns list of messages with full details
+   */
   @Get()
-  async findAllMessages(): Promise<Message[]> {
-    this.messageService.printAllMessages();
-    return this.messageService.getAllMessages();
+  @UsePipes(new ValidationPipe({ transform: true }))
+  async getMessages(@Query() searchTerms: SearchMessageDto): Promise<Message[]>{
+    return this.messageService.search(searchTerms);
   }
+
+  /**
+   * messages/search, get a list of only the display fields of messages matching the search terms
+   * @param searchTerms 
+   * @returns list of messages with partial details
+   */
+  @Get("search")
+  @UsePipes(new ValidationPipe({ transform: true }))
+  async searchMessages(@Query() searchTerms: SearchMessageDto): Promise<Message[]>{
+    return this.messageService.search(searchTerms,messageDisplayFields);
+  }
+
+
+  /**TODO errpr handling
+   * messages/<message id>/info, get full message details by id
+   * @param _id 
+   * @returns full details of one message
+   */
+  @Get(":id/info")
+  async getEventInfo(@Param('id') _id: string): Promise<Message> {
+    return this.messageService.getMessage(_id);
+  }
+
 
   // Implement other CRUD endpoints as needed
 }

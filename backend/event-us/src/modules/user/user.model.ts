@@ -40,6 +40,7 @@ export class User extends Document {
 
 }
 
-export const userDisplayFields = "_id name user_type"
+export const userDisplayFields = "_id name user_type profile_pic"
+export const userProfileDisplayFields = "_id name user_type profile_pic rating num_ratings events bio"
 
 export const UserSchema = SchemaFactory.createForClass(User);

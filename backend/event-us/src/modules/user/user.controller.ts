@@ -1,9 +1,9 @@
 import { Controller, Post, Body, Get, Param, ValidationPipe, UseInterceptors,ClassSerializerInterceptor, Query, Put, Patch, ParseUUIDPipe, HttpException, HttpStatus, HttpCode, UsePipes } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto, EditUserDto, LoginUserDto, SearchUserDto } from '../dto/user.dto';
-import { User, userDisplayFields } from './user.model';
+import { User, userDisplayFields, userProfileDisplayFields } from './user.model';
 import { UserEvent, userEventDisplayFields } from '../event/event.model';
-import { Message } from '../message/message.model';
+import { Message, messageDisplayFields } from '../message/message.model';
 import { EventService } from '../event/event.service';
 import { ProfilePicService } from '../profilePic/profilePic.service';
 import { MessageService } from '../message/message.service';
@@ -53,14 +53,14 @@ export class UserController {
     return this.userService.search(searchTerms,userDisplayFields);
   }
 
-  /**
+  /**TODO error handling
    * users/<user id>/profile, get full profile details by id
    * @param _id 
-   * @returns full details of one user
+   * @returns profile of user fields
    */
   @Get(":id/profile")
-  async getEventInfo(@Param('id') _id: string): Promise<UserEvent> {
-    return this.eventService.getUserEvent(_id);
+  async getUserProfile(@Param('id') _id: string): Promise<User> {
+    return this.userService.getUser(_id,userProfileDisplayFields);
   }
 
   /**
@@ -95,7 +95,7 @@ export class UserController {
   }
   @Get(':id/messages')
   async getUserMessages(@Param('id') _id: string): Promise<Message[]>{
-    return this.userService.getMessageIds(_id).then((ids) => this.messageService.getMessages(ids));
+    return this.userService.getMessageIds(_id).then((ids) => this.messageService.getMessages(ids,messageDisplayFields));
   }
 
   

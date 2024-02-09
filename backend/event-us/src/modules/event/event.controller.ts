@@ -42,7 +42,7 @@ export class EventController {
     return this.eventService.search(searchTerms,userEventDisplayFields);
   }
 
-  /**
+  /**TODO errpr handling
    * events/<event id>/info, get full event details by id
    * @param _id 
    * @returns full details of one event
@@ -61,7 +61,7 @@ export class EventController {
   @Get(":id/users")
   async getEventUsers(@Param("id") _id: string): Promise<User[]>{
     return  this.eventService.getUserIds(_id).then((ids) => {
-      console.log(ids)
+      
       return this.userService.getUsers(ids,userDisplayFields)
     })
   }

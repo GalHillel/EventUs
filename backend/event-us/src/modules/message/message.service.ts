@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Message } from './message.model';
-import { CreateMessageDto } from '../dto/message.dto';
+import { CreateMessageDto, SearchMessageDto } from '../dto/message.dto';
 //import { string } from '../dto/id.dto';
 
 @Injectable()
@@ -46,14 +46,18 @@ export class MessageService {
     
   }
 
+  async search(searchTerms: SearchMessageDto,fields?:string): Promise<Message[]>{
+    return this.messageModel.find(searchTerms,fields).exec();
+  }
+
   // TODO: error handling
   /**
    * Get all messages by ids
    * @param _ids List of _id field of desired messages
    * @returns List of desired messages
    */
-  async getMessages(_ids:string[]): Promise<Message[]>{
-    return await this.messageModel.find({ _id: { $in: _ids } }).exec();
+  async getMessages(_ids:string[],fields?:string): Promise<Message[]>{
+    return await this.messageModel.find({ _id: { $in: _ids } },fields).exec();
   }
 
   /**

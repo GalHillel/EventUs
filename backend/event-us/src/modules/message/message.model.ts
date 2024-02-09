@@ -25,5 +25,5 @@ export class Message extends Document {
     date_sent: Date; 
 
 }
-
+export const messageDisplayFields = "_id sender_id title"
 export const MessageSchema = SchemaFactory.createForClass(Message);

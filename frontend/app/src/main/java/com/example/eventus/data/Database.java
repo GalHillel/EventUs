@@ -2,12 +2,16 @@ package com.example.eventus.data;
 
 import java.util.HashMap;
 import java.net.HttpURLConnection;
+import java.util.List;
 
+import com.example.eventus.data.model.UserMessageDisplay;
 import com.example.eventus.data.model.ServerResponse;
 import com.example.eventus.data.model.User;
 import com.example.eventus.data.model.UserDisplay;
 import com.example.eventus.data.model.UserEvent;
 import com.example.eventus.data.model.UserEventDisplay;
+import com.example.eventus.data.model.UserMessage;
+import com.example.eventus.data.model.UserProfile;
 import com.google.gson.Gson;
 
 
@@ -73,6 +77,26 @@ public class Database {
             throw new ServerSideException(response.getPayload());
         }
     }
+    public static UserMessage SendMessage(String sender_id, List<String> receiver_ids, String title, String content) throws Exception{
+        HashMap<String, Object> payloadData = new HashMap<String, Object>();
+        payloadData.put("sender_id", sender_id);
+        payloadData.put("receiver_ids", receiver_ids);
+        payloadData.put("title", title);
+        payloadData.put("content", content);
+        AsyncHttpRequest task = new AsyncHttpRequest("messages", payloadData, null, "POST");
+        task.execute();
+        task.get();
+        ServerResponse response = task.getServerResponse();
+
+        if (response.getReturnCode() == HttpURLConnection.HTTP_CREATED) {
+            return gson.fromJson(response.getPayload(), UserMessage.class);
+        }
+        else{
+            throw new ServerSideException(response.getPayload());
+        }
+    }
+
+
 
 
     //GET requests
@@ -144,6 +168,25 @@ public class Database {
         }
     }
 
+    /**
+     * TODO Test and error handling
+     * get list of user displays from the database for some event
+     * @param user_id _id of the user we want to get the message inbox from
+     * @return array of UserMessageDisplays
+     * @throws Exception ServerSideException or other exception
+     */
+    public static UserMessageDisplay[] getMessageInbox(String user_id ) throws Exception{
+        AsyncHttpRequest task = new AsyncHttpRequest("users/"+user_id+"/messages",  null, null, "GET");
+        task.execute();
+        task.get();
+        ServerResponse response = task.getServerResponse();
+        if (response.getReturnCode() == HttpURLConnection.HTTP_OK) {
+            return gson.fromJson(response.getPayload(), UserMessageDisplay[].class);
+        }
+        else{
+            throw new ServerSideException(response.getPayload());
+        }
+    }
 
     /**
      * TODO Test and error handling
@@ -165,6 +208,47 @@ public class Database {
             throw new ServerSideException(response.getPayload());
         }
     }
+    /**
+     * TODO Test and error handling
+     * gets a user's profile
+     * @param user_id id of the event
+     * @return UserProfile object
+     * @throws Exception ServerSideException or other exception
+     */
+    public static UserProfile userProfile(String user_id) throws Exception{
+
+        AsyncHttpRequest task = new AsyncHttpRequest("user/"+user_id+"/profile",  null, null, "GET");
+        task.execute();
+        task.get();
+        ServerResponse response = task.getServerResponse();
+        if (response.getReturnCode() == HttpURLConnection.HTTP_OK) {
+            return gson.fromJson(response.getPayload(), UserProfile.class);
+        }
+        else{
+            throw new ServerSideException(response.getPayload());
+        }
+    }
+    /**
+     * TODO Test and error handling
+     * loads a certain event
+     * @param message_id id of the message
+     * @return message object
+     * @throws Exception ServerSideException or other exception
+     */
+    public static UserMessage loadMessage(String message_id) throws Exception{
+
+        AsyncHttpRequest task = new AsyncHttpRequest("messages/"+message_id+"/info",  null, null, "GET");
+        task.execute();
+        task.get();
+        ServerResponse response = task.getServerResponse();
+        if (response.getReturnCode() == HttpURLConnection.HTTP_OK) {
+            return gson.fromJson(response.getPayload(), UserMessage.class);
+        }
+        else{
+            throw new ServerSideException(response.getPayload());
+        }
+    }
+
 
     /**
      * TODO error handling and testing
@@ -173,12 +257,31 @@ public class Database {
      * @throws Exception ServerSideException or other exception
      */
     public static UserEventDisplay[] searchEvents(HashMap<String,Object> search) throws Exception{
-        AsyncHttpRequest task = new AsyncHttpRequest("events",  search, null, "GET");
+        AsyncHttpRequest task = new AsyncHttpRequest("events/search",  search, null, "GET");
         task.execute();
         task.get();
         ServerResponse response = task.getServerResponse();
         if (response.getReturnCode() == HttpURLConnection.HTTP_OK) {
             return gson.fromJson(response.getPayload(), UserEventDisplay[].class);
+        }
+        else{
+            throw new ServerSideException(response.getPayload());
+        }
+    }
+
+    /**
+     * TODO error handling and testing
+     * @param search parameters to search for a Message, a key is a field in UserMessage
+     * @return all valid UserMessageDisplays given the search terms
+     * @throws Exception ServerSideException or other exception
+     */
+    public static UserMessageDisplay[] searchMessages(HashMap<String,Object> search) throws Exception{
+        AsyncHttpRequest task = new AsyncHttpRequest("messages/search",  search, null, "GET");
+        task.execute();
+        task.get();
+        ServerResponse response = task.getServerResponse();
+        if (response.getReturnCode() == HttpURLConnection.HTTP_OK) {
+            return gson.fromJson(response.getPayload(), UserMessageDisplay[].class);
         }
         else{
             throw new ServerSideException(response.getPayload());
@@ -222,7 +325,6 @@ public class Database {
         if (response.getReturnCode() != HttpURLConnection.HTTP_NO_CONTENT) {
             throw new ServerSideException(response.getPayload());
         }
-
     }
 
     /**
