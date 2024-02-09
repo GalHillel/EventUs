@@ -95,7 +95,11 @@ export class UserController {
   }
   @Get(':id/messages')
   async getUserMessages(@Param('id') _id: string): Promise<Message[]>{
-    return this.userService.getMessageIds(_id).then((ids) => this.messageService.getMessages(ids,messageDisplayFields));
+    return this.userService.getMessageIds(_id).then((ids) => this.messageService.getMessages(ids));
+  }
+  @Get(':id/messageField')
+  async getMessages(@Param('id') _id: string): Promise<User>{
+    return this.userService.getMessages(_id);
   }
 
   
@@ -108,10 +112,25 @@ export class UserController {
   @Patch(':id/exitEvent')
   async exitEvent(@Param('id') _id: string,  @Body('_id') eventId: string): Promise<void>{
     
-    await this.eventService.removeUser(eventId,_id);
-    await this.userService.removeEvent(_id,eventId);
-
+    if (await this.eventService.removeUser(eventId,_id) != null){
+      await this.userService.removeEvent(_id,eventId);
+    }
   }
+
+  /** TODO error handling
+   * users/<user id>/removeMessage, Patch request should contain a json in the form {_id:<message id>}
+   * @param _id user id
+   * @param eventId event id
+   */
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @Patch(':id/removeMessage')
+  async removeMessage(@Param('id') _id: string,  @Body('_id') msgId: string): Promise<void>{
+    
+    await this.userService.removeMessage(_id,msgId);
+    await this.messageService.removeReceiver(msgId,_id)
+    
+  }
+  
 
   /** TODO add guard for event creator
    * users/<user id>/edit, patch request should contain a json with the new fields to be updated

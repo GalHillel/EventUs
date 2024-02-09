@@ -14,6 +14,7 @@ import { CreateMessageDto } from '../dto/message.dto';
 @Injectable()
 export class UserService {
   
+  
   constructor(
     @InjectModel(User.name) private readonly userModel: Model<User>,
   ) {}
@@ -95,7 +96,7 @@ export class UserService {
     return (await this.getUser(_id,'profile_pic')).profile_pic;
   }
   async getMessageIds(_id: string): Promise<string[]> {
-    return (await this.getUser(_id,'messages')).messages;
+    return Array.from((await this.getUser(_id,'messages')).messages.keys());
   }
 
   
@@ -124,7 +125,7 @@ export class UserService {
    * @returns updated user
    */
   async removeEvent(_id:string,eventId:string): Promise<void>{
-    await this.userModel.findById(_id).updateOne({},{ $pull: {events: eventId} }).exec();
+    await this.userModel.updateOne({_id:_id},{ $pull: {events: eventId} }).exec();
   }
 
   async editUser(_id: string, edit: EditUserDto) {
@@ -151,6 +152,10 @@ export class UserService {
   }
 
 
+  async setMessageState(userIds:string[],msgId:string,read:boolean){
+    return this.userModel.updateMany({_id:{$in:userIds}}, {$set:{[`messages.${msgId}`]:read}}).exec()
+  }
+
   /**
    * Adds a message to all users inbox's, there is no check for duplicate messages
    * @param userIds user id's
@@ -158,14 +163,30 @@ export class UserService {
    */
   async addMessages(userIds: string[],msgId:string): Promise<void>{
     //no need to check for duplicate messages as this function gets called only on message creation
-    await this.userModel.find({ _id: { $in: userIds } }).updateMany({},{ $push: {messages: msgId} }).exec()
+    const temp = await this.setMessageState(userIds,msgId,false);
+    console.log(temp)
+  }
+  /**
+   * removes a message from a users inbox's
+   * @param userId user id's
+   * @param msgId msg id
+   */
+  async removeMessage(userId: string,msgId:string): Promise<void>{
+    //no need to check for duplicate messages as this function gets called only on message creation
+    await this.userModel.findById(userId).updateOne({},{ $unset:{[`messages.${msgId}`]:1}}).exec();
+    
+  }
+  async getMessages(_id: string): Promise<User> {
+    return (await this.getUser(_id,'messages'));
   }
   
-
-
-
- 
-  
-
+  /**
+   * set a message as read
+   * @param userId user's id
+   * @param msgId msg id
+   */
+  async readMessage(userId: string, msgId: string) {
+    this.setMessageState([userId],msgId,true);
+  }
   // Implement other CRUD operations as needed
 }

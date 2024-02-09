@@ -1,6 +1,7 @@
 package com.example.eventus.ui.screens;
 
 import android.os.Bundle;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -10,13 +11,31 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.eventus.R;
+import com.example.eventus.data.Database;
+import com.example.eventus.data.ServerSideException;
 import com.example.eventus.data.model.UserDisplay;
+import com.example.eventus.data.model.UserEventDisplay;
+import com.example.eventus.data.model.UserMessageDisplay;
+import com.example.eventus.ui.recycleViews.EventAdapter;
+import com.example.eventus.ui.recycleViews.MessageAdaptor;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class UserMessagesFragment extends Fragment {
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class UserMessagesFragment extends Fragment implements MessageAdaptor.onMessageClickListener {
     private UserDisplay user;
+    private RecyclerView messagesRecyclerView;
+    private List<UserMessageDisplay> messageList = new ArrayList<>();
     public UserMessagesFragment() {
         // Required empty public constructor
     }
@@ -40,6 +59,7 @@ public class UserMessagesFragment extends Fragment {
             else{
                 navMenu.findItem(R.id.newEvent).setVisible(false);
             }
+
         }
 
         // Set up click listeners for buttons
@@ -54,12 +74,51 @@ public class UserMessagesFragment extends Fragment {
 
         view.findViewById(R.id.newEvent).setOnClickListener(v ->
                 Navigation.findNavController(v).navigate(R.id.action_userMessagesFragment_to_createEventFragment, createNavigationBundle()));
+
+
+        try{
+
+            UserMessageDisplay[] newList = Database.getMessageInbox(this.user.get_id());
+            Map<String,Boolean> inboxRead = Database.getMessageInboxStatus(this.user.get_id());
+            messageList.clear();
+            messageList.addAll(Arrays.asList(newList));
+
+            messageList.sort((msg1, msg2) -> msg1.getDate_sent().compareTo(msg2.getDate_sent()));
+
+            messagesRecyclerView = view.findViewById(R.id.userMessagesList);
+
+
+
+            MessageAdaptor messageAdaptor = new MessageAdaptor(messageList,inboxRead);
+            messageAdaptor.setOnMessageClickListener(this);
+            messagesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            messagesRecyclerView.setAdapter(messageAdaptor);
+
+        } catch (ServerSideException e) {
+            // Handle the exception (e.g., show an error message)
+            e.printStackTrace();
+        } catch (Exception e) {
+            // Handle other exceptions
+            e.printStackTrace();
+        }
+
     }
+
+
+
 
     // Method to create a common bundle for navigation
     private Bundle createNavigationBundle() {
         Bundle bundle = new Bundle();
         bundle.putSerializable("user",user);
         return bundle;
+    }
+
+    @Override
+    public void onMessageClick(int position) {
+
+        UserMessageDisplay clickedEvent = messageList.get(position);
+        Bundle args = createNavigationBundle();
+
     }
 }

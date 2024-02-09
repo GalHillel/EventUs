@@ -19,6 +19,7 @@ export class EventController {
     this.userService.addEvent(createEventDto.creator_id,userEvent.id)
     return userEvent
   }
+  
 
   /**
    * events, get a list of events matching the search terms

@@ -2,11 +2,16 @@ package com.example.eventus.data.model;
 
 import java.util.List;
 import java.util.Date;
-public class UserMessage {
-    String _id;
-    String sender_id;
-    List<String> receiver_ids;
-    String title;
-    String content;
-    Date date_sent;
+public class UserMessage extends UserMessageDisplay{
+
+    protected List<String> receiver_ids;
+    protected String content;
+
+    public List<String> getReceiver_ids() {
+        return receiver_ids;
+    }
+
+    public String getContent() {
+        return content;
+    }
 }

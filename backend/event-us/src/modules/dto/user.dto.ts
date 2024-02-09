@@ -9,7 +9,7 @@ export class UserDto{
   readonly bio: string;
   readonly user_type: string;
   readonly profile_pic: string;
-  readonly messages: string[];
+  readonly messages: Map<string,boolean>;
   readonly events: string[];
   readonly rating: number;
   readonly num_ratings: number;

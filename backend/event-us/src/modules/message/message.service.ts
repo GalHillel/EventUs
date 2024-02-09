@@ -1,13 +1,15 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Message } from './message.model';
+import { Message, messageDisplayFields } from './message.model';
 import { CreateMessageDto, SearchMessageDto } from '../dto/message.dto';
+import { User } from '../user/user.model';
 //import { string } from '../dto/id.dto';
 
 @Injectable()
 export class MessageService {
-  constructor(@InjectModel(Message.name) private readonly messageModel: Model<Message>) {}
+  constructor(@InjectModel(Message.name) private readonly messageModel: Model<Message>,
+  @InjectModel(User.name) private readonly userModel: Model<User>) {}
 
   async createMessage(createMessageDto: CreateMessageDto): Promise<Message> {
     console.log("creating message" + createMessageDto);
@@ -15,22 +17,7 @@ export class MessageService {
     return createdMessage.save();
   }
 
-  /**
-   *
-   * @returns List of all messages in the colleciton
-   */
-  async getAllMessages(): Promise<Message[]> {
-    return this.messageModel.find().exec();
-  }
-  /**
-   * Prints all the messages in the collection
-   */
-  async printAllMessages(): Promise<void>{
-    const messages: Message[] = await this.messageModel.find().exec();
-    messages.forEach( (message,index)=>{
-      console.log(message);
-    });
-  }
+  
 
   /**
    * Get message by message Id
@@ -39,7 +26,7 @@ export class MessageService {
    * @returns Desired message
    */
   async getMessage(_id:string,field?:string): Promise<Message>{
-    return this.messageModel.findById(_id,field).exec().then((message) => { 
+    return this.messageModel.findById(_id,field).populate('sender_id','name',this.userModel).exec().then((message) => { 
       if (!message) throw new NotFoundException('Message '+_id+' not Found');
       return message;
     })
@@ -47,7 +34,7 @@ export class MessageService {
   }
 
   async search(searchTerms: SearchMessageDto,fields?:string): Promise<Message[]>{
-    return this.messageModel.find(searchTerms,fields).exec();
+    return this.messageModel.find(searchTerms,fields).populate('sender_id','name',this.userModel).exec();
   }
 
   // TODO: error handling
@@ -57,7 +44,7 @@ export class MessageService {
    * @returns List of desired messages
    */
   async getMessages(_ids:string[],fields?:string): Promise<Message[]>{
-    return await this.messageModel.find({ _id: { $in: _ids } },fields).exec();
+    return this.messageModel.find({ _id: { $in: _ids } },fields).populate('sender_id','name',this.userModel).exec();
   }
 
   /**
@@ -74,7 +61,16 @@ export class MessageService {
    * @returns sender Id
    */
   async getSenderId(_id:string): Promise<string>{
-    return (await this.getMessage(_id)).sender_id;
+    return (await this.messageModel.findById(_id,'sender_id')).sender_id
+  }
+
+  /**
+   * removes the receiver from the message receiver list
+   * @param msgId 
+   * @param userId 
+   */
+  async removeReceiver(msgId:string, userId:string){
+    this.messageModel.updateOne({_id:msgId},{$pull:{receiver_ids:userId}})
   }
   
 

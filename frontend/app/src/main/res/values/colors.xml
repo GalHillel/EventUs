@@ -3,7 +3,7 @@
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="colorButtonPressed">#808080</color>
-    <color name="colorButtonDefault">#007ACC</color>
+
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
@@ -15,7 +15,15 @@
     <color name="yellow">#FFFF00</color>
     <color name="blue_figma">#448EE5</color>
     <color name="teal_figma">#99DAFF</color>
+
+
     <color name="ButtonType2">#D51414</color>
+    <color name="colorButtonDefault">#00bbff</color>
+
+    <color name="listSeperator">#FF000000</color>
+
+    <color name="message_read">#047098</color>
+    <color name="message_unread">#00bbff</color>
 
 
 </resources>

@@ -1,8 +1,10 @@
 package com.example.eventus.data;
 
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.net.HttpURLConnection;
 import java.util.List;
+import java.util.Map;
 
 import com.example.eventus.data.model.UserMessageDisplay;
 import com.example.eventus.data.model.ServerResponse;
@@ -13,6 +15,7 @@ import com.example.eventus.data.model.UserEventDisplay;
 import com.example.eventus.data.model.UserMessage;
 import com.example.eventus.data.model.UserProfile;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 
 public class Database {
@@ -168,6 +171,7 @@ public class Database {
         }
     }
 
+
     /**
      * TODO Test and error handling
      * get list of user displays from the database for some event
@@ -181,7 +185,21 @@ public class Database {
         task.get();
         ServerResponse response = task.getServerResponse();
         if (response.getReturnCode() == HttpURLConnection.HTTP_OK) {
+
             return gson.fromJson(response.getPayload(), UserMessageDisplay[].class);
+        }
+        else{
+            throw new ServerSideException(response.getPayload());
+        }
+    }
+    public static Map<String,Boolean> getMessageInboxStatus(String user_id ) throws Exception{
+        AsyncHttpRequest task = new AsyncHttpRequest("users/"+user_id+"/messageField",  null, null, "GET");
+        task.execute();
+        task.get();
+        ServerResponse response = task.getServerResponse();
+        if (response.getReturnCode() == HttpURLConnection.HTTP_OK) {
+
+            return gson.fromJson(response.getPayload(), User.class).getMessages();
         }
         else{
             throw new ServerSideException(response.getPayload());

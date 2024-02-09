@@ -8,9 +8,9 @@ import { Schema as mongooseSchema } from "mongoose";
 
 @Schema()
 export class Message extends Document {    
-    
-    @Prop({ required: true })
+    @Prop({ type: [{ type: String, ref: 'users' }], required:true})
     sender_id: string;
+    
     
     @Prop({ required: true })
     receiver_ids: string[];

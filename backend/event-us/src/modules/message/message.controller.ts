@@ -42,15 +42,17 @@ export class MessageController {
 
 
   /**TODO errpr handling
-   * messages/<message id>/info, get full message details by id
+   * messages/<message id>/info, get full message details by id, param _id to set the message as read
    * @param _id 
    * @returns full details of one message
    */
   @Get(":id/info")
-  async getEventInfo(@Param('id') _id: string): Promise<Message> {
+  async getMessageInfo(@Param('id') _id: string, @Query('_id') user_id: string): Promise<Message> {
+    if (user_id != null){
+      await this.userService.readMessage(user_id,_id);
+    }
     return this.messageService.getMessage(_id);
   }
-
-
+  
   // Implement other CRUD endpoints as needed
 }

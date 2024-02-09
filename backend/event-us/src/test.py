@@ -7,7 +7,7 @@ URL = "http://localhost:3000/"
 
 
 
-def addUser(name,email,password,user_type):
+def addUser(name,email,password,user_type)->requests.Response:
     print("-----------------Add user-----------------")
     data_user1 = {
         "name": name,
@@ -16,21 +16,105 @@ def addUser(name,email,password,user_type):
         "user_type": user_type
     }
     r_user1 = requests.post(url = URL+"users/register",json=data_user1)
+    return r_user1
+
+#Organizer
+def genUsers(names,u_type="Participant")->list[requests.Response]:
+    
+    emails = [i+"@gmail.com" for i in names]
+    passwords = [i+"Pass" for i in names]
+    users = []
+    for i in range(len(names)):
+        users.append(addUser(names[i],emails[i],passwords[i],u_type))
+        time.sleep(1)
+    return users
+
+names1 = ["messageTest","messageTest2"]
+names2 = ["messageTestO"]
+names = names1 + names2
+user_responses = genUsers(names1) + genUsers(names2,"Organizer")
+users = []
+for i,user_r in enumerate(user_responses):
+    if user_r.status_code != 201:
+        user_r = requests.get(URL+"users?name="+names[i])
+        time.sleep(1)
+        users.append(user_r.json()[0])
+    else:
+        users.append(user_r.json())
+
+#print(users)
+u1,u2,o1 = users
+
+e1 = {}
+time.sleep(1)
+if len(o1["events"])==0:
+    data_event = {
+            "name":"Event1",
+            "date":time.time(),
+            "creator_id":o1["_id"]}
+    event_r = requests.post(url=URL+"events/create",data=data_event)
+    e1 = event_r.json()
+else:
+    event_r = requests.get(URL+"events/"+o1["events"][0]+"/info")
+    e1 = event_r.json()
+time.sleep(1)
+
+if len(u1["events"]) == 0:
+    requests.patch(url=URL+"events/"+e1["_id"]+"/joinEvent",data={"_id":u1["_id"]})
+    time.sleep(1)
+if len(u2["events"]) == 0:
+    requests.patch(url=URL+"events/"+e1["_id"]+"/joinEvent",data={"_id":u2["_id"]})
+    time.sleep(1)
+
+data_message = {
+        "sender_id":o1["_id"],
+        "receiver_ids":[u1["_id"],u2["_id"]],
+        "title":"test message",
+        "content":"this is a test message from o1 to u1 and u2"
+    }
+
+m1 = requests.post(url=URL+"messages",data=data_message).json()
+time.sleep(1)
+
+data_message = {
+        "sender_id":u1["_id"],
+        "receiver_ids":[o1["_id"]],
+        "title":"test message",
+        "content":"this is a test message from u1 to o1"
+    }
+
+m2 = requests.post(url=URL+"messages",data=data_message).json()
+time.sleep(1)
+
+
+#r = requests.get(url=URL+"messages/"+m1["_id"]+"/info?_id="+u1["_id"])
+#print(r.text)
+#time.sleep(1)
+
+
+r = requests.get(url=URL+"users/"+u2["_id"]+"/messages")
+print(r.text)
+time.sleep(1)
+
+
+#r = requests.get(url=URL+"messages/"+m1["_id"]+"/info?_id="+u1["_id"])
+#print(r.text)
+#time.sleep(1)
+
+
+r = requests.get(url=URL+"users/"+u1["_id"]+"/removeMessage",data={"_id":m2["_id"]})
+
+r = requests.patch(url=URL+"users/"+u1["_id"]+"/exitEvent",data={"_id":e1["_id"]})
+time.sleep(1)
+
+print(r)
+print(r.text)
+
+
+
     
 
 
-names = ["user1","user2","user3","user4","user5","ziv","gal"]
-o_names = [i+"O" for i in names]
-emails = [i+"@gmail.com" for i in names]
-o_emails = [i+"@gmail.com" for i in o_names]
-passwords = [i+"Pass" for i in names]
-o_passwords = [i+"Pass" for i in o_names]
-
-for i in range(len(names)):
-    addUser(names[i],emails[i],passwords[i],"Participant")
-    time.sleep(1)
-    addUser(o_names[i],o_emails[i],o_passwords[i],"Organizer")
-    time.sleep(1)
 
 
 def addUserTest():

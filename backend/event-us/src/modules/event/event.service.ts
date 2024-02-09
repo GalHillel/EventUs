@@ -17,7 +17,7 @@ export class EventService {
   ) {}
 
   async createEvent(createEventDto: CreateEventDto): Promise<UserEvent> {
-    console.log("creating event" + createEventDto);
+    
     const createdEvent = new this.userEventModel(createEventDto);
     createdEvent.attendents.set(createdEvent.creator_id,true)
     return createdEvent.save();
@@ -83,6 +83,7 @@ export class EventService {
    * @returns updated event
    */
   async addUser(_id:string,userId:string): Promise<UserEvent>{
+    console.log("_id: "+_id + "     user: "+userId);
     const userEvent = await this.getUserEvent(_id);
     //dupe check
     if (userEvent.attendents.has(userId)){
@@ -97,10 +98,13 @@ export class EventService {
    * @param _id event _id
    * @param userId user _id
    */
-  async removeUser(_id:string,userId:string): Promise<void>{
+  async removeUser(_id:string,userId:string): Promise<UserEvent>{
     
-    await this.userEventModel.updateOne({ _id: _id },{ $pull: {attendents: userId} }).exec();
-   
+    //const tmp = await this.userEventModel.findById(_id).updateMany({},{ $unset:["attendents."+userId]}).exec();
+    
+    const userEvent = await this.userEventModel.findById(_id).exec();
+    userEvent.attendents.delete(userId)
+    return userEvent.save()
   }
 
 

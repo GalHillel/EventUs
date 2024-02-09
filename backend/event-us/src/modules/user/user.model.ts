@@ -23,11 +23,11 @@ export class User extends Document {
     @Prop({default: ""})
     bio: string;
 
-    //@Prop({ type: [{ type: Id, ref: 'message' }], default: [] })
-    @Prop({ default: [] })
-    messages: string[];
     
-    //@Prop({ type: [{ type: Id, ref: 'userevents' }], default: [] })
+    @Prop({ default: {} })
+    messages: Map<string,boolean>;
+    
+    
     @Prop({ default: [] })
     events: string[];
 
