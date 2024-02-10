@@ -5,15 +5,7 @@
         <!-- Other theme attributes -->
     </style>
 
-    <!-- Your App Button Style -->
-    <style name="AppButton" parent="Widget.AppCompat.Button">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:background">@drawable/button_background</item>
-        <item name="android:textColor">@android:color/white</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:layout_marginTop">8dp</item>
-    </style>
+
 
     <style name="DefaultClickableButton" parent="Widget.MaterialComponents.Button.Icon">
         <item name="android:backgroundTint">@color/colorButtonDefault</item>
@@ -22,13 +14,39 @@
 
     </style>
 
+    <style name = "CustomFragmentScreen">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@color/white</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:paddingLeft">20dp</item>
+        <item name="android:paddingRight">20dp</item>
+        <item name="android:paddingTop">20dp</item>
+
+    </style>
+    <style name="CustomFragmentTitle">
+        <item name="android:textSize">30sp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:layout_marginBottom">20dp</item>
+    </style>
+    <style name="CustomFragmentSubTitle">
+        <item name="android:textSize">24sp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:layout_marginBottom">16dp</item>
+    </style>
+
     <style name="clickableListItem" >
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">8dp</item>
         <item name="android:clickable">true</item>
     </style>
 
-    <style name="message_unread">
+    <style name="message_unread" parent="clickableListItem">
         <item name="android:background">@color/message_unread</item>
         <item name="android:textColor">@android:color/black</item>
         <item name="android:textStyle">bold</item>

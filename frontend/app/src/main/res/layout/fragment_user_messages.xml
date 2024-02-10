@@ -1,28 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white"
-    tools:context=".ui.screens.UserMessagesFragment">
-
-    <include layout="@layout/user_navigation" />
+    tools:context=".ui.screens.UserMessagesFragment"
+    style="@style/CustomFragmentScreen">
 
     <TextView
         android:id="@+id/user_messages_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:text="Messages"
-        android:textColor="@color/black"
-        android:textSize="30sp" />
-
+        style="@style/CustomFragmentTitle"
+        android:text="Messages" />
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/userMessagesList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="75dp"
-        android:layout_marginLeft="20dp" />
+        android:layout_weight="1"
 
-</FrameLayout>
+       />
+    <include layout="@layout/user_navigation" />
+
+</LinearLayout>

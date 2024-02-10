@@ -65,16 +65,16 @@ public class LoginFragment extends Fragment {
             String passwordToSendToLoginFunction = passwordFromTheUser.getText().toString().trim();
 
             //default users for testing
-//            if(emailToSendToLoginFunction.equals("") && passwordToSendToLoginFunction.equals("")){
-//                if(userType.equals("Participant")){
-//                    emailToSendToLoginFunction = "user1@gmail.com";
-//                    passwordToSendToLoginFunction = "userPass";
-//                }
-//                else{
-//                    emailToSendToLoginFunction = "ziv.morgan@gmail.com";
-//                    passwordToSendToLoginFunction = "newPass";
-//                }
-//            }
+            if(emailToSendToLoginFunction.equals("") && passwordToSendToLoginFunction.equals("")){
+                if(userType.equals("Participant")){
+                    emailToSendToLoginFunction = "ziv@gmail.com";
+                    passwordToSendToLoginFunction = "zivPass";
+                }
+                else{
+                    emailToSendToLoginFunction = "zivO@gmail.com";
+                    passwordToSendToLoginFunction = "zivOPass";
+                }
+            }
 
             if (passwordToSendToLoginFunction.length() <= 5) {
                 // Show a message indicating incorrect password length
