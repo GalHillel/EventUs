@@ -113,6 +113,9 @@
         <action
             android:id="@+id/action_userProfileFragment_to_createEventFragment"
             app:destination="@id/createEventFragment" />
+        <action
+            android:id="@+id/action_userProfileFragment_to_createMessageFragment"
+            app:destination="@id/createMessageFragment" />
     </fragment>
 
 
@@ -164,11 +167,19 @@
             app:destination="@id/eventDetailsFragment" />
 
     </fragment>
+
     <fragment
         android:id="@+id/eventDetailsFragment"
         android:name="com.example.eventus.ui.screens.EventDetailsFragment"
         android:label="EventDetailsFragment"
         tools:layout="@layout/fragment_event_details">
+    </fragment>
+
+    <fragment
+        android:id="@+id/createMessageFragment"
+        android:name="com.example.eventus.ui.screens.CreateMessageFragment"
+        android:label="CreateMessageFragment"
+        tools:layout="@layout/fragment_create_message">
     </fragment>
 
 

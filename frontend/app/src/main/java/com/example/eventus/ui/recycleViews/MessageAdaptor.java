@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.eventus.R;
@@ -73,7 +74,8 @@ public class MessageAdaptor extends RecyclerView.Adapter<MessageAdaptor.MessageV
                     listener.onMessageClick(holder.getAdapterPosition());
                 }
             }
-        });
+            // TODO: Add bundel for transform data and move to dialog fragment
+            });
     }
     public void setOnMessageClickListener(onMessageClickListener listener) {
         this.listener = listener;

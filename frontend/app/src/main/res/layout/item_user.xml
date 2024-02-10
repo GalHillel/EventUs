@@ -7,10 +7,14 @@
     android:padding="8dp">
 
     <LinearLayout
+        android:id="@+id/userItemLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:clickable="true"
+        android:focusable="true"
+        android:onClick="onUserItemClick">
 
         <TextView
             android:id="@+id/userNameTextView"

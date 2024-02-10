@@ -3,9 +3,10 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:padding="16dp"
-    tools:context=".ui.screens.CreateMessageFragment">
+    tools:context=".ui.screens.CreateMessageFragment"
+    android:background="@color/white">
 
-    <EditText
+<EditText
         android:id="@+id/recipientEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

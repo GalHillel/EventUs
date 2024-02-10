@@ -3,9 +3,11 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:padding="16dp"
-    tools:context=".ui.screens.MessageDialogFragment">
+    tools:context=".ui.screens.MessageDialogFragment"
+    android:background="@color/white">
 
-    <TextView
+
+<TextView
         android:id="@+id/messageTitleTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -61,7 +63,6 @@
         android:layout_height="62dp"
         android:layout_marginTop="16dp"
         android:layout_below="@id/sendButton"
-        android:layout_centerHorizontal="true"
         android:src="@drawable/ic_back"
         android:contentDescription="Back"
         android:onClick="onBackButtonClicked" />

@@ -23,7 +23,7 @@ import com.example.eventus.R;
 import com.example.eventus.data.Database;
 import com.example.eventus.data.model.UserDisplay;
 import com.example.eventus.data.model.UserEvent;
-import com.example.eventus.ui.recycleViews.UserAdaptor;
+import com.example.eventus.ui.recycleViews.UserAdapter;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -32,7 +32,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
-public class EventDetailsFragment extends Fragment implements UserAdaptor.ButtonListener{
+public class EventDetailsFragment extends Fragment implements UserAdapter.ButtonListener{
     private UserEvent userEvent;
     private Button editEventButton, saveEventButton, pickDateButton;
 
@@ -43,7 +43,7 @@ public class EventDetailsFragment extends Fragment implements UserAdaptor.Button
 
     private String eventId;
     private RecyclerView userListRecyclerView;
-    private UserAdaptor userAdaptor;
+    private UserAdapter userAdapter;
 
     private EditText eventNameView, eventDateView, eventLocationview, eventDescription;
     private Button exitEventButton, joinEventButton;
@@ -115,10 +115,10 @@ public class EventDetailsFragment extends Fragment implements UserAdaptor.Button
                 updateFields();
 
                 userListRecyclerView = view.findViewById(R.id.eventListRecycleView);
-                userAdaptor = new UserAdaptor(this.users,(this.currentUser.get_id().equals(this.userEvent.getCreator_id()))? "Organizer": "Participant");
-                userAdaptor.SetonKickClickListener(this);
+                userAdapter = new UserAdapter(this.users,(this.currentUser.get_id().equals(this.userEvent.getCreator_id()))? "Organizer": "Participant");
+                userAdapter.setOnKickClickListener(this);
                 userListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-                userListRecyclerView.setAdapter(userAdaptor);
+                userListRecyclerView.setAdapter(userAdapter);
                 if(this.currentUser.get_id().equals(this.userEvent.getCreator_id())){
                     this.exitEventButton.setText("Delete Event");
 
@@ -165,7 +165,7 @@ public class EventDetailsFragment extends Fragment implements UserAdaptor.Button
             this.joinEventButton.setVisibility(View.GONE);
             this.exitEventButton.setVisibility(View.VISIBLE);
             this.users.add(new UserDisplay(currentUser.get_id(),currentUser.getName(), (this.currentUser.get_id().equals(this.userEvent.getCreator_id()))? "Organizer": "Participant"));
-            this.userAdaptor.notifyItemInserted(this.users.size()-1);
+            this.userAdapter.notifyItemInserted(this.users.size()-1);
         }catch(Exception e){
             //handle
         }
@@ -193,7 +193,7 @@ public class EventDetailsFragment extends Fragment implements UserAdaptor.Button
             Database.exitEvent(user.get_id(),this.userEvent.getId());
             int idx = this.users.indexOf(user);
             this.users.remove(idx);
-            this.userAdaptor.notifyItemRemoved(idx);
+            this.userAdapter.notifyItemRemoved(idx);
         }catch(Exception e){
             //handle
         }

@@ -5,6 +5,8 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,6 +20,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class UserProfileFragment extends Fragment {
     private UserDisplay user;
+    private UserDisplay loggedInUser;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -27,9 +30,16 @@ public class UserProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Get the user data from arguments
+        // Get the users' data from arguments
         if (getArguments() != null) {
-            user = (UserDisplay) getArguments().getSerializable("user");
+            loggedInUser = (UserDisplay) getArguments().getSerializable("loggedInUser");
+            user = (UserDisplay) getArguments().getSerializable("viewedUser");
+            if (loggedInUser != null) {
+                // TODO: Do something with the logged-in user's data
+            }
+            if (user != null) {
+                // TODO: Do something with the viewed user's data
+            }
         }
 
         // Hide or show bottom navigation items based on user type
@@ -37,6 +47,17 @@ public class UserProfileFragment extends Fragment {
             hideNavigationItem(view, R.id.discover);
         } else {
             hideNavigationItem(view, R.id.newEvent);
+        }
+
+        // Show or hide rating related views for organizers only
+        RatingBar userRatingBar = view.findViewById(R.id.userRatingBar);
+        TextView ratingCountTextView = view.findViewById(R.id.ratingCountTextView);
+        Button saveRatingButton = view.findViewById(R.id.saveRatingButton);
+
+        if (user != null && user.getUser_type().equals("Organizer") && !isViewingOwnProfile()) {
+            saveRatingButton.setVisibility(View.VISIBLE);
+        } else {
+            saveRatingButton.setVisibility(View.GONE);
         }
 
 
@@ -48,18 +69,15 @@ public class UserProfileFragment extends Fragment {
             //bioTextView.setText(user.getBio());
         }
 
-        // Hide "Send Message" button if viewing own profile
-        if (isViewingOwnProfile()) {
-            view.findViewById(R.id.sendMessageButton).setVisibility(View.GONE);
-        } else {
-            view.findViewById(R.id.sendMessageButton).setOnClickListener(v -> {
-            });
-        }
-
-        // Hide "Edit Profile" button if viewing other user's profile
         if (!isViewingOwnProfile()) {
+            view.findViewById(R.id.sendMessageButton).setOnClickListener(v ->
+                    Navigation.findNavController(v).navigate(R.id.action_userProfileFragment_to_createMessageFragment, createNavigationBundle())
+            );
+
             view.findViewById(R.id.editProfileButton).setVisibility(View.GONE);
         } else {
+            view.findViewById(R.id.sendMessageButton).setVisibility(View.GONE);
+
             view.findViewById(R.id.editProfileButton).setOnClickListener(v ->
                     Navigation.findNavController(v).navigate(R.id.action_userProfileFragment_to_editProfileFragment, createNavigationBundle()));
         }
@@ -80,6 +98,7 @@ public class UserProfileFragment extends Fragment {
 
 
     private boolean isViewingOwnProfile() {
+        // TODO: Implement
         return true;
     }
 

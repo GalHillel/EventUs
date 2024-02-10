@@ -39,8 +39,7 @@ public class CreateMessageFragment extends Fragment {
         backButton = view.findViewById(R.id.backButton);
 
         sendButton.setOnClickListener(v -> {
-            // Implement send functionality here
-            // You can access recipient, subject, and message using recipientEditText, subjectEditText, and messageEditText
+            // TODO: Implement send functionality here
         });
 
         backButton.setOnClickListener(v -> Navigation.findNavController(v).navigateUp());
