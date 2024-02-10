@@ -37,6 +37,7 @@
         android:text="User Bio"
         android:textSize="16sp" />
 
+    <!-- Rating Bar for Organizers -->
     <RatingBar
         android:id="@+id/userRatingBar"
         android:layout_width="wrap_content"
@@ -46,8 +47,10 @@
         android:layout_marginTop="16dp"
         android:numStars="5"
         android:rating="0"
-        android:stepSize="0.5" />
+        android:stepSize="0.5"
+        android:visibility="visible" />
 
+    <!-- Rating Count TextView for Organizers -->
     <TextView
         android:id="@+id/ratingCountTextView"
         android:layout_width="wrap_content"
@@ -59,16 +62,30 @@
         android:textColor="@color/black"
         android:textSize="14sp" />
 
+    <!-- Save Rating Button for Organizers -->
     <Button
-        android:id="@+id/sendMessageButton"
+        android:id="@+id/saveRatingButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/ratingCountTextView"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
+        android:text="Save Rating"
+        app:backgroundTint="#00bbff"
+        android:visibility="visible" />
+
+    <!-- Send Message Button -->
+    <Button
+        android:id="@+id/sendMessageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/saveRatingButton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
         android:text="Send Message"
         app:backgroundTint="#00bbff" />
 
+    <!-- Edit Profile Button -->
     <Button
         android:id="@+id/editProfileButton"
         android:layout_width="wrap_content"

@@ -1,0 +1,69 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:padding="16dp"
+    tools:context=".ui.screens.MessageDialogFragment">
+
+    <TextView
+        android:id="@+id/messageTitleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:text="Message Title"
+        android:layout_marginBottom="8dp"
+        android:textStyle="bold"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/messageSenderTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:text="From: Sender"
+        android:layout_below="@id/messageTitleTextView"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/messageContentTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:text="Message Content"
+        android:layout_below="@id/messageSenderTextView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp" />
+
+    <EditText
+        android:id="@+id/replyEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/messageContentTextView"
+        android:layout_marginTop="16dp"
+        android:hint="Type your reply here"
+        android:inputType="textMultiLine"
+        android:minHeight="48dp" />
+
+    <Button
+        android:id="@+id/sendButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Send"
+        style="@style/DefaultClickableButton"
+        android:layout_below="@id/replyEditText"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp" />
+
+    <ImageButton
+        android:id="@+id/backButton"
+        android:layout_width="97dp"
+        android:layout_height="62dp"
+        android:layout_marginTop="16dp"
+        android:layout_below="@id/sendButton"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/ic_back"
+        android:contentDescription="Back"
+        android:onClick="onBackButtonClicked" />
+
+</RelativeLayout>
