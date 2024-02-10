@@ -73,10 +73,9 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/saveName"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        style="@style/Widget.MaterialComponents.Button.Icon"
-        app:backgroundTint="#00bbff"
+
+        style="@style/DefaultClickableButton"
+
         android:layout_marginTop="215dp"
         android:layout_alignParentEnd="true"
         android:text="Save" />
