@@ -235,7 +235,7 @@ public class Database {
      */
     public static UserProfile userProfile(String user_id) throws Exception{
 
-        AsyncHttpRequest task = new AsyncHttpRequest("user/"+user_id+"/profile",  null, null, "GET");
+        AsyncHttpRequest task = new AsyncHttpRequest("users/"+user_id+"/profile",  null, null, "GET");
         task.execute();
         task.get();
         ServerResponse response = task.getServerResponse();
