@@ -61,6 +61,7 @@
         <Button
             android:id="@+id/saveRatingButton"
             style="@style/DefaultClickableButton"
+            android:layout_gravity="center"
             android:layout_marginTop="16dp"
             android:text="Save Rating"
             android:visibility="visible" />

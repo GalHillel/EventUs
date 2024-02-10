@@ -58,8 +58,6 @@ public class UserEventsFragment extends Fragment  implements EventAdapter.OnShow
             }
         }
 
-
-
         // Set up click listeners for buttons
         view.findViewById(R.id.discover).setOnClickListener(v ->
                 Navigation.findNavController(v).navigate(R.id.action_userEventsFragment_to_userDiscoverFragment, createNavigationBundle()));
@@ -81,7 +79,7 @@ public class UserEventsFragment extends Fragment  implements EventAdapter.OnShow
             upcomingEventsList.clear();
             upcomingEventsList.addAll(Arrays.asList(userEvents));
 
-            Collections.sort(upcomingEventsList, (event1, event2) -> event1.getDate().compareTo(event2.getDate()));
+            upcomingEventsList.sort((event1, event2) -> event1.getDate().compareTo(event2.getDate()));
 
         } catch (ServerSideException e) {
             // Handle the exception (e.g., show an error message)

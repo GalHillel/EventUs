@@ -96,7 +96,7 @@
             android:text="Join Event"
             android:layout_below="@id/eventListRecycleView"
             app:backgroundTint="#00bbff"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             />
 
         <Button
@@ -106,7 +106,7 @@
             android:text="Leave Event"
             android:layout_below="@id/joinEventButton"
             app:backgroundTint="#00bbff"
-            android:layout_marginTop="16dp"/>
+            android:layout_marginTop="8dp"/>
 
         <Button
             android:id="@+id/editEventButton"
@@ -115,18 +115,18 @@
             android:text="Edit Event"
             android:layout_below="@id/leaveEventButton"
             app:backgroundTint="#00bbff"
-            android:layout_marginTop="16dp" />
+            android:layout_marginTop="8dp" />
 
-        <Button
-            android:id="@+id/saveEventButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Save Event"
-            android:layout_below="@id/editEventButton"
-            app:backgroundTint="#00bbff"
-            android:layout_marginTop="16dp" />
+            <Button
+                android:id="@+id/saveEventButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/editEventButton"
+                android:layout_marginTop="8dp"
+                android:text="Save Event"
+                app:backgroundTint="#00bbff" />
 
-        <ImageButton
+            <ImageButton
             android:id="@+id/backButton"
             android:layout_width="97dp"
             android:layout_height="62dp"

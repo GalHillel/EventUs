@@ -41,7 +41,7 @@ public class UserProfileFragment extends Fragment {
         // Get the users' data from arguments
         if (getArguments() != null) {
             user = (UserDisplay) getArguments().getSerializable("user");
-            uProfile = (UserDisplay) getArguments().getSerializable("profile");
+            uProfile = (UserDisplay) getArguments().getSerializable("other_user");
 
         }
         if(uProfile == null)

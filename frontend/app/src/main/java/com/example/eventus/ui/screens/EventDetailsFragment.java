@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -117,6 +118,8 @@ public class EventDetailsFragment extends Fragment implements UserAdapter.Button
                 userListRecyclerView = view.findViewById(R.id.eventListRecycleView);
                 userAdapter = new UserAdapter(this.users,(this.currentUser.get_id().equals(this.userEvent.getCreator_id()))? "Organizer": "Participant");
                 userAdapter.setOnKickClickListener(this);
+                userAdapter.setOnMessageClickListener(this);
+                userAdapter.setOnUserItemClickListener(this);
                 userListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                 userListRecyclerView.setAdapter(userAdapter);
                 if(this.currentUser.get_id().equals(this.userEvent.getCreator_id())){
@@ -143,8 +146,6 @@ public class EventDetailsFragment extends Fragment implements UserAdapter.Button
 
 
         }
-
-
 
     }
     private void updateFields(){
@@ -200,13 +201,25 @@ public class EventDetailsFragment extends Fragment implements UserAdapter.Button
     }
     @Override
     public void onKickClick(int position) {
-
         removeUser(this.users.get(position));
     }
 
     @Override
     public void onMessageClick(int position) {
-        //handle message button click
+        Bundle args = new Bundle();
+        args.putSerializable("user",this.currentUser);
+        args.putSerializable("other_user",this.users.get(position));
+        NavHostFragment.findNavController(EventDetailsFragment.this)
+                .navigate(R.id.createMessageFragment, args);
+    }
+
+    @Override
+    public void onUserItemClick(int position) {
+        Bundle args = new Bundle();
+        args.putSerializable("user",this.currentUser);
+        args.putSerializable("other_user",this.users.get(position));
+        NavHostFragment.findNavController(EventDetailsFragment.this)
+                .navigate(R.id.userProfileFragment, args);
     }
 
     // This method will be called when the "Edit Event" button is clicked

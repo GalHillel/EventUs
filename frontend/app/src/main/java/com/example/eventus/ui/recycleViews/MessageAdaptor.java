@@ -53,7 +53,7 @@ public class MessageAdaptor extends RecyclerView.Adapter<MessageAdaptor.MessageV
 
         holder.userMessageTitleView.setText(msg.getTitle());
         holder.userMessageDateView.setText(msg.getDateString());
-        holder.userMessageSenderView.setText(msg.getSenderName());
+        holder.userMessageSenderView.setText("from: "+msg.getSenderName());
         if(hasRead){
             holder.userMessageItem.setBackgroundResource(R.color.message_read);
             holder.userMessageSenderView.setTypeface(null, Typeface.NORMAL);

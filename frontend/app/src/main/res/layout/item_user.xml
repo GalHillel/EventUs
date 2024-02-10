@@ -3,50 +3,51 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="8dp">
+    android:orientation="vertical">
 
     <LinearLayout
-        android:id="@+id/userItemLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:background="@color/white"
-        android:orientation="horizontal"
-        android:clickable="true"
-        android:focusable="true"
-        android:onClick="onUserItemClick">
+        android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/userNameTextView"
-            style="@style/TextAppearance.AppCompat.Large"
+        <LinearLayout
+            android:id="@+id/userItemLayout"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:layout_margin="8dp"
-            android:textStyle="bold" />
+            android:layout_marginEnd="4dp"
+            style="@style/clickableListItem"
+            android:background="@color/white"
+            android:focusable="true">
+            <TextView
+                android:id="@+id/userNameTextView"
+                android:gravity="center_vertical"
+                style="@style/TextAppearance.AppCompat.Large"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textStyle="bold" />
+        </LinearLayout>
 
         <Button
             android:id="@+id/messageButton"
-            android:layout_width="120dp"
-            android:layout_height="match_parent"
             android:layout_weight="0"
             android:text="Message"
-            android:textColor="@color/black"
-            app:backgroundTint="#00bbff" />
-
+            android:layout_marginStart="8dp"
+            style="@style/DefaultClickableButton" />
         <Button
             android:id="@+id/kickButton"
-            android:layout_width="120dp"
             android:layout_weight="0"
-            android:layout_height="match_parent"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
             android:text="Kick"
-            android:textColor="@color/black"
-            app:backgroundTint="#00bbff" />
+            style="@style/DefaultClickableButton" />
     </LinearLayout>
 
-    <View
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#00bbff" />
+        android:background="@color/listSeperator">
+    </LinearLayout>
 
 </LinearLayout>

@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -22,6 +23,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
     private String mode;
     private ButtonListener kickListener;
     private ButtonListener messageListener;
+    private ButtonListener userItemListener;
 
     public UserAdapter(List<UserDisplay> userList, String mode) {
         this.userList = userList;
@@ -31,6 +33,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
     public interface ButtonListener {
         void onKickClick(int position);
         void onMessageClick(int position);
+        void onUserItemClick(int position);
     }
 
     public void setOnKickClickListener(ButtonListener listener) {
@@ -39,6 +42,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
 
     public void setOnMessageClickListener(ButtonListener listener) {
         this.messageListener = listener;
+    }
+    public void setOnUserItemClickListener(ButtonListener listener){
+        this.userItemListener = listener;
     }
 
     @NonNull
@@ -67,7 +73,12 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
                 messageListener.onMessageClick(position);
             }
             // TODO: Add bundel for transform data
-            Navigation.findNavController(v).navigate(R.id.createMessageFragment);
+            //  Navigation.findNavController(v).navigate(R.id.createMessageFragment);
+        });
+        holder.userItem.setOnClickListener(v-> {
+            if (userItemListener != null) {
+                userItemListener.onUserItemClick(position);
+            }
         });
 
         // Hide kick and message buttons if not in Organizer mode or if the user is an Organizer
@@ -90,6 +101,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
     }
 
     static class UserViewHolder extends RecyclerView.ViewHolder {
+        LinearLayout userItem;
         TextView userName;
         Button kickButton;
         Button messageButton;
@@ -99,6 +111,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
             userName = itemView.findViewById(R.id.userNameTextView);
             kickButton = itemView.findViewById(R.id.kickButton);
             messageButton = itemView.findViewById(R.id.messageButton);
+            userItem = itemView.findViewById(R.id.userItemLayout);
         }
     }
 }
