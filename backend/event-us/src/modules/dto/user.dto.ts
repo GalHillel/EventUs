@@ -19,7 +19,7 @@ export class ParticipantDto extends OmitType(UserDto,['rating','num_ratings']){}
 export class CreateUserDto extends OmitType(UserDto,['_id','profile_pic','messages','events','rating','num_ratings','bio']){}
 export class LoginUserDto extends PickType(UserDto,['email','password','user_type']){}
 export class SearchUserDto extends PickType(UserDto,['_id','name','email','user_type']){}
-export class EditUserDto extends PickType(UserDto,['name','email','password','profile_pic']){
+export class EditUserDto extends PickType(UserDto,['name','email','password','profile_pic','rating','num_ratings']){
   readonly oldPassword: string;
 }
 

@@ -371,9 +371,9 @@ public class Database {
      */
     public static void editUser(String user_id, HashMap<String,Object> newEventParams) throws Exception{
         HashMap<String,Object> query = new HashMap<>();
-        query.put("_id",user_id);
-        String url = "users/edit";
-        AsyncHttpRequest task = new AsyncHttpRequest("users/edit",  newEventParams,query, "PATCH");
+
+
+        AsyncHttpRequest task = new AsyncHttpRequest("users/"+user_id+"/edit",  newEventParams,query, "PATCH");
         task.execute();
         task.get();
         ServerResponse response = task.getServerResponse();

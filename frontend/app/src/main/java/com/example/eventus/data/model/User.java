@@ -6,11 +6,6 @@ import java.util.Map;
 
 public class User extends UserProfile{
     String email,password;
-
-    public Map<String, Boolean> getMessages() {
-        return messages;
-    }
-
     Map<String,Boolean> messages;
 
     public User(String _id, String name, String user_type, String profile_pic, String email, String password) {
@@ -20,6 +15,10 @@ public class User extends UserProfile{
         this.password = password;
         this.messages = new HashMap<String,Boolean>();
 
+    }
+
+    public Map<String, Boolean> getMessages() {
+        return messages;
     }
 
 

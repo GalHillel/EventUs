@@ -132,10 +132,10 @@ export class UserController {
   }
   
 
-  /** TODO add guard for event creator
+  /** TODO
    * users/<user id>/edit, patch request should contain a json with the new fields to be updated
    * @param _id user id
-   * @param eventId event id
+   * @param editUserDto new data
    */
   @HttpCode(HttpStatus.NO_CONTENT)
   @Patch(':id/edit')
