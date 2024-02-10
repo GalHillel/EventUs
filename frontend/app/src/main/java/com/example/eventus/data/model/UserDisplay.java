@@ -6,6 +6,9 @@ import java.util.Objects;
 public class UserDisplay implements Serializable {
     protected String _id;
     protected String name, user_type;
+
+
+
     protected String profile_pic;
 
     public UserDisplay(String _id, String name, String user_type,String profile_pic) {
@@ -45,6 +48,9 @@ public class UserDisplay implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         UserDisplay that = (UserDisplay) o;
         return Objects.equals(_id, that._id);
+    }
+    public String getProfile_pic() {
+        return profile_pic;
     }
 
     @Override

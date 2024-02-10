@@ -7,24 +7,19 @@ import json
 URL = "http://localhost:3000/"
 
 
-def addProfilePicTest():
+def addProfilePic():
     print("-----------------Add profile pic test-----------------")
     with open("backend/event-us/src/testimg.png",'rb') as f:
         testImg = f.read()
-    with open("backend/event-us/src/defaultpfp.png",'rb') as f:
-        defaultpfp = f.read()
     
     files1 = {
         "icon": ("testimg.png", testImg, "multipart/form-data")
     }
-    files2 = {
-        "icon": ("defaultpfp.png", defaultpfp, "multipart/form-data")
-    }
     r_files1 = requests.post(url = URL+"profilepics",files=files1)
-    r_files2 = requests.post(url = URL+"profilepics",files=files2)
+    
     print(r_files1)
-    print(r_files2)
-    return r_files1.json(), r_files2.json()
+    
+    return r_files1.json()
     
 def addUser(name,email,password,user_type)->requests.Response:
     print("-----------------Add user-----------------")
@@ -85,7 +80,7 @@ def genMessages(message_datas):
         time.sleep(1)
 
 
-GEN_DATA = True
+GEN_DATA = False
 datetime_str1 = ['09/19/24 13:55:26','04/2/24 13:55:26','01/9/25 13:55:26','09/24/24 13:55:26','03/11/24 13:55:26']
 datetime_str2 = ['03/19/24 13:55:26','10/2/24 13:55:26','04/3/25 13:55:26','11/22/24 13:55:26','07/13/24 13:55:26']
 datetime_objects1 = [datetime.datetime.strptime(s, '%m/%d/%y %H:%M:%S') for s in datetime_str1]
@@ -129,6 +124,11 @@ if GEN_DATA:
 
     time.sleep(1)
 
+else:
+    #pfp = addProfilePic()
+    #print(pfp)
 
-
+    _id = "65c7f47c8b594a9d9a89eafe"
+    r = requests.patch(url=URL+"users/65c7878a476d032000c6fe77/edit",data={"profile_pic":_id})
+    print(r)
 

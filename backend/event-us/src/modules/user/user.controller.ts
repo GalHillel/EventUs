@@ -150,12 +150,13 @@ export class UserController {
   @HttpCode(HttpStatus.NO_CONTENT)
   @Patch(':id/edit')
   @UsePipes(new ValidationPipe({ transform: true }))
-  async editUser(@Query() _id:string, @Body() editUserDto:EditUserDto): Promise<void>{
+  async editUser(@Param('id') _id:string, @Body() editUserDto:EditUserDto): Promise<void>{
     
     try{
       await this.userService.editUser(_id,editUserDto);
-
+      
     } catch(e){
+      console.log("error in edit user " + e.message)
       if(e instanceof HttpException){
         
         throw new HttpException(e.message,e.getStatus());

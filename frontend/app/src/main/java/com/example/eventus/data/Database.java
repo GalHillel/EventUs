@@ -1,5 +1,9 @@
 package com.example.eventus.data;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
+
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.net.HttpURLConnection;
@@ -16,6 +20,9 @@ import com.example.eventus.data.model.UserMessage;
 import com.example.eventus.data.model.UserProfile;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 
 public class Database {
@@ -288,6 +295,34 @@ public class Database {
         }
     }
 
+    /**
+     * TODO Test and error handling
+     * loads a profile pic
+     * @param user_id id of the user we want the profile pic from
+     * @return message object
+     * @throws Exception ServerSideException or other exception
+     */
+    public static Bitmap getProfilePic(String user_id) throws Exception{
+        HashMap<String, Object> payloadData = new HashMap<String, Object>();
+        payloadData.put("_id", user_id);
+        AsyncHttpRequest task = new AsyncHttpRequest("users/"+user_id+"/profilepic",  payloadData, null, "GET");
+        task.execute();
+        task.get();
+        ServerResponse response = task.getServerResponse();
+        if (response.getReturnCode() == HttpURLConnection.HTTP_OK) {
+            JSONObject jsonObject = new JSONObject(response.getPayload());
+            JSONArray dataArray = jsonObject.getJSONArray("data");
+            byte[] out = new byte[dataArray.length()];
+            for (int i = 0; i < dataArray.length(); i++) {
+                out[i] = (byte) dataArray.getInt(i);
+            }
+            return BitmapFactory.decodeByteArray(out, 0, out.length);
+        }
+        else{
+            throw new ServerSideException(response.getPayload());
+        }
+    }
+
 
     /**
      * TODO error handling and testing
@@ -419,5 +454,6 @@ public class Database {
             throw new ServerSideException(response.getPayload());
         }
     }
+
 
 }

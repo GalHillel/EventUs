@@ -130,8 +130,9 @@ export class UserService {
   }
 
   async editUser(_id: string, edit: EditUserDto) {
+    
     const user = await this.getUser(_id,"user_type password");
-
+    
     if(edit.password != null){
       if(edit.oldPassword == null){
         throw new HttpException("No old password provided!",HttpStatus.FAILED_DEPENDENCY)
@@ -148,7 +149,8 @@ export class UserService {
       }
     }
 
-    this.userModel.updateOne({_id:_id},edit).exec();
+    const up = await this.userModel.updateOne({_id:_id},edit).exec();
+    
     
   }
 

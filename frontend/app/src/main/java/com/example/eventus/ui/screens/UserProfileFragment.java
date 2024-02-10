@@ -1,11 +1,15 @@
 package com.example.eventus.ui.screens;
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -70,6 +74,23 @@ public class UserProfileFragment extends Fragment {
             e.printStackTrace();
         }
 
+        ImageView profilePic = view.findViewById(R.id.userPhotoImageView);
+        try{
+            if(uProfile != null && uProfile.getProfile_pic().length()>0) {
+                Bitmap profile_icon = Database.getProfilePic(uProfile.get_id());
+                profilePic.setImageBitmap(profile_icon);
+            }
+        }catch (ServerSideException e) {
+            // Handle the exception (e.g., show an error message)
+            e.printStackTrace();
+        } catch (Exception e) {
+            // Handle other exceptions
+            e.printStackTrace();
+        }
+
+
+
+
         // Show or hide rating related views for organizers only
         RatingBar userRatingBar = view.findViewById(R.id.userRatingBar);
         TextView ratingCountTextView = view.findViewById(R.id.ratingCountTextView);
@@ -80,6 +101,7 @@ public class UserProfileFragment extends Fragment {
         } else {
             saveRatingButton.setVisibility(View.GONE);
         }
+
 
 
         // Set actual user name and bio
