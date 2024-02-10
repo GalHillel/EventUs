@@ -48,7 +48,8 @@ export class MessageController {
    */
   @Get(":id/info")
   async getMessageInfo(@Param('id') _id: string, @Query('_id') user_id: string): Promise<Message> {
-    if (user_id != null){
+    
+    if (user_id != null && _id != null){
       await this.userService.readMessage(user_id,_id);
     }
     return this.messageService.getMessage(_id);

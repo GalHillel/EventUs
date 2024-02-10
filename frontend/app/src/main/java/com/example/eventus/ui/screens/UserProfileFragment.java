@@ -34,6 +34,10 @@ public class UserProfileFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_user_profile, container, false);
     }
 
+    //TODO when entering another users profile you can't go back to your own one,
+    // possible solution: seperate the currnet user profile fragment into a myProfile fragment and a userProfile fragment
+    //
+
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         UserDisplay uProfile = null;

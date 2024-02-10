@@ -84,11 +84,7 @@ public class UserMessagesFragment extends Fragment implements MessageAdaptor.onM
             messageList.addAll(Arrays.asList(newList));
 
             messageList.sort((msg1, msg2) -> msg1.getDate_sent().compareTo(msg2.getDate_sent()));
-
             messagesRecyclerView = view.findViewById(R.id.userMessagesList);
-
-
-
             MessageAdaptor messageAdaptor = new MessageAdaptor(messageList,inboxRead);
             messageAdaptor.setOnMessageClickListener(this);
             messagesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -117,8 +113,12 @@ public class UserMessagesFragment extends Fragment implements MessageAdaptor.onM
     @Override
     public void onMessageClick(int position) {
 
-        UserMessageDisplay clickedEvent = messageList.get(position);
+        UserMessageDisplay messageClicked = messageList.get(position);
         Bundle args = createNavigationBundle();
+        args.putString("sender_id",messageClicked.getSender_id());
+        args.putString("message_id",messageClicked.get_id());
+        NavHostFragment.findNavController(UserMessagesFragment.this)
+                .navigate(R.id.messageFragment, args);
 
     }
 }

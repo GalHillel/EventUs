@@ -80,7 +80,7 @@ public class Database {
             throw new ServerSideException(response.getPayload());
         }
     }
-    public static UserMessage SendMessage(String sender_id, List<String> receiver_ids, String title, String content) throws Exception{
+    public static UserMessage sendMessage(String sender_id, List<String> receiver_ids, String title, String content) throws Exception{
         HashMap<String, Object> payloadData = new HashMap<String, Object>();
         payloadData.put("sender_id", sender_id);
         payloadData.put("receiver_ids", receiver_ids);
@@ -234,7 +234,6 @@ public class Database {
      * @throws Exception ServerSideException or other exception
      */
     public static UserProfile userProfile(String user_id) throws Exception{
-
         AsyncHttpRequest task = new AsyncHttpRequest("users/"+user_id+"/profile",  null, null, "GET");
         task.execute();
         task.get();
@@ -246,6 +245,27 @@ public class Database {
             throw new ServerSideException(response.getPayload());
         }
     }
+
+    /**
+     * TODO Test and error handling
+     * loads a single user display
+     * @param user_id id of the event
+     * @return UserDisplay object
+     * @throws Exception ServerSideException or other exception
+     */
+    public static UserDisplay userDisplay(String user_id) throws Exception{
+        AsyncHttpRequest task = new AsyncHttpRequest("users/"+user_id+"/display",  null, null, "GET");
+        task.execute();
+        task.get();
+        ServerResponse response = task.getServerResponse();
+        if (response.getReturnCode() == HttpURLConnection.HTTP_OK) {
+            return gson.fromJson(response.getPayload(), UserProfile.class);
+        }
+        else{
+            throw new ServerSideException(response.getPayload());
+        }
+    }
+
     /**
      * TODO Test and error handling
      * loads a certain event
@@ -253,9 +273,10 @@ public class Database {
      * @return message object
      * @throws Exception ServerSideException or other exception
      */
-    public static UserMessage loadMessage(String message_id) throws Exception{
-
-        AsyncHttpRequest task = new AsyncHttpRequest("messages/"+message_id+"/info",  null, null, "GET");
+    public static UserMessage loadMessage(String message_id, String user_id) throws Exception{
+        HashMap<String, Object> payloadData = new HashMap<String, Object>();
+        payloadData.put("_id", user_id);
+        AsyncHttpRequest task = new AsyncHttpRequest("messages/"+message_id+"/info",  payloadData, null, "GET");
         task.execute();
         task.get();
         ServerResponse response = task.getServerResponse();

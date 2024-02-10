@@ -6,20 +6,21 @@
     tools:context=".ui.screens.CreateMessageFragment"
     android:background="@color/white">
 
-<EditText
-        android:id="@+id/recipientEditText"
+<TextView
+        android:id="@+id/recipients"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:hint="Recipient"
         android:inputType="text"
-        android:minHeight="48dp" />
+        android:minHeight="48dp"
+        android:maxLength="20"/>
 
     <EditText
         android:id="@+id/subjectEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/recipientEditText"
+        android:layout_below="@id/recipients"
         android:layout_marginBottom="16dp"
         android:hint="Subject"
         android:inputType="text"

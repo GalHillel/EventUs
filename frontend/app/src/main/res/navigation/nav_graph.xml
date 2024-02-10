@@ -182,7 +182,12 @@
         tools:layout="@layout/fragment_create_message">
     </fragment>
 
-
+    <fragment
+        android:id="@+id/messageFragment"
+        android:name="com.example.eventus.ui.screens.MessageFragment"
+        android:label="MessageFragment"
+        tools:layout="@layout/fragment_message">
+    </fragment>
 
 
 </navigation>

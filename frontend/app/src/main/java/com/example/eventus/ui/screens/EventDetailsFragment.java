@@ -208,7 +208,10 @@ public class EventDetailsFragment extends Fragment implements UserAdapter.Button
     public void onMessageClick(int position) {
         Bundle args = new Bundle();
         args.putSerializable("user",this.currentUser);
-        args.putSerializable("other_user",this.users.get(position));
+
+        UserDisplay[] others = {this.users.get(position)};
+        args.putSerializable("other_users",others);
+
         NavHostFragment.findNavController(EventDetailsFragment.this)
                 .navigate(R.id.createMessageFragment, args);
     }

@@ -63,6 +63,16 @@ export class UserController {
     return this.userService.getUser(_id,userProfileDisplayFields);
   }
 
+  /**TODO error handling
+   * users/<user id>/display, get user display details by id
+   * @param _id 
+   * @returns UserDisplay of user fields
+   */
+  @Get(":id/display")
+  async getUserDisplay(@Param('id') _id: string): Promise<User> {
+    return this.userService.getUser(_id,userDisplayFields);
+  }
+
   /**
    * users/login
    * @param loginUserDto dict containing {email:<user email>, password:<user password>, user_type:<Organizer or Participant>}

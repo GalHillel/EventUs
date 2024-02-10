@@ -96,7 +96,8 @@ export class UserService {
     return (await this.getUser(_id,'profile_pic')).profile_pic;
   }
   async getMessageIds(_id: string): Promise<string[]> {
-    return Array.from((await this.getUser(_id,'messages')).messages.keys());
+    const obj = await this.getUser(_id,'messages')
+    return Array.from(obj.messages.keys());
   }
 
   
