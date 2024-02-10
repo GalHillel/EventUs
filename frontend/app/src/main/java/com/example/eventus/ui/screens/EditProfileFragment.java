@@ -38,9 +38,9 @@ public class EditProfileFragment extends Fragment {
     private TextInputEditText newPasswordEditText;
     private TextInputEditText bioEditText;
     private ImageView profilePhotoImageView;
-    private MaterialButton choosePhotoButton;
+    private ImageButton choosePhotoButton;
 
-    private MaterialButton saveNameButton;
+    private MaterialButton saveNameButton, saveProfilePicture;
     private MaterialButton saveContactButton;
     private MaterialButton savePasswordButton;
 
@@ -65,9 +65,12 @@ public class EditProfileFragment extends Fragment {
         saveNameButton = view.findViewById(R.id.saveName);
         saveContactButton = view.findViewById(R.id.saveContact);
         savePasswordButton = view.findViewById(R.id.savePassword);
-        //bioEditText = view.findViewById(R.id.bioEditText);
-        //profilePhotoImageView = view.findViewById(R.id.profilePhotoImageView);
-        //choosePhotoButton = view.findViewById(R.id.choosePhotoButton);
+        bioEditText = view.findViewById(R.id.bio);
+        profilePhotoImageView = view.findViewById(R.id.profilePhotoImageView);
+        choosePhotoButton = view.findViewById(R.id.choosePhotoButton);
+        saveProfilePicture = view.findViewById(R.id.saveProfilePicture);
+
+
 
         // Set up listeners
         MaterialButton logoutButton = view.findViewById(R.id.logout);
@@ -81,6 +84,10 @@ public class EditProfileFragment extends Fragment {
         setUpTextListeners();
 
         choosePhotoButton.setOnClickListener(v -> choosePhotoFromGallery());
+
+        saveProfilePicture.setOnClickListener(v -> {
+            // Handle
+            });
 
         // Set up click listeners for buttons
         saveNameButton.setOnClickListener(v -> {

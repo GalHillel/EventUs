@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.screens.EditProfileFragment"
-    android:background="@color/white">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white">
 
     <TextView
         android:layout_width="match_parent"
@@ -21,11 +25,11 @@
         style="@style/Widget.MaterialComponents.Button.Icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/savePassword"
+        android:layout_below="@id/saveProfilePicture"
         android:layout_marginTop="20dp"
         android:layout_alignParentEnd="true"
-    android:text="Log out"
-    app:backgroundTint="@color/ButtonType2" />
+        android:text="Log out"
+        app:backgroundTint="@color/ButtonType2" />
 
     <ImageButton
         android:id="@+id/backButton"
@@ -33,7 +37,7 @@
         android:layout_height="62dp"
         android:layout_marginTop="20dp"
         android:layout_marginStart="16dp"
-        android:layout_below="@id/savePassword"
+        android:layout_below="@id/saveProfilePicture"
         android:src="@drawable/ic_back"
         android:contentDescription="Back"
         android:onClick="onBackButtonClick" />
@@ -75,7 +79,7 @@
         app:backgroundTint="#00bbff"
         android:layout_marginTop="215dp"
         android:layout_alignParentEnd="true"
-    android:text="Save" />
+        android:text="Save" />
 
     <TextView
         android:id="@+id/changeEmail"
@@ -110,7 +114,7 @@
         app:backgroundTint="#00bbff"
         android:layout_marginTop="375dp"
         android:layout_alignParentEnd="true"
-    android:text="Save" />
+        android:text="Save" />
 
     <TextView
         android:id="@+id/changePassword"
@@ -168,6 +172,89 @@
         app:backgroundTint="#00bbff"
         android:layout_marginTop="540dp"
         android:layout_alignParentEnd="true"
-    android:text="Save" />
+        android:text="Save" />
 
-</RelativeLayout>
+    <!-- Adding Bio Editing Section -->
+
+    <TextView
+        android:id="@+id/changeBio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Change Bio"
+        android:layout_below="@id/savePassword"
+        android:textColor="@color/black"
+        android:textSize="20sp" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        android:layout_below="@id/changeBio"
+        android:hint="Bio">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/bio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/saveBio"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        style="@style/Widget.MaterialComponents.Button.Icon"
+        app:backgroundTint="#00bbff"
+        android:layout_marginTop="70dp"
+        android:layout_below="@id/changeBio"
+        android:layout_alignParentEnd="true"
+        android:text="Save" />
+
+    <!-- Adding Profile Picture Editing Section -->
+
+    <TextView
+        android:id="@+id/changeProfilePicture"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Change Profile Picture"
+        android:layout_below="@id/saveBio"
+        android:textColor="@color/black"
+        android:textSize="20sp" />
+
+        <ImageButton
+            android:id="@+id/choosePhotoButton"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_below="@id/profilePhotoImageView"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:contentDescription="Choose Photo"
+            android:src="@drawable/ic_photo" />
+
+    <ImageView
+        android:id="@+id/profilePhotoImageView"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="20dp"
+        android:layout_below="@id/changeProfilePicture"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/ic_profile"
+        android:contentDescription="Profile Picture" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/saveProfilePicture"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        style="@style/Widget.MaterialComponents.Button.Icon"
+        app:backgroundTint="#00bbff"
+        android:layout_marginTop="20dp"
+        android:layout_below="@id/choosePhotoButton"
+        android:layout_alignParentEnd="true"
+        android:text="Save" />
+
+    </RelativeLayout>
+</ScrollView>
