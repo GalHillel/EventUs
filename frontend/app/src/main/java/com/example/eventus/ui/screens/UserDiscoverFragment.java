@@ -36,6 +36,8 @@ public class UserDiscoverFragment extends Fragment implements EventAdapter.OnSho
     private RecyclerView eventsRecyclerView;
     private UserDisplay user;
 
+    // TODO: Add an option for searching users by username
+
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     public UserDiscoverFragment() {

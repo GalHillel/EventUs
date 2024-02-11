@@ -45,7 +45,10 @@ public class EditProfileFragment extends Fragment {
 
     private UserDisplay user;
 
-    //TODO make edit profile cleaner and easier to use, oneclick save for all fields like edit event
+    /*TODO: Make edit profile cleaner and easier to use, one click save for all fields like edit event
+            Implement save profile pic
+     */
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_edit_profile, container, false);
@@ -88,7 +91,6 @@ public class EditProfileFragment extends Fragment {
 
         choosePhotoButton.setOnClickListener(v -> choosePhotoFromGallery());
 
-        // TODO: Implement save profile pic
         saveProfilePicture.setOnClickListener(v -> {
             // Get the URI of the selected image
             /*Uri selectedImageUri = getImageUri();

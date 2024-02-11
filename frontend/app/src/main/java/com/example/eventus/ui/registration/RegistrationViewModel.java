@@ -9,8 +9,8 @@ import com.example.eventus.data.model.User;
 
 public class RegistrationViewModel extends ViewModel {
 
-    private MutableLiveData<Boolean> registrationSuccess = new MutableLiveData<>();
-    private MutableLiveData<String> errorMessage = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> registrationSuccess = new MutableLiveData<>();
+    private final MutableLiveData<String> errorMessage = new MutableLiveData<>();
 
     public LiveData<Boolean> getRegistrationSuccess() {
         return registrationSuccess;
@@ -21,13 +21,6 @@ public class RegistrationViewModel extends ViewModel {
     }
 
     public void register(String email, String password, String username, String userType) {
-        // Validate input if needed (you can add validation logic here)
-
-        // Call Database method for user registration
-
-
-        // Use a background thread or AsyncTask to perform network operations
-
         try {
             User user = Database.addUser(email, username, password, userType);
 

@@ -62,7 +62,6 @@ public class MessageAdaptor extends RecyclerView.Adapter<MessageAdaptor.MessageV
             holder.userMessageTitleView.setTypeface(null, Typeface.BOLD);
         }
 
-        // TODO: Add bundel for transform data and move to dialog fragment
         holder.userMessageItem.setOnClickListener(v -> {
             // Notify the listener that the button was clicked
             if (listener != null) {

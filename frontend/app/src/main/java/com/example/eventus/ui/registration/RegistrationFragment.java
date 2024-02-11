@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,9 +37,7 @@ public class RegistrationFragment extends Fragment {
         final EditText passwordEditText = view.findViewById(R.id.password);
         final EditText passwordValidationEditText = view.findViewById(R.id.passwordValidation);
         final EditText usernameEditText = view.findViewById(R.id.username);
-        final RadioGroup radioGroup = view.findViewById(R.id.radioGroup);
         final RadioButton radioOrganizer = view.findViewById(R.id.radioOrganizer);
-        final RadioButton radioParticipant = view.findViewById(R.id.radioParticipant);
         final Button registerButton = view.findViewById(R.id.register);
 
         registerButton.setOnClickListener(v -> {

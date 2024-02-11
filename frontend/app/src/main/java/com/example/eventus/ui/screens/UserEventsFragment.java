@@ -27,6 +27,8 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
+// TODO: Add an option for users to rate past events
+
 public class UserEventsFragment extends Fragment implements EventAdapter.OnShowMoreDetailsClickListener {
 
     private final List<UserEventDisplay> upcomingEventsList = new ArrayList<>();

@@ -75,8 +75,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
             if (messageListener != null) {
                 messageListener.onMessageClick(position);
             }
-            // TODO: Add bundel for transform data
-            //  Navigation.findNavController(v).navigate(R.id.createMessageFragment);
         });
         holder.userItem.setOnClickListener(v -> {
             if (userItemListener != null) {

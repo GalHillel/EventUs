@@ -24,6 +24,12 @@ import com.example.eventus.data.model.UserDisplay;
 import com.example.eventus.data.model.UserProfile;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+/* TODO: 1. Implement rating for users and events
+         2. Display events when user enter to organizer profile
+         3. Remove navigation bar when entering another user profile
+         4. Maybe remove the option to send message from profile - useless
+ */
+
 public class UserProfileFragment extends Fragment {
     private UserDisplay user;
 
@@ -31,10 +37,6 @@ public class UserProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_user_profile, container, false);
     }
-
-    //TODO when entering another users profile you can't go back to your own one,
-    // possible solution: seperate the currnet user profile fragment into a myProfile fragment and a userProfile fragment
-    //
 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -82,8 +84,6 @@ public class UserProfileFragment extends Fragment {
             e.printStackTrace();
         }
 
-
-        // Show or hide rating related views for organizers only
         ImageButton backButton = view.findViewById(R.id.backButton);
         RatingBar userRatingBar = view.findViewById(R.id.userRatingBar);
         TextView ratingCountTextView = view.findViewById(R.id.ratingCountTextView);

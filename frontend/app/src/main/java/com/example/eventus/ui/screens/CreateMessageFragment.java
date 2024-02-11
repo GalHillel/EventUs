@@ -24,6 +24,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/*TODO: Fix send message part, after sending a message, user doesn't get moved back user doesn't get moved back
+       (got exception from the Database function sendMessage, but it still send the message)
+*/
 public class CreateMessageFragment extends Fragment {
 
     private EditText subjectEditText;
@@ -76,7 +79,7 @@ public class CreateMessageFragment extends Fragment {
                 messageEditText.setText("");
                 // Prints success message
                 Toast.makeText(requireContext(), "Message sent successfully", Toast.LENGTH_SHORT).show();
-                Navigation.findNavController(view).popBackStack(); //TODO fix this part, after sending a message, user doesnt get moved back user doesnt get moved back
+                Navigation.findNavController(view).popBackStack();
             } catch (ServerSideException e) {
                 // Handle the exception (e.g., show an error message)
                 e.printStackTrace();
