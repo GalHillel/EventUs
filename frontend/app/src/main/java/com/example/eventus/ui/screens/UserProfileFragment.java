@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -92,13 +93,21 @@ public class UserProfileFragment extends Fragment {
 
 
         // Show or hide rating related views for organizers only
+        ImageButton backButton= view.findViewById(R.id.backButton);
         RatingBar userRatingBar = view.findViewById(R.id.userRatingBar);
         TextView ratingCountTextView = view.findViewById(R.id.ratingCountTextView);
         Button saveRatingButton = view.findViewById(R.id.saveRatingButton);
+        Button sendMessageButton = view.findViewById(R.id.sendMessageButton);
 
-        if (userProfile != null && userProfile.getUser_type().equals("Organizer") && !userProfile.get_id().equals(user.get_id())) {
+        if (userProfile != null && user.getUser_type().equals("Organizer") && !user.get_id().equals(userProfile.get_id())) {
             saveRatingButton.setVisibility(View.VISIBLE);
+            backButton.setVisibility(View.VISIBLE);
+            backButton.setOnClickListener(this::onBackButtonClicked);
+
+
+
         } else {
+            backButton.setVisibility(View.GONE);
             saveRatingButton.setVisibility(View.GONE);
         }
 
@@ -114,8 +123,7 @@ public class UserProfileFragment extends Fragment {
 
         if (userProfile != null && !userProfile.get_id().equals(user.get_id())) {
             view.findViewById(R.id.sendMessageButton).setOnClickListener(v ->
-                    Navigation.findNavController(v).navigate(R.id.action_userProfileFragment_to_createMessageFragment, createNavigationBundle())
-            );
+                    Navigation.findNavController(view).navigate(R.id.action_userProfileFragment_to_createMessageFragment));
 
             view.findViewById(R.id.editProfileButton).setVisibility(View.GONE);
         } else {
@@ -150,5 +158,10 @@ public class UserProfileFragment extends Fragment {
         Bundle bundle = new Bundle();
         bundle.putSerializable("user", user);
         return bundle;
+    }
+
+    public void onBackButtonClicked(View view) {
+        // Navigate back
+        getParentFragmentManager().popBackStack();
     }
 }

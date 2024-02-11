@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -75,7 +76,12 @@ public class CreateMessageFragment extends Fragment {
             try{
                 List<String> ids = Arrays.stream(other_users).map(UserDisplay::get_id).collect(Collectors.toList());
                 Database.sendMessage(user.get_id(),ids,this.subjectEditText.getText().toString(),this.messageEditText.getText().toString());
-                onBackButtonClick(view);//TODO fix this part, after sending a message, user doesnt get moved back
+                // Reset texts
+                subjectEditText.setText("");
+                messageEditText.setText("");
+                // Prints success message
+                Toast.makeText(requireContext(), "Message sent successfully", Toast.LENGTH_SHORT).show();
+                Navigation.findNavController(view).popBackStack(); //TODO fix this part, after sending a message, user doesnt get moved back user doesnt get moved back
             } catch (ServerSideException e) {
                 // Handle the exception (e.g., show an error message)
                 e.printStackTrace();

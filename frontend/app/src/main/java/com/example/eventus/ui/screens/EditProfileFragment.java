@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -40,7 +41,7 @@ public class EditProfileFragment extends Fragment {
     private ImageView profilePhotoImageView;
     private ImageButton choosePhotoButton;
 
-    private MaterialButton saveNameButton, saveProfilePicture;
+    private MaterialButton saveNameButton, saveProfilePicture, saveBioButton;
     private MaterialButton saveContactButton;
     private MaterialButton savePasswordButton;
 
@@ -69,13 +70,17 @@ public class EditProfileFragment extends Fragment {
         profilePhotoImageView = view.findViewById(R.id.profilePhotoImageView);
         choosePhotoButton = view.findViewById(R.id.choosePhotoButton);
         saveProfilePicture = view.findViewById(R.id.saveProfilePicture);
+        saveBioButton = view.findViewById(R.id.saveBio);
 
 
 
         // Set up listeners
         MaterialButton logoutButton = view.findViewById(R.id.logout);
-        logoutButton.setOnClickListener(v ->
-                Navigation.findNavController(v).navigate(R.id.action_userProfileFragment_to_loginFragment));
+        logoutButton.setOnClickListener(v -> {
+            Navigation.findNavController(v).navigate(R.id.action_userProfileFragment_to_loginFragment);
+            // Prints success message
+            Toast.makeText(requireContext(), "Login out", Toast.LENGTH_SHORT).show();
+        });
 
         ImageButton backButton = view.findViewById(R.id.backButton);
         backButton.setOnClickListener(v ->
@@ -85,9 +90,31 @@ public class EditProfileFragment extends Fragment {
 
         choosePhotoButton.setOnClickListener(v -> choosePhotoFromGallery());
 
+        // TODO: Implement save profile pic
         saveProfilePicture.setOnClickListener(v -> {
-            // Handle
-            });
+            // Get the URI of the selected image
+            /**Uri selectedImageUri = getImageUri();
+            if (selectedImageUri != null) {
+                // Upload the selected image to the server
+                //uploadProfilePicture(selectedImageUri);
+            }**/
+        });
+
+        saveBioButton.setOnClickListener(v -> {
+            String newBio = bioEditText.getText().toString();
+            if (!TextUtils.isEmpty(newBio)) {
+                try {
+                    HashMap<String, Object> updatedUserParams = new HashMap<>();
+                    updatedUserParams.put("bio", newBio);
+                    Database.editUser(user.get_id(), updatedUserParams);
+                    bioEditText.setText("");
+                    // Prints success message
+                    Toast.makeText(requireContext(), "Your bio has been updated successfully", Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    Log.e("Err", e.getMessage());
+                }
+            }
+        });
 
         // Set up click listeners for buttons
         saveNameButton.setOnClickListener(v -> {
@@ -99,6 +126,8 @@ public class EditProfileFragment extends Fragment {
                     Database.editUser(user.get_id(), updatedUserParams);
                     usernameEditText.setText("");
                     user.setName(newUsername);
+                    // Prints success message
+                    Toast.makeText(requireContext(), "Your name has changed successfully to: " + newUsername, Toast.LENGTH_SHORT).show();
                 } catch (Exception e) {
                     Log.e("Err",e.getMessage());
                 }
@@ -113,6 +142,8 @@ public class EditProfileFragment extends Fragment {
                     updatedUserParams.put("email", newEmail);
                     Database.editUser(user.get_id(), updatedUserParams);
                     emailEditText.setText("");
+                    // Prints success message
+                    Toast.makeText(requireContext(), "Your Email has changed successfully to: " + newEmail, Toast.LENGTH_SHORT).show();
                 } catch (Exception e) {
                     Log.e("Err",e.getMessage());
                 }
@@ -130,6 +161,8 @@ public class EditProfileFragment extends Fragment {
                     Database.editUser(user.get_id(), updatedUserParams);
                     oldPasswordEditText.setText("");
                     newPasswordEditText.setText("");
+                    // Prints success message
+                    Toast.makeText(requireContext(), "Your password has changed successfully", Toast.LENGTH_SHORT).show();
                 } catch (Exception e) {
                     Log.e("Err",e.getMessage());
                 }

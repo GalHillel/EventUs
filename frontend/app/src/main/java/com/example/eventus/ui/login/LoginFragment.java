@@ -97,6 +97,8 @@ public class LoginFragment extends Fragment {
 
                 NavHostFragment.findNavController(LoginFragment.this)
                         .navigate(R.id.action_loginFragment_to_userEventsFragment, args);
+                // Prints success message
+                Toast.makeText(requireContext(), "Welcome " + userToLogIn.getName(), Toast.LENGTH_SHORT).show();
             } catch (Exception e) {
                 Toast.makeText(requireContext(), e.toString(), Toast.LENGTH_SHORT).show();
             }

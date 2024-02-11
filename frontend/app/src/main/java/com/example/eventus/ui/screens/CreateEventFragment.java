@@ -117,7 +117,7 @@ public class CreateEventFragment extends Fragment {
 
             // Display information about the created event using UserEventDisplay
             displayEventDetails(userEventDisplay);
-
+            Toast.makeText(requireContext(), "Event created successfully", Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
             // Handle the exception, e.g., show an error message
             Toast.makeText(requireContext(), "Error creating event: " + e.getMessage(), Toast.LENGTH_SHORT).show();
