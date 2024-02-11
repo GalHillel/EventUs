@@ -2,13 +2,9 @@
 package com.example.eventus.ui.login;
 
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -18,20 +14,13 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.eventus.R;
 import com.example.eventus.data.Database;
-import com.example.eventus.data.ServerSideException;
-import com.example.eventus.data.model.User;
 import com.example.eventus.data.model.UserDisplay;
 import com.example.eventus.databinding.FragmentLoginBinding;
-import com.example.eventus.ui.registration.RegistrationFragment;
 
 public class LoginFragment extends Fragment {
 
@@ -39,9 +28,7 @@ public class LoginFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentLoginBinding.inflate(inflater, container, false);
         return binding.getRoot();
 
@@ -60,17 +47,16 @@ public class LoginFragment extends Fragment {
 
         TextView loginBtn = view.findViewById(R.id.login);
         loginBtn.setOnClickListener(v -> {
-            String userType = (checkOrganizer.isChecked())? "Organizer": "Participant";
+            String userType = (checkOrganizer.isChecked()) ? "Organizer" : "Participant";
             String emailToSendToLoginFunction = emailFromTheUser.getText().toString().trim();
             String passwordToSendToLoginFunction = passwordFromTheUser.getText().toString().trim();
 
             //default users for testing
-            if(emailToSendToLoginFunction.equals("") && passwordToSendToLoginFunction.equals("")){
-                if(userType.equals("Participant")){
+            if (emailToSendToLoginFunction.equals("") && passwordToSendToLoginFunction.equals("")) {
+                if (userType.equals("Participant")) {
                     emailToSendToLoginFunction = "ziv@gmail.com";
                     passwordToSendToLoginFunction = "zivPass";
-                }
-                else{
+                } else {
                     emailToSendToLoginFunction = "zivO@gmail.com";
                     passwordToSendToLoginFunction = "zivOPass";
                 }
@@ -80,7 +66,7 @@ public class LoginFragment extends Fragment {
                 // Show a message indicating incorrect password length
                 Toast.makeText(requireContext(), "The password length must be greater than 5", Toast.LENGTH_SHORT).show();
                 loadingProgressBar.setVisibility(View.GONE); // Hide loading indicator
-                return; // Do not proceed with login
+                return;
             }
 
 
@@ -89,14 +75,10 @@ public class LoginFragment extends Fragment {
                 emailFromTheUser.setText("");
                 passwordFromTheUser.setText("");
 
-
-                // Now you can use the userId and userName as needed
-                // For example, you might want to pass them to another fragment or activity
                 Bundle args = new Bundle();
-                args.putSerializable("user",userToLogIn);
+                args.putSerializable("user", userToLogIn);
 
-                NavHostFragment.findNavController(LoginFragment.this)
-                        .navigate(R.id.action_loginFragment_to_userEventsFragment, args);
+                NavHostFragment.findNavController(LoginFragment.this).navigate(R.id.action_loginFragment_to_userEventsFragment, args);
                 // Prints success message
                 Toast.makeText(requireContext(), "Welcome " + userToLogIn.getName(), Toast.LENGTH_SHORT).show();
             } catch (Exception e) {
@@ -106,8 +88,7 @@ public class LoginFragment extends Fragment {
 
 
         TextView registerLink = binding.registerLink;
-        registerLink.setOnClickListener(view1 -> NavHostFragment.findNavController(LoginFragment.this)
-                .navigate(R.id.action_loginFragment_to_registrationFragment));
+        registerLink.setOnClickListener(view1 -> NavHostFragment.findNavController(LoginFragment.this).navigate(R.id.action_loginFragment_to_registrationFragment));
 
     }
 
@@ -116,6 +97,5 @@ public class LoginFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
-
 
 }

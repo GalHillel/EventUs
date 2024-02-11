@@ -24,16 +24,16 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
-public class UserEventsFragment extends Fragment  implements EventAdapter.OnShowMoreDetailsClickListener{
+public class UserEventsFragment extends Fragment implements EventAdapter.OnShowMoreDetailsClickListener {
 
-    private RecyclerView upcomingEventsRecyclerView;
-    private List<UserEventDisplay> upcomingEventsList = new ArrayList<>();
+    private final List<UserEventDisplay> upcomingEventsList = new ArrayList<>();
     private UserDisplay user;
 
-    public UserEventsFragment() {}
+    public UserEventsFragment() {
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -50,10 +50,9 @@ public class UserEventsFragment extends Fragment  implements EventAdapter.OnShow
         if (getArguments() != null) {
             user = (UserDisplay) getArguments().getSerializable("user");
 
-            if(user != null && user.getUser_type().equals("Organizer")){
+            if (user != null && user.getUser_type().equals("Organizer")) {
                 navMenu.findItem(R.id.discover).setVisible(false);
-            }
-            else{
+            } else {
                 navMenu.findItem(R.id.newEvent).setVisible(false);
             }
         }
@@ -78,11 +77,10 @@ public class UserEventsFragment extends Fragment  implements EventAdapter.OnShow
             // Clear the existing list and add the fetched events
             upcomingEventsList.clear();
             upcomingEventsList.addAll(Arrays.asList(userEvents));
-
-            upcomingEventsList.sort((event1, event2) -> event1.getDate().compareTo(event2.getDate()));
+            upcomingEventsList.sort(Comparator.comparing(UserEventDisplay::getDate));
 
         } catch (ServerSideException e) {
-            // Handle the exception (e.g., show an error message)
+            // Handle the exception
             e.printStackTrace();
         } catch (Exception e) {
             // Handle other exceptions
@@ -90,7 +88,7 @@ public class UserEventsFragment extends Fragment  implements EventAdapter.OnShow
         }
 
         // Set up RecyclerView for Events
-        upcomingEventsRecyclerView = view.findViewById(R.id.eventsList);
+        RecyclerView upcomingEventsRecyclerView = view.findViewById(R.id.eventsList);
         EventAdapter eventAdapter = new EventAdapter(upcomingEventsList);
         eventAdapter.setOnShowMoreDetailsClickListener(this);
         upcomingEventsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -100,7 +98,7 @@ public class UserEventsFragment extends Fragment  implements EventAdapter.OnShow
     // Method to create a common bundle for navigation
     private Bundle createNavigationBundle() {
         Bundle bundle = new Bundle();
-        bundle.putSerializable("user",user);
+        bundle.putSerializable("user", user);
 
         return bundle;
     }
@@ -109,11 +107,9 @@ public class UserEventsFragment extends Fragment  implements EventAdapter.OnShow
     public void onShowMoreDetailsClick(int position) {
         UserEventDisplay clickedEvent = upcomingEventsList.get(position);
         Bundle args = createNavigationBundle();
-        args.putString("eventId",clickedEvent.getId());
+        args.putString("eventId", clickedEvent.getId());
         NavHostFragment.findNavController(UserEventsFragment.this)
-                .navigate(R.id.eventDetailsFragment,args);
-
-
+                .navigate(R.id.eventDetailsFragment, args);
 
 
     }

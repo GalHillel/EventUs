@@ -119,7 +119,6 @@
     </fragment>
 
 
-
     <fragment
         android:id="@+id/userMessagesFragment"
         android:name="com.example.eventus.ui.screens.UserMessagesFragment"

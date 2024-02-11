@@ -10,7 +10,6 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -25,11 +24,11 @@ import androidx.navigation.Navigation;
 import com.example.eventus.R;
 import com.example.eventus.data.Database;
 import com.example.eventus.data.model.UserDisplay;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 public class EditProfileFragment extends Fragment {
 
@@ -39,13 +38,13 @@ public class EditProfileFragment extends Fragment {
     private TextInputEditText newPasswordEditText;
     private TextInputEditText bioEditText;
     private ImageView profilePhotoImageView;
-    private ImageButton choosePhotoButton;
 
-    private MaterialButton saveNameButton, saveProfilePicture, saveBioButton;
+    private MaterialButton saveNameButton;
     private MaterialButton saveContactButton;
     private MaterialButton savePasswordButton;
 
     private UserDisplay user;
+
     //TODO make edit profile cleaner and easier to use, oneclick save for all fields like edit event
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -68,10 +67,9 @@ public class EditProfileFragment extends Fragment {
         savePasswordButton = view.findViewById(R.id.savePassword);
         bioEditText = view.findViewById(R.id.bio);
         profilePhotoImageView = view.findViewById(R.id.profilePhotoImageView);
-        choosePhotoButton = view.findViewById(R.id.choosePhotoButton);
-        saveProfilePicture = view.findViewById(R.id.saveProfilePicture);
-        saveBioButton = view.findViewById(R.id.saveBio);
-
+        ImageButton choosePhotoButton = view.findViewById(R.id.choosePhotoButton);
+        MaterialButton saveProfilePicture = view.findViewById(R.id.saveProfilePicture);
+        MaterialButton saveBioButton = view.findViewById(R.id.saveBio);
 
 
         // Set up listeners
@@ -93,15 +91,15 @@ public class EditProfileFragment extends Fragment {
         // TODO: Implement save profile pic
         saveProfilePicture.setOnClickListener(v -> {
             // Get the URI of the selected image
-            /**Uri selectedImageUri = getImageUri();
-            if (selectedImageUri != null) {
-                // Upload the selected image to the server
-                //uploadProfilePicture(selectedImageUri);
-            }**/
+            /*Uri selectedImageUri = getImageUri();
+             if (selectedImageUri != null) {
+             // Upload the selected image to the server
+             //uploadProfilePicture(selectedImageUri);
+             }**/
         });
 
         saveBioButton.setOnClickListener(v -> {
-            String newBio = bioEditText.getText().toString();
+            String newBio = Objects.requireNonNull(bioEditText.getText()).toString();
             if (!TextUtils.isEmpty(newBio)) {
                 try {
                     HashMap<String, Object> updatedUserParams = new HashMap<>();
@@ -111,14 +109,14 @@ public class EditProfileFragment extends Fragment {
                     // Prints success message
                     Toast.makeText(requireContext(), "Your bio has been updated successfully", Toast.LENGTH_SHORT).show();
                 } catch (Exception e) {
-                    Log.e("Err", e.getMessage());
+                    Log.e("Err", Objects.requireNonNull(e.getMessage()));
                 }
             }
         });
 
         // Set up click listeners for buttons
         saveNameButton.setOnClickListener(v -> {
-            String newUsername = usernameEditText.getText().toString();
+            String newUsername = Objects.requireNonNull(usernameEditText.getText()).toString();
             if (!TextUtils.isEmpty(newUsername)) {
                 try {
                     HashMap<String, Object> updatedUserParams = new HashMap<>();
@@ -129,13 +127,13 @@ public class EditProfileFragment extends Fragment {
                     // Prints success message
                     Toast.makeText(requireContext(), "Your name has changed successfully to: " + newUsername, Toast.LENGTH_SHORT).show();
                 } catch (Exception e) {
-                    Log.e("Err",e.getMessage());
+                    Log.e("Err", Objects.requireNonNull(e.getMessage()));
                 }
             }
         });
 
         saveContactButton.setOnClickListener(v -> {
-            String newEmail = emailEditText.getText().toString();
+            String newEmail = Objects.requireNonNull(emailEditText.getText()).toString();
             if (!TextUtils.isEmpty(newEmail)) {
                 try {
                     HashMap<String, Object> updatedUserParams = new HashMap<>();
@@ -145,14 +143,14 @@ public class EditProfileFragment extends Fragment {
                     // Prints success message
                     Toast.makeText(requireContext(), "Your Email has changed successfully to: " + newEmail, Toast.LENGTH_SHORT).show();
                 } catch (Exception e) {
-                    Log.e("Err",e.getMessage());
+                    Log.e("Err", Objects.requireNonNull(e.getMessage()));
                 }
             }
         });
 
         savePasswordButton.setOnClickListener(v -> {
-            String oldPass = oldPasswordEditText.getText().toString();
-            String newPass = newPasswordEditText.getText().toString();
+            String oldPass = Objects.requireNonNull(oldPasswordEditText.getText()).toString();
+            String newPass = Objects.requireNonNull(newPasswordEditText.getText()).toString();
             if (!TextUtils.isEmpty(oldPass) && !TextUtils.isEmpty(newPass)) {
                 try {
                     HashMap<String, Object> updatedUserParams = new HashMap<>();
@@ -164,7 +162,7 @@ public class EditProfileFragment extends Fragment {
                     // Prints success message
                     Toast.makeText(requireContext(), "Your password has changed successfully", Toast.LENGTH_SHORT).show();
                 } catch (Exception e) {
-                    Log.e("Err",e.getMessage());
+                    Log.e("Err", Objects.requireNonNull(e.getMessage()));
                 }
             }
         });
@@ -206,13 +204,6 @@ public class EditProfileFragment extends Fragment {
         boolean isPasswordNotEmpty = !TextUtils.isEmpty(oldPasswordEditText.getText())
                 && !TextUtils.isEmpty(newPasswordEditText.getText());
         savePasswordButton.setEnabled(isPasswordNotEmpty);
-    }
-
-    // Method to create a common bundle for navigation
-    private Bundle createNavigationBundle() {
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("user",user);
-        return bundle;
     }
 
     // Method to choose a photo from the gallery

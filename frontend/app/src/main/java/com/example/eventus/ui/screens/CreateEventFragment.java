@@ -34,7 +34,6 @@ public class CreateEventFragment extends Fragment {
     private EditText eventDateEditText;
     private EditText eventLocationEditText;
     private EditText eventDescriptionEditText;
-    private Button createEventButton;
     private UserDisplay user;
 
     private Calendar calendar;
@@ -60,10 +59,9 @@ public class CreateEventFragment extends Fragment {
         if (getArguments() != null) {
             user = (UserDisplay) getArguments().getSerializable("user");
 
-            if(user != null && user.getUser_type().equals("Organizer")){
+            if (user != null && user.getUser_type().equals("Organizer")) {
                 navMenu.findItem(R.id.discover).setVisible(false);
-            }
-            else{
+            } else {
                 navMenu.findItem(R.id.newEvent).setVisible(false);
             }
         }
@@ -74,7 +72,7 @@ public class CreateEventFragment extends Fragment {
         eventDateEditText = view.findViewById(R.id.eventDateEditText);
         eventLocationEditText = view.findViewById(R.id.eventLocationEditText);
         eventDescriptionEditText = view.findViewById(R.id.eventDescriptionEditText);
-        createEventButton = view.findViewById(R.id.createEventButton);
+        Button createEventButton = view.findViewById(R.id.createEventButton);
 
         // Set up click listeners for buttons
 
@@ -171,7 +169,7 @@ public class CreateEventFragment extends Fragment {
     // Method to create a common bundle for navigation
     private Bundle createNavigationBundle() {
         Bundle bundle = new Bundle();
-        bundle.putSerializable("user",user);
+        bundle.putSerializable("user", user);
         return bundle;
     }
 

@@ -2,20 +2,16 @@ package com.example.eventus.ui.recycleViews;
 
 
 import android.graphics.Typeface;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.eventus.R;
-import com.example.eventus.data.model.UserEventDisplay;
 import com.example.eventus.data.model.UserMessageDisplay;
 
 import java.util.List;
@@ -28,11 +24,11 @@ public class MessageAdaptor extends RecyclerView.Adapter<MessageAdaptor.MessageV
         void onMessageClick(int position);
     }
 
-    private List<UserMessageDisplay> messageList;
-    private Map<String, Boolean> userRead;
+    private final List<UserMessageDisplay> messageList;
+    private final Map<String, Boolean> userRead;
     private onMessageClickListener listener;
 
-    public MessageAdaptor(List<UserMessageDisplay> messageList, Map<String,Boolean> userRead) {
+    public MessageAdaptor(List<UserMessageDisplay> messageList, Map<String, Boolean> userRead) {
         this.messageList = messageList;
         this.userRead = userRead;
     }
@@ -53,30 +49,28 @@ public class MessageAdaptor extends RecyclerView.Adapter<MessageAdaptor.MessageV
 
         holder.userMessageTitleView.setText(msg.getTitle());
         holder.userMessageDateView.setText(msg.getDateString());
-        holder.userMessageSenderView.setText("from: "+msg.getSenderName());
-        if(hasRead){
+        holder.userMessageSenderView.setText("from: " + msg.getSenderName());
+        if (hasRead) {
             holder.userMessageItem.setBackgroundResource(R.color.message_read);
             holder.userMessageSenderView.setTypeface(null, Typeface.NORMAL);
             holder.userMessageDateView.setTypeface(null, Typeface.NORMAL);
             holder.userMessageTitleView.setTypeface(null, Typeface.NORMAL);
-        }else{
+        } else {
             holder.userMessageItem.setBackgroundResource(R.color.message_unread);
             holder.userMessageSenderView.setTypeface(null, Typeface.BOLD);
             holder.userMessageDateView.setTypeface(null, Typeface.BOLD);
             holder.userMessageTitleView.setTypeface(null, Typeface.BOLD);
         }
 
-        holder.userMessageItem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Notify the listener that the button was clicked
-                if (listener != null) {
-                    listener.onMessageClick(holder.getAdapterPosition());
-                }
+        // TODO: Add bundel for transform data and move to dialog fragment
+        holder.userMessageItem.setOnClickListener(v -> {
+            // Notify the listener that the button was clicked
+            if (listener != null) {
+                listener.onMessageClick(holder.getAdapterPosition());
             }
-            // TODO: Add bundel for transform data and move to dialog fragment
-            });
+        });
     }
+
     public void setOnMessageClickListener(onMessageClickListener listener) {
         this.listener = listener;
     }

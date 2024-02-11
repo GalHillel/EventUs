@@ -29,18 +29,17 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class UserDiscoverFragment extends Fragment implements EventAdapter.OnShowMoreDetailsClickListener{
+public class UserDiscoverFragment extends Fragment implements EventAdapter.OnShowMoreDetailsClickListener {
 
     private EditText searchEditText;
-    private Button searchButton;
     private List<UserEventDisplay> searchResults = new ArrayList<>();
     private RecyclerView eventsRecyclerView;
-    private EventAdapter eventAdapter;
     private UserDisplay user;
 
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
-    public UserDiscoverFragment() {}
+    public UserDiscoverFragment() {
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -57,16 +56,15 @@ public class UserDiscoverFragment extends Fragment implements EventAdapter.OnSho
         if (getArguments() != null) {
             user = (UserDisplay) getArguments().getSerializable("user");
 
-            if(user != null && user.getUser_type().equals("Organizer")){
+            if (user != null && user.getUser_type().equals("Organizer")) {
                 navMenu.findItem(R.id.discover).setVisible(false);
-            }
-            else{
+            } else {
                 navMenu.findItem(R.id.newEvent).setVisible(false);
             }
         }
 
         searchEditText = view.findViewById(R.id.searchEditText);
-        searchButton = view.findViewById(R.id.searchButton);
+        Button searchButton = view.findViewById(R.id.searchButton);
         eventsRecyclerView = view.findViewById(R.id.eventsList);
 
         // Set up click listeners for buttons
@@ -88,7 +86,7 @@ public class UserDiscoverFragment extends Fragment implements EventAdapter.OnSho
     // Method to create a common bundle for navigation
     private Bundle createNavigationBundle() {
         Bundle bundle = new Bundle();
-        bundle.putSerializable("user",user);
+        bundle.putSerializable("user", user);
         return bundle;
     }
 
@@ -105,10 +103,10 @@ public class UserDiscoverFragment extends Fragment implements EventAdapter.OnSho
             this.searchResults = Arrays.asList(temp);
             // Update UI on the main thread with the search results
 
-            this.eventAdapter = new EventAdapter(this.searchResults);
-            this.eventAdapter.setOnShowMoreDetailsClickListener(this);
+            EventAdapter eventAdapter = new EventAdapter(this.searchResults);
+            eventAdapter.setOnShowMoreDetailsClickListener(this);
             this.eventsRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-            this.eventsRecyclerView.setAdapter(this.eventAdapter);
+            this.eventsRecyclerView.setAdapter(eventAdapter);
 
 
         } catch (Exception e) {
@@ -128,9 +126,9 @@ public class UserDiscoverFragment extends Fragment implements EventAdapter.OnSho
     public void onShowMoreDetailsClick(int position) {
         UserEventDisplay clickedEvent = searchResults.get(position);
         Bundle args = createNavigationBundle();
-        args.putString("eventId",clickedEvent.getId());
+        args.putString("eventId", clickedEvent.getId());
         NavHostFragment.findNavController(UserDiscoverFragment.this)
-                .navigate(R.id.eventDetailsFragment,args);
+                .navigate(R.id.eventDetailsFragment, args);
 
     }
 }

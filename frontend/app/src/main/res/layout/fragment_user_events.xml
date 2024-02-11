@@ -7,12 +7,12 @@
     <TextView
         android:id="@+id/myevents_title"
         style="@style/CustomFragmentTitle"
-        android:text="My Events"/>
+        android:text="My Events" />
 
     <TextView
         style="@style/CustomFragmentSubTitle"
         android:text="Upcoming Events"
-         />
+    />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/eventsList"

@@ -1,7 +1,6 @@
 package com.example.eventus.ui.screens;
 
 import android.os.Bundle;
-import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -19,23 +18,20 @@ import com.example.eventus.R;
 import com.example.eventus.data.Database;
 import com.example.eventus.data.ServerSideException;
 import com.example.eventus.data.model.UserDisplay;
-import com.example.eventus.data.model.UserEventDisplay;
 import com.example.eventus.data.model.UserMessageDisplay;
-import com.example.eventus.ui.recycleViews.EventAdapter;
 import com.example.eventus.ui.recycleViews.MessageAdaptor;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
 public class UserMessagesFragment extends Fragment implements MessageAdaptor.onMessageClickListener {
     private UserDisplay user;
-    private RecyclerView messagesRecyclerView;
-    private List<UserMessageDisplay> messageList = new ArrayList<>();
+    private final List<UserMessageDisplay> messageList = new ArrayList<>();
+
     public UserMessagesFragment() {
         // Required empty public constructor
     }
@@ -53,10 +49,9 @@ public class UserMessagesFragment extends Fragment implements MessageAdaptor.onM
 
         if (getArguments() != null) {
             this.user = (UserDisplay) getArguments().getSerializable("user");
-            if(user != null && user.getUser_type().equals("Organizer")){
+            if (user != null && user.getUser_type().equals("Organizer")) {
                 navMenu.findItem(R.id.discover).setVisible(false);
-            }
-            else{
+            } else {
                 navMenu.findItem(R.id.newEvent).setVisible(false);
             }
 
@@ -76,16 +71,16 @@ public class UserMessagesFragment extends Fragment implements MessageAdaptor.onM
                 Navigation.findNavController(v).navigate(R.id.action_userMessagesFragment_to_createEventFragment, createNavigationBundle()));
 
 
-        try{
+        try {
 
             UserMessageDisplay[] newList = Database.getMessageInbox(this.user.get_id());
-            Map<String,Boolean> inboxRead = Database.getMessageInboxStatus(this.user.get_id());
+            Map<String, Boolean> inboxRead = Database.getMessageInboxStatus(this.user.get_id());
             messageList.clear();
             messageList.addAll(Arrays.asList(newList));
 
-            messageList.sort((msg1, msg2) -> msg1.getDate_sent().compareTo(msg2.getDate_sent()));
-            messagesRecyclerView = view.findViewById(R.id.userMessagesList);
-            MessageAdaptor messageAdaptor = new MessageAdaptor(messageList,inboxRead);
+            messageList.sort(Comparator.comparing(UserMessageDisplay::getDate_sent));
+            RecyclerView messagesRecyclerView = view.findViewById(R.id.userMessagesList);
+            MessageAdaptor messageAdaptor = new MessageAdaptor(messageList, inboxRead);
             messageAdaptor.setOnMessageClickListener(this);
             messagesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
             messagesRecyclerView.setAdapter(messageAdaptor);
@@ -101,12 +96,10 @@ public class UserMessagesFragment extends Fragment implements MessageAdaptor.onM
     }
 
 
-
-
     // Method to create a common bundle for navigation
     private Bundle createNavigationBundle() {
         Bundle bundle = new Bundle();
-        bundle.putSerializable("user",user);
+        bundle.putSerializable("user", user);
         return bundle;
     }
 
@@ -115,8 +108,8 @@ public class UserMessagesFragment extends Fragment implements MessageAdaptor.onM
 
         UserMessageDisplay messageClicked = messageList.get(position);
         Bundle args = createNavigationBundle();
-        args.putString("sender_id",messageClicked.getSender_id());
-        args.putString("message_id",messageClicked.get_id());
+        args.putString("sender_id", messageClicked.getSender_id());
+        args.putString("message_id", messageClicked.get_id());
         NavHostFragment.findNavController(UserMessagesFragment.this)
                 .navigate(R.id.messageFragment, args);
 

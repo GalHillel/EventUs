@@ -1,10 +1,8 @@
 package com.example.eventus.ui.recycleViews;
 
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -21,7 +19,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
         void onShowMoreDetailsClick(int position);
     }
 
-    private List<UserEventDisplay> eventList;
+    private final List<UserEventDisplay> eventList;
     private OnShowMoreDetailsClickListener listener;
 
     public EventAdapter(List<UserEventDisplay> eventList) {
@@ -44,16 +42,14 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
         holder.eventDateTextView.setText(event.getDate().toString());
         holder.eventLocationTextView.setText(event.getLocation());
 
-        holder.showMoreDetailsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Notify the listener that the button was clicked
-                if (listener != null) {
-                    listener.onShowMoreDetailsClick(holder.getAdapterPosition());
-                }
+        holder.showMoreDetailsButton.setOnClickListener(v -> {
+            // Notify the listener that the button was clicked
+            if (listener != null) {
+                listener.onShowMoreDetailsClick(holder.getAdapterPosition());
             }
         });
     }
+
     public void setOnShowMoreDetailsClickListener(OnShowMoreDetailsClickListener listener) {
         this.listener = listener;
     }

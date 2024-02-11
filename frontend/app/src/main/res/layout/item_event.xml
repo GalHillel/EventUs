@@ -6,7 +6,6 @@
     android:orientation="horizontal">
 
     <LinearLayout
-
         android:id="@+id/showMoreDetails"
         style="@style/clickableListItem"
         android:padding="8dp">

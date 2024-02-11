@@ -7,7 +7,6 @@
     tools:context=".ui.screens.CreateEventFragment">
 
 
-
     <TextView
         android:id="@+id/createEventTitle"
         style="@style/CustomFragmentTitle"
@@ -60,10 +59,8 @@
             android:id="@+id/createEventButton"
             style="@style/DefaultClickableButton"
             android:text="Create Event"
-
             android:layout_marginTop="32dp"
-
-            />
+        />
     </LinearLayout>
 
     <include layout="@layout/user_navigation" />

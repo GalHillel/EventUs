@@ -13,7 +13,7 @@
         <TextView
             android:layout_weight="1"
             style="@style/CustomFragmentTitle"
-            android:text="Discover"/>
+            android:text="Discover" />
 
         <Button
             android:id="@+id/searchButton"

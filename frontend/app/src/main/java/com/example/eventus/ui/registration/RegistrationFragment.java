@@ -50,15 +50,14 @@ public class RegistrationFragment extends Fragment {
             String username = usernameEditText.getText().toString();
             String userType = radioOrganizer.isChecked() ? "Organizer" : "Participant";
 
-            if(passwordValidation.equals(password)){
+            if (passwordValidation.equals(password)) {
                 registrationViewModel.register(email, password, username, userType);
                 NavHostFragment.findNavController(RegistrationFragment.this)
                         .navigate(R.id.action_registrationFragment_to_loginFragment);
-            }else {
+            } else {
                 // Inform the user that passwords do not match
                 Toast.makeText(requireContext(), "Passwords do not match. Please try again.", Toast.LENGTH_SHORT).show();
             }
-
 
 
         });

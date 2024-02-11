@@ -12,7 +12,8 @@ import com.example.eventus.R;
 
 public class MainMenuUser extends Fragment {
 
-    public MainMenuUser() {}
+    public MainMenuUser() {
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

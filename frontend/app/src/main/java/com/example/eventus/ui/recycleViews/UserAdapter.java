@@ -19,8 +19,8 @@ import java.util.List;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder> {
 
-    private List<UserDisplay> userList;
-    private String mode;
+    private final List<UserDisplay> userList;
+    private final String mode;
     private ButtonListener kickListener;
     private ButtonListener messageListener;
     private ButtonListener userItemListener;
@@ -32,7 +32,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
 
     public interface ButtonListener {
         void onKickClick(int position);
+
         void onMessageClick(int position);
+
         void onUserItemClick(int position);
     }
 
@@ -43,7 +45,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
     public void setOnMessageClickListener(ButtonListener listener) {
         this.messageListener = listener;
     }
-    public void setOnUserItemClickListener(ButtonListener listener){
+
+    public void setOnUserItemClickListener(ButtonListener listener) {
         this.userItemListener = listener;
     }
 
@@ -75,7 +78,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
             // TODO: Add bundel for transform data
             //  Navigation.findNavController(v).navigate(R.id.createMessageFragment);
         });
-        holder.userItem.setOnClickListener(v-> {
+        holder.userItem.setOnClickListener(v -> {
             if (userItemListener != null) {
                 userItemListener.onUserItemClick(position);
             }

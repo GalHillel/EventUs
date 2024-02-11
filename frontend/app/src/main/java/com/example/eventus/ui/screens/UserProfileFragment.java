@@ -1,8 +1,6 @@
 package com.example.eventus.ui.screens;
 
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -22,14 +20,9 @@ import androidx.navigation.Navigation;
 import com.example.eventus.R;
 import com.example.eventus.data.Database;
 import com.example.eventus.data.ServerSideException;
-import com.example.eventus.data.model.User;
 import com.example.eventus.data.model.UserDisplay;
-import com.example.eventus.data.model.UserEventDisplay;
 import com.example.eventus.data.model.UserProfile;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import java.util.Arrays;
-import java.util.Collections;
 
 public class UserProfileFragment extends Fragment {
     private UserDisplay user;
@@ -53,7 +46,7 @@ public class UserProfileFragment extends Fragment {
             uProfile = (UserDisplay) getArguments().getSerializable("other_user");
 
         }
-        if(uProfile == null)
+        if (uProfile == null)
             uProfile = user;
 
         // Hide or show bottom navigation items based on user type
@@ -64,7 +57,7 @@ public class UserProfileFragment extends Fragment {
         }
 
         try {
-            if(uProfile != null)
+            if (uProfile != null)
                 userProfile = Database.userProfile(uProfile.get_id());
 
         } catch (ServerSideException e) {
@@ -76,12 +69,12 @@ public class UserProfileFragment extends Fragment {
         }
 
         ImageView profilePic = view.findViewById(R.id.userPhotoImageView);
-        try{
-            if(uProfile != null && uProfile.getProfile_pic().length()>0) {
+        try {
+            if (uProfile != null && uProfile.getProfile_pic().length() > 0) {
                 Bitmap profile_icon = Database.getProfilePic(uProfile.get_id());
                 profilePic.setImageBitmap(profile_icon);
             }
-        }catch (ServerSideException e) {
+        } catch (ServerSideException e) {
             // Handle the exception (e.g., show an error message)
             e.printStackTrace();
         } catch (Exception e) {
@@ -90,10 +83,8 @@ public class UserProfileFragment extends Fragment {
         }
 
 
-
-
         // Show or hide rating related views for organizers only
-        ImageButton backButton= view.findViewById(R.id.backButton);
+        ImageButton backButton = view.findViewById(R.id.backButton);
         RatingBar userRatingBar = view.findViewById(R.id.userRatingBar);
         TextView ratingCountTextView = view.findViewById(R.id.ratingCountTextView);
         Button saveRatingButton = view.findViewById(R.id.saveRatingButton);
@@ -101,17 +92,10 @@ public class UserProfileFragment extends Fragment {
 
         if (userProfile != null && user.getUser_type().equals("Organizer") && !user.get_id().equals(userProfile.get_id())) {
             saveRatingButton.setVisibility(View.VISIBLE);
-            backButton.setVisibility(View.VISIBLE);
-            backButton.setOnClickListener(this::onBackButtonClicked);
-
-
 
         } else {
-            backButton.setVisibility(View.GONE);
             saveRatingButton.setVisibility(View.GONE);
         }
-
-
 
         // Set actual user name and bio
         TextView usernameTextView = view.findViewById(R.id.usernameTextView);
@@ -126,8 +110,11 @@ public class UserProfileFragment extends Fragment {
                     Navigation.findNavController(view).navigate(R.id.action_userProfileFragment_to_createMessageFragment));
 
             view.findViewById(R.id.editProfileButton).setVisibility(View.GONE);
+            backButton.setVisibility(View.VISIBLE);
+            backButton.setOnClickListener(this::onBackButtonClicked);
         } else {
             view.findViewById(R.id.sendMessageButton).setVisibility(View.GONE);
+            backButton.setVisibility(View.GONE);
 
             view.findViewById(R.id.editProfileButton).setOnClickListener(v ->
                     Navigation.findNavController(v).navigate(R.id.action_userProfileFragment_to_editProfileFragment, createNavigationBundle()));

@@ -19,7 +19,7 @@
             android:textSize="30sp"
             android:textColor="@color/black"
             android:text="Event Details"
-            android:layout_marginBottom="16dp"/>
+            android:layout_marginBottom="16dp" />
 
         <EditText
             android:id="@+id/eventNameTextView"
@@ -97,7 +97,7 @@
             android:layout_below="@id/eventListRecycleView"
             app:backgroundTint="#00bbff"
             android:layout_marginTop="8dp"
-            />
+        />
 
         <Button
             android:id="@+id/leaveEventButton"
@@ -106,7 +106,7 @@
             android:text="Leave Event"
             android:layout_below="@id/joinEventButton"
             app:backgroundTint="#00bbff"
-            android:layout_marginTop="8dp"/>
+            android:layout_marginTop="8dp" />
 
         <Button
             android:id="@+id/editEventButton"
@@ -117,16 +117,16 @@
             app:backgroundTint="#00bbff"
             android:layout_marginTop="8dp" />
 
-            <Button
-                android:id="@+id/saveEventButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/editEventButton"
-                android:layout_marginTop="8dp"
-                android:text="Save Event"
-                app:backgroundTint="#00bbff" />
+        <Button
+            android:id="@+id/saveEventButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/editEventButton"
+            android:layout_marginTop="8dp"
+            android:text="Save Event"
+            app:backgroundTint="#00bbff" />
 
-            <ImageButton
+        <ImageButton
             android:id="@+id/backButton"
             android:layout_width="97dp"
             android:layout_height="62dp"

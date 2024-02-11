@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.eventus.R;
 
-public class ItemEventFragment extends Fragment{
+public class ItemEventFragment extends Fragment {
 
     @Nullable
     @Override
@@ -23,4 +23,5 @@ public class ItemEventFragment extends Fragment{
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-    }}
+    }
+}

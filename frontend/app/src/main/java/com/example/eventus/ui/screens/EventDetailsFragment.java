@@ -33,23 +33,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
-public class EventDetailsFragment extends Fragment implements UserAdapter.ButtonListener{
+public class EventDetailsFragment extends Fragment implements UserAdapter.ButtonListener {
     private UserEvent userEvent;
     private Button editEventButton, saveEventButton, pickDateButton;
 
     private Calendar calendar;
-    private List<UserDisplay> users = new ArrayList<>();
+    private final List<UserDisplay> users = new ArrayList<>();
 
     private UserDisplay currentUser;
 
-    private String eventId;
-    private RecyclerView userListRecyclerView;
     private UserAdapter userAdapter;
 
     private EditText eventNameView, eventDateView, eventLocationview, eventDescription;
     private Button exitEventButton, joinEventButton;
 
-    @Nullable
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,12 +62,9 @@ public class EventDetailsFragment extends Fragment implements UserAdapter.Button
         View view = inflater.inflate(R.layout.fragment_event_details, container, false);
 
         ImageButton backButton = view.findViewById(R.id.backButton);
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Navigate back to the previous fragment
-                getParentFragmentManager().popBackStack();
-            }
+        backButton.setOnClickListener(v -> {
+            // Navigate back to the previous fragment
+            getParentFragmentManager().popBackStack();
         });
 
         // Inflate the layout for this fragment
@@ -93,9 +87,6 @@ public class EventDetailsFragment extends Fragment implements UserAdapter.Button
         this.pickDateButton = view.findViewById(R.id.pickDateButton);
 
 
-
-
-
         this.pickDateButton.setOnClickListener(this::onPickDateClick);
         this.joinEventButton.setOnClickListener(this::onJoinEventClick);
         this.exitEventButton.setOnClickListener(this::onLeaveEventClick);
@@ -105,55 +96,55 @@ public class EventDetailsFragment extends Fragment implements UserAdapter.Button
         if (getArguments() != null) {
 
             this.currentUser = (UserDisplay) getArguments().getSerializable("user");
-            this.eventId = getArguments().getString("eventId", "");
-            try{
-                userEvent = Database.loadEvent(this.eventId);
-                UserDisplay[] tmp = Database.getUserList(this.eventId);
+            String eventId = getArguments().getString("eventId", "");
+            try {
+                userEvent = Database.loadEvent(eventId);
+                UserDisplay[] tmp = Database.getUserList(eventId);
                 this.users.clear();
                 this.users.addAll(Arrays.asList(tmp));
 
 
                 updateFields();
 
-                userListRecyclerView = view.findViewById(R.id.eventListRecycleView);
-                userAdapter = new UserAdapter(this.users,(this.currentUser.get_id().equals(this.userEvent.getCreator_id()))? "Organizer": "Participant");
+                RecyclerView userListRecyclerView = view.findViewById(R.id.eventListRecycleView);
+                userAdapter = new UserAdapter(this.users, (this.currentUser.get_id().equals(this.userEvent.getCreator_id())) ? "Organizer" : "Participant");
                 userAdapter.setOnKickClickListener(this);
                 userAdapter.setOnMessageClickListener(this);
                 userAdapter.setOnUserItemClickListener(this);
                 userListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                 userListRecyclerView.setAdapter(userAdapter);
-                if(this.currentUser.get_id().equals(this.userEvent.getCreator_id())){
+                if (this.currentUser.get_id().equals(this.userEvent.getCreator_id())) {
                     this.exitEventButton.setText("Delete Event");
 
                 }
 
                 toggleEditableMode(false);
 
-                if(this.userEvent.getAttendents().containsKey(this.currentUser.get_id())){
+                if (this.userEvent.getAttendents().containsKey(this.currentUser.get_id())) {
                     this.joinEventButton.setVisibility(View.GONE);
                     this.exitEventButton.setVisibility(View.VISIBLE);
-                }
-                else{
+                } else {
                     this.exitEventButton.setVisibility(View.GONE);
                     this.joinEventButton.setVisibility(View.VISIBLE);
                 }
 
 
-            }catch(Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
-
 
 
         }
 
     }
-    private void updateFields(){
+
+    private void updateFields() {
         eventNameView.setText(this.userEvent.getName());
         eventDateView.setText(this.userEvent.getDate().toString());
         eventLocationview.setText(this.userEvent.getLocation());
         eventDescription.setText(this.userEvent.getDescription());
     }
+
     public void onBackButtonClick(View view) {
         // Navigate back
         getParentFragmentManager().popBackStack();
@@ -161,44 +152,45 @@ public class EventDetailsFragment extends Fragment implements UserAdapter.Button
 
     // This method will be called when the "Join Event" button is clicked
     public void onJoinEventClick(View view) {
-        try{
-            Database.joinEvent(this.currentUser.get_id(),this.userEvent.getId());
+        try {
+            Database.joinEvent(this.currentUser.get_id(), this.userEvent.getId());
             this.joinEventButton.setVisibility(View.GONE);
             this.exitEventButton.setVisibility(View.VISIBLE);
-            this.users.add(new UserDisplay(currentUser.get_id(),currentUser.getName(), (this.currentUser.get_id().equals(this.userEvent.getCreator_id()))? "Organizer": "Participant"));
-            this.userAdapter.notifyItemInserted(this.users.size()-1);
-        }catch(Exception e){
+            this.users.add(new UserDisplay(currentUser.get_id(), currentUser.getName(), (this.currentUser.get_id().equals(this.userEvent.getCreator_id())) ? "Organizer" : "Participant"));
+            this.userAdapter.notifyItemInserted(this.users.size() - 1);
+        } catch (Exception e) {
             //handle
         }
     }
 
     // This method will be called when the "Leave Event" button is clicked
     public void onLeaveEventClick(View view) {
-        if(this.currentUser.get_id().equals(this.userEvent.getCreator_id())){
-            try{
+        if (this.currentUser.get_id().equals(this.userEvent.getCreator_id())) {
+            try {
                 Database.delEvent(this.userEvent.getId());
                 onBackButtonClick(this.getView());
-            }catch(Exception e){
+            } catch (Exception e) {
                 //handle
             }
-        }
-        else{
-            UserDisplay u = new UserDisplay(currentUser.get_id(), currentUser.getName(), (this.currentUser.get_id().equals(this.userEvent.getCreator_id()))? "Organizer": "Participant");
+        } else {
+            UserDisplay u = new UserDisplay(currentUser.get_id(), currentUser.getName(), (this.currentUser.get_id().equals(this.userEvent.getCreator_id())) ? "Organizer" : "Participant");
             removeUser(u);
             this.exitEventButton.setVisibility(View.GONE);
             this.joinEventButton.setVisibility(View.VISIBLE);
         }
     }
-    private void removeUser(UserDisplay user){
-        try{
-            Database.exitEvent(user.get_id(),this.userEvent.getId());
+
+    private void removeUser(UserDisplay user) {
+        try {
+            Database.exitEvent(user.get_id(), this.userEvent.getId());
             int idx = this.users.indexOf(user);
             this.users.remove(idx);
             this.userAdapter.notifyItemRemoved(idx);
-        }catch(Exception e){
+        } catch (Exception e) {
             //handle
         }
     }
+
     @Override
     public void onKickClick(int position) {
         removeUser(this.users.get(position));
@@ -207,10 +199,10 @@ public class EventDetailsFragment extends Fragment implements UserAdapter.Button
     @Override
     public void onMessageClick(int position) {
         Bundle args = new Bundle();
-        args.putSerializable("user",this.currentUser);
+        args.putSerializable("user", this.currentUser);
 
         UserDisplay[] others = {this.users.get(position)};
-        args.putSerializable("other_users",others);
+        args.putSerializable("other_users", others);
 
         NavHostFragment.findNavController(EventDetailsFragment.this)
                 .navigate(R.id.createMessageFragment, args);
@@ -219,8 +211,8 @@ public class EventDetailsFragment extends Fragment implements UserAdapter.Button
     @Override
     public void onUserItemClick(int position) {
         Bundle args = new Bundle();
-        args.putSerializable("user",this.currentUser);
-        args.putSerializable("other_user",this.users.get(position));
+        args.putSerializable("user", this.currentUser);
+        args.putSerializable("other_user", this.users.get(position));
         NavHostFragment.findNavController(EventDetailsFragment.this)
                 .navigate(R.id.userProfileFragment, args);
     }
@@ -228,7 +220,8 @@ public class EventDetailsFragment extends Fragment implements UserAdapter.Button
     // This method will be called when the "Edit Event" button is clicked
     public void onEditEventClick(View view) {
         toggleEditableMode(true);
-        pickDateButton.setVisibility(View.VISIBLE);    }
+        pickDateButton.setVisibility(View.VISIBLE);
+    }
 
     // This method will be called when the "Save Event" button is clicked
     public void onSaveEventClick(View view) {
@@ -254,16 +247,15 @@ public class EventDetailsFragment extends Fragment implements UserAdapter.Button
         }
 
 
-
     }
 
     private void toggleEditableMode(boolean isEdit) {
 
         // Enable or disable editing of TextViews based on the editable flag
-        setAsTextView(eventNameView,isEdit);
-        setAsTextView(eventDateView,isEdit);
-        setAsTextView(eventLocationview,isEdit);
-        setAsTextView(eventDescription,isEdit);
+        setAsTextView(eventNameView, isEdit);
+        setAsTextView(eventDateView, isEdit);
+        setAsTextView(eventLocationview, isEdit);
+        setAsTextView(eventDescription, isEdit);
         // Show or hide the buttons based on the editable flag
         if (isEdit) {
             editEventButton.setVisibility(View.GONE);
@@ -271,27 +263,23 @@ public class EventDetailsFragment extends Fragment implements UserAdapter.Button
             pickDateButton.setVisibility(View.VISIBLE);
         } else {
             //enable the edit button only for creator
-            if(this.currentUser.get_id().equals(this.userEvent.getCreator_id())){
+            if (this.currentUser.get_id().equals(this.userEvent.getCreator_id())) {
                 editEventButton.setVisibility(View.VISIBLE);
-            }
-            else{
+            } else {
                 editEventButton.setVisibility(View.GONE);
             }
             saveEventButton.setVisibility(View.GONE);
             pickDateButton.setVisibility(View.GONE);
-            }
+        }
 
 
     }
 
-    private void setAsTextView(EditText tv,boolean flg){
-        ;
-        if(flg){
+    private void setAsTextView(EditText tv, boolean flg) {
+        if (flg) {
             tv.setInputType(EditorInfo.TYPE_CLASS_TEXT);
             tv.setBackground(new AppCompatEditText(tv.getContext()).getBackground());
-        }
-
-        else{
+        } else {
             tv.setInputType(EditorInfo.TYPE_NULL);
             tv.setBackground(null);
         }
