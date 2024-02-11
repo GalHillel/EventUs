@@ -125,10 +125,10 @@ if GEN_DATA:
     time.sleep(1)
 
 else:
-    #pfp = addProfilePic()
+    pfp = addProfilePic()
     #print(pfp)
 
-    _id = "65c7f47c8b594a9d9a89eafe"
-    r = requests.patch(url=URL+"users/65c7878a476d032000c6fe77/edit",data={"profile_pic":_id})
-    print(r)
+    #_id = "65c7f47c8b594a9d9a89eafe"
+    #r = requests.patch(url=URL+"users/65c7878a476d032000c6fe77/edit",data={"profile_pic":_id})
+    #print(r)
 

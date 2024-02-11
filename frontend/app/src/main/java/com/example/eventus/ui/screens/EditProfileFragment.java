@@ -3,6 +3,10 @@ package com.example.eventus.ui.screens;
 import static android.app.Activity.RESULT_OK;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
@@ -23,10 +27,12 @@ import androidx.navigation.Navigation;
 
 import com.example.eventus.R;
 import com.example.eventus.data.Database;
+import com.example.eventus.data.ServerSideException;
 import com.example.eventus.data.model.UserDisplay;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -74,6 +80,19 @@ public class EditProfileFragment extends Fragment {
         MaterialButton saveProfilePicture = view.findViewById(R.id.saveProfilePicture);
         MaterialButton saveBioButton = view.findViewById(R.id.saveBio);
 
+        try {
+            if (user != null && user.getProfile_pic().length() > 0) {
+                Bitmap profile_icon = Database.getProfilePic(user.get_id());
+                profilePhotoImageView.setImageBitmap(profile_icon);
+            }
+        } catch (ServerSideException e) {
+            // Handle the exception (e.g., show an error message)
+            e.printStackTrace();
+        } catch (Exception e) {
+            // Handle other exceptions
+            e.printStackTrace();
+        }
+
 
         // Set up listeners
         MaterialButton logoutButton = view.findViewById(R.id.logout);
@@ -91,13 +110,44 @@ public class EditProfileFragment extends Fragment {
 
         choosePhotoButton.setOnClickListener(v -> choosePhotoFromGallery());
 
+        //TODO figure out how to upload profile pics
         saveProfilePicture.setOnClickListener(v -> {
-            // Get the URI of the selected image
-            /*Uri selectedImageUri = getImageUri();
-             if (selectedImageUri != null) {
-             // Upload the selected image to the server
-             //uploadProfilePicture(selectedImageUri);
-             }**/
+
+            // Get the Drawable from the ImageView
+            Drawable drawable = profilePhotoImageView.getDrawable();
+
+            // Convert the Drawable into a Bitmap
+            Bitmap bitmap = null;
+            if (drawable instanceof BitmapDrawable) {
+                bitmap = ((BitmapDrawable) drawable).getBitmap();
+            } else {
+                // If the drawable is not a BitmapDrawable, create a new Bitmap
+                bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+                Canvas canvas = new Canvas(bitmap);
+                drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+                drawable.draw(canvas);
+            }
+
+            // Convert the Bitmap into a byte array
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            byte[] pic = stream.toByteArray();
+
+            try {//TODO: add removing profile pic from the database
+                String profile_id = Database.uploadProfilePic(pic);
+                HashMap<String, Object> updatedUserParams = new HashMap<>();
+                updatedUserParams.put("profile_pic", profile_id);
+                Database.editUser(user.get_id(), updatedUserParams);
+                Toast.makeText(requireContext(), "Your bio has been updated successfully", Toast.LENGTH_SHORT).show();
+
+            } catch (ServerSideException e) {
+                // Handle the exception (e.g., show an error message)
+                e.printStackTrace();
+            } catch (Exception e) {
+                // Handle other exceptions
+                e.printStackTrace();
+            }
+
         });
 
         saveBioButton.setOnClickListener(v -> {

@@ -106,6 +106,24 @@ public class Database {
         }
     }
 
+    public static String uploadProfilePic(byte[] pic) throws Exception{
+        HashMap<String, Object> payloadData = new HashMap<String, Object>();
+        payloadData.put("icon",pic);
+        AsyncHttpRequest task = new AsyncHttpRequest("profilepics", payloadData, null, "POST_PIC");
+        task.execute();
+        task.get();
+        ServerResponse response = task.getServerResponse();
+
+        if (response.getReturnCode() == HttpURLConnection.HTTP_CREATED) {
+            JSONObject jsonObject = new JSONObject(response.getPayload());
+
+            return jsonObject.getString("_id");
+        }
+        else{
+            throw new ServerSideException(response.getPayload());
+        }
+    }
+
 
 
 

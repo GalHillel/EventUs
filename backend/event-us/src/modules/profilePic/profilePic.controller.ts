@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, UseInterceptors, UploadedFile, ParseFilePipeBuilder, HttpStatus, UploadedFiles } from '@nestjs/common';
+import { Controller, Post, Body, Get, UseInterceptors, UploadedFile, ParseFilePipeBuilder, HttpStatus, UploadedFiles, BadRequestException, InternalServerErrorException } from '@nestjs/common';
 import { ProfilePicService } from './profilePic.service';
 import { CreateProfilePicDto } from '../dto/profilePic.dto';
 import { ProfilePic } from './profilePic.model';
@@ -11,18 +11,18 @@ export class ProfilePicController {
   constructor(private readonly profilePicService: ProfilePicService) {}
 
   @Post()
-  @UseInterceptors(FileFieldsInterceptor([
-    
-    { name: 'icon', maxCount: 1 },
-  ]))
-  async uploadProfilePicture(@UploadedFiles() files: { _id?: Multer.File, icon?: Multer.File[] }) : Promise<ProfilePic>{
-    var params : {'icon':Buffer} = {'icon':files.icon[0].buffer} 
-    
-    
-    return this.profilePicService.createProfilePic(params);
-    
-   
-   
+  @UseInterceptors(FileInterceptor("icon"))
+  async uploadProfilePicture(@UploadedFiles() files: { icon?: Multer.File[] }): Promise<string> {
+    try {
+      if (!files || !files.icon || files.icon.length === 0) {
+        throw new BadRequestException("No file uploaded");
+      }
+      const fileBuffer: Buffer = files.icon[0].buffer;
+      return (await this.profilePicService.createProfilePic({ icon: fileBuffer })).id;;
+    } catch (error) {
+      console.error("Error uploading profile picture:", error);
+      throw new InternalServerErrorException("Error uploading profile picture");
+    }
   }
 
 

@@ -2,18 +2,24 @@ package com.example.eventus.data;
 
 import android.os.AsyncTask;
 
+import androidx.core.content.res.TypedArrayUtils;
+
 import com.example.eventus.data.model.ServerResponse;
 import com.google.gson.Gson;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class AsyncHttpRequest extends AsyncTask<Void, Void, ServerResponse> {
@@ -83,6 +89,7 @@ public class AsyncHttpRequest extends AsyncTask<Void, Void, ServerResponse> {
         else if (this.method.equals("POST") || this.method.equals("PATCH")) {
             payloadStr = gson.toJson(this.payloadData);
         }
+
         if(query.length() > 0)
             url = url + "?" + query;
 
@@ -92,21 +99,58 @@ public class AsyncHttpRequest extends AsyncTask<Void, Void, ServerResponse> {
         // Open a connection to the URL
         HttpURLConnection connection = (HttpURLConnection) urlObject.openConnection();
 
-        // Set the request method
-        connection.setRequestMethod(this.method);
-
-        if (this.method.equals("POST") || this.method.equals("PATCH")) {
-            // Enable input/output streams
+        if(this.method.equals("POST_PIC")){
+            String boundary = "===" + System.currentTimeMillis() + "===";
+            connection.setRequestMethod("POST");
             connection.setDoOutput(true);
-            // Set the content type to JSON
-            connection.setRequestProperty("Content-Type", "application/json");
+            connection.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
             // Get the output stream of the connection
-            try (OutputStream os = connection.getOutputStream()) {
-                // Write the JSON data to the output stream
-                byte[] input = payloadStr.getBytes(StandardCharsets.UTF_8);
-                os.write(input, 0, input.length);
+            OutputStream outputStream = connection.getOutputStream();
+            StringBuilder s1 = new StringBuilder();
+            StringBuilder s2 = new StringBuilder();
+
+            // Write multipart/form-data headers
+            s1.append("--").append(boundary).append("\r\n");
+            s1.append("Content-Disposition: form-data; name=\"icon\"; filename=\"newImg.png\"").append("\r\n");
+            s1.append("Content-Type: image/png").append("\r\n");
+            s1.append("\r\n");
+            byte[] data1 = s1.toString().getBytes(StandardCharsets.UTF_8);
+
+            // Write image data
+            byte[] imageData = (byte[]) payloadData.get("icon");
+
+            s2.append("\r\n");
+            s2.append("--" + boundary + "--").append("\r\n");
+            byte[] data2 = s2.toString().getBytes(StandardCharsets.UTF_8);
+            byte[] fullData = new byte[data1.length+data2.length+imageData.length];
+            System.arraycopy(data1, 0, fullData, 0, data1.length);
+            System.arraycopy(imageData, 0, fullData, data1.length, imageData.length);
+            System.arraycopy(data2, 0, fullData, data1.length+imageData.length, data2.length);
+            outputStream.write(fullData,0,fullData.length);
+
+
+            // End of multipart/form-data
+
+
+        }
+        else{
+            // Set the request method
+            connection.setRequestMethod(this.method);
+            if (this.method.equals("POST") || this.method.equals("PATCH")) {
+                // Enable input/output streams
+                connection.setDoOutput(true);
+                // Set the content type to JSON
+                connection.setRequestProperty("Content-Type", "application/json");
+                // Get the output stream of the connection
+                try (OutputStream os = connection.getOutputStream()) {
+                    // Write the JSON data to the output stream
+                    byte[] input = payloadStr.getBytes(StandardCharsets.UTF_8);
+                    os.write(input, 0, input.length);
+                }
             }
         }
+
+
 
 
         // Get the response code
