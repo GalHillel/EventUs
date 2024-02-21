@@ -105,16 +105,8 @@ public class CreateEventFragment extends Fragment {
             // Call the Database method to add the event with the correct creator_id
             UserEvent userEvent = Database.addEvent(user.get_id(), eventName, eventDate, eventLocation, eventDescription);
 
-            // Convert UserEvent to UserEventDisplay for display purposes
-            UserEventDisplay userEventDisplay = new UserEventDisplay(
-                    userEvent.getId(),
-                    userEvent.getName(),
-                    userEvent.getDate(),
-                    userEvent.getLocation()
-            );
-
             // Display information about the created event using UserEventDisplay
-            displayEventDetails(userEventDisplay);
+            displayEventDetails(userEvent);
             Toast.makeText(requireContext(), "Event created successfully", Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
             // Handle the exception, e.g., show an error message

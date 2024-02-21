@@ -12,18 +12,12 @@ export class ProfilePicController {
 
   @Post()
   @UseInterceptors(FileFieldsInterceptor([
-    
     { name: 'icon', maxCount: 1 },
   ]))
   async uploadProfilePicture(@UploadedFiles() files: { _id?: Multer.File, icon?: Multer.File[] }) : Promise<String>{
     console.log(files)
     var params : {'icon':Buffer} = {'icon':files.icon[0].buffer} 
-    
-    
-    return (await this.profilePicService.createProfilePic(params)).id;
-    
-   
-   
+    return (await this.profilePicService.createProfilePic(params)).id;   
   }
 
 
