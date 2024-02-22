@@ -7,23 +7,17 @@ import { Schema as mongooseSchema } from "mongoose";
 
 
 @Schema()
-export class Message extends Document {    
-    @Prop({ type: [{ type: String, ref: 'users' }], required:true})
-    sender_id: string;
-    
-    
-    @Prop({ required: true })
-    receiver_ids: string[];
-
+export class Message extends Document {
+    @Prop({ default: Date.now })
+    date_sent: Date;
     @Prop({ default: "" })
     title: string;
-    
     @Prop({ default: "" })
     content: string;
-    
-    @Prop({ default: Date.now })
-    date_sent: Date; 
-
+    @Prop({ required: true })
+    receiver_ids: string[];
+    @Prop({ type: [{ type: String, ref: 'users' }], required:true})
+    sender_id: string;
 }
 export const messageDisplayFields = "_id sender_id title"
 export const MessageSchema = SchemaFactory.createForClass(Message);

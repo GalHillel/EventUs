@@ -18,6 +18,20 @@ export class MessageController {
     return message
   }
 
+  /**TODO errpr handling
+   * messages/<message id>/info, get full message details by id, param _id to set the message as read
+   * @param _id 
+   * @returns full details of one message
+   */
+  @Get(":id/info")
+  async getMessageInfo(@Param('id') _id: string, @Query('_id') user_id: string): Promise<Message> {
+    
+    if (user_id != null && _id != null){
+      await this.userService.readMessage(user_id,_id);
+    }
+    return this.messageService.getMessage(_id);
+  }
+
   /**
    * messages, get a list of messages matching the search terms
    * @param searchTerms 
@@ -40,20 +54,5 @@ export class MessageController {
     return this.messageService.search(searchTerms,messageDisplayFields);
   }
 
-
-  /**TODO errpr handling
-   * messages/<message id>/info, get full message details by id, param _id to set the message as read
-   * @param _id 
-   * @returns full details of one message
-   */
-  @Get(":id/info")
-  async getMessageInfo(@Param('id') _id: string, @Query('_id') user_id: string): Promise<Message> {
-    
-    if (user_id != null && _id != null){
-      await this.userService.readMessage(user_id,_id);
-    }
-    return this.messageService.getMessage(_id);
-  }
-  
   // Implement other CRUD endpoints as needed
 }

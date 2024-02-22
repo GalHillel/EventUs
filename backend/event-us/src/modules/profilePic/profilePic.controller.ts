@@ -10,6 +10,12 @@ import { Multer } from 'multer';
 export class ProfilePicController {
   constructor(private readonly profilePicService: ProfilePicService) {}
 
+  @Get()
+  async findAllProfilePics(): Promise<ProfilePic[]> {
+    this.profilePicService.printAllProfilePics();
+    return this.profilePicService.findAllProfilePics();
+  }
+
   @Post()
   @UseInterceptors(FileFieldsInterceptor([
     { name: 'icon', maxCount: 1 },
@@ -18,13 +24,6 @@ export class ProfilePicController {
     console.log(files)
     var params : {'icon':Buffer} = {'icon':files.icon[0].buffer} 
     return (await this.profilePicService.createProfilePic(params)).id;   
-  }
-
-
-  @Get()
-  async findAllProfilePics(): Promise<ProfilePic[]> {
-    this.profilePicService.printAllProfilePics();
-    return this.profilePicService.findAllProfilePics();
   }
 
   // Implement other CRUD endpoints as needed

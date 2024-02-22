@@ -3,16 +3,16 @@ import { OmitType, PartialType, PickType } from '@nestjs/swagger';
 
 export class UserDto{
   readonly _id: string;
-  readonly name: string;
-  readonly email: string;
-  readonly password: string;
   readonly bio: string;
-  readonly user_type: string;
-  readonly profile_pic: string;
-  readonly messages: Map<string,boolean>;
+  readonly email: string;
   readonly events: string[];
-  readonly rating: number;
+  readonly messages: Map<string,boolean>;
+  readonly name: string;
   readonly num_ratings: number;
+  readonly password: string;
+  readonly profile_pic: string;
+  readonly rating: number;
+  readonly user_type: string;
 }
 
 export class ParticipantDto extends OmitType(UserDto,['rating','num_ratings']){}

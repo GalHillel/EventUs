@@ -5,15 +5,15 @@ import { Expose } from 'class-transformer';
 
 export class EventDto{
   readonly _id: string;
-  readonly name: string;
-  readonly date: Date;
-  readonly location: string;
-  readonly description: string;
-  readonly creator_id: string;
   readonly attendents: Map<string,boolean>;
-  readonly rating: number;
-  readonly num_ratings: number;
+  readonly creator_id: string;
+  readonly date: Date;
+  readonly description: string;
   readonly isPrivate: boolean;
+  readonly location: string;
+  readonly name: string;
+  readonly num_ratings: number;
+  readonly rating: number;
 }
 
 

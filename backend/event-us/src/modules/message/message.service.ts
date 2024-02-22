@@ -33,6 +33,15 @@ export class MessageService {
     
   }
 
+  /**
+   * Get message contents by message Id
+   * @param _id _id field of the desired message
+   * @returns contents of desired message
+   */
+  async getMessageContent(_id:string): Promise<string>{
+    return (await this.getMessage(_id)).content;
+  }
+
   async search(searchTerms: SearchMessageDto,fields?:string): Promise<Message[]>{
     return this.messageModel.find(searchTerms,fields).populate('sender_id','name',this.userModel).exec();
   }
@@ -47,14 +56,6 @@ export class MessageService {
     return this.messageModel.find({ _id: { $in: _ids } },fields).populate('sender_id','name',this.userModel).exec();
   }
 
-  /**
-   * Get message contents by message Id
-   * @param _id _id field of the desired message
-   * @returns contents of desired message
-   */
-  async getMessageContent(_id:string): Promise<string>{
-    return (await this.getMessage(_id)).content;
-  }
   /**
    * Get sender Id by message Id
    * @param _id message id

@@ -19,6 +19,33 @@ export class UserService {
     @InjectModel(User.name) private readonly userModel: Model<User>,
   ) {}
 
+  /**
+   * Adds an event id to the users events list
+   * @param _id user _id
+   * @param eventId event _id
+   * @returns updated user
+   */
+  async addEvent(_id:string,eventId:string): Promise<User>{
+    const user = await this.getUser(_id);
+    //dupe check
+    if (user.events.includes(eventId)){
+      throw new HttpException("Event exists for user!",HttpStatus.CONFLICT);
+    } 
+    user.events.push(eventId);
+    await user.save();
+    return user;
+  }
+
+  /**
+   * Adds a message to all users inbox's, there is no check for duplicate messages
+   * @param userIds user id's
+   * @param msgId msg id
+   */
+  async addMessages(userIds: string[],msgId:string): Promise<void>{
+    //no need to check for duplicate messages as this function gets called only on message creation
+    const temp = await this.setMessageState(userIds,msgId,false);
+    console.log(temp)
+  }
 
   /**
    * Adds a new user to the database if there is no user that shares the same email and is of the same type
@@ -35,6 +62,60 @@ export class UserService {
     return createdUser.save();
   }
 
+  async editUser(_id: string, edit: EditUserDto) {
+    
+    const user = await this.getUser(_id,"user_type password");
+    
+    if(edit.password != null){
+      if(edit.oldPassword == null){
+        throw new HttpException("No old password provided!",HttpStatus.FAILED_DEPENDENCY)
+      }
+      else{
+        if(edit.oldPassword != user.password){
+          throw new HttpException("Wrong password!",HttpStatus.FAILED_DEPENDENCY)
+        }
+      }
+    }
+    if(edit.email != null){
+      if(await this.userModel.findOne({email:edit.email, user_type:user.user_type}).exec() != null){
+        throw new HttpException(user.user_type+" with this email already exists!",HttpStatus.CONFLICT)
+      }
+    }
+
+    const up = await this.userModel.updateOne({_id:_id},edit).exec();
+    
+    
+  }
+
+  async getEventIds(_id: string): Promise<string[]> {
+    return (await this.getUser(_id,'events')).events; 
+  }
+
+  async getMessageIds(_id: string): Promise<string[]> {
+    const obj = await this.getUser(_id,'messages')
+    return Array.from(obj.messages.keys());
+  }
+
+  async getMessages(_id: string): Promise<User> {
+    return (await this.getUser(_id,'messages'));
+  }
+
+  async getProfilePicId(_id: string): Promise<string> {
+    return (await this.getUser(_id,'profile_pic')).profile_pic;
+  }
+
+  /**
+   * Get user by user Id
+   * @param _id _id field of the desired user
+   * @param field get only selected fields from user
+   * @returns Desired user
+   */
+  async getUser(_id:string, field?:string): Promise<User>{
+    return this.userModel.findById(_id,field).exec().then((user) => { 
+      if (!user) throw new NotFoundException('User '+_id+' not Found');
+      return user;
+    })
+  }
 
   /**
    * Gets a user with matching email, password, and user_type from the database 
@@ -65,18 +146,7 @@ export class UserService {
   async getUsers(_ids:string[],fields?:string): Promise<User[]>{
     return await this.userModel.find({ _id: { $in: _ids } },fields).exec();
   }
-  /**
-   * Get user by user Id
-   * @param _id _id field of the desired user
-   * @param field get only selected fields from user
-   * @returns Desired user
-   */
-  async getUser(_id:string, field?:string): Promise<User>{
-    return this.userModel.findById(_id,field).exec().then((user) => { 
-      if (!user) throw new NotFoundException('User '+_id+' not Found');
-      return user;
-    })
-  }
+
   /**
    * get a list of users matching the search term
    * @param searchTerms 
@@ -86,38 +156,6 @@ export class UserService {
   async search(searchTerms: SearchUserDto,fields?:string): Promise<User[]>{
     return this.userModel.find(searchTerms,fields).exec();
   }
-
-
-  
-  async getEventIds(_id: string): Promise<string[]> {
-    return (await this.getUser(_id,'events')).events; 
-  }
-  async getProfilePicId(_id: string): Promise<string> {
-    return (await this.getUser(_id,'profile_pic')).profile_pic;
-  }
-  async getMessageIds(_id: string): Promise<string[]> {
-    const obj = await this.getUser(_id,'messages')
-    return Array.from(obj.messages.keys());
-  }
-
-  
-  /**
-   * Adds an event id to the users events list
-   * @param _id user _id
-   * @param eventId event _id
-   * @returns updated user
-   */
-  async addEvent(_id:string,eventId:string): Promise<User>{
-    const user = await this.getUser(_id);
-    //dupe check
-    if (user.events.includes(eventId)){
-      throw new HttpException("Event exists for user!",HttpStatus.CONFLICT);
-    } 
-    user.events.push(eventId);
-    await user.save();
-    return user;
-  }
-
 
   /**
    * removes an event id from the users events list
@@ -129,46 +167,10 @@ export class UserService {
     await this.userModel.updateOne({_id:_id},{ $pull: {events: eventId} }).exec();
   }
 
-  async editUser(_id: string, edit: EditUserDto) {
-    
-    const user = await this.getUser(_id,"user_type password");
-    
-    if(edit.password != null){
-      if(edit.oldPassword == null){
-        throw new HttpException("No old password provided!",HttpStatus.FAILED_DEPENDENCY)
-      }
-      else{
-        if(edit.oldPassword != user.password){
-          throw new HttpException("Wrong password!",HttpStatus.FAILED_DEPENDENCY)
-        }
-      }
-    }
-    if(edit.email != null){
-      if(await this.userModel.findOne({email:edit.email, user_type:user.user_type}).exec() != null){
-        throw new HttpException(user.user_type+" with this email already exists!",HttpStatus.CONFLICT)
-      }
-    }
-
-    const up = await this.userModel.updateOne({_id:_id},edit).exec();
-    
-    
-  }
-
-
   async setMessageState(userIds:string[],msgId:string,read:boolean){
     return this.userModel.updateMany({_id:{$in:userIds}}, {$set:{[`messages.${msgId}`]:read}}).exec()
   }
 
-  /**
-   * Adds a message to all users inbox's, there is no check for duplicate messages
-   * @param userIds user id's
-   * @param msgId msg id
-   */
-  async addMessages(userIds: string[],msgId:string): Promise<void>{
-    //no need to check for duplicate messages as this function gets called only on message creation
-    const temp = await this.setMessageState(userIds,msgId,false);
-    console.log(temp)
-  }
   /**
    * removes a message from a users inbox's
    * @param userId user id's
@@ -179,10 +181,7 @@ export class UserService {
     await this.userModel.findById(userId).updateOne({},{ $unset:{[`messages.${msgId}`]:1}}).exec();
     
   }
-  async getMessages(_id: string): Promise<User> {
-    return (await this.getUser(_id,'messages'));
-  }
-  
+
   /**
    * set a message as read
    * @param userId user's id

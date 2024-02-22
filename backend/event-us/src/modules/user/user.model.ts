@@ -3,41 +3,27 @@ import { Document, Schema as mongooseSchema } from 'mongoose';
 //import { string } from '../dto/id.dto';
 
 @Schema()
-export class User extends Document {    
-    
+export class User extends Document {
     @Prop({default: ""})
-    profile_pic: string;
-    
+    private bio: string;
     @Prop({ required: true })
     name: string;
-    
+    @Prop({default: 0})
+    private num_ratings: number;
+    @Prop({default: 0})
+    private rating: number;
     @Prop({ required: true })
     email: string;
-    
-    @Prop({ required: true })
-    password: string;
-    
-    @Prop({ required: true })
-    user_type: string;
-    
-    @Prop({default: ""})
-    bio: string;
-
-    
-    @Prop({ default: {} })
-    messages: Map<string,boolean>;
-    
-    
     @Prop({ default: [] })
     events: string[];
-
-    @Prop({default: 0})
-    rating: number;
-
-    @Prop({default: 0})
-    num_ratings: number;
-
-
+    @Prop({ default: {} })
+    messages: Map<string,boolean>;
+    @Prop({ required: true })
+    password: string;
+    @Prop({default: ""})
+    profile_pic: string;
+    @Prop({ required: true })
+    user_type: string;
 }
 
 export const userDisplayFields = "_id name user_type profile_pic"

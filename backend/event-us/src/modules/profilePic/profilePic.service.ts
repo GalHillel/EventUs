@@ -18,14 +18,17 @@ export class ProfilePicService {
   async findAllProfilePics(): Promise<ProfilePic[]> {
     return this.profilePicModel.find().exec();
   }
-  async printAllProfilePics(): Promise<void>{
-    const profilepics: ProfilePic[] = await this.profilePicModel.find().exec();
+
+  /**
+   * Get profile pic data as buffer
+   * @param _id _id field of the desired profilePic
+   * @returns profile pic icon
+   */
+  async getIcon(_id:string): Promise<Buffer>{
     
-    profilepics.forEach( (profilepic,index)=>{
-      
-      console.log(profilepic);
-    });
+    return (await this.getProfilePic(_id,'icon')).icon; 
   }
+
   /**
    * Get profilePic by profilePic Id
    * @param _id _id field of the desired profilePic
@@ -39,14 +42,14 @@ export class ProfilePicService {
       }
     )
   }
-  /**
-   * Get profile pic data as buffer
-   * @param _id _id field of the desired profilePic
-   * @returns profile pic icon
-   */
-  async getIcon(_id:string): Promise<Buffer>{
+
+  async printAllProfilePics(): Promise<void>{
+    const profilepics: ProfilePic[] = await this.profilePicModel.find().exec();
     
-    return (await this.getProfilePic(_id,'icon')).icon; 
+    profilepics.forEach( (profilepic,index)=>{
+      
+      console.log(profilepic);
+    });
   }
 
   // Implement other CRUD operations as needed

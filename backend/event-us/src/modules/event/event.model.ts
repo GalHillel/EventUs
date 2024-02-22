@@ -5,34 +5,25 @@ import { Document } from 'mongoose';
 
 
 @Schema()
-export class UserEvent extends Document {    
-    
+export class UserEvent extends Document {
     @Prop({ required: true })
-    name: string;
-    
-    @Prop({ required: true })
-    date: Date;
-    
-    @Prop({ default: "TBD" })
-    location: string;
-    
+    private date: Date;
     @Prop({ default: "" })
-    description: string;
-    
+    private description: string;
+    @Prop({default: false})
+    private isPrivate: boolean;
+    @Prop({ default: "TBD" })
+    private location: string;
     @Prop({ required: true })
-    creator_id: string;
-    
+    private name: string;
+    @Prop({default: 0})
+    private num_ratings: number;
+    @Prop({default: 0})
+    private rating: number;
     @Prop({ default: {} })
     attendents: Map<string,boolean>;
-
-    @Prop({default: 0})
-    rating: number;
-
-    @Prop({default: 0})
-    num_ratings: number;
-
-    @Prop({default: false})
-    isPrivate: boolean;
+    @Prop({ required: true })
+    creator_id: string;
 }
 
 export const userEventDisplayFields = "_id name date location isPrivate"
