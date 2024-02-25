@@ -40,7 +40,10 @@ public class UserMessagesFragment extends Fragment implements MessageAdaptor.onM
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_user_messages, container, false);
     }
-
+    /*
+        TODO:
+            1. Make this page much prettier
+     */
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 

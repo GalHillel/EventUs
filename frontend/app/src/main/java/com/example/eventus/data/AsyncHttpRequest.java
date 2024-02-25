@@ -100,6 +100,7 @@ public class AsyncHttpRequest extends AsyncTask<Void, Void, ServerResponse> {
         HttpURLConnection connection = (HttpURLConnection) urlObject.openConnection();
 
         if(this.method.equals("POST_PIC")){
+            /*
             String boundary = "===" + System.currentTimeMillis() + "===";
             connection.setRequestMethod("POST");
             connection.setDoOutput(true);
@@ -130,6 +131,9 @@ public class AsyncHttpRequest extends AsyncTask<Void, Void, ServerResponse> {
 
 
             // End of multipart/form-data
+
+             */
+            
 
 
         }

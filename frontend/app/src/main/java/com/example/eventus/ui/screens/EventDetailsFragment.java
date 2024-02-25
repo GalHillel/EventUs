@@ -70,7 +70,14 @@ public class EventDetailsFragment extends Fragment implements UserAdapter.Button
         // Inflate the layout for this fragment
         return view;
     }
-
+    /*
+        TODO:
+            1. Add the option for an Organizer to accept a new user
+            2. Add the option for an Organizer to send a message to all users in event
+            3. Add the option to rate an event and implement the rating algorithm
+            4. (optional) show profile pictures of users
+            5. Move Organizer to the top of the list and show that he is the Organizer
+     */
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 

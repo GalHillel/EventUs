@@ -3,12 +3,14 @@ package com.example.eventus.ui.screens;
 import static android.app.Activity.RESULT_OK;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -27,12 +29,17 @@ import androidx.navigation.Navigation;
 
 import com.example.eventus.R;
 import com.example.eventus.data.Database;
+import com.example.eventus.data.FileUploader;
 import com.example.eventus.data.ServerSideException;
+import com.example.eventus.data.model.ServerResponse;
 import com.example.eventus.data.model.UserDisplay;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 
+import org.json.JSONObject;
+
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -50,6 +57,7 @@ public class EditProfileFragment extends Fragment {
     private MaterialButton savePasswordButton;
 
     private UserDisplay user;
+    private Uri uri = null;
 
     /*TODO: Make edit profile cleaner and easier to use, one click save for all fields like edit event
             Implement save profile pic
@@ -99,7 +107,7 @@ public class EditProfileFragment extends Fragment {
         logoutButton.setOnClickListener(v -> {
             Navigation.findNavController(v).navigate(R.id.action_userProfileFragment_to_loginFragment);
             // Prints success message
-            Toast.makeText(requireContext(), "Login out", Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), "Logging out", Toast.LENGTH_SHORT).show();
         });
 
         ImageButton backButton = view.findViewById(R.id.backButton);
@@ -110,9 +118,8 @@ public class EditProfileFragment extends Fragment {
 
         choosePhotoButton.setOnClickListener(v -> choosePhotoFromGallery());
 
-        //TODO figure out how to upload profile pics
+        //TODO resizing profile pics
         saveProfilePicture.setOnClickListener(v -> {
-
             // Get the Drawable from the ImageView
             Drawable drawable = profilePhotoImageView.getDrawable();
 
@@ -132,22 +139,31 @@ public class EditProfileFragment extends Fragment {
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
             byte[] pic = stream.toByteArray();
+            //TODO add removing profile pic
+            Database.uploadProfilePic(pic, new FileUploader.UploadCallback() {
+                @Override
+                public void onSuccess(ServerResponse response) {
+                    try{
 
-            try {//TODO: add removing profile pic from the database
-                String profile_id = Database.uploadProfilePic(pic);
-                HashMap<String, Object> updatedUserParams = new HashMap<>();
-                updatedUserParams.put("profile_pic", profile_id);
-                Database.editUser(user.get_id(), updatedUserParams);
-                Toast.makeText(requireContext(), "Your bio has been updated successfully", Toast.LENGTH_SHORT).show();
 
-            } catch (ServerSideException e) {
-                // Handle the exception (e.g., show an error message)
-                e.printStackTrace();
-            } catch (Exception e) {
-                // Handle other exceptions
-                e.printStackTrace();
-            }
+                        String profile_id = response.getPayload();
+                        HashMap<String, Object> updatedUserParams = new HashMap<>();
+                        updatedUserParams.put("profile_pic", profile_id);
+                        Database.editUser(user.get_id(), updatedUserParams);
+                        Toast.makeText(requireContext(), "Your bio has been updated successfully", Toast.LENGTH_SHORT).show();
+                    }catch (Exception e){
+                        //TODO handle exceptions
+                        e.printStackTrace();
+                    }
 
+                }
+
+                @Override
+                public void onFailure(ServerResponse errorMessage) {
+                    //TODO handle exceptions
+                    Log.e("Err", errorMessage.toString());
+                }
+            });
         });
 
         saveBioButton.setOnClickListener(v -> {
@@ -263,6 +279,7 @@ public class EditProfileFragment extends Fragment {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
         startActivityForResult(intent, 1);
+
     }
 
     // Method to handle the result of choosing a photo from the gallery
@@ -270,7 +287,7 @@ public class EditProfileFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1 && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            Uri uri = data.getData();
+            uri = data.getData();
             // Set the selected image to the profile photo ImageView
             profilePhotoImageView.setImageURI(uri);
         }

@@ -24,10 +24,11 @@ import com.example.eventus.data.model.UserDisplay;
 import com.example.eventus.data.model.UserProfile;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-/* TODO: 1. Implement rating for users and events
+/* TODO: 1. Implement rating for users and events - users may rate event *not* organizers
          2. Display events when user enter to organizer profile
-         3. Remove navigation bar when entering another user profile
-         4. Maybe remove the option to send message from profile - useless
+         3. Remove navigation bar when entering another user profile - done
+         4. Maybe remove the option to send message from profile - should work anyway
+         5. Move logout button here
  */
 
 public class UserProfileFragment extends Fragment {
@@ -58,6 +59,7 @@ public class UserProfileFragment extends Fragment {
             hideNavigationItem(view, R.id.newEvent);
         }
 
+        //Grab user profile that is being viewed from the database
         try {
             if (uProfile != null)
                 userProfile = Database.userProfile(uProfile.get_id());
@@ -86,16 +88,12 @@ public class UserProfileFragment extends Fragment {
 
         ImageButton backButton = view.findViewById(R.id.backButton);
         RatingBar userRatingBar = view.findViewById(R.id.userRatingBar);
+        userRatingBar.setEnabled(false);
         TextView ratingCountTextView = view.findViewById(R.id.ratingCountTextView);
         Button saveRatingButton = view.findViewById(R.id.saveRatingButton);
         Button sendMessageButton = view.findViewById(R.id.sendMessageButton);
 
-        if (userProfile != null && user.getUser_type().equals("Organizer") && !user.get_id().equals(userProfile.get_id())) {
-            saveRatingButton.setVisibility(View.VISIBLE);
 
-        } else {
-            saveRatingButton.setVisibility(View.GONE);
-        }
 
         // Set actual user name and bio
         TextView usernameTextView = view.findViewById(R.id.usernameTextView);
@@ -106,18 +104,41 @@ public class UserProfileFragment extends Fragment {
         }
 
         if (userProfile != null && !userProfile.get_id().equals(user.get_id())) {
+            view.findViewById(R.id.navigation).setVisibility(View.GONE);
             view.findViewById(R.id.sendMessageButton).setOnClickListener(v ->
                     Navigation.findNavController(view).navigate(R.id.action_userProfileFragment_to_createMessageFragment));
 
             view.findViewById(R.id.editProfileButton).setVisibility(View.GONE);
             backButton.setVisibility(View.VISIBLE);
             backButton.setOnClickListener(this::onBackButtonClicked);
+
+            if (userProfile.getUser_type().equals("Organizer")) {
+                saveRatingButton.setVisibility(View.VISIBLE);
+                userRatingBar.setVisibility(View.VISIBLE);
+                ratingCountTextView.setVisibility(View.VISIBLE);
+
+            } else {
+                saveRatingButton.setVisibility(View.GONE);
+                userRatingBar.setVisibility(View.GONE);
+                ratingCountTextView.setVisibility(View.GONE);
+            }
         } else {
+
             view.findViewById(R.id.sendMessageButton).setVisibility(View.GONE);
             backButton.setVisibility(View.GONE);
 
             view.findViewById(R.id.editProfileButton).setOnClickListener(v ->
                     Navigation.findNavController(v).navigate(R.id.action_userProfileFragment_to_editProfileFragment, createNavigationBundle()));
+            if (userProfile != null && userProfile.getUser_type().equals("Organizer")) {
+                saveRatingButton.setVisibility(View.GONE);
+                userRatingBar.setVisibility(View.VISIBLE);
+                ratingCountTextView.setVisibility(View.VISIBLE);
+
+            } else {
+                saveRatingButton.setVisibility(View.GONE);
+                userRatingBar.setVisibility(View.GONE);
+                ratingCountTextView.setVisibility(View.GONE);
+            }
         }
 
         // Set up click listeners for buttons in user_navigation

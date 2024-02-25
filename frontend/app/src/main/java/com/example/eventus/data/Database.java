@@ -4,6 +4,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
 
+import androidx.annotation.NonNull;
+
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.net.HttpURLConnection;
@@ -23,6 +27,8 @@ import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import okhttp3.*;
 
 
 public class Database {
@@ -106,7 +112,13 @@ public class Database {
         }
     }
 
-    public static String uploadProfilePic(byte[] pic) throws Exception{
+    public static void uploadProfilePic(byte[] pic, final FileUploader.UploadCallback callback){
+        FileUploader uploader = new FileUploader();
+        uploader.uploadFile("http://10.0.2.2:3000/profilepics", pic, callback);
+        ServerResponse response = uploader.getLastResponse();
+
+
+        /*
         HashMap<String, Object> payloadData = new HashMap<String, Object>();
         payloadData.put("icon",pic);
         AsyncHttpRequest task = new AsyncHttpRequest("profilepics", payloadData, null, "POST_PIC");
@@ -121,7 +133,9 @@ public class Database {
         }
         else{
             throw new ServerSideException(response.getPayload());
-        }
+        } */
+
+
     }
 
 
