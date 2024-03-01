@@ -25,6 +25,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 // TODO: Add an option for users to rate past events
@@ -32,6 +33,7 @@ import java.util.List;
 public class UserEventsFragment extends Fragment implements EventAdapter.OnShowMoreDetailsClickListener {
 
     private final List<UserEventDisplay> upcomingEventsList = new ArrayList<>();
+    private final List<UserEventDisplay> pastEventsList = new ArrayList<>();
     private UserDisplay user;
 
     public UserEventsFragment() {
@@ -78,8 +80,19 @@ public class UserEventsFragment extends Fragment implements EventAdapter.OnShowM
 
             // Clear the existing list and add the fetched events
             upcomingEventsList.clear();
-            upcomingEventsList.addAll(Arrays.asList(userEvents));
+            pastEventsList.clear();
+            Date d = new Date();
+            for(UserEventDisplay e: userEvents){
+                if(e.getDate().after(d)){
+                    upcomingEventsList.add(e);
+                }
+                else{
+                    pastEventsList.add(e);
+                }
+            }
+
             upcomingEventsList.sort(Comparator.comparing(UserEventDisplay::getDate));
+            pastEventsList.sort(Comparator.comparing(UserEventDisplay::getDate));
 
         } catch (ServerSideException e) {
             // Handle the exception
@@ -90,11 +103,19 @@ public class UserEventsFragment extends Fragment implements EventAdapter.OnShowM
         }
 
         // Set up RecyclerView for Events
-        RecyclerView upcomingEventsRecyclerView = view.findViewById(R.id.eventsList);
-        EventAdapter eventAdapter = new EventAdapter(upcomingEventsList);
-        eventAdapter.setOnShowMoreDetailsClickListener(this);
+        RecyclerView upcomingEventsRecyclerView = view.findViewById(R.id.upcomingEventsList);
+        EventAdapter upcomingEventAdapter = new EventAdapter(upcomingEventsList);
+        upcomingEventAdapter.setOnShowMoreDetailsClickListener(this);
         upcomingEventsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        upcomingEventsRecyclerView.setAdapter(eventAdapter);
+        upcomingEventsRecyclerView.setAdapter(upcomingEventAdapter);
+
+
+        RecyclerView pastEventsRecyclerView = view.findViewById(R.id.pastEventsList);
+        EventAdapter pastEventAdapter = new EventAdapter(pastEventsList);
+        pastEventAdapter.setOnShowMoreDetailsClickListener(this);
+        pastEventsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        pastEventsRecyclerView.setAdapter(pastEventAdapter);
+
     }
 
     // Method to create a common bundle for navigation
@@ -106,8 +127,7 @@ public class UserEventsFragment extends Fragment implements EventAdapter.OnShowM
     }
 
     @Override
-    public void onShowMoreDetailsClick(int position) {
-        UserEventDisplay clickedEvent = upcomingEventsList.get(position);
+    public void onShowMoreDetailsClick(UserEventDisplay clickedEvent) {
         Bundle args = createNavigationBundle();
         args.putString("eventId", clickedEvent.getId());
         NavHostFragment.findNavController(UserEventsFragment.this)

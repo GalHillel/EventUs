@@ -67,7 +67,7 @@ public class UserDiscoverFragment extends Fragment implements EventAdapter.OnSho
 
         searchEditText = view.findViewById(R.id.searchEditText);
         Button searchButton = view.findViewById(R.id.searchButton);
-        eventsRecyclerView = view.findViewById(R.id.eventsList);
+        eventsRecyclerView = view.findViewById(R.id.discoveredEventsList);
 
         // Set up click listeners for buttons
         view.findViewById(R.id.profile).setOnClickListener(v ->
@@ -125,8 +125,7 @@ public class UserDiscoverFragment extends Fragment implements EventAdapter.OnSho
     }
 
     @Override
-    public void onShowMoreDetailsClick(int position) {
-        UserEventDisplay clickedEvent = searchResults.get(position);
+    public void onShowMoreDetailsClick(UserEventDisplay clickedEvent) {
         Bundle args = createNavigationBundle();
         args.putString("eventId", clickedEvent.getId());
         NavHostFragment.findNavController(UserDiscoverFragment.this)

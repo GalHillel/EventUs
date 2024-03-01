@@ -16,7 +16,7 @@ import java.util.List;
 
 public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHolder> {
     public interface OnShowMoreDetailsClickListener {
-        void onShowMoreDetailsClick(int position);
+        void onShowMoreDetailsClick(UserEventDisplay eventClicked);
     }
 
     private final List<UserEventDisplay> eventList;
@@ -45,7 +45,8 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
         holder.showMoreDetailsButton.setOnClickListener(v -> {
             // Notify the listener that the button was clicked
             if (listener != null) {
-                listener.onShowMoreDetailsClick(holder.getAdapterPosition());
+
+                listener.onShowMoreDetailsClick(eventList.get(holder.getAdapterPosition()));
             }
         });
     }

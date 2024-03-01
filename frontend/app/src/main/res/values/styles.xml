@@ -11,7 +11,12 @@
         <item name="android:backgroundTint">@color/colorButtonDefault</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
+    </style>
 
+    <style name="badClickableButton" parent="Widget.MaterialComponents.Button.Icon">
+        <item name="android:backgroundTint">@color/ButtonType2</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
     </style>
 
     <style name = "CustomFragmentScreen">
@@ -39,6 +44,15 @@
         <item name="android:layout_marginBottom">16dp</item>
     </style>
 
+    <style name="eventTitleField">
+        <item name="android:textSize">24sp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:layout_marginBottom">12dp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <style name="clickableListItem" >
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -56,7 +70,22 @@
     <style name="message_read" parent="clickableListItem">
         <item name="android:background">@color/message_read</item>
         <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="backButton" parent="Widget.AppCompat.ImageButton">
+        <item name="android:src">@drawable/ic_back</item>
+        <item name="android:contentDescription">Back</item>
+        <item name="android:id">@id/backButton</item>
+        <item name="android:onClick">onBackButtonClick</item>
+        <item name="android:layout_height">30dp</item>
+        <item name="android:layout_width">90dp</item>
+        <item name="android:background">@color/backButtonColor</item>
+        <item name="android:layout_marginBottom">16dp</item>
 
     </style>
+
+
+
+
 
 </resources>

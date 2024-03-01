@@ -17,6 +17,10 @@
     <color name="teal_figma">#99DAFF</color>
 
 
+
+    <color name="MAIN">#00bbff</color>
+    <color name="MAIN_VARIANT">#00bbff</color>
+
     <color name="ButtonType2">#D51414</color>
     <color name="colorButtonDefault">#00bbff</color>
 
@@ -25,5 +29,5 @@
     <color name="message_read">#047098</color>
     <color name="message_unread">#00bbff</color>
 
-
+    <color name="backButtonColor">#ABCFDD</color>
 </resources>

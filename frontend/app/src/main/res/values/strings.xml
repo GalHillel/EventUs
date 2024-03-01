@@ -12,4 +12,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="manage_events">Manage Events</string>
     <string name="back">back</string>
+    <string name="placeholder">place holder</string>
+    <string name="descriptionPlaceholder">a\n: an act of describing\nspecifically : discourse intended to give a mental image of something experienced\nbeautiful beyond description\ngave an accurate description of what he saw\nb\n: a statement or account giving the characteristics of someone or something : a descriptive statement or account\nThe review was little more than a description of the film\'s plot.\n2\n: kind or character especially as determined by salient (see SALIENT entry 1 sense 3b) features\nsomeone fitting the suspect\'s description\nhad toys of every description\nopposed to any tax of so radical a description</string>
+
 </resources>

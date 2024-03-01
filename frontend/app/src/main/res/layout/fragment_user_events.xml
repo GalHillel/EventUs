@@ -15,10 +15,25 @@
     />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/eventsList"
+        android:id="@+id/upcomingEventsList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1" />
+        android:layout_weight="0.5"
+        android:layout_marginBottom="16dp"/>
+
+
+
+    <TextView
+        style="@style/CustomFragmentSubTitle"
+        android:text="Past Events"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/pastEventsList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.5"
+        android:layout_marginBottom="16dp"/>
 
     <include layout="@layout/user_navigation" />
 

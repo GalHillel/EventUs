@@ -15,6 +15,7 @@ import android.widget.ImageButton;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatEditText;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -46,6 +47,9 @@ public class EventDetailsFragment extends Fragment implements UserAdapter.Button
 
     private EditText eventNameView, eventDateView, eventLocationview, eventDescription;
     private Button exitEventButton, joinEventButton;
+
+    private CardView descriptionCard, participantsCard;
+    private RecyclerView userListRecyclerView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -92,13 +96,20 @@ public class EventDetailsFragment extends Fragment implements UserAdapter.Button
         this.editEventButton = view.findViewById(R.id.editEventButton);
         this.saveEventButton = view.findViewById(R.id.saveEventButton);
         this.pickDateButton = view.findViewById(R.id.pickDateButton);
-
+        this.descriptionCard = view.findViewById(R.id.descriptionCard);
+        this.participantsCard = view.findViewById(R.id.participantCard);
+        this.userListRecyclerView = view.findViewById(R.id.eventListRecycleView);
 
         this.pickDateButton.setOnClickListener(this::onPickDateClick);
         this.joinEventButton.setOnClickListener(this::onJoinEventClick);
         this.exitEventButton.setOnClickListener(this::onLeaveEventClick);
         this.editEventButton.setOnClickListener(this::onEditEventClick);
         this.saveEventButton.setOnClickListener(this::onSaveEventClick);
+        this.descriptionCard.setOnClickListener(this::onDescriptionCardClick);
+        this.participantsCard.setOnClickListener(this::onParticipantsCardClick);
+
+
+
 
         if (getArguments() != null) {
 
@@ -113,7 +124,7 @@ public class EventDetailsFragment extends Fragment implements UserAdapter.Button
 
                 updateFields();
 
-                RecyclerView userListRecyclerView = view.findViewById(R.id.eventListRecycleView);
+
                 userAdapter = new UserAdapter(this.users, (this.currentUser.get_id().equals(this.userEvent.getCreator_id())) ? "Organizer" : "Participant");
                 userAdapter.setOnKickClickListener(this);
                 userAdapter.setOnMessageClickListener(this);
@@ -124,9 +135,7 @@ public class EventDetailsFragment extends Fragment implements UserAdapter.Button
                     this.exitEventButton.setText("Delete Event");
 
                 }
-
                 toggleEditableMode(false);
-
                 if (this.userEvent.getAttendents().containsKey(this.currentUser.get_id())) {
                     this.joinEventButton.setVisibility(View.GONE);
                     this.exitEventButton.setVisibility(View.VISIBLE);
@@ -135,13 +144,37 @@ public class EventDetailsFragment extends Fragment implements UserAdapter.Button
                     this.joinEventButton.setVisibility(View.VISIBLE);
                 }
 
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
-
         }
+        this.userListRecyclerView.setVisibility(View.GONE);
+        this.eventDescription.setVisibility(View.GONE);
+
+    }
+
+    private void onDescriptionCardClick(View view) {
+        if(this.userListRecyclerView.getVisibility() == View.VISIBLE){
+            this.userListRecyclerView.setVisibility(View.GONE);
+        }
+
+        if(this.eventDescription.getVisibility()==View.VISIBLE){
+            this.eventDescription.setVisibility(View.GONE);
+            return;
+        }
+        this.eventDescription.setVisibility(View.VISIBLE);
+
+    }
+
+    private void onParticipantsCardClick(View view) {
+        if(this.eventDescription.getVisibility() == View.VISIBLE){
+            this.eventDescription.setVisibility(View.GONE);
+        }
+        if(this.userListRecyclerView.getVisibility()==View.VISIBLE){
+            this.userListRecyclerView.setVisibility(View.GONE);
+            return;
+        }
+        this.userListRecyclerView.setVisibility(View.VISIBLE);
 
     }
 
@@ -323,4 +356,6 @@ public class EventDetailsFragment extends Fragment implements UserAdapter.Button
         SimpleDateFormat sdf = new SimpleDateFormat(dateFormat, Locale.getDefault());
         eventDateView.setText(calendar.getTime().toString());
     }
+
+
 }

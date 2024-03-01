@@ -38,7 +38,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/eventsList"
+        android:id="@+id/discoveredEventsList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1" />
