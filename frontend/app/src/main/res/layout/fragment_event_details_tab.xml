@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
+    android:orientation="vertical"
     style="@style/CustomFragmentScreen"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
@@ -53,15 +54,22 @@
             android:id="@+id/DescriptionText"
             style="@style/CustomFragmentSubTitle"
             android:text="Description"/>
-        <EditText
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@drawable/textfield_background"
+        android:layout_marginBottom="12dp">
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/eventDescriptionTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:inputType="textMultiLine"
-            android:text="@string/descriptionPlaceholder"
+            android:gravity="top"
+            android:text="@string/placeholder"
             android:textSize="16sp"
             android:visibility="visible" />
+    </LinearLayout>
 
     <Button
         android:id="@+id/editEventButton"

@@ -96,6 +96,10 @@ export class EventService {
     return Array.from((await this.getUserEvent(_id,'attendents')).attendents.keys()); 
   }
 
+  async acceptUser(_id:string,userId:string): Promise<void>{
+    this.userEventModel.updateOne({_id:_id},{$set:{[`attendents.${userId}`]:true}}).exec();
+  }
+
   /**
    * finds all events matching the search terms
    * @param searchTerms search fields

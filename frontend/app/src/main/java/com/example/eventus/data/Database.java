@@ -2,13 +2,7 @@ package com.example.eventus.data;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.Base64;
 
-import androidx.annotation.NonNull;
-
-import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.net.HttpURLConnection;
 import java.util.List;
@@ -24,12 +18,9 @@ import com.example.eventus.data.model.UserEventDisplay;
 import com.example.eventus.data.model.UserMessage;
 import com.example.eventus.data.model.UserProfile;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-import okhttp3.*;
 
 
 public class Database {
@@ -66,21 +57,25 @@ public class Database {
 
     }
 
-    /** TODO Test and add error handling
+    /**
+     * TODO Test and add error handling
      * creates a new event
+     *
      * @param creator_id  id of event creator
      * @param name        name of the event
      * @param date        date of the event
      * @param location    location of the event
      * @param description description of the event
+     * @param isPrivate
      */
-    public static UserEvent addEvent(String creator_id, String name, String date, String location, String description) throws Exception{
+    public static UserEvent addEvent(String creator_id, String name, String date, String location, String description, Boolean isPrivate) throws Exception{
         HashMap<String, Object> payloadData = new HashMap<String, Object>();
         payloadData.put("name", name);
         payloadData.put("creator_id", creator_id);
         payloadData.put("date", date);
         payloadData.put("location", location);
         payloadData.put("description", description);
+        payloadData.put("isPrivate",isPrivate);
 
         AsyncHttpRequest task = new AsyncHttpRequest("events/create", payloadData, null, "POST");
         task.execute();
@@ -415,6 +410,24 @@ public class Database {
         }
 
     }
+    /**
+     * TODO error handling and testing
+     * accepts a user to an event, only use for participants
+     * @param user_id _id of user
+     * @param event_id _id of event
+     * @throws Exception ServerSideException or other exception
+     */
+    public static void acceptUser(String event_id, String user_id) throws Exception{
+        HashMap<String, Object> payloadData = new HashMap<String, Object>();
+        payloadData.put("_id", user_id);
+        AsyncHttpRequest task = new AsyncHttpRequest("events/"+event_id+"/acceptuser",  payloadData, null, "PATCH");
+        task.execute();
+        task.get();
+        ServerResponse response = task.getServerResponse();
+        if (response.getReturnCode() != HttpURLConnection.HTTP_NO_CONTENT) {
+            throw new ServerSideException(response.getReturnCode(),response.getPayload());
+        }
+    }
 
     /**
      * TODO error handling and testing
@@ -488,6 +501,7 @@ public class Database {
             throw new ServerSideException(response.getReturnCode(),response.getPayload());
         }
     }
+
 
 
 }

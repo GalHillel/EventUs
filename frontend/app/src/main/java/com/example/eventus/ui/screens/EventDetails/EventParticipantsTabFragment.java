@@ -72,11 +72,13 @@ public class EventParticipantsTabFragment extends Fragment implements UserAdapte
     }
     /*
         TODO:
-            1. Add the option for an Organizer to accept a new user
+            1. Add the option for an Organizer to accept a new user - done
             2. Add the option for an Organizer to send a message to all users in event
             3. Add the option to rate an event and implement the rating algorithm
             4. (optional) show profile pictures of users
             5. Move Organizer to the top of the list and show that he is the Organizer
+            6. Fix bug where if a user leaves an event and then goes back to event list,
+             the event is still there until the user refreshes
      */
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -93,7 +95,7 @@ public class EventParticipantsTabFragment extends Fragment implements UserAdapte
         this.exitEventButton.setOnClickListener(this::onLeaveEventClick);
 
 
-            userAdapter = new UserAdapter(this.holder.getUsers(), (this.holder.getUser().get_id().equals(this.holder.getEvent().getCreator_id())) ? "Organizer" : "Participant");
+            userAdapter = new UserAdapter(this.holder.getUsers(),holder.getEvent(), (this.holder.getUser().get_id().equals(this.holder.getEvent().getCreator_id())) ? "Organizer" : "Participant");
             userAdapter.setOnKickClickListener(this);
             userAdapter.setOnMessageClickListener(this);
             userAdapter.setOnUserItemClickListener(this);
@@ -106,9 +108,24 @@ public class EventParticipantsTabFragment extends Fragment implements UserAdapte
             if (this.holder.getEvent().getAttendents().containsKey(this.holder.getUser().get_id())) {
                 this.joinEventButton.setVisibility(View.GONE);
                 this.exitEventButton.setVisibility(View.VISIBLE);
+                if(this.holder.getEvent().getIsPrivate()){
+                    if(Boolean.FALSE.equals(this.holder.getEvent().getAttendents().get(this.holder.getUser().get_id()))) {
+                        this.exitEventButton.setText("Cancel Request");
+                        this.userListRecyclerView.setVisibility(View.INVISIBLE);
+                    }
+                    else{
+                        this.exitEventButton.setText("Leave Event");
+                    }
+                }
+
+
             } else {
                 this.exitEventButton.setVisibility(View.GONE);
                 this.joinEventButton.setVisibility(View.VISIBLE);
+                if(this.holder.getEvent().getIsPrivate()){
+                    this.userListRecyclerView.setVisibility(View.INVISIBLE);
+
+                }
             }
 
     }
@@ -127,6 +144,16 @@ public class EventParticipantsTabFragment extends Fragment implements UserAdapte
             this.joinEventButton.setVisibility(View.GONE);
             this.exitEventButton.setVisibility(View.VISIBLE);
             this.holder.getUsers().add(this.holder.getUser());
+            this.holder.getEvent().getAttendents().put(this.holder.getUser().get_id(),false);
+            if(this.holder.getEvent().getIsPrivate()) {
+                if (Boolean.FALSE.equals(this.holder.getEvent().getAttendents().get(this.holder.getUser().get_id()))) {
+                    this.exitEventButton.setText("Cancel Request");
+                    this.userListRecyclerView.setVisibility(View.INVISIBLE);
+                } else {
+                    this.exitEventButton.setText("Leave Event");
+                }
+            }
+
             this.userAdapter.notifyItemInserted(this.holder.getUsers().size() - 1);
         } catch (Exception e) {
             //handle
@@ -159,10 +186,26 @@ public class EventParticipantsTabFragment extends Fragment implements UserAdapte
             //handle
         }
     }
+    private void acceptUser(UserDisplay user){
+        try {
+            Database.acceptUser(user.get_id(), this.holder.getEvent().getId());
+            int idx = this.holder.getUsers().indexOf(user);
+            this.holder.getEvent().getAttendents().put(user.get_id(),true);
+            this.userAdapter.notifyItemChanged(idx);
+        } catch (Exception e) {
+            //handle
+        }
+    }
 
     @Override
     public void onKickClick(int position) {
         removeUser(this.holder.getUsers().get(position));
+    }
+
+    @Override
+    public void onAcceptClick(int position) {
+        acceptUser(this.holder.getUsers().get(position));
+        holder.updateBadge();
     }
 
     @Override

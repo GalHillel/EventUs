@@ -25,43 +25,69 @@
             android:hint="Event Name"
             android:layout_marginTop="60dp" />
 
-        <EditText
-            android:id="@+id/eventDateEditText"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Event Date"
-            android:focusable="false"
-            android:layout_marginTop="16dp" />
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp">
+            <EditText
+                android:id="@+id/eventDateEditText"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:focusableInTouchMode="false"
+                android:hint="Event Date"
+                android:focusable="false" />
 
-        <Button
-            android:id="@+id/pickDateButton"
-            android:layout_marginTop="16dp"
-            style="@style/DefaultClickableButton"
-            android:text="Pick Date" />
+            <Button
+                android:id="@+id/pickDateButton"
+                style="@style/DefaultClickableButton"
+                android:text="Pick Date" />
 
-        <EditText
-            android:id="@+id/eventLocationEditText"
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Event Location"
-            android:layout_below="@id/pickDateButton"
-            android:layout_marginTop="16dp" />
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp">
+            <EditText
+                android:id="@+id/eventLocationEditText"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:hint="Event Location" />
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="set private"
+                android:id="@+id/setPrivateEventCheckbox"/>
+        </LinearLayout>
 
-        <EditText
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/textfield_background"
+            android:layout_marginTop="16dp" >
+
+
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/eventDescriptionEditText"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Event Description"
-            android:layout_below="@id/eventLocationEditText"
-            android:layout_marginTop="16dp" />
+            android:layout_height="match_parent"
 
-        <Button
-            android:id="@+id/createEventButton"
-            style="@style/DefaultClickableButton"
-            android:text="Create Event"
-            android:layout_marginTop="32dp"
-        />
+            android:hint="Event Description"
+            android:inputType="textMultiLine"
+            android:gravity="top"
+            />
+        </LinearLayout>
+
     </LinearLayout>
+    <Button
+        android:id="@+id/createEventButton"
+        style="@style/DefaultClickableButton"
+        android:text="Create Event"
+        android:layout_marginTop="32dp"/>
 
     <include layout="@layout/user_navigation" />
 </LinearLayout>

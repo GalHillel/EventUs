@@ -13,11 +13,14 @@ import com.example.eventus.R;
 import com.example.eventus.data.Database;
 import com.example.eventus.data.model.UserDisplay;
 import com.example.eventus.data.model.UserEvent;
+import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 
 public class EventDetailsActivity extends AppCompatActivity {
     TabLayout tabLayout;
@@ -26,7 +29,7 @@ public class EventDetailsActivity extends AppCompatActivity {
     UserDisplay user;
     private UserEvent userEvent;
     private List<UserDisplay> users = new ArrayList<>();
-
+    BadgeDrawable badge;
 
 
     @Override
@@ -59,6 +62,8 @@ public class EventDetailsActivity extends AppCompatActivity {
             }
         }
 
+        this.users.sort(Comparator.comparing(UserDisplay::getUser_type));
+
         EventDetailsPagerAdaptor myAdaptor = new EventDetailsPagerAdaptor(this,getSupportFragmentManager(), tabLayout.getTabCount());
         viewPager.setAdapter(myAdaptor);
 
@@ -80,6 +85,8 @@ public class EventDetailsActivity extends AppCompatActivity {
 
             }
         });
+        this.badge = tabLayout.getTabAt(1).getOrCreateBadge();
+        updateBadge();
     }
 
     UserDisplay getUser(){
@@ -104,6 +111,22 @@ public class EventDetailsActivity extends AppCompatActivity {
         // Navigate back
         this.setResult(Activity.RESULT_OK);
         this.finish();
+
+    }
+
+    public void updateBadge() {
+        int badgeNum = 0;
+        if(this.userEvent.getIsPrivate()){
+            badgeNum = (int) this.userEvent.getAttendents().entrySet().stream().filter(Map.Entry::getValue).count();
+        }
+
+        if(badgeNum > 0) {
+            badge.setVisible(true);
+            badge.setNumber(badgeNum);
+            return;
+        }
+        badge.setNumber(0);
+        badge.setVisible(false);
 
     }
 }

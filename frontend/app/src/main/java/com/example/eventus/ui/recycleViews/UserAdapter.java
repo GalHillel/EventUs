@@ -1,6 +1,6 @@
 package com.example.eventus.ui.recycleViews;
 
-import android.os.Bundle;
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,25 +9,32 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.eventus.R;
 import com.example.eventus.data.model.UserDisplay;
+import com.example.eventus.data.model.UserEvent;
 
 import java.util.List;
+import java.util.Map;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder> {
 
     private final List<UserDisplay> userList;
     private final String mode;
+    private Map<String,Boolean> userStatus;
+    private boolean isPrivate;
+
     private ButtonListener kickListener;
+    private ButtonListener acceptListener;
     private ButtonListener messageListener;
     private ButtonListener userItemListener;
 
-    public UserAdapter(List<UserDisplay> userList, String mode) {
+    public UserAdapter(List<UserDisplay> userList,UserEvent event, String mode) {
         this.userList = userList;
         this.mode = mode;
+        this.userStatus = event.getAttendents();
+        this.isPrivate = event.getIsPrivate();
     }
 
     public interface ButtonListener {
@@ -36,6 +43,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         void onMessageClick(int position);
 
         void onUserItemClick(int position);
+        void onAcceptClick(int position);
     }
 
     public void setOnKickClickListener(ButtonListener listener) {
@@ -58,19 +66,25 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         return new UserViewHolder(view);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull UserViewHolder holder, int position) {
         UserDisplay user = userList.get(position);
+        if(user==null){
+            return;
+        }
+        if(user.getUser_type().equals("Organizer")){
+            holder.userName.setText(user.getName() + " (Host)");
+        }
+        else {
+            holder.userName.setText(user.getName());
+        }
 
-        holder.userName.setText(user.getName());
-
-        // Set click listeners for kick and message buttons
         holder.kickButton.setOnClickListener(v -> {
             if (kickListener != null) {
                 kickListener.onKickClick(position);
             }
         });
-
         holder.messageButton.setOnClickListener(v -> {
             if (messageListener != null) {
                 messageListener.onMessageClick(position);
@@ -81,19 +95,32 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
                 userItemListener.onUserItemClick(position);
             }
         });
+        holder.acceptButton.setOnClickListener(v->{
+            if(acceptListener != null){
+                acceptListener.onAcceptClick(position);
+            }
+        });
+
+
+        Boolean status = this.userStatus.get(user.get_id());
 
         // Hide kick and message buttons if not in Organizer mode or if the user is an Organizer
         if (!mode.equals("Organizer") || user.getUser_type().equals("Organizer")) {
             holder.kickButton.setVisibility(View.GONE);
             holder.messageButton.setVisibility(View.GONE);
+            if(this.isPrivate && status != null && status){
+                holder.userItem.setVisibility(View.GONE);
+            }
         }
+        else{
+            if(this.isPrivate && status != null && status){
+                holder.setKickButtonMode(status);
+            }
+        }
+        // Set click listeners for kick and message buttons
 
-        // Set click listener for the whole item to navigate to the user profile
-        holder.itemView.setOnClickListener(v -> {
-            Bundle bundle = new Bundle();
-            bundle.putSerializable("viewedUser", user); // Pass the user whose profile is being viewed
-            Navigation.findNavController(v).navigate(R.id.userProfileFragment, bundle);
-        });
+
+
     }
 
     @Override
@@ -105,6 +132,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         LinearLayout userItem;
         TextView userName;
         Button kickButton;
+        Button acceptButton;
         Button messageButton;
 
         public UserViewHolder(@NonNull View itemView) {
@@ -113,6 +141,25 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
             kickButton = itemView.findViewById(R.id.kickButton);
             messageButton = itemView.findViewById(R.id.messageButton);
             userItem = itemView.findViewById(R.id.userItemLayout);
+            acceptButton = itemView.findViewById(R.id.acceptButton);
+        }
+
+        /**
+         * sets the kick button as an accept button if flg=false
+         * @param flg
+         */
+        @SuppressLint("ResourceAsColor")
+        public void setKickButtonMode(Boolean flg){
+            if(flg){
+                this.kickButton.setVisibility(View.VISIBLE);
+                this.acceptButton.setVisibility(View.GONE);
+                return;
+            }
+
+            this.kickButton.setVisibility(View.GONE);
+            this.acceptButton.setVisibility(View.VISIBLE);
+
+
         }
     }
 }

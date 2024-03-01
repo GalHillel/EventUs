@@ -92,6 +92,18 @@ export class EventController {
     this.eventService.addUser(_id,userId);
   }
 
+  /**TODO error handling
+   * events/<event id>/acceptuser, patch request should contain a json in the form {_id:<user id>}
+   * @param idStr event id
+   * @param userId user id
+   */
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @Patch(':id/acceptuser')
+  async acceptUser(@Param('id') _id: string, @Body('_id') userId: string): Promise<void>{
+    this.eventService.acceptUser(_id,userId);
+  }
+
+
   /**
    * events/search, get a list of only the display fields of events matching the search terms
    * @param searchTerms 

@@ -3,37 +3,60 @@
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/CustomFragmentScreen"
     tools:context=".ui.screens.UserEventsFragment">
-
     <TextView
         android:id="@+id/myevents_title"
         style="@style/CustomFragmentTitle"
         android:text="My Events" />
-
-    <TextView
-        style="@style/CustomFragmentSubTitle"
-        android:text="Upcoming Events"
-    />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/upcomingEventsList"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="vertical"
         android:layout_weight="0.5"
-        android:layout_marginBottom="16dp"/>
+        android:layout_marginBottom="16dp">
+
+        <TextView
+            style="@style/CustomFragmentSubTitle"
+            android:text="Upcoming Events" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/eventlist_background"
+            android:orientation="vertical">
 
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:padding="3dp"
+                android:id="@+id/upcomingEventsList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:listitem="@layout/item_event"/>
+        </LinearLayout>
+    </LinearLayout>
 
-    <TextView
-        style="@style/CustomFragmentSubTitle"
-        android:text="Past Events"
-        />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/pastEventsList"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="vertical"
         android:layout_weight="0.5"
-        android:layout_marginBottom="16dp"/>
+        android:layout_marginBottom="16dp">
+
+
+        <TextView
+            style="@style/CustomFragmentSubTitle"
+            android:text="Past Events" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/eventlist_background"
+            android:orientation="vertical">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/pastEventsList"
+                android:padding="3dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+    </LinearLayout>
 
     <include layout="@layout/user_navigation" />
 

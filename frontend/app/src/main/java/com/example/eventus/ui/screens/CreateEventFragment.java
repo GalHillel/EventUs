@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -34,6 +35,7 @@ public class CreateEventFragment extends Fragment {
     private EditText eventDateEditText;
     private EditText eventLocationEditText;
     private EditText eventDescriptionEditText;
+    private CheckBox setPrivateEventCheckbox;
     private UserDisplay user;
 
     private Calendar calendar;
@@ -73,6 +75,7 @@ public class CreateEventFragment extends Fragment {
         eventLocationEditText = view.findViewById(R.id.eventLocationEditText);
         eventDescriptionEditText = view.findViewById(R.id.eventDescriptionEditText);
         Button createEventButton = view.findViewById(R.id.createEventButton);
+        setPrivateEventCheckbox = view.findViewById(R.id.setPrivateEventCheckbox);
 
         // Set up click listeners for buttons
 
@@ -100,10 +103,10 @@ public class CreateEventFragment extends Fragment {
         String eventDate = eventDateEditText.getText().toString();
         String eventLocation = eventLocationEditText.getText().toString();
         String eventDescription = eventDescriptionEditText.getText().toString();
-
+        boolean isPrivate = setPrivateEventCheckbox.isChecked();
         try {
             // Call the Database method to add the event with the correct creator_id
-            UserEvent userEvent = Database.addEvent(user.get_id(), eventName, eventDate, eventLocation, eventDescription);
+            UserEvent userEvent = Database.addEvent(user.get_id(), eventName, eventDate, eventLocation, eventDescription,isPrivate);
 
             // Display information about the created event using UserEventDisplay
             displayEventDetails(userEvent);
