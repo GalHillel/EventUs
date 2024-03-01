@@ -1,5 +1,7 @@
-package com.example.eventus.ui.screens;
+package com.example.eventus.ui.screens.Messages;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,11 +30,12 @@ import java.util.stream.Collectors;
        (got exception from the Database function sendMessage, but it still send the message)
 */
 public class CreateMessageFragment extends Fragment {
-
     private EditText subjectEditText;
     private EditText messageEditText;
-    private UserDisplay user;
-    private UserDisplay[] other_users;
+    private CreateMessageActivity holder;
+    public CreateMessageFragment(CreateMessageActivity holder){
+        this.holder = holder;
+    }
 
     @Nullable
     @Override
@@ -51,48 +54,55 @@ public class CreateMessageFragment extends Fragment {
         ImageButton backButton = view.findViewById(R.id.backButton);
 
         sendButton.setOnClickListener(this::onSendButtonClick);
-
         backButton.setOnClickListener(this::onBackButtonClick);
-        String defaultTitle = "";
-        if (getArguments() != null) {
-            this.user = (UserDisplay) getArguments().getSerializable("user");
-            this.other_users = (UserDisplay[]) getArguments().getSerializable("other_users");
-            defaultTitle = getArguments().getString("title", "");
-            String usersNames = Arrays.stream(other_users)
-                    .map(UserDisplay::getName)
-                    .collect(Collectors.joining(", "));
-            recipientsText.setText(usersNames);
-        }
-        if (defaultTitle.length() != 0) {
-            subjectEditText.setText(defaultTitle);
+
+        if(!this.holder.getDefaultTitle().equals("")){
+            subjectEditText.setText(holder.getDefaultTitle());
             subjectEditText.setFocusable(false);
         }
+        String usersNames = Arrays.stream(holder.getOtherUsers())
+                .map(UserDisplay::getName)
+                .collect(Collectors.joining(", "));
+
+        recipientsText.setText(usersNames);
+
     }
 
     void onSendButtonClick(View view) {
-        if (this.subjectEditText.getText().toString().length() > 0 && this.messageEditText.getText().toString().length() > 0) {
-            try {
-                List<String> ids = Arrays.stream(other_users).map(UserDisplay::get_id).collect(Collectors.toList());
-                Database.sendMessage(user.get_id(), ids, this.subjectEditText.getText().toString(), this.messageEditText.getText().toString());
-                // Reset texts
-                subjectEditText.setText("");
-                messageEditText.setText("");
-                // Prints success message
-                Toast.makeText(requireContext(), "Message sent successfully", Toast.LENGTH_SHORT).show();
-                Navigation.findNavController(view).popBackStack();
-            } catch (ServerSideException e) {
-                // Handle the exception (e.g., show an error message)
-                e.printStackTrace();
-            } catch (Exception e) {
-                // Handle other exceptions
-                e.printStackTrace();
-            }
+        int subjectLen = this.subjectEditText.getText().toString().length();
+        int contentLen = this.messageEditText.getText().toString().length();
+
+        //TODO handle constraints on message subject and content lengths
+        if(subjectLen == 0 && contentLen == 0){
+            Toast.makeText(requireContext(), "Message missing subject and content", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(subjectLen == 0){
+            Toast.makeText(requireContext(), "Message missing subject", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(contentLen == 0){
+            Toast.makeText(requireContext(), "Message missing content", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Intent res = holder.sendMessage(this.subjectEditText.getText().toString(), this.messageEditText.getText().toString());
+
+        if(res.getIntExtra("code",Activity.RESULT_CANCELED) == Activity.RESULT_OK) {
+            subjectEditText.setText("");
+            messageEditText.setText("");
+            // Prints success message
+            Toast.makeText(requireContext(), "Message sent successfully", Toast.LENGTH_SHORT).show();
+            holder.success();
+        }
+        else{
+            //TODO handle caught exception
         }
 
     }
 
     public void onBackButtonClick(View view) {
         // Navigate back
-        getParentFragmentManager().popBackStack();
+        this.holder.backButtonClick(view);
     }
 }

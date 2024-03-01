@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.screens.UserMessagesFragment"
+    tools:context=".ui.screens.Messages.UserMessagesFragment"
     style="@style/CustomFragmentScreen">
 
     <TextView

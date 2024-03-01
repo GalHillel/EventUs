@@ -1,5 +1,7 @@
-package com.example.eventus.ui.screens;
+package com.example.eventus.ui.screens.Messages;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -20,6 +22,7 @@ import com.example.eventus.data.ServerSideException;
 import com.example.eventus.data.model.UserDisplay;
 import com.example.eventus.data.model.UserMessageDisplay;
 import com.example.eventus.ui.recycleViews.MessageAdaptor;
+import com.example.eventus.ui.screens.EventDetails.EventDetailsActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
@@ -111,10 +114,10 @@ public class UserMessagesFragment extends Fragment implements MessageAdaptor.onM
 
         UserMessageDisplay messageClicked = messageList.get(position);
         Bundle args = createNavigationBundle();
-        args.putString("sender_id", messageClicked.getSender_id());
         args.putString("message_id", messageClicked.get_id());
-        NavHostFragment.findNavController(UserMessagesFragment.this)
-                .navigate(R.id.messageFragment, args);
-
+        //TODO handle activity fail
+        Intent i = new Intent(this.getContext(), MessageActivity.class);
+        i.putExtras(args);
+        startActivity(i);
     }
 }

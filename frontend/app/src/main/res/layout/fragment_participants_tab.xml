@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    style="@style/CustomFragmentScreen"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+        <TextView
+            android:id="@+id/ParticipantText"
+            style="@style/CustomFragmentSubTitle"
+            android:layout_height="wrap_content"
+            android:text="Participants" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/eventListRecycleView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+        <Button
+            android:id="@+id/joinEventButton"
+            android:text="Join Event"
+            style="@style/DefaultClickableButton"
+            android:layout_marginTop="8dp" />
+
+        <Button
+            android:id="@+id/leaveEventButton"
+            android:text="Leave Event"
+            style="@style/badClickableButton"
+            android:layout_marginTop="8dp" />
+
+
+</LinearLayout>

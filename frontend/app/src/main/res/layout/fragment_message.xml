@@ -3,7 +3,8 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:padding="16dp"
-    tools:context=".ui.screens.MessageFragment"
+
+    tools:context=".ui.screens.Messages.MessageFragment"
     android:background="@color/white">
 
 
@@ -56,6 +57,6 @@
         android:layout_below="@id/replyButton"
         android:src="@drawable/ic_back"
         android:contentDescription="Back"
-        android:onClick="onBackButtonClicked" />
+         />
 
 </RelativeLayout>

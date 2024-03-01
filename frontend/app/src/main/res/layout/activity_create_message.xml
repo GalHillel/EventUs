@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    tools:context=".ui.screens.Messages.CreateMessageActivity"
+    android:layout_height="match_parent"
+    android:id="@+id/activity_create_messages">
+
+    <androidx.fragment.app.FragmentContainerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/fragment_create_message"
+        tools:layout="@layout/fragment_create_message" />
+</LinearLayout>

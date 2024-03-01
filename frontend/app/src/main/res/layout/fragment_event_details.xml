@@ -1,162 +1,42 @@
 
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:mapbox="http://schemas.android.com/apk/res-auto"
-    style="@style/CustomFragmentScreen"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.screens.EventDetailsFragment"
+    tools:context=".ui.screens.EventDetails.EventDetailsActivity"
     android:orientation="vertical"
-    tools:ignore="HardcodedText">
-<LinearLayout
+    tools:ignore="HardcodedText"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
-
-
-
-
-    <TextView
-        android:id="@+id/eventDetailsTitle"
-        style="@style/CustomFragmentTitle"
-        android:text="Event Details" />
-
-    <EditText
-        android:id="@+id/eventNameTextView"
-        style="@style/eventTitleField"
-        android:text="@string/placeholder"
-        android:inputType="text"
-        />
-    <LinearLayout
+    android:layout_height="match_parent">
+    <com.google.android.material.tabs.TabLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginBottom="12dp">
-
-        <EditText
-            android:id="@+id/eventDateTextView"
-            android:layout_width="0dp"
+        android:id="@+id/tabLayout"
+        android:layout_height="wrap_content">
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:inputType="datetime"
-            android:focusable="false"
-            android:layout_weight="1"
-            tools:ignore="Autofill" />
+            android:text="Details"/>
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Participants"/>
+    </com.google.android.material.tabs.TabLayout>
 
-        <Button
-            android:id="@+id/pickDateButton"
-            style="@style/DefaultClickableButton"
-            android:text="Pick Date"
-            android:onClick="onPickDateClick" />
-
-    </LinearLayout>
-
-
-    <EditText
-        android:id="@+id/eventLocationTextView"
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewPager"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:drawableStart="@drawable/ic_location"
-        android:drawablePadding="4dp"
-        android:gravity="center_vertical"
-        android:layout_marginBottom="12dp"
-        android:inputType="text" />
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        >
+    </androidx.viewpager.widget.ViewPager>
 
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/descriptionCard"
-        style="@style/clickableListItem"
-        android:layout_marginBottom="12dp">
-
-        <LinearLayout
-            android:id="@+id/hidden_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <TextView
-                android:id="@+id/DescriptionText"
-                style="@style/CustomFragmentSubTitle"
-                android:text="Description"/>
-            <EditText
-                android:id="@+id/eventDescriptionTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:inputType="textMultiLine"
-                android:text="@string/descriptionPlaceholder"
-                android:textSize="16sp"
-                android:visibility="visible" />
-
-            </LinearLayout>
-
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/participantCard"
-        style="@style/clickableListItem"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/ParticipantText"
-                style="@style/CustomFragmentSubTitle"
-                android:layout_height="wrap_content"
-
-                android:text="Participants" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/eventListRecycleView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="visible" />
-
-        </LinearLayout>
-
-
-    </androidx.cardview.widget.CardView>
-
-
-
-
-    <Button
-        android:id="@+id/joinEventButton"
-        android:text="Join Event"
-        style="@style/DefaultClickableButton"
+    <ImageButton
+        style="@style/backButton"
+        android:id="@+id/backButton"
         android:layout_marginTop="8dp" />
-
-    <Button
-        android:visibility="gone"
-        android:id="@+id/leaveEventButton"
-        android:text="Leave Event"
-        style="@style/badClickableButton"
-        android:layout_marginTop="8dp" />
-
-    <Button
-        android:id="@+id/editEventButton"
-        android:text="Edit Event"
-        style="@style/DefaultClickableButton"
-        android:layout_marginTop="8dp" />
-
-    <Button
-        android:id="@+id/saveEventButton"
-        style="@style/DefaultClickableButton"
-        android:layout_marginTop="8dp"
-        android:text="Save Event" />
-
-
-        <ImageButton
-            style="@style/backButton"
-            android:id="@+id/backButton"
-            android:layout_marginTop="8dp"
-            />
 
 
 
 </LinearLayout>
 
-</ScrollView>
 

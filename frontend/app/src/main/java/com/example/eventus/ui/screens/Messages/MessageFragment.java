@@ -1,5 +1,6 @@
-package com.example.eventus.ui.screens;
+package com.example.eventus.ui.screens.Messages;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,14 +19,16 @@ import com.example.eventus.data.Database;
 import com.example.eventus.data.ServerSideException;
 import com.example.eventus.data.model.UserDisplay;
 import com.example.eventus.data.model.UserMessage;
+import com.example.eventus.ui.screens.EventDetails.EventDetailsActivity;
 
 public class MessageFragment extends Fragment {
 
     //private EditText replyEditText;
-    private UserDisplay user;
-    private UserDisplay sender;
+    MessageActivity holder;
 
-    private UserMessage message;
+    public MessageFragment(MessageActivity initiator) {
+        this.holder = initiator;
+    }
 
 
     @Nullable
@@ -42,49 +45,32 @@ public class MessageFragment extends Fragment {
         TextView senderTextView = view.findViewById(R.id.messageSenderTextView);
         TextView contentTextView = view.findViewById(R.id.messageContentTextView);
 
-        ImageButton backButton = view.findViewById(R.id.backButton);
-        backButton.setOnClickListener(this::onBackButtonClicked);
+        titleTextView.setText(this.holder.getMessage().getTitle());
+        senderTextView.setText(this.holder.getSender().getName());
+        contentTextView.setText(this.holder.getMessage().getContent());
 
         Button replyButton = view.findViewById(R.id.replyButton);
         replyButton.setOnClickListener(this::onReplyButtonClick);
-
-        if (getArguments() != null) {
-            this.user = (UserDisplay) getArguments().getSerializable("user");
-            String message_id = getArguments().getString("message_id");
-            String sender_id = getArguments().getString("sender_id");
-
-            try {
-                this.message = Database.loadMessage(message_id, user.get_id());
-                this.sender = Database.userDisplay(sender_id);
-                titleTextView.setText(message.getTitle());
-                senderTextView.setText(sender.getName());
-                contentTextView.setText(message.getContent());
-
-            } catch (ServerSideException e) {
-                // Handle the exception (e.g., show an error message)
-                e.printStackTrace();
-            } catch (Exception e) {
-                // Handle other exceptions
-                e.printStackTrace();
-            }
-
-        }
+        ImageButton backButton = view.findViewById(R.id.backButton);
+        backButton.setOnClickListener(v -> {
+            this.holder.backButtonClick(v);
+        });
     }
-
-    public void onBackButtonClicked(View view) {
-        // Navigate back
-        getParentFragmentManager().popBackStack();
-    }
-
     public void onReplyButtonClick(View view) {
         Bundle args = new Bundle();
-        args.putSerializable("user", this.user);
-        UserDisplay[] others = {sender};
+        args.putSerializable("user", this.holder.getUser());
+        UserDisplay[] others = {this.holder.getSender()};
         args.putSerializable("other_users", others);
-        args.putString("title", "re: " + this.message.getTitle());
-        NavHostFragment.findNavController(MessageFragment.this)
-                .navigate(R.id.createMessageFragment, args);
+        args.putString("title", "re: " + this.holder.getMessage().getTitle());
+
+        //TODO handle activity fail
+        Intent i = new Intent(this.getContext(), CreateMessageActivity.class);
+        i.putExtras(args);
+        startActivity(i);
+
     }
+
+
 
 }
 

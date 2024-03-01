@@ -1,0 +1,196 @@
+package com.example.eventus.ui.screens.EventDetails;
+
+import android.app.DatePickerDialog;
+import android.content.Intent;
+import android.icu.util.Calendar;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.ImageButton;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatEditText;
+import androidx.cardview.widget.CardView;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.eventus.R;
+import com.example.eventus.data.Database;
+import com.example.eventus.data.model.UserDisplay;
+import com.example.eventus.data.model.UserEvent;
+import com.example.eventus.ui.recycleViews.UserAdapter;
+import com.example.eventus.ui.screens.Messages.CreateMessageActivity;
+import com.example.eventus.ui.screens.Messages.MessageActivity;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+
+public class EventParticipantsTabFragment extends Fragment implements UserAdapter.ButtonListener {
+
+    private UserAdapter userAdapter;
+
+    private Button exitEventButton, joinEventButton;
+
+    private RecyclerView userListRecyclerView;
+
+    private EventDetailsActivity holder;
+
+    public EventParticipantsTabFragment(EventDetailsActivity myContext) {
+        this.holder = myContext;
+    }
+
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // Additional initialization or setup can be done here
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+
+        View view = inflater.inflate(R.layout.fragment_participants_tab, container, false);
+
+        // Inflate the layout for this fragment
+        return view;
+    }
+    /*
+        TODO:
+            1. Add the option for an Organizer to accept a new user
+            2. Add the option for an Organizer to send a message to all users in event
+            3. Add the option to rate an event and implement the rating algorithm
+            4. (optional) show profile pictures of users
+            5. Move Organizer to the top of the list and show that he is the Organizer
+     */
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+
+        this.joinEventButton = view.findViewById(R.id.joinEventButton);
+        this.exitEventButton = view.findViewById(R.id.leaveEventButton);
+
+
+        this.userListRecyclerView = view.findViewById(R.id.eventListRecycleView);
+
+
+        this.joinEventButton.setOnClickListener(this::onJoinEventClick);
+        this.exitEventButton.setOnClickListener(this::onLeaveEventClick);
+
+
+            userAdapter = new UserAdapter(this.holder.getUsers(), (this.holder.getUser().get_id().equals(this.holder.getEvent().getCreator_id())) ? "Organizer" : "Participant");
+            userAdapter.setOnKickClickListener(this);
+            userAdapter.setOnMessageClickListener(this);
+            userAdapter.setOnUserItemClickListener(this);
+            userListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            userListRecyclerView.setAdapter(userAdapter);
+            if (this.holder.getUser().get_id().equals(this.holder.getEvent().getCreator_id())) {
+                this.exitEventButton.setText("Delete Event");
+
+            }
+            if (this.holder.getEvent().getAttendents().containsKey(this.holder.getUser().get_id())) {
+                this.joinEventButton.setVisibility(View.GONE);
+                this.exitEventButton.setVisibility(View.VISIBLE);
+            } else {
+                this.exitEventButton.setVisibility(View.GONE);
+                this.joinEventButton.setVisibility(View.VISIBLE);
+            }
+
+    }
+
+
+
+    public void onBackButtonClick(View view) {
+        // Navigate back
+        getParentFragmentManager().popBackStack();
+    }
+
+    // This method will be called when the "Join Event" button is clicked
+    public void onJoinEventClick(View view) {
+        try {
+            Database.joinEvent(this.holder.getUser().get_id(), this.holder.getEvent().getId());
+            this.joinEventButton.setVisibility(View.GONE);
+            this.exitEventButton.setVisibility(View.VISIBLE);
+            this.holder.getUsers().add(this.holder.getUser());
+            this.userAdapter.notifyItemInserted(this.holder.getUsers().size() - 1);
+        } catch (Exception e) {
+            //handle
+        }
+    }
+
+    // This method will be called when the "Leave Event" button is clicked
+    public void onLeaveEventClick(View view) {
+        if (this.holder.getUser().get_id().equals(this.holder.getEvent().getCreator_id())) {
+            try {
+                Database.delEvent(this.holder.getEvent().getId());
+                onBackButtonClick(this.getView());
+            } catch (Exception e) {
+                //handle
+            }
+        } else {
+            removeUser(holder.getUser());
+            this.exitEventButton.setVisibility(View.GONE);
+            this.joinEventButton.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void removeUser(UserDisplay user) {
+        try {
+            Database.exitEvent(user.get_id(), this.holder.getEvent().getId());
+            int idx = this.holder.getUsers().indexOf(user);
+            this.holder.getUsers().remove(idx);
+            this.userAdapter.notifyItemRemoved(idx);
+        } catch (Exception e) {
+            //handle
+        }
+    }
+
+    @Override
+    public void onKickClick(int position) {
+        removeUser(this.holder.getUsers().get(position));
+    }
+
+    @Override
+    public void onMessageClick(int position) {
+        Bundle args = new Bundle();
+        args.putSerializable("user", this.holder.getUser());
+
+        UserDisplay[] others = {this.holder.getUsers().get(position)};
+        args.putSerializable("other_users", others);
+
+        //TODO handle activity fail
+        Intent i = new Intent(this.getContext(), CreateMessageActivity.class);
+        i.putExtras(args);
+        startActivity(i);
+
+    }
+
+    @Override
+    public void onUserItemClick(int position) {
+        Bundle args = new Bundle();
+        args.putSerializable("user", this.holder.getUser());
+        args.putSerializable("other_user", this.holder.getUsers().get(position));
+
+        //change to activity
+        NavHostFragment.findNavController(com.example.eventus.ui.screens.EventDetails.EventParticipantsTabFragment.this)
+                .navigate(R.id.userProfileFragment, args);
+    }
+
+
+
+}

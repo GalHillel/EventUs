@@ -1,5 +1,6 @@
 package com.example.eventus.ui.screens;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -20,6 +21,7 @@ import com.example.eventus.data.Database;
 import com.example.eventus.data.model.UserDisplay;
 import com.example.eventus.ui.recycleViews.EventAdapter;
 import com.example.eventus.data.model.UserEventDisplay;
+import com.example.eventus.ui.screens.EventDetails.EventDetailsActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
@@ -128,8 +130,11 @@ public class UserDiscoverFragment extends Fragment implements EventAdapter.OnSho
     public void onShowMoreDetailsClick(UserEventDisplay clickedEvent) {
         Bundle args = createNavigationBundle();
         args.putString("eventId", clickedEvent.getId());
-        NavHostFragment.findNavController(UserDiscoverFragment.this)
-                .navigate(R.id.eventDetailsFragment, args);
+
+        //TODO handle activity fail
+        Intent i = new Intent(this.getContext(), EventDetailsActivity.class);
+        i.putExtras(args);
+        startActivity(i);
 
     }
 }

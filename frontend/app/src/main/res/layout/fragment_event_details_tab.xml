@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    style="@style/CustomFragmentScreen"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView
+        android:id="@+id/eventDetailsTitle"
+        style="@style/CustomFragmentTitle"
+        android:text="Event Details" />
+
+    <EditText
+        android:id="@+id/eventNameTextView"
+        style="@style/eventTitleField"
+        android:text="@string/placeholder"
+        android:inputType="text"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="12dp">
+
+        <EditText
+            android:id="@+id/eventDateTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:inputType="datetime"
+            android:focusable="false"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/pickDateButton"
+            style="@style/DefaultClickableButton"
+            android:text="Pick Date"
+            android:onClick="onPickDateClick" />
+
+    </LinearLayout>
+
+
+    <EditText
+        android:id="@+id/eventLocationTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:drawableStart="@drawable/ic_location"
+        android:drawablePadding="4dp"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="12dp"
+        android:inputType="text" />
+
+        <TextView
+            android:id="@+id/DescriptionText"
+            style="@style/CustomFragmentSubTitle"
+            android:text="Description"/>
+        <EditText
+            android:id="@+id/eventDescriptionTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:inputType="textMultiLine"
+            android:text="@string/descriptionPlaceholder"
+            android:textSize="16sp"
+            android:visibility="visible" />
+
+    <Button
+        android:id="@+id/editEventButton"
+        android:text="Edit Event"
+        style="@style/DefaultClickableButton"
+        android:layout_marginTop="8dp" />
+
+    <Button
+        android:id="@+id/saveEventButton"
+        style="@style/DefaultClickableButton"
+        android:layout_marginTop="8dp"
+        android:text="Save Event" />
+
+
+
+
+
+</LinearLayout>

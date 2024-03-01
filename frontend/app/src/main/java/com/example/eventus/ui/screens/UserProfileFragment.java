@@ -1,5 +1,6 @@
 package com.example.eventus.ui.screens;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -22,6 +23,7 @@ import com.example.eventus.data.Database;
 import com.example.eventus.data.ServerSideException;
 import com.example.eventus.data.model.UserDisplay;
 import com.example.eventus.data.model.UserProfile;
+import com.example.eventus.ui.screens.Messages.CreateMessageActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 /* TODO: 1. Implement rating for users and events - users may rate event *not* organizers
@@ -33,7 +35,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class UserProfileFragment extends Fragment {
     private UserDisplay user;
-
+    private UserProfile userProfile;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_user_profile, container, false);
@@ -42,7 +44,7 @@ public class UserProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         UserDisplay uProfile = null;
-        UserProfile userProfile = null;
+
         // Get the users' data from arguments
         if (getArguments() != null) {
             user = (UserDisplay) getArguments().getSerializable("user");
@@ -105,8 +107,7 @@ public class UserProfileFragment extends Fragment {
 
         if (userProfile != null && !userProfile.get_id().equals(user.get_id())) {
             view.findViewById(R.id.navigation).setVisibility(View.GONE);
-            view.findViewById(R.id.sendMessageButton).setOnClickListener(v ->
-                    Navigation.findNavController(view).navigate(R.id.action_userProfileFragment_to_createMessageFragment));
+            view.findViewById(R.id.sendMessageButton).setOnClickListener(this::onSendMessageButtonClick);
 
             view.findViewById(R.id.editProfileButton).setVisibility(View.GONE);
             backButton.setVisibility(View.VISIBLE);
@@ -153,6 +154,19 @@ public class UserProfileFragment extends Fragment {
 
         view.findViewById(R.id.newEvent).setOnClickListener(v ->
                 Navigation.findNavController(v).navigate(R.id.action_userProfileFragment_to_createEventFragment, createNavigationBundle()));
+    }
+
+    private void onSendMessageButtonClick(View view) {
+        Bundle args = new Bundle();
+        args.putSerializable("user", this.user);
+
+        UserDisplay[] others = {this.userProfile};
+        args.putSerializable("other_users", others);
+
+        //TODO handle activity fail
+        Intent i = new Intent(this.getContext(), CreateMessageActivity.class);
+        i.putExtras(args);
+        startActivity(i);
     }
 
 

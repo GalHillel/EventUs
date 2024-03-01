@@ -14,6 +14,7 @@ import java.net.HttpURLConnection;
 import java.util.List;
 import java.util.Map;
 
+import com.example.eventus.data.model.NewUserMessage;
 import com.example.eventus.data.model.UserMessageDisplay;
 import com.example.eventus.data.model.ServerResponse;
 import com.example.eventus.data.model.User;
@@ -59,7 +60,7 @@ public class Database {
             return gson.fromJson(response.getPayload(), User.class);
         }
         else{
-            throw new ServerSideException(response.getPayload());
+            throw new ServerSideException(response.getReturnCode(),response.getPayload());
         }
 
 
@@ -90,10 +91,10 @@ public class Database {
             return gson.fromJson(response.getPayload(), UserEvent.class);
         }
         else{
-            throw new ServerSideException(response.getPayload());
+            throw new ServerSideException(response.getReturnCode(),response.getPayload());
         }
     }
-    public static UserMessage sendMessage(String sender_id, List<String> receiver_ids, String title, String content) throws Exception{
+    public static NewUserMessage sendMessage(String sender_id, List<String> receiver_ids, String title, String content) throws Exception{
         HashMap<String, Object> payloadData = new HashMap<String, Object>();
         payloadData.put("sender_id", sender_id);
         payloadData.put("receiver_ids", receiver_ids);
@@ -104,11 +105,12 @@ public class Database {
         task.get();
         ServerResponse response = task.getServerResponse();
 
+        //TODO when getting a message back from the server, must populate the message, or revert sender_id field
         if (response.getReturnCode() == HttpURLConnection.HTTP_CREATED) {
-            return gson.fromJson(response.getPayload(), UserMessage.class);
+            return gson.fromJson(response.getPayload(), NewUserMessage.class);
         }
         else{
-            throw new ServerSideException(response.getPayload());
+            throw new ServerSideException(response.getReturnCode(),response.getPayload());
         }
     }
 
@@ -132,7 +134,7 @@ public class Database {
             return jsonObject.getString("_id");
         }
         else{
-            throw new ServerSideException(response.getPayload());
+            throw new ServerSideException(response.getReturnCode(),response.getPayload());
         } */
 
 
@@ -166,7 +168,7 @@ public class Database {
             return gson.fromJson(response.getPayload(), UserDisplay.class);
         }
         else{
-            throw new ServerSideException(response.getPayload());
+            throw new ServerSideException(response.getReturnCode(),response.getPayload());
         }
 
     }
@@ -186,7 +188,7 @@ public class Database {
             return gson.fromJson(response.getPayload(), UserEventDisplay[].class);
         }
         else{
-            throw new ServerSideException(response.getPayload());
+            throw new ServerSideException(response.getReturnCode(),response.getPayload());
         }
     }
 
@@ -206,7 +208,7 @@ public class Database {
             return gson.fromJson(response.getPayload(), UserDisplay[].class);
         }
         else{
-            throw new ServerSideException(response.getPayload());
+            throw new ServerSideException(response.getReturnCode(),response.getPayload());
         }
     }
 
@@ -228,7 +230,7 @@ public class Database {
             return gson.fromJson(response.getPayload(), UserMessageDisplay[].class);
         }
         else{
-            throw new ServerSideException(response.getPayload());
+            throw new ServerSideException(response.getReturnCode(),response.getPayload());
         }
     }
     public static Map<String,Boolean> getMessageInboxStatus(String user_id ) throws Exception{
@@ -241,7 +243,7 @@ public class Database {
             return gson.fromJson(response.getPayload(), User.class).getMessages();
         }
         else{
-            throw new ServerSideException(response.getPayload());
+            throw new ServerSideException(response.getReturnCode(),response.getPayload());
         }
     }
 
@@ -262,7 +264,7 @@ public class Database {
             return gson.fromJson(response.getPayload(), UserEvent.class);
         }
         else{
-            throw new ServerSideException(response.getPayload());
+            throw new ServerSideException(response.getReturnCode(),response.getPayload());
         }
     }
     /**
@@ -281,7 +283,7 @@ public class Database {
             return gson.fromJson(response.getPayload(), UserProfile.class);
         }
         else{
-            throw new ServerSideException(response.getPayload());
+            throw new ServerSideException(response.getReturnCode(),response.getPayload());
         }
     }
 
@@ -301,7 +303,7 @@ public class Database {
             return gson.fromJson(response.getPayload(), UserProfile.class);
         }
         else{
-            throw new ServerSideException(response.getPayload());
+            throw new ServerSideException(response.getReturnCode(),response.getPayload());
         }
     }
 
@@ -323,7 +325,7 @@ public class Database {
             return gson.fromJson(response.getPayload(), UserMessage.class);
         }
         else{
-            throw new ServerSideException(response.getPayload());
+            throw new ServerSideException(response.getReturnCode(),response.getPayload());
         }
     }
 
@@ -351,7 +353,7 @@ public class Database {
             return BitmapFactory.decodeByteArray(out, 0, out.length);
         }
         else{
-            throw new ServerSideException(response.getPayload());
+            throw new ServerSideException(response.getReturnCode(),response.getPayload());
         }
     }
 
@@ -371,7 +373,7 @@ public class Database {
             return gson.fromJson(response.getPayload(), UserEventDisplay[].class);
         }
         else{
-            throw new ServerSideException(response.getPayload());
+            throw new ServerSideException(response.getReturnCode(),response.getPayload());
         }
     }
 
@@ -390,7 +392,7 @@ public class Database {
             return gson.fromJson(response.getPayload(), UserMessageDisplay[].class);
         }
         else{
-            throw new ServerSideException(response.getPayload());
+            throw new ServerSideException(response.getReturnCode(),response.getPayload());
         }
     }
 
@@ -409,7 +411,7 @@ public class Database {
         task.get();
         ServerResponse response = task.getServerResponse();
         if (response.getReturnCode() != HttpURLConnection.HTTP_NO_CONTENT) {
-            throw new ServerSideException(response.getPayload());
+            throw new ServerSideException(response.getReturnCode(),response.getPayload());
         }
 
     }
@@ -429,7 +431,7 @@ public class Database {
         task.get();
         ServerResponse response = task.getServerResponse();
         if (response.getReturnCode() != HttpURLConnection.HTTP_NO_CONTENT) {
-            throw new ServerSideException(response.getPayload());
+            throw new ServerSideException(response.getReturnCode(),response.getPayload());
         }
     }
 
@@ -446,7 +448,7 @@ public class Database {
         task.get();
         ServerResponse response = task.getServerResponse();
         if (response.getReturnCode() != HttpURLConnection.HTTP_NO_CONTENT) {
-            throw new ServerSideException(response.getPayload());
+            throw new ServerSideException(response.getReturnCode(),response.getPayload());
         }
     }
 
@@ -466,7 +468,7 @@ public class Database {
         task.get();
         ServerResponse response = task.getServerResponse();
         if (response.getReturnCode() != HttpURLConnection.HTTP_NO_CONTENT) {
-            throw new ServerSideException(response.getPayload());
+            throw new ServerSideException(response.getReturnCode(),response.getPayload());
         }
     }
 
@@ -483,7 +485,7 @@ public class Database {
         task.get();
         ServerResponse response = task.getServerResponse();
         if (response.getReturnCode() != HttpURLConnection.HTTP_NO_CONTENT) {
-            throw new ServerSideException(response.getPayload());
+            throw new ServerSideException(response.getReturnCode(),response.getPayload());
         }
     }
 

@@ -113,15 +113,12 @@
         <action
             android:id="@+id/action_userProfileFragment_to_createEventFragment"
             app:destination="@id/createEventFragment" />
-        <action
-            android:id="@+id/action_userProfileFragment_to_createMessageFragment"
-            app:destination="@id/createMessageFragment" />
     </fragment>
 
 
     <fragment
         android:id="@+id/userMessagesFragment"
-        android:name="com.example.eventus.ui.screens.UserMessagesFragment"
+        android:name="com.example.eventus.ui.screens.Messages.UserMessagesFragment"
         android:label="UserMessagesFragment"
         tools:layout="@layout/fragment_user_messages">
 
@@ -160,33 +157,13 @@
         android:name="com.example.eventus.ui.recycleViews.ItemEventFragment"
         android:label="ItemEventFragment"
         tools:layout="@layout/item_event">
-
-        <action
-            android:id="@+id/action_itemEventFragment_to_eventDetailsFragment"
-            app:destination="@id/eventDetailsFragment" />
-
     </fragment>
 
-    <fragment
-        android:id="@+id/eventDetailsFragment"
-        android:name="com.example.eventus.ui.screens.EventDetailsFragment"
-        android:label="EventDetailsFragment"
-        tools:layout="@layout/fragment_event_details">
-    </fragment>
 
-    <fragment
-        android:id="@+id/createMessageFragment"
-        android:name="com.example.eventus.ui.screens.CreateMessageFragment"
-        android:label="CreateMessageFragment"
-        tools:layout="@layout/fragment_create_message">
-    </fragment>
 
-    <fragment
-        android:id="@+id/messageFragment"
-        android:name="com.example.eventus.ui.screens.MessageFragment"
-        android:label="MessageFragment"
-        tools:layout="@layout/fragment_message">
-    </fragment>
+
+
+
 
 
 </navigation>
