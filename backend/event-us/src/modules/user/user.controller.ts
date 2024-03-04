@@ -1,7 +1,7 @@
 import { Controller, Post, Body, Get, Param, ValidationPipe, UseInterceptors,ClassSerializerInterceptor, Query, Put, Patch, ParseUUIDPipe, HttpException, HttpStatus, HttpCode, UsePipes } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto, EditUserDto, LoginUserDto, SearchUserDto } from '../dto/user.dto';
-import { User, userDisplayFields, userProfileDisplayFields } from './user.model';
+import { User, loggedInUserFields, userDisplayFields, userProfileDisplayFields } from './user.model';
 import { UserEvent, userEventDisplayFields } from '../event/event.model';
 import { Message, messageDisplayFields } from '../message/message.model';
 import { EventService } from '../event/event.service';
@@ -127,7 +127,9 @@ export class UserController {
    */
   @Get("login")
   async login(@Query() loginUserDto: LoginUserDto): Promise<User>{
-    console.log(loginUserDto);
+    
+    console.log(loggedInUserFields);
+    
     try{
 
       return await this.userService.loginUser(loginUserDto);

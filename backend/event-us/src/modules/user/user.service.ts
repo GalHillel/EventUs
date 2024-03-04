@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { User, userDisplayFields } from './user.model';
+import { User, loggedInUserFields, userDisplayFields } from './user.model';
 import { UserEvent } from '../event/event.model';
 import { ProfilePic } from '../profilePic/profilePic.model';
 
@@ -126,7 +126,7 @@ export class UserService {
     if(Object.keys(loginUserDto).length === 0){
       throw new HttpException("Empty!",HttpStatus.NOT_ACCEPTABLE)
     }
-    return this.userModel.findOne(loginUserDto,userDisplayFields).exec().then((user)=>{
+    return this.userModel.findOne(loginUserDto,loggedInUserFields).exec().then((user)=>{
       if(user == null){
         throw new HttpException("Incorrect credentials!",HttpStatus.FORBIDDEN)
       }

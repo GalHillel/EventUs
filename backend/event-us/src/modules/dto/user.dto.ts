@@ -22,5 +22,6 @@ export class SearchUserDto extends PickType(UserDto,['_id','name','email','user_
 export class EditUserDto extends PickType(UserDto,['name','email','password','bio','profile_pic','rating','num_ratings','messages']){
   readonly oldPassword: string;
 }
+export class LoggedInUserDto extends OmitType(UserDto,['password','email']){}
 
   

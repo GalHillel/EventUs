@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Schema as mongooseSchema } from 'mongoose';
+import { LoggedInUserDto } from '../dto/user.dto';
 //import { string } from '../dto/id.dto';
 
 @Schema()
@@ -28,5 +29,5 @@ export class User extends Document {
 
 export const userDisplayFields = "_id name user_type profile_pic"
 export const userProfileDisplayFields = "_id name user_type profile_pic rating num_ratings events bio"
-
+export const loggedInUserFields =  "_id name user_type profile_pic rating num_ratings events messages bio"
 export const UserSchema = SchemaFactory.createForClass(User);

@@ -150,7 +150,7 @@ public class Database {
      * @return User entry in the database
      * @throws Exception response error
      */
-    public static UserDisplay userLogin(String email, String password, String user_type) throws Exception{
+    public static LoggedInUser userLogin(String email, String password, String user_type) throws Exception{
         HashMap<String, Object> payloadData = new HashMap<String, Object>();
         payloadData.put("email", email);
         payloadData.put("password", password);
@@ -161,7 +161,7 @@ public class Database {
         task.get();
         ServerResponse response = task.getServerResponse();
         if (response.getReturnCode() == HttpURLConnection.HTTP_OK) {
-            return gson.fromJson(response.getPayload(), UserDisplay.class);
+            return gson.fromJson(response.getPayload(), LoggedInUser.class);
         }
         else{
             throw new ServerSideException(response.getReturnCode(),response.getPayload());
