@@ -49,14 +49,6 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="430dp" />
 
-    <ImageButton
-        android:id="@+id/backButton"
-        android:layout_width="97dp"
-        android:layout_height="62dp"
-        android:layout_marginTop="16dp"
-        android:layout_below="@id/replyButton"
-        android:src="@drawable/ic_back"
-        android:contentDescription="Back"
-         />
+
 
 </RelativeLayout>

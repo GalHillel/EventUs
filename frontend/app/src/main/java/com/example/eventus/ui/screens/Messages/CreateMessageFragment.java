@@ -51,10 +51,10 @@ public class CreateMessageFragment extends Fragment {
         subjectEditText = view.findViewById(R.id.subjectEditText);
         messageEditText = view.findViewById(R.id.messageEditText);
         Button sendButton = view.findViewById(R.id.sendButton);
-        ImageButton backButton = view.findViewById(R.id.backButton);
+        //ImageButton backButton = view.findViewById(R.id.backButton);
 
         sendButton.setOnClickListener(this::onSendButtonClick);
-        backButton.setOnClickListener(this::onBackButtonClick);
+        //backButton.setOnClickListener(this::onBackButtonClick);
 
         if(!this.holder.getDefaultTitle().equals("")){
             subjectEditText.setText(holder.getDefaultTitle());

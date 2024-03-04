@@ -51,10 +51,11 @@ public class MessageFragment extends Fragment {
 
         Button replyButton = view.findViewById(R.id.replyButton);
         replyButton.setOnClickListener(this::onReplyButtonClick);
-        ImageButton backButton = view.findViewById(R.id.backButton);
-        backButton.setOnClickListener(v -> {
-            this.holder.backButtonClick(v);
-        });
+
+//        ImageButton backButton = view.findViewById(R.id.backButton);
+//        backButton.setOnClickListener(v -> {
+//            this.holder.backButtonClick(v);
+//        });
     }
     public void onReplyButtonClick(View view) {
         Bundle args = new Bundle();

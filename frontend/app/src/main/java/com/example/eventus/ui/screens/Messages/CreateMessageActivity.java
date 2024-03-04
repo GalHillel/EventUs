@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -67,6 +68,9 @@ public class CreateMessageActivity extends AppCompatActivity {
                 .setReorderingAllowed(true)
                 .replace(R.id.fragment_create_message, createMessageFragment)
                 .commit();
+
+        ImageButton backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(this::backButtonClick);
 
 
     }

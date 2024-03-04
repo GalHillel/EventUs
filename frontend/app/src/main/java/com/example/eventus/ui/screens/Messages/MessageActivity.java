@@ -73,13 +73,15 @@ public class MessageActivity extends AppCompatActivity {
             return;
         }
 
-
-
         MessageFragment messageFragment = new MessageFragment(this);
         getSupportFragmentManager().beginTransaction()
                 .setReorderingAllowed(true)
                 .replace(R.id.fragment_message, messageFragment)
                 .commit();
+
+
+        ImageButton backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(this::backButtonClick);
 
 
 

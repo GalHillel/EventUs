@@ -45,14 +45,6 @@
         android:layout_below="@id/messageEditText"
         android:layout_centerHorizontal="true" />
 
-    <ImageButton
-        android:id="@+id/backButton"
-        android:layout_width="97dp"
-        android:layout_height="62dp"
-        android:layout_below="@id/sendButton"
-        android:layout_marginTop="16dp"
-        android:layout_marginStart="16dp"
-        android:src="@drawable/ic_back"
-        android:contentDescription="Back" />
+
 
 </RelativeLayout>
