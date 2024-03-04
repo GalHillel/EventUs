@@ -35,7 +35,7 @@ public class EventDetailsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_event_details);
+        setContentView(R.layout.activity_event_details);
 
         ImageButton backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(this::backButtonClick);
