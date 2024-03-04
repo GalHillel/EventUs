@@ -6,12 +6,5 @@ import java.util.Map;
 
 public class User extends LoggedInUser{
     String email,password;
-    Map<String,Boolean> messages;
-
-
-
-
-
-
 
 }

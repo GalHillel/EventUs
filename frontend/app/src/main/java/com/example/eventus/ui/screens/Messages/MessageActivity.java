@@ -65,7 +65,6 @@ public class MessageActivity extends AppCompatActivity {
             this.finish();
             return;
         } catch (Exception e) {
-
             Intent res = new Intent();
             res.putExtra("message",e.getMessage());
             setResult(Activity.RESULT_CANCELED,res);

@@ -16,4 +16,8 @@ public class UserProfile extends UserDisplay{
     public void setBio(String bio) {
         this.bio = bio;
     }
+
+    public ArrayList<String> getEvents() {
+        return events;
+    }
 }
