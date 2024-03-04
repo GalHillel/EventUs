@@ -27,6 +27,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -82,9 +83,18 @@ public class UserMessagesFragment extends Fragment implements MessageAdaptor.onM
             UserMessageDisplay[] newList = Database.getMessageInbox(this.user.get_id());
             Map<String, Boolean> inboxRead = Database.getMessageInboxStatus(this.user.get_id());
             messageList.clear();
-            messageList.addAll(Arrays.asList(newList));
+            Collections.addAll(messageList, newList);
 
-            messageList.sort(Comparator.comparing(UserMessageDisplay::getDate_sent));
+            Collections.sort(messageList, (message1, message2) -> {
+                if (Boolean.TRUE.equals(inboxRead.getOrDefault(message1.get_id(), false)) && Boolean.FALSE.equals(inboxRead.getOrDefault(message2.get_id(), false))) {
+                    return 1;
+                } else if (Boolean.FALSE.equals(inboxRead.getOrDefault(message1.get_id(), false)) && Boolean.TRUE.equals(inboxRead.getOrDefault(message2.get_id(), false))) {
+                    return -1;
+                } else {
+                    return message2.getDate_sent().compareTo(message1.getDate_sent());
+                }
+            });
+
             RecyclerView messagesRecyclerView = view.findViewById(R.id.userMessagesList);
             MessageAdaptor messageAdaptor = new MessageAdaptor(messageList, inboxRead);
             messageAdaptor.setOnMessageClickListener(this);
