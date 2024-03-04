@@ -220,9 +220,9 @@ public class EventParticipantsTabFragment extends Fragment implements UserAdapte
     public void onUserItemClick(int position) {
         Bundle args = new Bundle();
         args.putSerializable("user", this.holder.getUser());
-        args.putSerializable("other_user", this.holder.getUsers().get(position));
+        args.putSerializable("other_user_id", this.holder.getUsers().get(position).get_id());
 
-        //change to activity
+        //TODO change to activity
         NavHostFragment.findNavController(com.example.eventus.ui.screens.EventDetails.EventParticipantsTabFragment.this)
                 .navigate(R.id.userProfileFragment, args);
     }
