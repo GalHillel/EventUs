@@ -20,6 +20,7 @@ import androidx.navigation.Navigation;
 
 import com.example.eventus.R;
 import com.example.eventus.data.Database;
+import com.example.eventus.data.model.LoggedInUser;
 import com.example.eventus.data.model.UserDisplay;
 import com.example.eventus.data.model.UserEvent;
 import com.example.eventus.data.model.UserEventDisplay;
@@ -36,7 +37,7 @@ public class CreateEventFragment extends Fragment {
     private EditText eventLocationEditText;
     private EditText eventDescriptionEditText;
     private CheckBox setPrivateEventCheckbox;
-    private UserDisplay user;
+    private LoggedInUser user;
 
     private Calendar calendar;
 
@@ -59,7 +60,7 @@ public class CreateEventFragment extends Fragment {
         Menu navMenu = bottomNavigationView.getMenu();
 
         if (getArguments() != null) {
-            user = (UserDisplay) getArguments().getSerializable("user");
+            user = (LoggedInUser) getArguments().getSerializable("user");
 
             if (user != null && user.getUser_type().equals("Organizer")) {
                 navMenu.findItem(R.id.discover).setVisible(false);

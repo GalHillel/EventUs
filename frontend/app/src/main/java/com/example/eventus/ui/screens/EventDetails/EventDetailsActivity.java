@@ -11,6 +11,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.example.eventus.R;
 import com.example.eventus.data.Database;
+import com.example.eventus.data.model.LoggedInUser;
 import com.example.eventus.data.model.UserDisplay;
 import com.example.eventus.data.model.UserEvent;
 import com.google.android.material.badge.BadgeDrawable;
@@ -26,7 +27,7 @@ public class EventDetailsActivity extends AppCompatActivity {
     TabLayout tabLayout;
     ViewPager viewPager;
 
-    UserDisplay user;
+    LoggedInUser user;
     private UserEvent userEvent;
     private List<UserDisplay> users = new ArrayList<>();
     BadgeDrawable badge;
@@ -48,7 +49,7 @@ public class EventDetailsActivity extends AppCompatActivity {
             Intent intent = getIntent();
             if(intent.getExtras() != null){
                 Bundle args = intent.getExtras();
-                this.user = (UserDisplay) args.getSerializable("user");
+                this.user = (LoggedInUser) args.getSerializable("user");
                 String eventId = args.getString("eventId", "");
                 try {
                     this.userEvent = Database.loadEvent(eventId);

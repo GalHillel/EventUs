@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.eventus.R;
 import com.example.eventus.data.Database;
 import com.example.eventus.data.ServerSideException;
+import com.example.eventus.data.model.LoggedInUser;
 import com.example.eventus.data.model.UserDisplay;
 import com.example.eventus.ui.recycleViews.EventAdapter;
 import com.example.eventus.data.model.UserEventDisplay;
@@ -36,7 +37,7 @@ public class UserEventsFragment extends Fragment implements EventAdapter.OnShowM
 
     private final List<UserEventDisplay> upcomingEventsList = new ArrayList<>();
     private final List<UserEventDisplay> pastEventsList = new ArrayList<>();
-    private UserDisplay user;
+    private LoggedInUser user;
 
     public UserEventsFragment() {
     }
@@ -54,7 +55,7 @@ public class UserEventsFragment extends Fragment implements EventAdapter.OnShowM
         Menu navMenu = bottomNavigationView.getMenu();
 
         if (getArguments() != null) {
-            user = (UserDisplay) getArguments().getSerializable("user");
+            user = (LoggedInUser) getArguments().getSerializable("user");
 
             if (user != null && user.getUser_type().equals("Organizer")) {
                 navMenu.findItem(R.id.discover).setVisible(false);

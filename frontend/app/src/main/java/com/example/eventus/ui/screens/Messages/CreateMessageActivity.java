@@ -13,6 +13,7 @@ import androidx.navigation.Navigation;
 import com.example.eventus.R;
 import com.example.eventus.data.Database;
 import com.example.eventus.data.ServerSideException;
+import com.example.eventus.data.model.LoggedInUser;
 import com.example.eventus.data.model.UserDisplay;
 import com.example.eventus.data.model.UserMessage;
 
@@ -22,7 +23,7 @@ import java.util.stream.Collectors;
 
 public class CreateMessageActivity extends AppCompatActivity {
 
-    private UserDisplay user;
+    private LoggedInUser user;
     private UserDisplay[] other_users;
 
     private String defaultTitle;
@@ -58,7 +59,7 @@ public class CreateMessageActivity extends AppCompatActivity {
             return;
         }
 
-        this.user = (UserDisplay) args.getSerializable("user");
+        this.user = (LoggedInUser) args.getSerializable("user");
         this.other_users = (UserDisplay[]) args.getSerializable("other_users");
         this.defaultTitle = args.getString("title", "");
 

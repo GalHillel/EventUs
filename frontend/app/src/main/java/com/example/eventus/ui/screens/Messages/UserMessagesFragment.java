@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.eventus.R;
 import com.example.eventus.data.Database;
 import com.example.eventus.data.ServerSideException;
+import com.example.eventus.data.model.LoggedInUser;
 import com.example.eventus.data.model.UserDisplay;
 import com.example.eventus.data.model.UserMessageDisplay;
 import com.example.eventus.ui.recycleViews.MessageAdaptor;
@@ -33,7 +34,7 @@ import java.util.List;
 import java.util.Map;
 
 public class UserMessagesFragment extends Fragment implements MessageAdaptor.onMessageClickListener {
-    private UserDisplay user;
+    private LoggedInUser user;
     private final List<UserMessageDisplay> messageList = new ArrayList<>();
 
     public UserMessagesFragment() {
@@ -55,7 +56,7 @@ public class UserMessagesFragment extends Fragment implements MessageAdaptor.onM
         Menu navMenu = bottomNavigationView.getMenu();
 
         if (getArguments() != null) {
-            this.user = (UserDisplay) getArguments().getSerializable("user");
+            this.user = (LoggedInUser) getArguments().getSerializable("user");
             if (user != null && user.getUser_type().equals("Organizer")) {
                 navMenu.findItem(R.id.discover).setVisible(false);
             } else {

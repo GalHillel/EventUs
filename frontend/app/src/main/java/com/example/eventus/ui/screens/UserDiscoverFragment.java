@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.eventus.R;
 import com.example.eventus.data.Database;
+import com.example.eventus.data.model.LoggedInUser;
 import com.example.eventus.data.model.UserDisplay;
 import com.example.eventus.ui.recycleViews.EventAdapter;
 import com.example.eventus.data.model.UserEventDisplay;
@@ -36,7 +37,7 @@ public class UserDiscoverFragment extends Fragment implements EventAdapter.OnSho
     private EditText searchEditText;
     private List<UserEventDisplay> searchResults = new ArrayList<>();
     private RecyclerView eventsRecyclerView;
-    private UserDisplay user;
+    private LoggedInUser user;
 
     // TODO: Add an option for searching users by username
 
@@ -58,7 +59,7 @@ public class UserDiscoverFragment extends Fragment implements EventAdapter.OnSho
         Menu navMenu = bottomNavigationView.getMenu();
 
         if (getArguments() != null) {
-            user = (UserDisplay) getArguments().getSerializable("user");
+            user = (LoggedInUser) getArguments().getSerializable("user");
 
             if (user != null && user.getUser_type().equals("Organizer")) {
                 navMenu.findItem(R.id.discover).setVisible(false);
