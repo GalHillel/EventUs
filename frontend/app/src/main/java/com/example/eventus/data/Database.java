@@ -8,6 +8,7 @@ import java.net.HttpURLConnection;
 import java.util.List;
 import java.util.Map;
 
+import com.example.eventus.data.model.LoggedInUser;
 import com.example.eventus.data.model.NewUserMessage;
 import com.example.eventus.data.model.UserMessageDisplay;
 import com.example.eventus.data.model.ServerResponse;
@@ -235,7 +236,7 @@ public class Database {
         ServerResponse response = task.getServerResponse();
         if (response.getReturnCode() == HttpURLConnection.HTTP_OK) {
 
-            return gson.fromJson(response.getPayload(), User.class).getMessages();
+            return gson.fromJson(response.getPayload(), LoggedInUser.class).getMessages();
         }
         else{
             throw new ServerSideException(response.getReturnCode(),response.getPayload());
