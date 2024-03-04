@@ -21,10 +21,6 @@
         android:text="Send Message" />
     <ImageButton
         android:id="@+id/backButton"
-        android:layout_width="97dp"
-        android:layout_height="62dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginStart="16dp"
-        android:src="@drawable/ic_back"
+        style="@style/backButton"
         android:contentDescription="Back" />
 </LinearLayout>

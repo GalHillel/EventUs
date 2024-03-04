@@ -129,13 +129,6 @@ public class EventParticipantsTabFragment extends Fragment implements UserAdapte
 
     }
 
-
-
-    public void onBackButtonClick(View view) {
-        // Navigate back
-        getParentFragmentManager().popBackStack();
-    }
-
     // This method will be called when the "Join Event" button is clicked
     public void onJoinEventClick(View view) {
         try {
@@ -163,8 +156,9 @@ public class EventParticipantsTabFragment extends Fragment implements UserAdapte
     public void onLeaveEventClick(View view) {
         if (this.holder.getUser().get_id().equals(this.holder.getEvent().getCreator_id())) {
             try {
+                //TODO maybe change this?
                 Database.delEvent(this.holder.getEvent().getId());
-                onBackButtonClick(this.getView());
+                this.holder.success();
             } catch (Exception e) {
                 //handle
             }

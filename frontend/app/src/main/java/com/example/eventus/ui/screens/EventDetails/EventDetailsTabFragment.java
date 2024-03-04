@@ -64,15 +64,6 @@ public class EventDetailsTabFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_event_details_tab, container, false);
 
-        /*
-        ImageButton backButton = view.findViewById(R.id.backButton);
-        backButton.setOnClickListener(v -> {
-            // Navigate back to the previous fragment
-            getParentFragmentManager().popBackStack();
-        });
-
-         */
-
         // Inflate the layout for this fragment
         return view;
     }
@@ -120,11 +111,6 @@ public class EventDetailsTabFragment extends Fragment {
         eventDateView.setText(this.holder.getEvent().getDate().toString());
         eventLocationview.setText(this.holder.getEvent().getLocation());
         eventDescription.setText(this.holder.getEvent().getDescription());
-    }
-
-    public void onBackButtonClick(View view) {
-        // Navigate back
-        getParentFragmentManager().popBackStack();
     }
 
 

@@ -113,6 +113,10 @@ public class EventDetailsActivity extends AppCompatActivity {
         this.finish();
 
     }
+    public void success(){
+        this.setResult(Activity.RESULT_OK);
+        this.finish();
+    }
 
     public void updateBadge() {
         int badgeNum = 0;
