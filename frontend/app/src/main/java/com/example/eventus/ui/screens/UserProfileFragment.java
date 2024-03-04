@@ -23,6 +23,7 @@ import androidx.navigation.Navigation;
 import com.example.eventus.R;
 import com.example.eventus.data.Database;
 import com.example.eventus.data.ServerSideException;
+import com.example.eventus.data.model.LoggedInUser;
 import com.example.eventus.data.model.UserDisplay;
 import com.example.eventus.data.model.UserProfile;
 import com.example.eventus.ui.screens.Messages.CreateMessageActivity;
@@ -38,7 +39,7 @@ import com.google.android.material.button.MaterialButton;
  */
 
 public class UserProfileFragment extends Fragment {
-    private UserDisplay user;
+    private LoggedInUser user;
     private UserProfile userProfile;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -51,7 +52,7 @@ public class UserProfileFragment extends Fragment {
 
         // Get the users' data from arguments
         if (getArguments() != null) {
-            user = (UserDisplay) getArguments().getSerializable("user");
+            user = (LoggedInUser) getArguments().getSerializable("user");
             uProfile = (UserDisplay) getArguments().getSerializable("other_user");
 
         }
