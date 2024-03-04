@@ -72,11 +72,9 @@ public class EventParticipantsTabFragment extends Fragment implements UserAdapte
     }
     /*
         TODO:
-            1. Add the option for an Organizer to accept a new user - done
-            2. Add the option for an Organizer to send a message to all users in event
-            3. Add the option to rate an event and implement the rating algorithm
+            1. Add the option for an Organizer to accept a new user - NEEDS CHECKING
             4. (optional) show profile pictures of users
-            5. Move Organizer to the top of the list and show that he is the Organizer
+            5. Move Organizer to the top of the list and show that he is the Organizer - DONE
             6. Fix bug where if a user leaves an event and then goes back to event list,
              the event is still there until the user refreshes
             7. Fix bug where on user click, the app crashes

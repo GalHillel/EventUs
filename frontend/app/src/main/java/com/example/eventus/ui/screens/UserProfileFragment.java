@@ -100,7 +100,6 @@ public class UserProfileFragment extends Fragment {
         RatingBar userRatingBar = view.findViewById(R.id.userRatingBar);
         userRatingBar.setEnabled(false);
         TextView ratingCountTextView = view.findViewById(R.id.ratingCountTextView);
-        Button saveRatingButton = view.findViewById(R.id.saveRatingButton);
 
         logoutButton.setOnClickListener(v -> {
             Navigation.findNavController(v).navigate(R.id.action_userProfileFragment_to_loginFragment);
@@ -135,12 +134,12 @@ public class UserProfileFragment extends Fragment {
 
 
             if (userProfile.getUser_type().equals("Organizer")) {
-                saveRatingButton.setVisibility(View.VISIBLE);
+
                 userRatingBar.setVisibility(View.VISIBLE);
                 ratingCountTextView.setVisibility(View.VISIBLE);
 
             } else {
-                saveRatingButton.setVisibility(View.GONE);
+
                 userRatingBar.setVisibility(View.GONE);
                 ratingCountTextView.setVisibility(View.GONE);
             }
@@ -150,12 +149,12 @@ public class UserProfileFragment extends Fragment {
             backButton.setVisibility(View.GONE);
             view.findViewById(R.id.editProfileButton).setOnClickListener(this::onEditProfileButtonClicked);
             if (userProfile != null && userProfile.getUser_type().equals("Organizer")) {
-                saveRatingButton.setVisibility(View.GONE);
+
                 userRatingBar.setVisibility(View.VISIBLE);
                 ratingCountTextView.setVisibility(View.VISIBLE);
 
             } else {
-                saveRatingButton.setVisibility(View.GONE);
+
                 userRatingBar.setVisibility(View.GONE);
                 ratingCountTextView.setVisibility(View.GONE);
             }
