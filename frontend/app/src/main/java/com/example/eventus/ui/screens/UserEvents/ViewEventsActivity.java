@@ -1,12 +1,12 @@
-package com.example.eventus.ui.screens.Profile;
+package com.example.eventus.ui.screens.UserEvents;
 
-
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -14,17 +14,21 @@ import com.example.eventus.R;
 import com.example.eventus.data.Database;
 import com.example.eventus.data.ServerSideException;
 import com.example.eventus.data.model.LoggedInUser;
-import com.example.eventus.data.model.UserDisplay;
-import com.example.eventus.data.model.UserProfile;
-import com.example.eventus.ui.screens.Messages.CreateMessageActivity;
-import com.example.eventus.ui.screens.UserEvents.ViewEventsActivity;
+import com.example.eventus.data.model.UserEventDisplay;
+import com.example.eventus.ui.screens.UserEvents.EventListFragment;
 
-public class ViewUserProfileActivity extends AppCompatActivity {
+import java.util.Arrays;
+import java.util.List;
+
+public class ViewEventsActivity extends AppCompatActivity {
+
     LoggedInUser user;
-    UserProfile profile;
+    List<UserEventDisplay> userEvents;
+
+    @SuppressLint("SetTextI18n")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_user_profile);
+        setContentView(R.layout.activity_view_user_events);
 
         if (getIntent() == null) {
             Intent res = new Intent();
@@ -57,7 +61,8 @@ public class ViewUserProfileActivity extends AppCompatActivity {
         String _id  = args.getString("other_user_id");
 
         try {
-            this.profile = Database.userProfile(_id);
+            UserEventDisplay[] tmp = Database.getEventList(user.get_id());
+            userEvents = Arrays.asList(tmp);
         } catch (ServerSideException e) {
             Intent res = new Intent();
             res.putExtra("message",e.getMessage());
@@ -72,28 +77,19 @@ public class ViewUserProfileActivity extends AppCompatActivity {
             return;
         }
 
-
         ImageButton backButton = findViewById(R.id.backButton);
-        Button messageButton = findViewById(R.id.sendMessageButton);
-        Button viewUserEventsButton = findViewById(R.id.viewUserEventsButton);
-
+        TextView title = findViewById(R.id.user_events_title);
+        title.setText(this.user.getName()+"'s events");
         backButton.setOnClickListener(this::backButtonClick);
-        messageButton.setOnClickListener(this::onSendMessageButtonClick);
-        viewUserEventsButton.setOnClickListener(this::onViewEventsClick);
 
-        if(!profile.getUser_type().equals("Organizer")){
-            viewUserEventsButton.setVisibility(View.GONE);
-        }
+        EventListFragment userEventListFragment = new EventListFragment(this.user,this.userEvents);
 
-        BaseUserProfileFragment userProfileFragment = new BaseUserProfileFragment(profile);
         getSupportFragmentManager().beginTransaction()
                 .setReorderingAllowed(true)
-                .replace(R.id.fragment_base_user_profile, userProfileFragment)
+                .replace(R.id.fragment_event_list, userEventListFragment)
                 .commit();
 
     }
-
-
     public void backButtonClick(View view) {
         // Navigate back
         this.setResult(Activity.RESULT_OK);
@@ -103,32 +99,4 @@ public class ViewUserProfileActivity extends AppCompatActivity {
         this.setResult(Activity.RESULT_OK);
         this.finish();
     }
-    private void onSendMessageButtonClick(View view) {
-        Bundle args = new Bundle();
-        args.putSerializable("user", this.user);
-
-        UserDisplay[] others = {this.profile};
-        args.putSerializable("other_users", others);
-
-        //TODO handle activity fail
-        Intent i = new Intent(view.getContext(), CreateMessageActivity.class);
-        i.putExtras(args);
-        startActivity(i);
-    }
-
-    private void onViewEventsClick(View view) {
-        Bundle args = new Bundle();
-        args.putSerializable("user", this.user);
-
-        args.putStringArrayList("event_list",this.profile.getEvents());
-
-        //TODO handle activity fail
-        Intent i = new Intent(view.getContext(), ViewEventsActivity.class);
-        i.putExtras(args);
-        startActivity(i);
-    }
-
-
-
-
 }

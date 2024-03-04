@@ -128,7 +128,6 @@ export class UserController {
   @Get("login")
   async login(@Query() loginUserDto: LoginUserDto): Promise<User>{
     
-    console.log(loggedInUserFields);
     
     try{
 

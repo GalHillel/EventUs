@@ -18,20 +18,11 @@
             style="@style/CustomFragmentSubTitle"
             android:text="Upcoming Events" />
 
-        <LinearLayout
+        <androidx.fragment.app.FragmentContainerView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/eventlist_background"
-            android:orientation="vertical">
-
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:padding="3dp"
-                android:id="@+id/upcomingEventsList"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:listitem="@layout/item_event"/>
-        </LinearLayout>
+            android:id="@+id/upcomingEventsList"
+            tools:layout="@layout/fragment_event_list" />
     </LinearLayout>
 
     <LinearLayout
@@ -45,17 +36,11 @@
         <TextView
             style="@style/CustomFragmentSubTitle"
             android:text="Past Events" />
-        <LinearLayout
+        <androidx.fragment.app.FragmentContainerView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/eventlist_background"
-            android:orientation="vertical">
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/pastEventsList"
-                android:padding="3dp"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </LinearLayout>
+            android:id="@+id/pastEventsList"
+            tools:layout="@layout/fragment_event_list" />
     </LinearLayout>
 
     <include layout="@layout/user_navigation" />

@@ -29,6 +29,7 @@ import com.example.eventus.data.model.UserEvent;
 import com.example.eventus.ui.recycleViews.UserAdapter;
 import com.example.eventus.ui.screens.Messages.CreateMessageActivity;
 import com.example.eventus.ui.screens.Messages.MessageActivity;
+import com.example.eventus.ui.screens.Profile.ViewUserProfileActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -222,9 +223,10 @@ public class EventParticipantsTabFragment extends Fragment implements UserAdapte
         args.putSerializable("user", this.holder.getUser());
         args.putSerializable("other_user_id", this.holder.getUsers().get(position).get_id());
 
-        //TODO change to activity
-        NavHostFragment.findNavController(com.example.eventus.ui.screens.EventDetails.EventParticipantsTabFragment.this)
-                .navigate(R.id.userProfileFragment, args);
+        //TODO handle activity fail
+        Intent i = new Intent(this.getContext(), ViewUserProfileActivity.class);
+        i.putExtras(args);
+        startActivity(i);
     }
 
 

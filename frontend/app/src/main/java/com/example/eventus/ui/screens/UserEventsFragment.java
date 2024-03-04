@@ -1,6 +1,5 @@
 package com.example.eventus.ui.screens;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -11,29 +10,23 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.eventus.R;
 import com.example.eventus.data.Database;
 import com.example.eventus.data.ServerSideException;
 import com.example.eventus.data.model.LoggedInUser;
-import com.example.eventus.data.model.UserDisplay;
-import com.example.eventus.ui.recycleViews.EventAdapter;
 import com.example.eventus.data.model.UserEventDisplay;
-import com.example.eventus.ui.screens.EventDetails.EventDetailsActivity;
+import com.example.eventus.ui.screens.UserEvents.EventListFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
 // TODO: Add an option for users to rate past events
 
-public class UserEventsFragment extends Fragment implements EventAdapter.OnShowMoreDetailsClickListener {
+public class UserEventsFragment extends Fragment {
 
     private final List<UserEventDisplay> upcomingEventsList = new ArrayList<>();
     private final List<UserEventDisplay> pastEventsList = new ArrayList<>();
@@ -80,7 +73,6 @@ public class UserEventsFragment extends Fragment implements EventAdapter.OnShowM
         // Fetch user events using the database function
         try {
             UserEventDisplay[] userEvents = Database.getEventList(user.get_id());
-
             // Clear the existing list and add the fetched events
             upcomingEventsList.clear();
             pastEventsList.clear();
@@ -105,38 +97,23 @@ public class UserEventsFragment extends Fragment implements EventAdapter.OnShowM
             e.printStackTrace();
         }
 
-        // Set up RecyclerView for Events
-        RecyclerView upcomingEventsRecyclerView = view.findViewById(R.id.upcomingEventsList);
-        EventAdapter upcomingEventAdapter = new EventAdapter(upcomingEventsList);
-        upcomingEventAdapter.setOnShowMoreDetailsClickListener(this);
-        upcomingEventsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        upcomingEventsRecyclerView.setAdapter(upcomingEventAdapter);
+        EventListFragment upcomingEventsFragment = new EventListFragment(this.user,upcomingEventsList);
+        getChildFragmentManager().beginTransaction()
+                .setReorderingAllowed(true)
+                .replace(R.id.upcomingEventsList, upcomingEventsFragment)
+                .commit();
 
-
-        RecyclerView pastEventsRecyclerView = view.findViewById(R.id.pastEventsList);
-        EventAdapter pastEventAdapter = new EventAdapter(pastEventsList);
-        pastEventAdapter.setOnShowMoreDetailsClickListener(this);
-        pastEventsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        pastEventsRecyclerView.setAdapter(pastEventAdapter);
-
+        EventListFragment pastEventsListFragment = new EventListFragment(this.user,pastEventsList);
+        getChildFragmentManager().beginTransaction()
+                .setReorderingAllowed(true)
+                .replace(R.id.pastEventsList, pastEventsListFragment)
+                .commit();
     }
 
     // Method to create a common bundle for navigation
     private Bundle createNavigationBundle() {
         Bundle bundle = new Bundle();
         bundle.putSerializable("user", user);
-
         return bundle;
-    }
-
-    @Override
-    public void onShowMoreDetailsClick(UserEventDisplay clickedEvent) {
-        Bundle args = createNavigationBundle();
-        args.putString("eventId", clickedEvent.getId());
-        //TODO handle activity fail
-        Intent i = new Intent(this.getContext(), EventDetailsActivity.class);
-        i.putExtras(args);
-        startActivity(i);
-
     }
 }

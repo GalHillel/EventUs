@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.screens.UserEvents.ViewEventsActivity"
+    android:id="@+id/activity_view_user_events"
+    android:orientation="vertical"
+    style="@style/CustomFragmentScreen">
+    <TextView
+        android:id="@+id/user_events_title"
+        style="@style/CustomFragmentTitle"
+        android:text="@string/placeholder"/>
+
+    <androidx.fragment.app.FragmentContainerView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:id="@+id/fragment_event_list"
+        tools:layout="@layout/fragment_event_list" />
+
+
+    <ImageButton
+        android:id="@+id/backButton"
+        style="@style/backButton"
+        android:layout_marginTop="16dp"
+        android:contentDescription="Back" />
+
+</LinearLayout>

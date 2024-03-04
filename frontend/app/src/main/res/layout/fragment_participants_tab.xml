@@ -6,7 +6,7 @@
         <TextView
 
             android:id="@+id/ParticipantText"
-            style="@style/CustomFragmentSubTitle"
+            style="@style/CustomFragmentTitle"
             android:layout_height="wrap_content"
             android:text="Participants" />
 

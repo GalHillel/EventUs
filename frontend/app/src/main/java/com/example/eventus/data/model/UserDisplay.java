@@ -30,6 +30,9 @@ public class UserDisplay implements Serializable {
     public String getProfile_pic() {
         return profile_pic;
     }
+    public void setProfile_pic(String s){
+        this.profile_pic = s;
+    }
 
     @Override
     public int hashCode() {

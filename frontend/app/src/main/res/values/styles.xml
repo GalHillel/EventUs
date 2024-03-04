@@ -94,6 +94,7 @@
         <item name="android:layout_width">70dp</item>
         <item name="android:background">@color/backButtonColor</item>
         <item name="android:layout_marginBottom">16dp</item>
+        <item name="android:layout_marginTop">16dp</item>
     </style>
 
     <style name="DefaultToggleButton">

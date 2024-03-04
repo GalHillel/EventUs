@@ -2,6 +2,7 @@ package com.example.eventus.ui.screens.Profile;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,18 +38,23 @@ public class BaseUserProfileFragment extends Fragment {
 
 
         ImageView profilePic = view.findViewById(R.id.userPhotoImageView);
-        try {
-            if (userProfile != null && userProfile.getProfile_pic().length() > 0) {
+
+        if (userProfile.getProfile_pic().length() > 0) {
+            try {
                 Bitmap profile_icon = Database.getProfilePic(userProfile.get_id());
+                int width = getResources().getInteger(R.integer.profile_profilePicSize);
+                int height = getResources().getInteger(R.integer.profile_profilePicSize);
+                profile_icon = Bitmap.createScaledBitmap(profile_icon,width,height,false);
                 profilePic.setImageBitmap(profile_icon);
+            } catch (ServerSideException e) {
+                // Handle the exception (e.g., show an error message)
+                e.printStackTrace();
+            } catch (Exception e) {
+                // Handle other exceptions
+                e.printStackTrace();
             }
-        } catch (ServerSideException e) {
-            // Handle the exception (e.g., show an error message)
-            e.printStackTrace();
-        } catch (Exception e) {
-            // Handle other exceptions
-            e.printStackTrace();
         }
+
 
 
 

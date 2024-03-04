@@ -32,6 +32,7 @@
 
     <ImageButton
         style="@style/backButton"
+        android:layout_marginStart="20dp"
         android:id="@+id/backButton"/>
 </LinearLayout>
 

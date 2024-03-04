@@ -38,6 +38,12 @@
         <activity
             android:name=".ui.screens.Messages.CreateMessageActivity"
             android:exported="true"/>
+        <activity
+            android:name=".ui.screens.Profile.ViewUserProfileActivity"
+            android:exported="true"/>
+        <activity
+            android:name=".ui.screens.UserEvents.ViewEventsActivity"
+            android:exported="true"/>
     </application>
 
 </manifest>

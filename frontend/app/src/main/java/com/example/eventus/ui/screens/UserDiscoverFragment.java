@@ -23,6 +23,7 @@ import com.example.eventus.data.model.UserDisplay;
 import com.example.eventus.ui.recycleViews.EventAdapter;
 import com.example.eventus.data.model.UserEventDisplay;
 import com.example.eventus.ui.screens.EventDetails.EventDetailsActivity;
+import com.example.eventus.ui.screens.UserEvents.EventListFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
@@ -32,11 +33,10 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class UserDiscoverFragment extends Fragment implements EventAdapter.OnShowMoreDetailsClickListener {
+public class UserDiscoverFragment extends Fragment {
 
     private EditText searchEditText;
     private List<UserEventDisplay> searchResults = new ArrayList<>();
-    private RecyclerView eventsRecyclerView;
     private LoggedInUser user;
 
     // TODO: Add an option for searching users by username
@@ -67,10 +67,12 @@ public class UserDiscoverFragment extends Fragment implements EventAdapter.OnSho
                 navMenu.findItem(R.id.newEvent).setVisible(false);
             }
         }
-
         searchEditText = view.findViewById(R.id.searchEditText);
         Button searchButton = view.findViewById(R.id.searchButton);
-        eventsRecyclerView = view.findViewById(R.id.discoveredEventsList);
+
+
+
+
 
         // Set up click listeners for buttons
         view.findViewById(R.id.profile).setOnClickListener(v ->
@@ -106,18 +108,16 @@ public class UserDiscoverFragment extends Fragment implements EventAdapter.OnSho
         try {
             UserEventDisplay[] temp = Database.searchEvents(searchParams);
             this.searchResults = Arrays.asList(temp);
-            // Update UI on the main thread with the search results
-
-            EventAdapter eventAdapter = new EventAdapter(this.searchResults);
-            eventAdapter.setOnShowMoreDetailsClickListener(this);
-            this.eventsRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-            this.eventsRecyclerView.setAdapter(eventAdapter);
-
-
         } catch (Exception e) {
             // Handle the exception, e.g., show an error message
             e.printStackTrace();
         }
+
+        EventListFragment searchEventListFragment = new EventListFragment(this.user,this.searchResults);
+        getChildFragmentManager().beginTransaction()
+                .setReorderingAllowed(true)
+                .replace(R.id.upcomingEventsList, searchEventListFragment)
+                .commit();
     }
 
     @Override
@@ -127,15 +127,5 @@ public class UserDiscoverFragment extends Fragment implements EventAdapter.OnSho
         executorService.shutdown();
     }
 
-    @Override
-    public void onShowMoreDetailsClick(UserEventDisplay clickedEvent) {
-        Bundle args = createNavigationBundle();
-        args.putString("eventId", clickedEvent.getId());
 
-        //TODO handle activity fail
-        Intent i = new Intent(this.getContext(), EventDetailsActivity.class);
-        i.putExtras(args);
-        startActivity(i);
-
-    }
 }

@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/CustomFragmentScreen"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.screens.UserDiscoverFragment">
+    tools:context=".ui.screens.UserDiscoverFragment"
+    android:orientation="vertical">
 
 
     <LinearLayout
@@ -37,11 +38,12 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/discoveredEventsList"
+    <androidx.fragment.app.FragmentContainerView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1" />
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:id="@+id/discoveredEventsList"
+        tools:layout="@layout/fragment_event_list" />
 
     <include layout="@layout/user_navigation" />
 </LinearLayout>

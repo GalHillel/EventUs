@@ -24,8 +24,8 @@
             android:orientation="vertical">
             <ImageView
                 android:id="@+id/profilePhotoImageView"
-                android:layout_width="128dp"
-                android:layout_height="128dp"
+                android:layout_width="@dimen/profile_profilePicSize"
+                android:layout_height="@dimen/profile_profilePicSize"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_profile"
                 android:contentDescription="Profile Picture"
