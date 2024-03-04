@@ -7,11 +7,13 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,12 +27,14 @@ import com.example.eventus.data.model.UserDisplay;
 import com.example.eventus.data.model.UserProfile;
 import com.example.eventus.ui.screens.Messages.CreateMessageActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.button.MaterialButton;
 
 /* TODO: 1. Implement rating for users and events - users may rate event *not* organizers
          2. Display events when user enter to organizer profile
-         3. Remove navigation bar when entering another user profile - done
+         3. Remove navigation bar when entering another user profile - DONE
          4. Maybe remove the option to send message from profile - should work anyway
-         5. Move logout button here
+         5. Move logout button here - DONE
+         6. FIX BUG WHERE BIO DOES NOT GET UPDATED UNTIL REFRESH!!!!
  */
 
 public class UserProfileFragment extends Fragment {
@@ -89,29 +93,46 @@ public class UserProfileFragment extends Fragment {
         }
 
         ImageButton backButton = view.findViewById(R.id.backButton);
+        Button sendMessageButton = view.findViewById(R.id.sendMessageButton);
+        MaterialButton logoutButton = view.findViewById(R.id.logout);
+
+        //TODO: remove
         RatingBar userRatingBar = view.findViewById(R.id.userRatingBar);
         userRatingBar.setEnabled(false);
         TextView ratingCountTextView = view.findViewById(R.id.ratingCountTextView);
         Button saveRatingButton = view.findViewById(R.id.saveRatingButton);
-        Button sendMessageButton = view.findViewById(R.id.sendMessageButton);
 
+        logoutButton.setOnClickListener(v -> {
+            Navigation.findNavController(v).navigate(R.id.action_userProfileFragment_to_loginFragment);
+            // Prints success message
+            Toast.makeText(requireContext(), "Logging out", Toast.LENGTH_SHORT).show();
+        });
 
 
         // Set actual user name and bio
         TextView usernameTextView = view.findViewById(R.id.usernameTextView);
         TextView bioTextView = view.findViewById(R.id.bioTextView);
-        if (userProfile != null) {
-            usernameTextView.setText(userProfile.getName());
-            bioTextView.setText(userProfile.getBio());
-        }
+        bioTextView.setInputType(EditorInfo.TYPE_NULL);
+        bioTextView.setBackground(null);
 
+
+        if (userProfile != null) {
+            bioTextView.setText(userProfile.getBio());
+            usernameTextView.setText(userProfile.getName());
+
+            String test1 = userProfile.getBio();
+            String test2 = bioTextView.getText().toString();
+        }
+        //different user
         if (userProfile != null && !userProfile.get_id().equals(user.get_id())) {
             view.findViewById(R.id.navigation).setVisibility(View.GONE);
+            logoutButton.setVisibility(View.GONE);
             view.findViewById(R.id.sendMessageButton).setOnClickListener(this::onSendMessageButtonClick);
 
             view.findViewById(R.id.editProfileButton).setVisibility(View.GONE);
             backButton.setVisibility(View.VISIBLE);
             backButton.setOnClickListener(this::onBackButtonClicked);
+
 
             if (userProfile.getUser_type().equals("Organizer")) {
                 saveRatingButton.setVisibility(View.VISIBLE);
@@ -123,13 +144,11 @@ public class UserProfileFragment extends Fragment {
                 userRatingBar.setVisibility(View.GONE);
                 ratingCountTextView.setVisibility(View.GONE);
             }
-        } else {
+        } else {//same user
 
             view.findViewById(R.id.sendMessageButton).setVisibility(View.GONE);
             backButton.setVisibility(View.GONE);
-
-            view.findViewById(R.id.editProfileButton).setOnClickListener(v ->
-                    Navigation.findNavController(v).navigate(R.id.action_userProfileFragment_to_editProfileFragment, createNavigationBundle()));
+            view.findViewById(R.id.editProfileButton).setOnClickListener(this::onEditProfileButtonClicked);
             if (userProfile != null && userProfile.getUser_type().equals("Organizer")) {
                 saveRatingButton.setVisibility(View.GONE);
                 userRatingBar.setVisibility(View.VISIBLE);
@@ -180,6 +199,12 @@ public class UserProfileFragment extends Fragment {
         Bundle bundle = new Bundle();
         bundle.putSerializable("user", user);
         return bundle;
+    }
+    public void onEditProfileButtonClicked(View view){
+
+        Bundle args = createNavigationBundle();
+        args.putSerializable("userProfile", userProfile);
+        Navigation.findNavController(view).navigate(R.id.action_userProfileFragment_to_editProfileFragment, args);
     }
 
     public void onBackButtonClicked(View view) {

@@ -3,21 +3,22 @@ package com.example.eventus.ui.screens;
 import static android.app.Activity.RESULT_OK;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -32,35 +33,28 @@ import com.example.eventus.data.Database;
 import com.example.eventus.data.FileUploader;
 import com.example.eventus.data.ServerSideException;
 import com.example.eventus.data.model.ServerResponse;
-import com.example.eventus.data.model.UserDisplay;
-import com.google.android.material.button.MaterialButton;
+import com.example.eventus.data.model.UserProfile;
 import com.google.android.material.textfield.TextInputEditText;
 
-import org.json.JSONObject;
-
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.util.HashMap;
 import java.util.Objects;
 
 public class EditProfileFragment extends Fragment {
 
-    private TextInputEditText usernameEditText;
-    private TextInputEditText emailEditText;
+    private EditText usernameEditText;
+    private EditText emailEditText;
+    private EditText bioEditText;
     private TextInputEditText oldPasswordEditText;
     private TextInputEditText newPasswordEditText;
-    private TextInputEditText bioEditText;
     private ImageView profilePhotoImageView;
+    Button saveUserDetailsButton;
 
-    private MaterialButton saveNameButton;
-    private MaterialButton saveContactButton;
-    private MaterialButton savePasswordButton;
+    private UserProfile userProfile;
+    private boolean isValidProfilePic;
 
-    private UserDisplay user;
-    private Uri uri = null;
-
-    /*TODO: Make edit profile cleaner and easier to use, one click save for all fields like edit event
-            Implement save profile pic
+    /*TODO: Make edit profile cleaner and easier to use, one click save for all fields like edit event - DONE
+            TEST IMPLEMENTATION
      */
 
     @Override
@@ -72,25 +66,21 @@ public class EditProfileFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         if (getArguments() != null) {
-            user = (UserDisplay) getArguments().getSerializable("user");
+            userProfile = (UserProfile) getArguments().getSerializable("userProfile");
+
         }
 
         usernameEditText = view.findViewById(R.id.Username);
         emailEditText = view.findViewById(R.id.email);
         oldPasswordEditText = view.findViewById(R.id.oldPassword);
         newPasswordEditText = view.findViewById(R.id.newPassword);
-        saveNameButton = view.findViewById(R.id.saveName);
-        saveContactButton = view.findViewById(R.id.saveContact);
-        savePasswordButton = view.findViewById(R.id.savePassword);
+        saveUserDetailsButton = view.findViewById(R.id.saveUserDetailsButton);
         bioEditText = view.findViewById(R.id.bio);
         profilePhotoImageView = view.findViewById(R.id.profilePhotoImageView);
-        ImageButton choosePhotoButton = view.findViewById(R.id.choosePhotoButton);
-        MaterialButton saveProfilePicture = view.findViewById(R.id.saveProfilePicture);
-        MaterialButton saveBioButton = view.findViewById(R.id.saveBio);
 
         try {
-            if (user != null && user.getProfile_pic().length() > 0) {
-                Bitmap profile_icon = Database.getProfilePic(user.get_id());
+            if (userProfile != null && userProfile.getProfile_pic().length() > 0) {
+                Bitmap profile_icon = Database.getProfilePic(userProfile.get_id());
                 profilePhotoImageView.setImageBitmap(profile_icon);
             }
         } catch (ServerSideException e) {
@@ -100,139 +90,70 @@ public class EditProfileFragment extends Fragment {
             // Handle other exceptions
             e.printStackTrace();
         }
+        if(userProfile != null){
+            usernameEditText.setText(userProfile.getName());
+            bioEditText.setText(userProfile.getBio());
+        }
 
 
         // Set up listeners
-        MaterialButton logoutButton = view.findViewById(R.id.logout);
-        logoutButton.setOnClickListener(v -> {
-            Navigation.findNavController(v).navigate(R.id.action_userProfileFragment_to_loginFragment);
-            // Prints success message
-            Toast.makeText(requireContext(), "Logging out", Toast.LENGTH_SHORT).show();
-        });
+
 
         ImageButton backButton = view.findViewById(R.id.backButton);
         backButton.setOnClickListener(v ->
-                Navigation.findNavController(v).navigateUp());
+                getParentFragmentManager().popBackStack());
 
         setUpTextListeners();
 
-        choosePhotoButton.setOnClickListener(v -> choosePhotoFromGallery());
+        profilePhotoImageView.setOnClickListener(v -> choosePhotoFromGallery());
 
         //TODO resizing profile pics
-        saveProfilePicture.setOnClickListener(v -> {
-            // Get the Drawable from the ImageView
-            Drawable drawable = profilePhotoImageView.getDrawable();
-
-            // Convert the Drawable into a Bitmap
-            Bitmap bitmap = null;
-            if (drawable instanceof BitmapDrawable) {
-                bitmap = ((BitmapDrawable) drawable).getBitmap();
-            } else {
-                // If the drawable is not a BitmapDrawable, create a new Bitmap
-                bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-                Canvas canvas = new Canvas(bitmap);
-                drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-                drawable.draw(canvas);
-            }
-
-            // Convert the Bitmap into a byte array
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-            byte[] pic = stream.toByteArray();
-            //TODO add removing profile pic
-            Database.uploadProfilePic(pic, new FileUploader.UploadCallback() {
-                @Override
-                public void onSuccess(ServerResponse response) {
-                    try{
-
-
-                        String profile_id = response.getPayload();
-                        HashMap<String, Object> updatedUserParams = new HashMap<>();
-                        updatedUserParams.put("profile_pic", profile_id);
-                        Database.editUser(user.get_id(), updatedUserParams);
-                        Toast.makeText(requireContext(), "Your bio has been updated successfully", Toast.LENGTH_SHORT).show();
-                    }catch (Exception e){
-                        //TODO handle exceptions
-                        e.printStackTrace();
-                    }
-
-                }
-
-                @Override
-                public void onFailure(ServerResponse errorMessage) {
-                    //TODO handle exceptions
-                    Log.e("Err", errorMessage.toString());
-                }
-            });
-        });
-
-        saveBioButton.setOnClickListener(v -> {
+        saveUserDetailsButton.setOnClickListener(v -> {
+            HashMap<String, Object> updatedUserParams = new HashMap<>();
             String newBio = Objects.requireNonNull(bioEditText.getText()).toString();
-            if (!TextUtils.isEmpty(newBio)) {
-                try {
-                    HashMap<String, Object> updatedUserParams = new HashMap<>();
-                    updatedUserParams.put("bio", newBio);
-                    Database.editUser(user.get_id(), updatedUserParams);
-                    bioEditText.setText("");
-                    // Prints success message
-                    Toast.makeText(requireContext(), "Your bio has been updated successfully", Toast.LENGTH_SHORT).show();
-                } catch (Exception e) {
-                    Log.e("Err", Objects.requireNonNull(e.getMessage()));
-                }
-            }
-        });
-
-        // Set up click listeners for buttons
-        saveNameButton.setOnClickListener(v -> {
             String newUsername = Objects.requireNonNull(usernameEditText.getText()).toString();
-            if (!TextUtils.isEmpty(newUsername)) {
-                try {
-                    HashMap<String, Object> updatedUserParams = new HashMap<>();
-                    updatedUserParams.put("name", newUsername);
-                    Database.editUser(user.get_id(), updatedUserParams);
-                    usernameEditText.setText("");
-                    user.setName(newUsername);
-                    // Prints success message
-                    Toast.makeText(requireContext(), "Your name has changed successfully to: " + newUsername, Toast.LENGTH_SHORT).show();
-                } catch (Exception e) {
-                    Log.e("Err", Objects.requireNonNull(e.getMessage()));
-                }
-            }
-        });
-
-        saveContactButton.setOnClickListener(v -> {
             String newEmail = Objects.requireNonNull(emailEditText.getText()).toString();
-            if (!TextUtils.isEmpty(newEmail)) {
-                try {
-                    HashMap<String, Object> updatedUserParams = new HashMap<>();
-                    updatedUserParams.put("email", newEmail);
-                    Database.editUser(user.get_id(), updatedUserParams);
-                    emailEditText.setText("");
-                    // Prints success message
-                    Toast.makeText(requireContext(), "Your Email has changed successfully to: " + newEmail, Toast.LENGTH_SHORT).show();
-                } catch (Exception e) {
-                    Log.e("Err", Objects.requireNonNull(e.getMessage()));
-                }
-            }
-        });
-
-        savePasswordButton.setOnClickListener(v -> {
             String oldPass = Objects.requireNonNull(oldPasswordEditText.getText()).toString();
             String newPass = Objects.requireNonNull(newPasswordEditText.getText()).toString();
-            if (!TextUtils.isEmpty(oldPass) && !TextUtils.isEmpty(newPass)) {
-                try {
-                    HashMap<String, Object> updatedUserParams = new HashMap<>();
-                    updatedUserParams.put("oldPassword", oldPass);
-                    updatedUserParams.put("password", newPass);
-                    Database.editUser(user.get_id(), updatedUserParams);
-                    oldPasswordEditText.setText("");
-                    newPasswordEditText.setText("");
-                    // Prints success message
-                    Toast.makeText(requireContext(), "Your password has changed successfully", Toast.LENGTH_SHORT).show();
-                } catch (Exception e) {
-                    Log.e("Err", Objects.requireNonNull(e.getMessage()));
-                }
+
+            if (hasNewPassword()) {
+                updatedUserParams.put("oldPassword", oldPass);
+                updatedUserParams.put("password", newPass);
             }
+            if (hasNewEmail()){
+                updatedUserParams.put("email", newEmail);
+            }
+            if (hasNewName()) {
+                updatedUserParams.put("name", newUsername);
+            }
+            if (hasNewBio()) {
+                updatedUserParams.put("bio", newBio);
+            }
+
+            try {
+
+                Database.editUser(userProfile.get_id(), updatedUserParams);
+                if(updatedUserParams.containsKey("name")){
+                    userProfile.setName((String) updatedUserParams.get("name"));
+                }
+                if(updatedUserParams.containsKey("bio")){
+                    userProfile.setBio((String) updatedUserParams.get("bio"));
+                }
+                oldPasswordEditText.setText("");
+                newPasswordEditText.setText("");
+                usernameEditText.setText(userProfile.getName());
+                bioEditText.setText(userProfile.getBio());
+                emailEditText.setText("");
+
+                if(isValidProfilePic){
+                    saveProfilePicture();
+                }
+                // Prints success message
+                Toast.makeText(requireContext(), "Account details have changed successfully", Toast.LENGTH_SHORT).show();
+            } catch (Exception e) {
+                Log.e("Err", Objects.requireNonNull(e.getMessage()));
+            }
+
         });
 
     }
@@ -253,25 +174,179 @@ public class EditProfileFragment extends Fragment {
             }
         };
 
-        usernameEditText.addTextChangedListener(textWatcher);
-        emailEditText.addTextChangedListener(textWatcher);
-        oldPasswordEditText.addTextChangedListener(textWatcher);
-        newPasswordEditText.addTextChangedListener(textWatcher);
+        TextWatcher newpPasswordListener = new TextWatcher(){
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(!hasNewPassword()) {
+                    newPasswordEditText.setError(null);
+                    updateSaveButtonsState();
+                    return;
+                }
+
+                String oldPass = Objects.requireNonNull(oldPasswordEditText.getText()).toString();
+                String newPass = Objects.requireNonNull(newPasswordEditText.getText()).toString();
+
+                if(oldPass.equals(newPass)){
+                    newPasswordEditText.setError("Passwords may not match");
+                    updateSaveButtonsState();
+                    return;
+                }
+                if(newPass.length() <= 5){
+                    newPasswordEditText.setError("The password length must be greater than 5");
+                    updateSaveButtonsState();
+                    return;
+                }
+
+                newPasswordEditText.setError(null);
+                updateSaveButtonsState();
+
+
+            }
+        };
+        TextWatcher oldPasswordListener = new TextWatcher(){
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(!hasNewPassword()) {
+                    oldPasswordEditText.setError(null);
+                    updateSaveButtonsState();
+                    return;
+                }
+                String oldPass = Objects.requireNonNull(oldPasswordEditText.getText()).toString();
+                if(oldPass.length() <= 5){
+                    oldPasswordEditText.setError("The password length must be greater than 5");
+                    updateSaveButtonsState();
+                    return;
+                }
+                oldPasswordEditText.setError(null);
+                updateSaveButtonsState();
+
+
+            }
+        };
+        TextWatcher emailListener = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(!hasNewEmail()) {
+                    emailEditText.setError(null);
+                    updateSaveButtonsState();
+                    return;
+                }
+                String newEmail = Objects.requireNonNull(emailEditText.getText()).toString();
+                if(!Patterns.EMAIL_ADDRESS.matcher(newEmail).matches()){
+                    emailEditText.setError("Invalid Email address");
+                    updateSaveButtonsState();
+                    return;
+                }
+                emailEditText.setError(null);
+                updateSaveButtonsState();
+
+
+
+            }
+        };
+        TextWatcher usernameListener = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(!hasNewName()) {
+                    usernameEditText.setError(null);
+                    updateSaveButtonsState();
+                    return;
+                }
+                String newName = Objects.requireNonNull(usernameEditText.getText()).toString();
+                if(newName.length() == 0){
+                    usernameEditText.setError("Must have name");
+                    updateSaveButtonsState();
+                    return;
+                }
+                usernameEditText.setError(null);
+                updateSaveButtonsState();
+            }
+        };
+
+        usernameEditText.addTextChangedListener(usernameListener);
+        emailEditText.addTextChangedListener(emailListener);
+        oldPasswordEditText.addTextChangedListener(oldPasswordListener);
+        newPasswordEditText.addTextChangedListener(newpPasswordListener);
+        bioEditText.addTextChangedListener(textWatcher);
+
 
         // Initial state
         updateSaveButtonsState();
     }
 
-    private void updateSaveButtonsState() {
-        boolean isNameNotEmpty = !TextUtils.isEmpty(usernameEditText.getText());
-        saveNameButton.setEnabled(isNameNotEmpty);
+    void updateSaveButtonsState(){
+        boolean btnState = (hasNewName() || hasNewPassword() || hasNewEmail() || hasNewBio() || isValidProfilePic) &&
+                usernameEditText.getError() == null &&
+                emailEditText.getError()==null &&
+                oldPasswordEditText.getError()==null &&
+                newPasswordEditText.getError()==null &&
+                bioEditText.getError() == null;
+        saveUserDetailsButton.setClickable(btnState);
 
-        boolean isContactNotEmpty = !TextUtils.isEmpty(emailEditText.getText());
-        saveContactButton.setEnabled(isContactNotEmpty);
 
-        boolean isPasswordNotEmpty = !TextUtils.isEmpty(oldPasswordEditText.getText())
-                && !TextUtils.isEmpty(newPasswordEditText.getText());
-        savePasswordButton.setEnabled(isPasswordNotEmpty);
+    }
+
+    boolean hasNewName(){
+        String newUsername = Objects.requireNonNull(usernameEditText.getText()).toString();
+        return !userProfile.getName().equals(newUsername);
+    }
+
+
+    boolean hasNewPassword(){
+        String oldPass = Objects.requireNonNull(oldPasswordEditText.getText()).toString();
+        String newPass = Objects.requireNonNull(newPasswordEditText.getText()).toString();
+        return !TextUtils.isEmpty(oldPass) && !TextUtils.isEmpty(newPass);
+    }
+
+    boolean hasNewEmail(){
+        String newEmail = Objects.requireNonNull(emailEditText.getText()).toString();
+        return !TextUtils.isEmpty(newEmail);
+    }
+    boolean hasNewBio(){
+        String newBio = Objects.requireNonNull(bioEditText.getText()).toString();
+        return !userProfile.getBio().equals(newBio);
     }
 
     // Method to choose a photo from the gallery
@@ -287,9 +362,54 @@ public class EditProfileFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1 && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            uri = data.getData();
+            Uri uri = data.getData();
             // Set the selected image to the profile photo ImageView
             profilePhotoImageView.setImageURI(uri);
+            this.isValidProfilePic = true;
         }
+    }
+
+    public void saveProfilePicture(){
+        // Get the Drawable from the ImageView
+        Drawable drawable = profilePhotoImageView.getDrawable();
+
+        // Convert the Drawable into a Bitmap
+        Bitmap bitmap = null;
+        if (drawable instanceof BitmapDrawable) {
+            bitmap = ((BitmapDrawable) drawable).getBitmap();
+        } else {
+            // If the drawable is not a BitmapDrawable, create a new Bitmap
+            bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+            Canvas canvas = new Canvas(bitmap);
+            drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+            drawable.draw(canvas);
+        }
+
+        // Convert the Bitmap into a byte array
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        byte[] pic = stream.toByteArray();
+        //TODO add removing profile pic
+        Database.uploadProfilePic(pic, new FileUploader.UploadCallback() {
+            @Override
+            public void onSuccess(ServerResponse response) {
+                try{
+                    String profile_id = response.getPayload();
+                    HashMap<String, Object> updatedUserParams = new HashMap<>();
+                    updatedUserParams.put("profile_pic", profile_id);
+                    Database.editUser(userProfile.get_id(), updatedUserParams);
+                }catch (Exception e){
+                    //TODO handle exceptions
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onFailure(ServerResponse errorMessage) {
+                //TODO handle exceptions
+                Log.e("Err", errorMessage.toString());
+            }
+        });
     }
 }

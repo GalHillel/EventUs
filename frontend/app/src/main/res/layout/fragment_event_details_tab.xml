@@ -78,6 +78,12 @@
         android:layout_marginTop="8dp" />
 
     <Button
+        android:id="@+id/contanctUserButton"
+        android:text="Contact organizer"
+        style="@style/DefaultClickableButton"
+        android:layout_marginTop="8dp" />
+
+    <Button
         android:id="@+id/saveEventButton"
         style="@style/DefaultClickableButton"
         android:layout_marginTop="8dp"

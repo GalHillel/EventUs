@@ -1,6 +1,7 @@
 package com.example.eventus.ui.screens.EventDetails;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -26,6 +27,7 @@ import com.example.eventus.data.Database;
 import com.example.eventus.data.model.UserDisplay;
 import com.example.eventus.data.model.UserEvent;
 import com.example.eventus.ui.recycleViews.UserAdapter;
+import com.example.eventus.ui.screens.Messages.CreateMessageActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -33,13 +35,12 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 
 public class EventDetailsTabFragment extends Fragment {
 
-    private Button editEventButton, saveEventButton, pickDateButton;
+    private Button editEventButton, saveEventButton, pickDateButton, contactUserButton;
     private Calendar calendar;
-
-
     private EditText eventNameView, eventDateView, eventLocationview, eventDescription;
 
     EventDetailsActivity holder;
@@ -95,6 +96,16 @@ public class EventDetailsTabFragment extends Fragment {
         this.editEventButton = view.findViewById(R.id.editEventButton);
         this.saveEventButton = view.findViewById(R.id.saveEventButton);
         this.pickDateButton = view.findViewById(R.id.pickDateButton);
+        this.contactUserButton = view.findViewById(R.id.contanctUserButton);
+
+        if("Organizer".equals(this.holder.getUser().getUser_type())){
+            this.contactUserButton.setText("Contact all participants");
+            this.contactUserButton.setOnClickListener(this::onContactAllParticipantsClick);
+        }
+        else{
+            this.contactUserButton.setOnClickListener(this::onContactOrganizerClick);
+        }
+
         this.pickDateButton.setOnClickListener(this::onPickDateClick);
         this.editEventButton.setOnClickListener(this::onEditEventClick);
         this.saveEventButton.setOnClickListener(this::onSaveEventClick);
@@ -124,6 +135,38 @@ public class EventDetailsTabFragment extends Fragment {
     public void onEditEventClick(View view) {
         toggleEditableMode(true);
         pickDateButton.setVisibility(View.VISIBLE);
+    }
+
+    public void onContactAllParticipantsClick(View view) {
+        Bundle args = new Bundle();
+        args.putSerializable("user", this.holder.getUser());
+
+        UserDisplay[] others = this.holder.getUsers().toArray(new UserDisplay[0]);
+        args.putSerializable("other_users", others);
+
+        //TODO handle activity fail
+        Intent i = new Intent(this.getContext(), CreateMessageActivity.class);
+        i.putExtras(args);
+        startActivity(i);
+
+    }
+    public void onContactOrganizerClick(View view) {
+        Bundle args = new Bundle();
+        args.putSerializable("user", this.holder.getUser());
+
+        Optional<UserDisplay> org;
+        org = this.holder.getUsers().stream().filter(e->e.get_id().equals(this.holder.getEvent().getCreator_id())).findFirst();
+        if(org.isPresent()){
+            UserDisplay[] others = new UserDisplay[]{org.get()};
+            args.putSerializable("other_users", others);
+
+            //TODO handle activity fail
+            Intent i = new Intent(this.getContext(), CreateMessageActivity.class);
+            i.putExtras(args);
+            startActivity(i);
+        }
+
+
     }
 
     // This method will be called when the "Save Event" button is clicked
@@ -219,4 +262,7 @@ public class EventDetailsTabFragment extends Fragment {
         SimpleDateFormat sdf = new SimpleDateFormat(dateFormat, Locale.getDefault());
         eventDateView.setText(calendar.getTime().toString());
     }
+
+
+
 }

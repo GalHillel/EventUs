@@ -1,257 +1,184 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<LinearLayout
+    android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     tools:context=".ui.screens.EditProfileFragment"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/CustomFragmentScreen">
 
-    <RelativeLayout
+
+
+    <TextView
+        style="@style/CustomFragmentTitle"
+        android:text="Edit Profile" />
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white">
-
-        <TextView
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="Edit Profile"
-            android:textColor="@color/black"
-            android:textSize="30sp" />
+            android:orientation="vertical">
+            <ImageView
+                android:id="@+id/profilePhotoImageView"
+                android:layout_width="128dp"
+                android:layout_height="128dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_profile"
+                android:contentDescription="Profile Picture"
+                android:clickable="true"
+                android:focusable="true" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/logout"
-            style="@style/Widget.MaterialComponents.Button.Icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/saveProfilePicture"
-            android:layout_marginTop="20dp"
-            android:layout_alignParentEnd="true"
-            android:text="Log out"
-            app:backgroundTint="@color/ButtonType2" />
+<!--            <Button-->
+<!--                android:id="@+id/saveProfilePicture"-->
+<!--                style="@style/DefaultClickableButton"-->
+<!--                android:text="Save" />-->
+        </LinearLayout>
 
-        <ImageButton
-            android:id="@+id/backButton"
-            android:layout_width="97dp"
-            android:layout_height="62dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginStart="16dp"
-            android:layout_below="@id/saveProfilePicture"
-            android:src="@drawable/ic_back"
-            android:contentDescription="Back"
-            android:onClick="onBackButtonClick" />
 
-        <TextView
-            android:id="@+id/changeName"
+        <LinearLayout
             android:layout_width="match_parent"
+            android:layout_marginTop="16dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="120dp"
-            android:text="Change Name"
-            android:textColor="@color/black"
-            android:textSize="20sp" />
+            android:orientation="vertical">
+<!--            <TextView-->
+<!--                android:id="@+id/changeName"-->
+<!--                style="@style/CustomFragmentTextFieldTitle"-->
+<!--                android:text="Change Name" />-->
+            <EditText
+                android:id="@+id/Username"
+                android:layout_width="wrap_content"
+                android:layout_gravity="center"
+                style="@style/CustomFragmentEditTextField"
+                android:textStyle="bold"
+                android:inputType="textPersonName"
+                android:hint="New name"/>
+<!--            <Button-->
+<!--                android:id="@+id/saveName"-->
+<!--                style="@style/DefaultClickableButton"-->
+<!--                android:text="Save" />-->
+
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="150dp">
+            android:layout_marginTop="16dp"
+            android:orientation="vertical">
+            <!--            <TextView-->
+            <!--                android:id="@+id/changeBio"-->
+            <!--                style="@style/CustomFragmentTextFieldTitle"-->
+            <!--                android:text="Change Bio" />-->
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Username">
+                android:background="@drawable/textfield_background">
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/Username"
+                    android:id="@+id/bio"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textPersonName"
-                />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:inputType="textMultiLine"
+                    android:gravity="top"
+                    android:text="@string/placeholder"
+                    android:textSize="16sp"
+                    android:visibility="visible" />
+            </LinearLayout>
+
+
+<!--            <com.google.android.material.button.MaterialButton-->
+<!--                android:id="@+id/saveBio"-->
+<!--                style="@style/DefaultClickableButton"-->
+<!--                android:text="Save" />-->
         </LinearLayout>
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/saveName"
-            style="@style/DefaultClickableButton"
-            android:layout_marginTop="215dp"
-            android:layout_alignParentEnd="true"
-            android:text="Save" />
 
-        <TextView
-            android:id="@+id/changeEmail"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="Change Email"
-            android:layout_below="@id/saveName"
-            android:textColor="@color/black"
-            android:textSize="20sp" />
-
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="310dp"
-            android:hint="Email">
-
-            <com.google.android.material.textfield.TextInputEditText
+            android:orientation="vertical"
+            android:layout_marginTop="16dp">
+            <TextView
+                android:id="@+id/changeEmail"
+                style="@style/CustomFragmentTextFieldTitle"
+                android:text="Change Email" />
+            <EditText
                 android:id="@+id/email"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                style="@style/CustomFragmentEditTextField"
                 android:inputType="textEmailAddress"
-            />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:hint="New email"/>
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/saveContact"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            style="@style/Widget.MaterialComponents.Button.Icon"
-            app:backgroundTint="#00bbff"
-            android:layout_marginTop="375dp"
-            android:layout_alignParentEnd="true"
-            android:text="Save" />
 
-        <TextView
-            android:id="@+id/changePassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="Change Password"
-            android:layout_below="@id/saveContact"
-            android:textColor="@color/black"
-            android:textSize="20sp" />
+<!--            <Button-->
+<!--                android:id="@+id/saveContact"-->
+<!--                style="@style/DefaultClickableButton"-->
+<!--                android:text="Save" />-->
+
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="475dp">
+            android:orientation="vertical"
+            android:layout_marginTop="16dp">
+            <TextView
+                android:id="@+id/changePassword"
+                style="@style/CustomFragmentTextFieldTitle"
+                android:text="Change Password" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:hint="Old Password"
-                app:endIconMode="password_toggle">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/oldPassword"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textPassword" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginLeft="15dp"
-                android:hint="New Password"
-                app:endIconMode="password_toggle">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/newPassword"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textPassword" />
-            </com.google.android.material.textfield.TextInputLayout>
-        </LinearLayout>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/savePassword"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            style="@style/Widget.MaterialComponents.Button.Icon"
-            app:backgroundTint="#00bbff"
-            android:layout_marginTop="540dp"
-            android:layout_alignParentEnd="true"
-            android:text="Save" />
-
-        <!-- Adding Bio Editing Section -->
-
-        <TextView
-            android:id="@+id/changeBio"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="Change Bio"
-            android:layout_below="@id/savePassword"
-            android:textColor="@color/black"
-            android:textSize="20sp" />
-
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="0dp"
-            android:layout_below="@id/changeBio"
-            android:hint="Bio">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/bio"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textMultiLine"
-            />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:orientation="horizontal">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/saveBio"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            style="@style/Widget.MaterialComponents.Button.Icon"
-            app:backgroundTint="#00bbff"
-            android:layout_marginTop="70dp"
-            android:layout_below="@id/changeBio"
-            android:layout_alignParentEnd="true"
-            android:text="Save" />
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/CustomFragmentEditTextField"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.5"
+                    android:hint="Old Password"
+                    app:endIconMode="password_toggle">
 
-        <!-- Adding Profile Picture Editing Section -->
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/oldPassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPassword" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-        <TextView
-            android:id="@+id/changeProfilePicture"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="Change Profile Picture"
-            android:layout_below="@id/saveBio"
-            android:textColor="@color/black"
-            android:textSize="20sp" />
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/CustomFragmentEditTextField"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.5"
+                    android:hint="New Password"
+                    app:endIconMode="password_toggle">
 
-        <ImageButton
-            android:id="@+id/choosePhotoButton"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:layout_below="@id/profilePhotoImageView"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
-            android:contentDescription="Choose Photo"
-            android:src="@drawable/ic_photo" />
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/newPassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPassword" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
 
-        <ImageView
-            android:id="@+id/profilePhotoImageView"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginTop="20dp"
-            android:layout_below="@id/changeProfilePicture"
-            android:layout_centerHorizontal="true"
-            android:src="@drawable/ic_profile"
-            android:contentDescription="Profile Picture" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/saveProfilePicture"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            style="@style/Widget.MaterialComponents.Button.Icon"
-            app:backgroundTint="#00bbff"
-            android:layout_marginTop="20dp"
-            android:layout_below="@id/choosePhotoButton"
-            android:layout_alignParentEnd="true"
-            android:text="Save" />
 
-    </RelativeLayout>
-</ScrollView>
+
+        </LinearLayout>
+        <Button
+            android:id="@+id/saveUserDetailsButton"
+            style="@style/DefaultClickableButton"
+            android:text="Save"
+            android:layout_gravity="center"
+            android:layout_marginTop="16dp"/>
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/backButton"
+        style="@style/backButton"
+        android:onClick="onBackButtonClick"
+        android:contentDescription="@string/back" />
+
+</LinearLayout>

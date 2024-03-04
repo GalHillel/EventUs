@@ -108,14 +108,14 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         if (!mode.equals("Organizer") || user.getUser_type().equals("Organizer")) {
             holder.kickButton.setVisibility(View.GONE);
             holder.messageButton.setVisibility(View.GONE);
-            if(this.isPrivate && status != null && status){
-                holder.userItem.setVisibility(View.GONE);
-            }
         }
         else{
             if(this.isPrivate && status != null && status){
                 holder.setKickButtonMode(status);
             }
+        }
+        if(!mode.equals("Organizer") && this.isPrivate && status != null && status){
+            holder.userItem.setVisibility(View.GONE);
         }
         // Set click listeners for kick and message buttons
 

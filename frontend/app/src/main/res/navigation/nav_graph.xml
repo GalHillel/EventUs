@@ -82,9 +82,7 @@
         android:name="com.example.eventus.ui.screens.EditProfileFragment"
         android:label="EditProfileFragment"
         tools:layout="@layout/fragment_edit_profile">
-        <action
-            android:id="@+id/action_userProfileFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
+
         <action
             android:id="@+id/action_editProfileFragment_to_userProfileFragment"
             app:destination="@id/userProfileFragment" />
@@ -97,7 +95,9 @@
         android:label="UserProfileFragment"
         tools:layout="@layout/fragment_user_profile">
 
-
+        <action
+            android:id="@+id/action_userProfileFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
         <action
             android:id="@+id/action_userProfileFragment_to_editProfileFragment"
             app:destination="@id/editProfileFragment" />
