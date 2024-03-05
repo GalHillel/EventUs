@@ -101,10 +101,7 @@ public class EventParticipantsTabFragment extends Fragment implements UserAdapte
         userAdapter.setProfileWrapper(this);
 
 
-        if(this.holder.hasPassed()){
-            exitEventButton.setVisibility(View.GONE);
-            joinEventButton.setVisibility(View.GONE);
-        }
+
 
         if (this.holder.getUser().get_id().equals(this.holder.getEvent().getCreator_id())) {
             this.exitEventButton.setText("Delete Event");
@@ -130,6 +127,11 @@ public class EventParticipantsTabFragment extends Fragment implements UserAdapte
                 this.userListRecyclerView.setVisibility(View.INVISIBLE);
 
             }
+        }
+
+        if(this.holder.hasPassed()){
+            exitEventButton.setVisibility(View.GONE);
+            joinEventButton.setVisibility(View.GONE);
         }
 
         userListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

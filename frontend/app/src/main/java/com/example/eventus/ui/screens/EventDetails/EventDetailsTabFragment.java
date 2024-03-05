@@ -131,6 +131,7 @@ public class EventDetailsTabFragment extends Fragment {
             ratingBar.setVisibility(View.VISIBLE);
             saveRatingButton.setVisibility(View.VISIBLE);
             ratingCount.setVisibility(View.VISIBLE);
+            editEventButton.setVisibility(View.GONE);
             if(holder.getUser().getUser_type().equals("Organizer") || !user_in_event){
                 ratingBar.setEnabled(false);
                 ratingBar.setRating(this.holder.getEvent().getRating());
@@ -138,7 +139,7 @@ public class EventDetailsTabFragment extends Fragment {
                 saveRatingButton.setVisibility(View.GONE);
             }
         }
-        if(!user_in_event){
+        if(!user_in_event || holder.hasPassed()){
             contactUserButton.setVisibility(View.GONE);
         }
 

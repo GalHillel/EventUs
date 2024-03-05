@@ -23,7 +23,7 @@ public class UserDisplay implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (o == null || !o.getClass().isAssignableFrom(getClass())) return false;
         UserDisplay that = (UserDisplay) o;
         return Objects.equals(_id, that._id);
     }
