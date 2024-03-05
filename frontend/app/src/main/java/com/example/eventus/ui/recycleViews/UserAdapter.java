@@ -2,6 +2,7 @@ package com.example.eventus.ui.recycleViews;
 
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,13 +15,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.eventus.R;
 import com.example.eventus.data.Database;
 import com.example.eventus.data.ServerSideException;
 import com.example.eventus.data.model.UserDisplay;
 import com.example.eventus.data.model.UserEvent;
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
+
 
 import java.util.List;
 import java.util.Map;
@@ -38,6 +39,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
     private ButtonListener acceptListener;
     private ButtonListener messageListener;
     private ButtonListener userItemListener;
+    private Wrappers getProfile;
 
     public UserAdapter(List<UserDisplay> userList,UserEvent event, String mode) {
         this.userList = userList;
@@ -53,6 +55,10 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
 
         void onUserItemClick(int position);
         void onAcceptClick(int position);
+
+    }
+    public interface Wrappers{
+        Bitmap getUserProfile(String profile_pic_id);
     }
 
     public void setOnKickClickListener(ButtonListener listener) {
@@ -65,6 +71,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
 
     public void setOnUserItemClickListener(ButtonListener listener) {
         this.userItemListener = listener;
+    }
+    public void setProfileWrapper(Wrappers profileWrapper){
+        this.getProfile = profileWrapper;
     }
 
     @NonNull
@@ -127,7 +136,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
             holder.userItem.setVisibility(View.GONE);
         }
         else{
-            //TODO add profile pictures
+            if (user.getProfile_pic().length() > 0 && getProfile != null) {
+                holder.profile.setImageBitmap(getProfile.getUserProfile(user.get_id()));
+            }
         }
         // Set click listeners for kick and message buttons
 
@@ -146,7 +157,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         Button kickButton;
         Button acceptButton;
         Button messageButton;
-        ImageView profile;
+        CircleImageView profile;
 
         public UserViewHolder(@NonNull View itemView) {
             super(itemView);

@@ -78,6 +78,17 @@ export class EventController {
       return this.userService.getUsers(ids,userDisplayFields)
     })
   }
+  /**
+ * events/<event id>/users, returns a list of users
+ * @param _id event id
+ * @returns list of users with only display user fields
+ */
+  @Get(":id/profilepics")
+  async getEventUserProfilePics(@Param("id") _id: string){
+     return  this.eventService.getUserIds(_id).then((ids) => {
+       return this.userService.getUserListProfilePics(ids,"profile_pic")
+     })
+  }
 
   /**TODO error handling
    * events/<event id>/joinEvent, patch request should contain a json in the form {_id:<user id>}

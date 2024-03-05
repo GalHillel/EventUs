@@ -56,8 +56,6 @@ public class BaseUserProfileFragment extends Fragment {
         }
 
 
-
-
         RatingBar userRatingBar = view.findViewById(R.id.userRatingBar);
         userRatingBar.setEnabled(false);
         TextView ratingCountTextView = view.findViewById(R.id.ratingCountTextView);

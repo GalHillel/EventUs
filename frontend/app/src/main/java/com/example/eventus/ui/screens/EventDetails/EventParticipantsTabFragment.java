@@ -2,6 +2,7 @@ package com.example.eventus.ui.screens.EventDetails;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -38,7 +40,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
-public class EventParticipantsTabFragment extends Fragment implements UserAdapter.ButtonListener {
+public class EventParticipantsTabFragment extends Fragment implements UserAdapter.ButtonListener,UserAdapter.Wrappers {
 
     private UserAdapter userAdapter;
 
@@ -99,6 +101,7 @@ public class EventParticipantsTabFragment extends Fragment implements UserAdapte
             userAdapter.setOnKickClickListener(this);
             userAdapter.setOnMessageClickListener(this);
             userAdapter.setOnUserItemClickListener(this);
+            userAdapter.setProfileWrapper(this);
             userListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
             userListRecyclerView.setAdapter(userAdapter);
             if (this.holder.getUser().get_id().equals(this.holder.getEvent().getCreator_id())) {
@@ -230,5 +233,8 @@ public class EventParticipantsTabFragment extends Fragment implements UserAdapte
     }
 
 
-
+    @Override
+    public Bitmap getUserProfile(String profile_pic_id) {
+        return this.holder.getProfilePicBitmap(profile_pic_id);
+    }
 }

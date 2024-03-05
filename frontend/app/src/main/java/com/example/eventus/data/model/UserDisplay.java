@@ -1,14 +1,14 @@
 package com.example.eventus.data.model;
 
+import android.graphics.Bitmap;
+
 import java.io.Serializable;
 import java.util.Objects;
 
 public class UserDisplay implements Serializable {
     protected String _id;
     protected String name, user_type;
-
     protected String profile_pic;
-
     public String get_id() {
         return _id;
     }
@@ -33,9 +33,9 @@ public class UserDisplay implements Serializable {
     public void setProfile_pic(String s){
         this.profile_pic = s;
     }
-
     @Override
     public int hashCode() {
         return Objects.hash(_id);
     }
+
 }

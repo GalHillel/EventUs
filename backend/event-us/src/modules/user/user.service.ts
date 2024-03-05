@@ -17,6 +17,7 @@ export class UserService {
   
   constructor(
     @InjectModel(User.name) private readonly userModel: Model<User>,
+    @InjectModel(ProfilePic.name) private readonly profilePicModel: Model<ProfilePic>,
   ) {}
 
   /**
@@ -147,6 +148,13 @@ export class UserService {
     return await this.userModel.find({ _id: { $in: _ids } },fields).exec();
   }
 
+  async getUserListProfilePics(_ids:string[],fields?:string){
+    const userList = await this.userModel.find({ _id: { $in: _ids },profile_pic:{$ne:""} },fields).populate('profile_pic','icon',this.profilePicModel).exec();
+    console.log(userList);
+    return userList;
+  }
+
+
   /**
    * get a list of users matching the search term
    * @param searchTerms 
@@ -181,6 +189,8 @@ export class UserService {
     await this.userModel.findById(userId).updateOne({},{ $unset:{[`messages.${msgId}`]:1}}).exec();
     
   }
+
+
 
   /**
    * set a message as read

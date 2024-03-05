@@ -2,12 +2,16 @@ package com.example.eventus.data;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Handler;
+import android.os.Looper;
+import android.widget.ImageView;
 
 import java.util.HashMap;
 import java.net.HttpURLConnection;
 import java.util.List;
 import java.util.Map;
 
+import com.bumptech.glide.Glide;
 import com.example.eventus.data.model.LoggedInUser;
 import com.example.eventus.data.model.NewUserMessage;
 import com.example.eventus.data.model.UserMessageDisplay;
@@ -352,6 +356,50 @@ public class Database {
             throw new ServerSideException(response.getReturnCode(),response.getPayload());
         }
     }
+
+    /**
+     * TODO Test and error handling
+     * loads profile pics of everyone in the event
+     * @param event_id id of the user we want the profile pic from
+     * @return hashmap of user id and profile pic bitmap
+     * @throws Exception ServerSideException or other exception
+     */
+    public static HashMap<String,Bitmap> getEventProfilePics(String event_id) throws Exception{
+        HashMap<String, Object> payloadData = new HashMap<String, Object>();
+        payloadData.put("_id", event_id);
+        AsyncHttpRequest task = new AsyncHttpRequest("events/"+event_id+"/profilepics",  payloadData, null, "GET");
+        task.execute();
+        task.get();
+        ServerResponse response = task.getServerResponse();
+
+        class Profile{
+            class Pic{
+                class Data{
+                    String type;
+                    byte[] data;
+                }
+                Data icon;
+                String _id;
+            }
+            String _id;
+            Object profile_pic;
+        }
+
+        if (response.getReturnCode() == HttpURLConnection.HTTP_OK) {
+            Profile[] profiles = gson.fromJson(response.getPayload(), Profile[].class);
+            HashMap<String,Bitmap> out = new HashMap<>();
+            for(Profile p: profiles){
+                String k = p._id;
+                //byte[] tmp = p.profile_pic.icon.data;
+                //out.put(k,BitmapFactory.decodeByteArray(tmp, 0, tmp.length));
+            }
+            return out;
+        }
+        else{
+            throw new ServerSideException(response.getReturnCode(),response.getPayload());
+        }
+    }
+
 
 
     /**

@@ -21,8 +21,9 @@ export class User extends Document {
     messages: Map<string,boolean>;
     @Prop({ required: true })
     password: string;
-    @Prop({default: ""})
+    @Prop({ ref: 'profilepics', default: ""})
     profile_pic: string;
+
     @Prop({ required: true })
     user_type: string;
 }

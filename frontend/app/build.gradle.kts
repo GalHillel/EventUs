@@ -48,6 +48,7 @@ dependencies {
     implementation("com.google.code.gson:gson:2.10")
     implementation("com.github.dhaval2404:imagepicker:2.1")
     implementation("de.hdodenhof:circleimageview:3.1.0")
-    implementation("com.squareup.picasso:picasso:2.8")
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.12.0")
 
 }

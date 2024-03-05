@@ -2,15 +2,19 @@ package com.example.eventus.ui.screens.EventDetails;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import com.bumptech.glide.Glide;
 import com.example.eventus.R;
 import com.example.eventus.data.Database;
+import com.example.eventus.data.ServerSideException;
 import com.example.eventus.data.model.LoggedInUser;
 import com.example.eventus.data.model.UserDisplay;
 import com.example.eventus.data.model.UserEvent;
@@ -20,6 +24,7 @@ import com.google.android.material.tabs.TabLayout;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,6 +36,8 @@ public class EventDetailsActivity extends AppCompatActivity {
     private UserEvent userEvent;
     private List<UserDisplay> users = new ArrayList<>();
     BadgeDrawable badge;
+
+    private Map<String,Bitmap> profilePic_lookup = new HashMap<>();
 
 
     @Override
@@ -56,6 +63,7 @@ public class EventDetailsActivity extends AppCompatActivity {
                     UserDisplay[] tmp = Database.getUserList(eventId);
                     this.users.clear();
                     this.users.addAll(Arrays.asList(tmp));
+                    //this.profilePic_lookup = Database.getEventProfilePics(eventId);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -132,6 +140,31 @@ public class EventDetailsActivity extends AppCompatActivity {
         }
         badge.setNumber(0);
         badge.setVisible(false);
+
+    }
+
+    public Bitmap getProfilePicBitmap(String userId) {
+
+        if(profilePic_lookup.containsKey(userId)){
+
+            return profilePic_lookup.get(userId);
+        }
+        Bitmap profile_icon = null;
+        try {
+            profile_icon = Database.getProfilePic(userId);
+            int width = getResources().getInteger(R.integer.participant_list_profilePicSize);
+            int height = getResources().getInteger(R.integer.participant_list_profilePicSize);
+            profile_icon = Bitmap.createScaledBitmap(profile_icon,width,height,false);
+
+        } catch (ServerSideException e) {
+            // Handle the exception (e.g., show an error message)
+            e.printStackTrace();
+        } catch (Exception e) {
+            // Handle other exceptions
+            e.printStackTrace();
+        }
+        return profile_icon;
+
 
     }
 }
