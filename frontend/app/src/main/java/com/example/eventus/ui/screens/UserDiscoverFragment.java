@@ -104,6 +104,10 @@ public class UserDiscoverFragment extends Fragment {
         // Create a HashMap with the search query
         HashMap<String, Object> searchParams = new HashMap<>();
         searchParams.put("name", searchQuery);
+        searchParams.put("_id", searchQuery);
+        searchParams.put("date", searchQuery);
+        searchParams.put("location", searchQuery);
+        searchParams.put("creator_id", searchQuery);
 
         // Execute the search in the background using ExecutorService
         try {

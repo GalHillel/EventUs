@@ -23,8 +23,14 @@
         style="@style/DefaultClickableButton"
         android:layout_gravity="center"
         android:layout_marginTop="16dp"
-        android:text="View Events"
-        android:id="@+id/viewUserEventsButton"/>
+        android:text="View upcoming Events"
+        android:id="@+id/viewUpcomingUserEventsButton"/>
+    <Button
+        style="@style/DefaultClickableButton"
+        android:layout_gravity="center"
+        android:layout_marginTop="16dp"
+        android:text="View past Events"
+        android:id="@+id/viewPastUserEventsButton"/>
     <ImageButton
         android:id="@+id/backButton"
         style="@style/backButton"

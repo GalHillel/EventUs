@@ -1,7 +1,7 @@
 
 import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, isValidObjectId } from 'mongoose';
 import { UserEvent } from './event.model';
 import { CreateEventDto, EditEventDto, RateEventDto, SearchEventDto } from '../dto/event.dto';
 import { ObjectId } from 'mongoose';
@@ -50,9 +50,9 @@ export class EventService {
   }
 
   async editEvent(_id:string,edit: EditEventDto): Promise<void>{
-    console.log(edit)
+    
     const up = await this.userEventModel.updateOne({_id:_id},edit).exec();
-    console.log(up);
+  
   }
 
   async findAllEvents(): Promise<UserEvent[]> {
@@ -107,11 +107,31 @@ export class EventService {
    * @param searchTerms search fields
    * @returns List of userEvents
    */
-  async search(searchTerms: SearchEventDto,fields?:string,onlyUpComing?:boolean): Promise<UserEvent[]>{
-    if (onlyUpComing){
-      return this.userEventModel.find({date:{$gte:new Date()}},fields).find(searchTerms).exec();
-    }
+  async search(searchTerms: SearchEventDto,fields?:string): Promise<UserEvent[]>{
+    
     return this.userEventModel.find(searchTerms,fields).exec();
+  }
+
+  async search_event(searchTerms: SearchEventDto,fields?:string): Promise<UserEvent[]>{
+    var search_query = [];
+    for (const key in searchTerms){
+      if (searchTerms[key] != undefined && (isValidObjectId(searchTerms[key]) || (key != "_id" && key != "creator_id")) && (key != "date" || !isNaN(Date.parse(searchTerms[key].toString())))){
+        search_query.push({[key]:searchTerms[key]});
+      }
+    }
+    console.log(search_query)
+    return this.userEventModel.find(
+      {
+        $and:[
+          {
+            date:{$gte:new Date()}},
+          {
+            $or:search_query
+          }
+        ]
+      },fields).exec();
+    
+
   }
 
   async rateEvent(eventId: string, rateDTO: RateEventDto): Promise<EditEventDto> {

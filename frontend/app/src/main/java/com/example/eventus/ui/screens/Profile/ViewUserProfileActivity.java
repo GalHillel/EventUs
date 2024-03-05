@@ -75,14 +75,17 @@ public class ViewUserProfileActivity extends AppCompatActivity {
 
         ImageButton backButton = findViewById(R.id.backButton);
         Button messageButton = findViewById(R.id.sendMessageButton);
-        Button viewUserEventsButton = findViewById(R.id.viewUserEventsButton);
+        Button viewPastUserEventsButton = findViewById(R.id.viewPastUserEventsButton);
+        Button viewUpcomingUserEventsButton = findViewById(R.id.viewUpcomingUserEventsButton);
 
         backButton.setOnClickListener(this::backButtonClick);
         messageButton.setOnClickListener(this::onSendMessageButtonClick);
-        viewUserEventsButton.setOnClickListener(this::onViewEventsClick);
+        viewPastUserEventsButton.setOnClickListener(this::onViewPastEventsClick);
+        viewUpcomingUserEventsButton.setOnClickListener(this::onViewUpcomingEventsClick);
 
         if(!profile.getUser_type().equals("Organizer")){
-            viewUserEventsButton.setVisibility(View.GONE);
+            viewPastUserEventsButton.setVisibility(View.GONE);
+            viewUpcomingUserEventsButton.setVisibility(View.GONE);
         }
 
         BaseUserProfileFragment userProfileFragment = new BaseUserProfileFragment(profile);
@@ -92,6 +95,8 @@ public class ViewUserProfileActivity extends AppCompatActivity {
                 .commit();
 
     }
+
+
 
 
     public void backButtonClick(View view) {
@@ -115,11 +120,20 @@ public class ViewUserProfileActivity extends AppCompatActivity {
         i.putExtras(args);
         startActivity(i);
     }
+    private void onViewUpcomingEventsClick(View view) {
+        viewEvents(view,"upcoming");
+    }
 
-    private void onViewEventsClick(View view) {
+    private void onViewPastEventsClick(View view) {
+        viewEvents(view,"past");
+    }
+
+
+    private void viewEvents(View view, String mode) {
         Bundle args = new Bundle();
         args.putSerializable("user", this.user);
         args.putSerializable("other_user_profile",this.profile);
+        args.putSerializable("mode",mode);
 
         //TODO handle activity fail
         Intent i = new Intent(view.getContext(), ViewEventsActivity.class);

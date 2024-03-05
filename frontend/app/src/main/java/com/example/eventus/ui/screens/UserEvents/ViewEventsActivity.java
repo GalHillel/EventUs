@@ -20,7 +20,9 @@ import com.example.eventus.data.model.UserProfile;
 import com.example.eventus.ui.screens.UserEvents.EventListFragment;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ViewEventsActivity extends AppCompatActivity {
 
@@ -63,6 +65,7 @@ public class ViewEventsActivity extends AppCompatActivity {
 
         this.user = (LoggedInUser) args.getSerializable("user");
         this.userProfile  = (UserProfile) args.getSerializable("other_user_profile");
+        String mode = args.getString("mode","");
 
         try {
             UserEventDisplay[] tmp = Database.getEventList(userProfile.get_id());
@@ -80,10 +83,20 @@ public class ViewEventsActivity extends AppCompatActivity {
             this.finish();
             return;
         }
+        Date d = new Date();
+        if(mode.equals("upcoming")){
+            userEvents = userEvents.stream().filter(u->u.getDate().after(d)).collect(Collectors.toList());
+        }
+        else{
+            userEvents = userEvents.stream().filter(u->!u.getDate().after(d)).collect(Collectors.toList());
+        }
+        if(mode.length()>0){
+            mode = mode+" ";
+        }
 
         ImageButton backButton = findViewById(R.id.backButton);
         TextView title = findViewById(R.id.user_events_title);
-        title.setText(this.userProfile.getName()+"'s events");
+        title.setText(this.userProfile.getName()+"'s "+mode+"events");
         backButton.setOnClickListener(this::backButtonClick);
 
         EventListFragment userEventListFragment = new EventListFragment(this.user,this.userEvents);

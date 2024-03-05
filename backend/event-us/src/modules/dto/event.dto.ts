@@ -19,7 +19,7 @@ export class EventDto{
 
 export class CreateEventDto extends OmitType(EventDto,['_id','attendents','rating','num_ratings']){}
 
-export class SearchEventDto extends PickType(EventDto,['_id','name','creator_id']){
+export class SearchEventDto extends PickType(EventDto,['_id','name','creator_id','date','location']){
   date: Date;
 }
 

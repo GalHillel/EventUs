@@ -108,7 +108,7 @@ public class EventDetailsActivity extends AppCompatActivity {
         }
     }
 
-    UserDisplay getUser(){
+    LoggedInUser getUser(){
         return this.user;
     }
     UserEvent getEvent(){
