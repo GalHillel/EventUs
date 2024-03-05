@@ -43,6 +43,10 @@ export class ProfilePicService {
     )
   }
 
+  async getDecodedIcon(_id:string): Promise<string>{
+    return (await this.getProfilePic(_id,'icon')).icon.toString('base64');
+  }
+
   async printAllProfilePics(): Promise<void>{
     const profilepics: ProfilePic[] = await this.profilePicModel.find().exec();
     

@@ -1,10 +1,13 @@
 package com.example.eventus.ui.recycleViews;
 
 import android.annotation.SuppressLint;
+import android.graphics.Bitmap;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -12,11 +15,17 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.eventus.R;
+import com.example.eventus.data.Database;
+import com.example.eventus.data.ServerSideException;
 import com.example.eventus.data.model.UserDisplay;
 import com.example.eventus.data.model.UserEvent;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 import java.util.Map;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder> {
 
@@ -117,6 +126,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         if(!mode.equals("Organizer") && this.isPrivate && status != null && status){
             holder.userItem.setVisibility(View.GONE);
         }
+        else{
+            //TODO add profile pictures
+        }
         // Set click listeners for kick and message buttons
 
 
@@ -134,6 +146,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         Button kickButton;
         Button acceptButton;
         Button messageButton;
+        ImageView profile;
 
         public UserViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -142,6 +155,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
             messageButton = itemView.findViewById(R.id.messageButton);
             userItem = itemView.findViewById(R.id.userItemLayout);
             acceptButton = itemView.findViewById(R.id.acceptButton);
+            profile = itemView.findViewById(R.id.participantProfileImage);
         }
 
         /**

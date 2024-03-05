@@ -47,5 +47,7 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     implementation("com.google.code.gson:gson:2.10")
     implementation("com.github.dhaval2404:imagepicker:2.1")
+    implementation("de.hdodenhof:circleimageview:3.1.0")
+    implementation("com.squareup.picasso:picasso:2.8")
 
 }

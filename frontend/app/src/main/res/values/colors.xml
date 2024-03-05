@@ -38,4 +38,5 @@
     <color name="big_textbox_stroke">@color/MAIN_WEAK2</color>
 <!--    <color name="event_list_holder_stroke">#44292929</color>-->
     <color name="event_list_holder_stroke">@color/MAIN_WEAK2</color>
+    <color name="profileBorder">@color/MAIN_WEAK</color>
 </resources>

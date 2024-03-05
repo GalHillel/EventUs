@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, UseInterceptors, UploadedFile, ParseFilePipeBuilder, HttpStatus, UploadedFiles } from '@nestjs/common';
+import { Controller, Post, Body, Get, UseInterceptors, UploadedFile, ParseFilePipeBuilder, HttpStatus, UploadedFiles, Param, Response, Req } from '@nestjs/common';
 import { ProfilePicService } from './profilePic.service';
 import { CreateProfilePicDto } from '../dto/profilePic.dto';
 import { ProfilePic } from './profilePic.model';
@@ -24,6 +24,13 @@ export class ProfilePicController {
     console.log(files)
     var params : {'icon':Buffer} = {'icon':files.icon[0].buffer} 
     return (await this.profilePicService.createProfilePic(params)).id;   
+  }
+
+  @Get(":id")
+  async getProfilePic(@Param('id') _id: string): Promise<String> {
+    console.log("getting profile pic")
+    const html = "<img src='data:image/jpg;base64," + (await this.profilePicService.getDecodedIcon(_id)) + "'/>"
+    return html;
   }
 
   // Implement other CRUD endpoints as needed
