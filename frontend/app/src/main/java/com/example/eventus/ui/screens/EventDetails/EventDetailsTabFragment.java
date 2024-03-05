@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.icu.util.Calendar;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RatingBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -39,7 +41,7 @@ import java.util.Optional;
 
 public class EventDetailsTabFragment extends Fragment {
 
-    private Button editEventButton, saveEventButton, pickDateButton, contactUserButton;
+    private Button editEventButton, saveEventButton, pickDateButton, contactUserButton, saveRatingButton;
     private Calendar calendar;
     private EditText eventNameView, eventDateView, eventLocationview, eventDescription;
 
@@ -85,6 +87,8 @@ public class EventDetailsTabFragment extends Fragment {
         this.saveEventButton = view.findViewById(R.id.saveEventButton);
         this.pickDateButton = view.findViewById(R.id.pickDateButton);
         this.contactUserButton = view.findViewById(R.id.contanctUserButton);
+        this.saveRatingButton = view.findViewById(R.id.saveRatingButton);
+
 
         if("Organizer".equals(this.holder.getUser().getUser_type())){
             this.contactUserButton.setText("Contact all participants");
@@ -97,6 +101,8 @@ public class EventDetailsTabFragment extends Fragment {
         this.pickDateButton.setOnClickListener(this::onPickDateClick);
         this.editEventButton.setOnClickListener(this::onEditEventClick);
         this.saveEventButton.setOnClickListener(this::onSaveEventClick);
+        this.saveRatingButton.setOnClickListener(this::onSaveRatingClick);
+
 
         updateFields();
 
@@ -105,6 +111,34 @@ public class EventDetailsTabFragment extends Fragment {
 
 
     }
+
+    private void onSaveRatingClick(View view) {
+        // Get the eventId and userId
+        String eventId = holder.getEvent().getId();
+        String userId = holder.getUser().get_id();
+
+        // Find the RatingBar from the layout using its ID
+        RatingBar ratingBar = getView().findViewById(R.id.ratingBar);
+
+        // Check if the RatingBar is not null
+        if (ratingBar != null) {
+            // Get the rating value from the RatingBar
+            int rating = (int) ratingBar.getRating();
+
+            try {
+                // Call the rateEvent method with eventId, userId, and rating
+                Database.rateEvent(eventId, userId, rating);
+            } catch (Exception e) {
+                // Handle exceptions
+                Log.e("EventDetailsTabFragment", "Error saving rating", e);
+            }
+        } else {
+            Log.e("EventDetailsTabFragment", "RatingBar not found in the layout");
+        }
+    }
+
+
+
 
     private void updateFields() {
         eventNameView.setText(this.holder.getEvent().getName());
