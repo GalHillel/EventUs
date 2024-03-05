@@ -94,10 +94,18 @@ public class UserMainActivity extends AppCompatActivity implements NavigationBar
         } else if (itemId == R.id.profile) {
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.userMainMenuFrame, new UserProfileFragment(this.user))
+                    .replace(R.id.userMainMenuFrame, new UserProfileFragment(this))
                     .commit();
             return true;
         }
         return false;
+    }
+
+    public LoggedInUser getUser(){
+        return this.user;
+    }
+    public void success(){
+        this.setResult(Activity.RESULT_OK);
+        this.finish();
     }
 }

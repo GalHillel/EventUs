@@ -51,7 +51,7 @@ public class UserEventsFragment extends Fragment {
         //BottomNavigationView bottomNavigationView = view.findViewById(R.id.navigation);
         //Menu navMenu = bottomNavigationView.getMenu();
 
-        if (getArguments() != null) {
+        if (user == null && getArguments() != null) {
             user = (LoggedInUser) getArguments().getSerializable("user");
             /*
             if (user != null && user.getUser_type().equals("Organizer")) {

@@ -27,13 +27,14 @@ TODO: 1. Implement rating for users and events - users may rate event *not* orga
  */
 
 public class UserProfileFragment extends Fragment {
-    private LoggedInUser user;
+    private UserMainActivity holder;
 
     public UserProfileFragment(){
-        this.user = null;
+        this.holder = null;
     }
-    public UserProfileFragment(LoggedInUser user){
-        this.user = user;
+    public UserProfileFragment(UserMainActivity holder){
+
+        this.holder = holder;
     }
 
     @Override
@@ -43,9 +44,9 @@ public class UserProfileFragment extends Fragment {
 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        LoggedInUser user;
         // Get the users' data from arguments
-        if (user == null && getArguments() != null) {
+        if (holder.getUser() == null && getArguments() != null) {
             user = (LoggedInUser) getArguments().getSerializable("user");
         }
 
@@ -62,7 +63,7 @@ public class UserProfileFragment extends Fragment {
         view.findViewById(R.id.logout).setOnClickListener(this::onLogoutButtonClicked);
         view.findViewById(R.id.editProfileButton).setOnClickListener(this::onEditProfileButtonClicked);
 
-        BaseUserProfileFragment userProfileFragment = new BaseUserProfileFragment(user);
+        BaseUserProfileFragment userProfileFragment = new BaseUserProfileFragment(holder.getUser());
         getChildFragmentManager().beginTransaction()
                 .setReorderingAllowed(true)
                 .replace(R.id.user_profile, userProfileFragment)
@@ -94,20 +95,21 @@ public class UserProfileFragment extends Fragment {
 
     private Bundle createNavigationBundle() {
         Bundle bundle = new Bundle();
-        bundle.putSerializable("user", user);
+        bundle.putSerializable("user", holder.getUser());
         return bundle;
     }
 
     //TODO fix
     public void onEditProfileButtonClicked(View view){
         Bundle args = createNavigationBundle();
-        args.putSerializable("user", user);
+        args.putSerializable("user", holder.getUser());
         Navigation.findNavController(view).navigate(R.id.action_userProfileFragment_to_editProfileFragment, args);
     }
 
     //TODO fix
     public void onLogoutButtonClicked(View view){
-        Navigation.findNavController(view).navigate(R.id.action_userProfileFragment_to_loginFragment);
+        //Navigation.findNavController(view).navigate(R.id.action_userProfileFragment_to_loginFragment);
+        holder.success();
         // Prints success message
         Toast.makeText(requireContext(), "Logging out", Toast.LENGTH_SHORT).show();
     }
