@@ -55,6 +55,7 @@ public class MessageActivity extends AppCompatActivity {
 
         this.user = (UserDisplay) args.getSerializable("user");
         String message_id = args.getString("message_id");
+
         try {
             this.message = Database.loadMessage(message_id, this.user.get_id());
             this.sender = Database.userDisplay(this.message.getSender_id());
@@ -77,7 +78,6 @@ public class MessageActivity extends AppCompatActivity {
                 .setReorderingAllowed(true)
                 .replace(R.id.fragment_message, messageFragment)
                 .commit();
-
 
         ImageButton backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(this::backButtonClick);

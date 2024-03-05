@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/CustomFragmentScreen"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.screens.UserDiscoverFragment"
+    tools:context=".ui.screens.UserMainScreen.UserDiscoverFragment"
     android:orientation="vertical">
 
 

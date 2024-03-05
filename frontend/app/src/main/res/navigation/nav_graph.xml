@@ -43,7 +43,7 @@
 
     <fragment
         android:id="@+id/userEventsFragment"
-        android:name="com.example.eventus.ui.screens.UserEventsFragment"
+        android:name="com.example.eventus.ui.screens.UserMainScreen.UserEventsFragment"
         android:label="UserEventsFragment"
         tools:layout="@layout/fragment_user_events">
         <action
@@ -63,7 +63,7 @@
 
     <fragment
         android:id="@+id/userDiscoverFragment"
-        android:name="com.example.eventus.ui.screens.UserDiscoverFragment"
+        android:name="com.example.eventus.ui.screens.UserMainScreen.UserDiscoverFragment"
         android:label="UserDiscoverFragment"
         tools:layout="@layout/fragment_user_discover">
         <action
@@ -91,7 +91,7 @@
 
     <fragment
         android:id="@+id/userProfileFragment"
-        android:name="com.example.eventus.ui.screens.UserProfileFragment"
+        android:name="com.example.eventus.ui.screens.UserMainScreen.UserProfileFragment"
         android:label="UserProfileFragment"
         tools:layout="@layout/fragment_user_profile">
 
@@ -138,7 +138,7 @@
 
     <fragment
         android:id="@+id/createEventFragment"
-        android:name="com.example.eventus.ui.screens.CreateEventFragment"
+        android:name="com.example.eventus.ui.screens.UserMainScreen.CreateEventFragment"
         android:label="CreateEventFragment"
         tools:layout="@layout/fragment_create_event">
 

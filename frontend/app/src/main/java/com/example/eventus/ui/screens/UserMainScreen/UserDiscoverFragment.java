@@ -1,6 +1,5 @@
-package com.example.eventus.ui.screens;
+package com.example.eventus.ui.screens.UserMainScreen;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -13,16 +12,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.eventus.R;
 import com.example.eventus.data.Database;
 import com.example.eventus.data.model.LoggedInUser;
-import com.example.eventus.data.model.UserDisplay;
-import com.example.eventus.ui.recycleViews.EventAdapter;
 import com.example.eventus.data.model.UserEventDisplay;
-import com.example.eventus.ui.screens.EventDetails.EventDetailsActivity;
 import com.example.eventus.ui.screens.UserEvents.EventListFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -32,7 +26,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.stream.Collectors;
 
 public class UserDiscoverFragment extends Fragment {
 

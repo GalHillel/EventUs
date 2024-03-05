@@ -2,6 +2,7 @@ package com.example.eventus.ui.screens.UserEvents;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ import com.example.eventus.ui.recycleViews.EventAdapter;
 import com.example.eventus.ui.screens.EventDetails.EventDetailsActivity;
 
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 public class EventListFragment extends Fragment implements EventAdapter.OnShowMoreDetailsClickListener {
@@ -28,9 +30,9 @@ public class EventListFragment extends Fragment implements EventAdapter.OnShowMo
     public EventListFragment(LoggedInUser user, List<UserEventDisplay> lst){
         this.lst = lst;
         this.user = user;
-        lst.sort(Comparator.comparing(UserEventDisplay::getDate));
+        Date d = new Date();
+        this.lst.sort(Comparator.comparingLong(o -> Math.abs(d.getTime() - o.getDate().getTime())));
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -38,7 +40,6 @@ public class EventListFragment extends Fragment implements EventAdapter.OnShowMo
     }
 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-
         RecyclerView upcomingEventsRecyclerView = view.findViewById(R.id.eventListRecycleView);
         EventAdapter upcomingEventAdapter = new EventAdapter(lst);
         upcomingEventAdapter.setOnShowMoreDetailsClickListener(this);
@@ -48,7 +49,6 @@ public class EventListFragment extends Fragment implements EventAdapter.OnShowMo
         if(this.lst.size() == 0 ){
             view.setVisibility(View.GONE);
         }
-
     }
 
     @Override

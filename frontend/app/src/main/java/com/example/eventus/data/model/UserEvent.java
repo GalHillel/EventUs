@@ -21,7 +21,7 @@ public class UserEvent extends UserEventDisplay{
 
         this.attendents = new HashMap<>();
         this.rating = 0;
-        this.num_rating = 0;
+        this.num_ratings = 0;
 
     }
 

@@ -18,14 +18,31 @@ import androidx.fragment.app.Fragment;
 import com.example.eventus.R;
 import com.example.eventus.data.Database;
 import com.example.eventus.data.ServerSideException;
+import com.example.eventus.data.model.UserDisplay;
+import com.example.eventus.data.model.UserEventDisplay;
 import com.example.eventus.data.model.UserProfile;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class BaseUserProfileFragment extends Fragment {
     private final UserProfile userProfile;
 
 
+
+    private UserEventDisplay[] eventList;
+
+
     public BaseUserProfileFragment(UserProfile p){
         this.userProfile = p;
+        this.eventList = null;
+    }
+    public BaseUserProfileFragment(UserProfile p, UserEventDisplay[] uEvents){
+        this.userProfile = p;
+        this.eventList = uEvents;
     }
 
     @Override
@@ -66,6 +83,27 @@ public class BaseUserProfileFragment extends Fragment {
             userRatingBar.setVisibility(View.VISIBLE);
             ratingCountTextView.setVisibility(View.VISIBLE);
 
+            if(eventList == null) {
+                try {
+                    eventList = Database.getEventList(userProfile.get_id());
+
+                } catch (ServerSideException e) {
+                    // Handle the exception (e.g., show an error message)
+                    e.printStackTrace();
+                } catch (Exception e) {
+                    // Handle other exceptions
+                    e.printStackTrace();
+                }
+            }
+            List<UserEventDisplay> tmp = Arrays.asList(eventList);
+            int num_ratings = tmp.stream().map(UserEventDisplay::getNum_rating).reduce(0,Integer::sum);
+            float avg_rating = tmp.stream().map(e->e.getNum_rating()*e.getRating()).reduce(0.0F,Float::sum)/num_ratings;
+            ratingCountTextView.setText(num_ratings + " Ratings");
+            userRatingBar.setRating(avg_rating);
+
+
+
+
         } else {
             userRatingBar.setVisibility(View.GONE);
             ratingCountTextView.setVisibility(View.GONE);
@@ -79,6 +117,10 @@ public class BaseUserProfileFragment extends Fragment {
         usernameTextView.setText(userProfile.getName());
 
 
+    }
+
+    public UserEventDisplay[] getEventList() {
+        return eventList;
     }
 
 }

@@ -1,4 +1,4 @@
-package com.example.eventus.ui.screens;
+package com.example.eventus.ui.screens.UserMainScreen;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

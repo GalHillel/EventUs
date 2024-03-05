@@ -50,7 +50,7 @@ public class MessageFragment extends Fragment {
         contentTextView.setInputType(EditorInfo.TYPE_NULL);
 
         titleTextView.setText(this.holder.getMessage().getTitle());
-        senderTextView.setText(this.holder.getSender().getName());
+        senderTextView.setText("From: "+this.holder.getSender().getName());
         contentTextView.setText(this.holder.getMessage().getContent());
 
 

@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/CustomFragmentScreen"
-    tools:context=".ui.screens.UserEventsFragment">
+    tools:context=".ui.screens.UserMainScreen.UserEventsFragment">
     <TextView
         android:id="@+id/myevents_title"
         style="@style/CustomFragmentTitle"

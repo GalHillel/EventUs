@@ -62,27 +62,35 @@ public class ViewEventsActivity extends AppCompatActivity {
             this.finish();
             return;
         }
+        UserEventDisplay[] tmp = null;
+        if(args.containsKey("eventArr")){
+            tmp = (UserEventDisplay[]) args.getSerializable("eventArr");
+        }
 
         this.user = (LoggedInUser) args.getSerializable("user");
         this.userProfile  = (UserProfile) args.getSerializable("other_user_profile");
         String mode = args.getString("mode","");
 
-        try {
-            UserEventDisplay[] tmp = Database.getEventList(userProfile.get_id());
-            userEvents = Arrays.asList(tmp);
-        } catch (ServerSideException e) {
-            Intent res = new Intent();
-            res.putExtra("message",e.getMessage());
-            setResult(e.getReturnCode(),res);
-            this.finish();
-            return;
-        } catch (Exception e) {
-            Intent res = new Intent();
-            res.putExtra("message",e.getMessage());
-            setResult(Activity.RESULT_CANCELED,res);
-            this.finish();
-            return;
+        if(tmp == null){
+            try {
+                tmp = Database.getEventList(userProfile.get_id());
+
+            } catch (ServerSideException e) {
+                Intent res = new Intent();
+                res.putExtra("message",e.getMessage());
+                setResult(e.getReturnCode(),res);
+                this.finish();
+                return;
+            } catch (Exception e) {
+                Intent res = new Intent();
+                res.putExtra("message",e.getMessage());
+                setResult(Activity.RESULT_CANCELED,res);
+                this.finish();
+                return;
+            }
         }
+        userEvents = Arrays.asList(tmp);
+
         Date d = new Date();
         if(mode.equals("upcoming")){
             userEvents = userEvents.stream().filter(u->u.getDate().after(d)).collect(Collectors.toList());

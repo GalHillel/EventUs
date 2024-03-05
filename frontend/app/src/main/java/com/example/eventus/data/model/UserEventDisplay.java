@@ -8,7 +8,7 @@ public class UserEventDisplay implements Serializable, Comparable<UserEventDispl
     protected Date date;
     protected boolean isPrivate;
     protected float rating;
-    protected int num_rating;
+    protected int num_ratings;
 
     public UserEventDisplay(String _id, String name, Date date, String location) {
         this._id = _id;
@@ -52,7 +52,7 @@ public class UserEventDisplay implements Serializable, Comparable<UserEventDispl
     }
 
     public int getNum_rating() {
-        return num_rating;
+        return num_ratings;
     }
 
     @Override

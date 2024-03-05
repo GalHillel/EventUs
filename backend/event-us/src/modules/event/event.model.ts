@@ -23,9 +23,9 @@ export class UserEvent extends Document {
     @Prop({ default: {} })
     attendents: Map<string,boolean>;
     @Prop({ required: true })
-    creator_id: string;
+    creator_id: string; 
 }
 
-export const userEventDisplayFields = "_id name date location isPrivate"
+export const userEventDisplayFields = "_id name date location isPrivate num_ratings rating"
 
 export const UserEventSchema = SchemaFactory.createForClass(UserEvent);

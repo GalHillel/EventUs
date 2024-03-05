@@ -15,13 +15,19 @@ import com.example.eventus.data.Database;
 import com.example.eventus.data.ServerSideException;
 import com.example.eventus.data.model.LoggedInUser;
 import com.example.eventus.data.model.UserDisplay;
+import com.example.eventus.data.model.UserEventDisplay;
 import com.example.eventus.data.model.UserProfile;
 import com.example.eventus.ui.screens.Messages.CreateMessageActivity;
 import com.example.eventus.ui.screens.UserEvents.ViewEventsActivity;
 
+import java.util.List;
+
 public class ViewUserProfileActivity extends AppCompatActivity {
     LoggedInUser user;
     UserProfile profile;
+
+    UserEventDisplay[] eventList;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_user_profile);
@@ -133,6 +139,7 @@ public class ViewUserProfileActivity extends AppCompatActivity {
         Bundle args = new Bundle();
         args.putSerializable("user", this.user);
         args.putSerializable("other_user_profile",this.profile);
+        args.putSerializable("eventArr",this.eventList);
         args.putSerializable("mode",mode);
 
         //TODO handle activity fail
