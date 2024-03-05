@@ -14,6 +14,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RatingBar;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -31,6 +32,8 @@ import com.example.eventus.data.model.UserEvent;
 import com.example.eventus.ui.recycleViews.UserAdapter;
 import com.example.eventus.ui.screens.Messages.CreateMessageActivity;
 
+import org.w3c.dom.Text;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,9 +44,11 @@ import java.util.Optional;
 
 public class EventDetailsTabFragment extends Fragment {
 
+    private RatingBar ratingBar;
     private Button editEventButton, saveEventButton, pickDateButton, contactUserButton, saveRatingButton;
     private Calendar calendar;
     private EditText eventNameView, eventDateView, eventLocationview, eventDescription;
+    private TextView ratingCount;
 
     EventDetailsActivity holder;
 
@@ -88,6 +93,8 @@ public class EventDetailsTabFragment extends Fragment {
         this.pickDateButton = view.findViewById(R.id.pickDateButton);
         this.contactUserButton = view.findViewById(R.id.contanctUserButton);
         this.saveRatingButton = view.findViewById(R.id.saveRatingButton);
+        this.ratingBar = view.findViewById(R.id.ratingBar);
+        this.ratingCount = view.findViewById(R.id.ratingCountTextView);
 
 
         if("Organizer".equals(this.holder.getUser().getUser_type())){
@@ -102,12 +109,38 @@ public class EventDetailsTabFragment extends Fragment {
         this.editEventButton.setOnClickListener(this::onEditEventClick);
         this.saveEventButton.setOnClickListener(this::onSaveEventClick);
         this.saveRatingButton.setOnClickListener(this::onSaveRatingClick);
-
+        this.saveRatingButton.setEnabled(false);
+        ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                saveRatingButton.setEnabled(true);
+            }
+        });
 
         updateFields();
+        boolean user_in_event = holder.getEvent().getAttendents().containsKey(holder.getUser().get_id()) &&
+                (!holder.getEvent().getIsPrivate() || Boolean.TRUE.equals(holder.getEvent().getAttendents().get(holder.getUser().get_id())));
 
         toggleEditableMode(false);
 
+        if(!holder.hasPassed()){
+            ratingBar.setVisibility(View.GONE);
+            saveRatingButton.setVisibility(View.GONE);
+            ratingCount.setVisibility(View.GONE);
+        }else{
+            ratingBar.setVisibility(View.VISIBLE);
+            saveRatingButton.setVisibility(View.VISIBLE);
+            ratingCount.setVisibility(View.VISIBLE);
+            if(holder.getUser().getUser_type().equals("Organizer") || !user_in_event){
+                ratingBar.setEnabled(false);
+                ratingBar.setRating(this.holder.getEvent().getRating());
+                saveRatingButton.setEnabled(false);
+                saveRatingButton.setVisibility(View.GONE);
+            }
+        }
+        if(!user_in_event){
+            contactUserButton.setVisibility(View.GONE);
+        }
 
 
     }
@@ -117,24 +150,19 @@ public class EventDetailsTabFragment extends Fragment {
         String eventId = holder.getEvent().getId();
         String userId = holder.getUser().get_id();
 
-        // Find the RatingBar from the layout using its ID
-        RatingBar ratingBar = getView().findViewById(R.id.ratingBar);
-
         // Check if the RatingBar is not null
-        if (ratingBar != null) {
-            // Get the rating value from the RatingBar
-            int rating = (int) ratingBar.getRating();
 
-            try {
-                // Call the rateEvent method with eventId, userId, and rating
-                Database.rateEvent(eventId, userId, rating);
-            } catch (Exception e) {
-                // Handle exceptions
-                Log.e("EventDetailsTabFragment", "Error saving rating", e);
-            }
-        } else {
-            Log.e("EventDetailsTabFragment", "RatingBar not found in the layout");
+        // Get the rating value from the RatingBar
+        float rating = ratingBar.getRating();
+        try {
+            // Call the rateEvent method with eventId, userId, and rating
+            Database.rateEvent(userId, eventId, rating);
+            holder.success();
+        } catch (Exception e) {
+            // Handle exceptions
+            Log.e("EventDetailsTabFragment", "Error saving rating", e);
         }
+
     }
 
 

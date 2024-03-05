@@ -8,7 +8,7 @@ import { EventService } from '../event/event.service';
 import { ProfilePicService } from '../profilePic/profilePic.service';
 import { MessageService } from '../message/message.service';
 import { CreateMessageDto } from '../dto/message.dto';
-import { EditEventDto } from '../dto/event.dto';
+import { EditEventDto, RateEventDto } from '../dto/event.dto';
 
 
 @Controller('users')
@@ -55,10 +55,39 @@ export class UserController {
 
   }
 
+
+  /**TODO error handling
+   * users/<user_id>/rate, patch request should contain a json in the form {_id:<user id>}
+   * @param idStr event id
+   * @param userId user id
+   */
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @Patch(':id/rate')
+  async rateEvent(@Param('id') _id: string, @Body() ratingDTO:RateEventDto): Promise<void>{
+    console.log("user " + _id + " rating " + ratingDTO._id)
+    try{
+      this.eventService.rateEvent(ratingDTO._id,ratingDTO).then((editEventDto)=> {
+        this.exitEvent(_id,ratingDTO._id).then(()=> {
+          this.eventService.editEvent(ratingDTO._id,editEventDto);
+        });
+      });
+    }
+    catch(e){
+      console.log("error in rate event " + e.message)
+      if(e instanceof HttpException){
+        
+        throw new HttpException(e.message,e.getStatus());
+      }
+        
+    }
+
+  }
+
   /** TODO error handling
    * users/<user id>/exitEvent, Patch request should contain a json in the form {_id:<event id>}
    * @param _id user id
    * @param eventId event id
+   * 
    */
   @HttpCode(HttpStatus.NO_CONTENT)
   @Patch(':id/exitEvent')
@@ -127,8 +156,6 @@ export class UserController {
    */
   @Get("login")
   async login(@Query() loginUserDto: LoginUserDto): Promise<User>{
-    
-    
     try{
 
       return await this.userService.loginUser(loginUserDto);

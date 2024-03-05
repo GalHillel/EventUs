@@ -36,6 +36,7 @@ import com.example.eventus.ui.screens.Profile.ViewUserProfileActivity;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -84,11 +85,8 @@ public class EventParticipantsTabFragment extends Fragment implements UserAdapte
      */
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-
         this.joinEventButton = view.findViewById(R.id.joinEventButton);
         this.exitEventButton = view.findViewById(R.id.leaveEventButton);
-
 
         this.userListRecyclerView = view.findViewById(R.id.eventListRecycleView);
 
@@ -96,40 +94,46 @@ public class EventParticipantsTabFragment extends Fragment implements UserAdapte
         this.joinEventButton.setOnClickListener(this::onJoinEventClick);
         this.exitEventButton.setOnClickListener(this::onLeaveEventClick);
 
-
-            userAdapter = new UserAdapter(this.holder.getUsers(),holder.getEvent(), (this.holder.getUser().get_id().equals(this.holder.getEvent().getCreator_id())) ? "Organizer" : "Participant");
-            userAdapter.setOnKickClickListener(this);
-            userAdapter.setOnMessageClickListener(this);
-            userAdapter.setOnUserItemClickListener(this);
-            userAdapter.setProfileWrapper(this);
-            userListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-            userListRecyclerView.setAdapter(userAdapter);
-            if (this.holder.getUser().get_id().equals(this.holder.getEvent().getCreator_id())) {
-                this.exitEventButton.setText("Delete Event");
-
-            }
-            if (this.holder.getEvent().getAttendents().containsKey(this.holder.getUser().get_id())) {
-                this.joinEventButton.setVisibility(View.GONE);
-                this.exitEventButton.setVisibility(View.VISIBLE);
-                if(this.holder.getEvent().getIsPrivate()){
-                    if(Boolean.FALSE.equals(this.holder.getEvent().getAttendents().get(this.holder.getUser().get_id()))) {
-                        this.exitEventButton.setText("Cancel Request");
-                        this.userListRecyclerView.setVisibility(View.INVISIBLE);
-                    }
-                    else{
-                        this.exitEventButton.setText("Leave Event");
-                    }
-                }
+        userAdapter = new UserAdapter(this.holder.getUsers(),this.holder.getEvent(), (this.holder.getUser().get_id().equals(this.holder.getEvent().getCreator_id())) ? "Organizer" : "Participant");
+        userAdapter.setOnKickClickListener(this);
+        userAdapter.setOnMessageClickListener(this);
+        userAdapter.setOnUserItemClickListener(this);
+        userAdapter.setProfileWrapper(this);
 
 
-            } else {
-                this.exitEventButton.setVisibility(View.GONE);
-                this.joinEventButton.setVisibility(View.VISIBLE);
-                if(this.holder.getEvent().getIsPrivate()){
+        if(this.holder.hasPassed()){
+            exitEventButton.setVisibility(View.GONE);
+            joinEventButton.setVisibility(View.GONE);
+        }
+
+        if (this.holder.getUser().get_id().equals(this.holder.getEvent().getCreator_id())) {
+            this.exitEventButton.setText("Delete Event");
+        }
+        if (this.holder.getEvent().getAttendents().containsKey(this.holder.getUser().get_id())) {
+            this.joinEventButton.setVisibility(View.GONE);
+            this.exitEventButton.setVisibility(View.VISIBLE);
+            if(this.holder.getEvent().getIsPrivate()){
+                if(Boolean.FALSE.equals(this.holder.getEvent().getAttendents().get(this.holder.getUser().get_id()))) {
+                    this.exitEventButton.setText("Cancel Request");
                     this.userListRecyclerView.setVisibility(View.INVISIBLE);
-
+                }
+                else{
+                    this.exitEventButton.setText("Leave Event");
                 }
             }
+
+
+        } else {
+            this.exitEventButton.setVisibility(View.GONE);
+            this.joinEventButton.setVisibility(View.VISIBLE);
+            if(this.holder.getEvent().getIsPrivate()){
+                this.userListRecyclerView.setVisibility(View.INVISIBLE);
+
+            }
+        }
+
+        userListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        userListRecyclerView.setAdapter(userAdapter);
 
     }
 

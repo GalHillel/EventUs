@@ -80,9 +80,9 @@ def genMessages(message_datas):
         time.sleep(1)
 
 
-GEN_DATA = False
-datetime_str1 = ['09/19/24 13:55:26','04/2/24 13:55:26','01/9/25 13:55:26','09/24/24 13:55:26','03/11/24 13:55:26']
-datetime_str2 = ['03/19/24 13:55:26','10/2/24 13:55:26','04/3/25 13:55:26','11/22/24 13:55:26','07/13/24 13:55:26']
+GEN_DATA = True
+datetime_str1 = ['01/19/24 13:55:26','04/2/24 13:55:26','01/2/24 13:55:26','09/24/24 13:55:26','03/11/24 13:55:26']
+datetime_str2 = ['03/19/24 13:55:26','10/2/24 13:55:26','04/3/24 13:55:26','11/22/24 13:55:26','07/13/24 13:55:26']
 datetime_objects1 = [datetime.datetime.strptime(s, '%m/%d/%y %H:%M:%S') for s in datetime_str1]
 datetime_objects2 = [datetime.datetime.strptime(s, '%m/%d/%y %H:%M:%S') for s in datetime_str2]
 

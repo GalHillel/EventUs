@@ -17,9 +17,9 @@ export class UserEvent extends Document {
     @Prop({ required: true })
     private name: string;
     @Prop({default: 0})
-    private num_ratings: number;
-    @Prop({default: 0})
-    private rating: number;
+    num_ratings: number;
+    @Prop({default: 0.0})
+    rating: number;
     @Prop({ default: {} })
     attendents: Map<string,boolean>;
     @Prop({ required: true })

@@ -114,7 +114,7 @@ public class UserDiscoverFragment extends Fragment {
             e.printStackTrace();
         }
         //filter events
-        this.searchResults = searchResults.stream().filter(e->!this.user.getEvents().contains(e.getId())).collect(Collectors.toList());
+        //this.searchResults = searchResults.stream().filter(e->!this.user.getEvents().contains(e.getId())).collect(Collectors.toList());
 
         EventListFragment searchEventListFragment = new EventListFragment(this.user,this.searchResults);
         getChildFragmentManager().beginTransaction()

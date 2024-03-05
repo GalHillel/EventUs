@@ -9,7 +9,7 @@ public class UserEvent extends UserEventDisplay{
     protected String creator_id, description;
 
     protected Map<String,Boolean> attendents;
-    protected int rating, num_rating;
+
 
 
     public UserEvent(String _id, String creator_id, String name, String location, String description, Date date) {

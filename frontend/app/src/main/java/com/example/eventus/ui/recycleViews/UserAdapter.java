@@ -23,6 +23,7 @@ import com.example.eventus.data.model.UserDisplay;
 import com.example.eventus.data.model.UserEvent;
 
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -40,12 +41,15 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
     private ButtonListener messageListener;
     private ButtonListener userItemListener;
     private Wrappers getProfile;
+    boolean passed;
 
-    public UserAdapter(List<UserDisplay> userList,UserEvent event, String mode) {
+    public UserAdapter(List<UserDisplay> userList,UserEvent uEvent, String mode) {
         this.userList = userList;
+        Date d = new Date();
+        this.passed = !uEvent.getDate().after(d);
         this.mode = mode;
-        this.userStatus = event.getAttendents();
-        this.isPrivate = event.getIsPrivate();
+        this.userStatus = uEvent.getAttendents();
+        this.isPrivate = uEvent.getIsPrivate();
     }
 
     public interface ButtonListener {
@@ -139,6 +143,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
             if (user.getProfile_pic().length() > 0 && getProfile != null) {
                 holder.profile.setImageBitmap(getProfile.getUserProfile(user.get_id()));
             }
+        }
+        if(passed){
+            holder.kickButton.setVisibility(View.GONE);
         }
         // Set click listeners for kick and message buttons
 

@@ -24,6 +24,7 @@ import com.google.android.material.tabs.TabLayout;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,6 +36,7 @@ public class EventDetailsActivity extends AppCompatActivity {
     LoggedInUser user;
     private UserEvent userEvent;
     private List<UserDisplay> users = new ArrayList<>();
+    private boolean passed;
     BadgeDrawable badge;
 
     private Map<String,Bitmap> profilePic_lookup = new HashMap<>();
@@ -63,12 +65,17 @@ public class EventDetailsActivity extends AppCompatActivity {
                     UserDisplay[] tmp = Database.getUserList(eventId);
                     this.users.clear();
                     this.users.addAll(Arrays.asList(tmp));
-                    //this.profilePic_lookup = Database.getEventProfilePics(eventId);
+                    //TODO fast load profile pictures
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
 
             }
+        }
+        Date d = new Date();
+        this.passed = !userEvent.getDate().after(d);
+        if(passed && !users.contains(user)){
+            tabLayout.removeTabAt(1);
         }
 
         this.users.sort(Comparator.comparing(UserDisplay::getUser_type));
@@ -94,8 +101,11 @@ public class EventDetailsActivity extends AppCompatActivity {
 
             }
         });
-        this.badge = tabLayout.getTabAt(1).getOrCreateBadge();
-        updateBadge();
+        this.badge = null;
+        if(!passed && user.get_id().equals(userEvent.getCreator_id())) {
+            this.badge = tabLayout.getTabAt(1).getOrCreateBadge();
+            updateBadge();
+        }
     }
 
     UserDisplay getUser(){
@@ -128,18 +138,20 @@ public class EventDetailsActivity extends AppCompatActivity {
     }
 
     public void updateBadge() {
-        int badgeNum = 0;
-        if(this.userEvent.getIsPrivate()){
-            badgeNum = (int) this.userEvent.getAttendents().entrySet().stream().filter(Map.Entry::getValue).count();
-        }
+        if(this.badge != null){
+            int badgeNum = 0;
+            if(this.userEvent.getIsPrivate()){
+                badgeNum = (int) this.userEvent.getAttendents().entrySet().stream().filter(Map.Entry::getValue).count();
+            }
 
-        if(badgeNum > 0) {
-            badge.setVisible(true);
-            badge.setNumber(badgeNum);
-            return;
+            if(badgeNum > 0) {
+                badge.setVisible(true);
+                badge.setNumber(badgeNum);
+                return;
+            }
+            badge.setNumber(0);
+            badge.setVisible(false);
         }
-        badge.setNumber(0);
-        badge.setVisible(false);
 
     }
 
@@ -164,7 +176,7 @@ public class EventDetailsActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         return profile_icon;
-
-
     }
+
+    public boolean hasPassed(){return this.passed;}
 }

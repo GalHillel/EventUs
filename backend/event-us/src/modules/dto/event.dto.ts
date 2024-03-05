@@ -23,4 +23,7 @@ export class SearchEventDto extends PickType(EventDto,['_id','name','creator_id'
   date: Date;
 }
 
+
+
 export class EditEventDto extends OmitType(EventDto, ['_id','creator_id']){}
+export class RateEventDto extends PickType(EventDto,['_id','rating']){}

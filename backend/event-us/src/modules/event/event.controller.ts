@@ -114,6 +114,8 @@ export class EventController {
     this.eventService.acceptUser(_id,userId);
   }
 
+   
+
 
   /**
    * events/search, get a list of only the display fields of events matching the search terms

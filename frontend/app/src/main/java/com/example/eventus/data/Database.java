@@ -513,6 +513,26 @@ public class Database {
             throw new ServerSideException(response.getReturnCode(),response.getPayload());
         }
     }
+    /**
+     * TODO error handling and testing
+     * rates an event
+     * @param user_id _id of user rating the event
+     * @param event_id _id of event
+     * @param rating rating given by user
+     * @throws Exception ServerSideException or other exception
+     */
+    public static void rateEvent(String user_id, String event_id, float rating) throws Exception{
+        HashMap<String, Object> payloadData = new HashMap<String, Object>();
+        payloadData.put("_id",event_id);
+        payloadData.put("rating",rating);
+        AsyncHttpRequest task = new AsyncHttpRequest("users/"+user_id+"/rate", payloadData, null, "PATCH");
+        task.execute();
+        task.get();
+        ServerResponse response = task.getServerResponse();
+        if (response.getReturnCode() != HttpURLConnection.HTTP_NO_CONTENT) {
+            throw new ServerSideException(response.getReturnCode(),response.getPayload());
+        }
+    }
 
     /**
      * TODO error handling and testing
@@ -523,8 +543,6 @@ public class Database {
      */
     public static void editUser(String user_id, HashMap<String,Object> newEventParams) throws Exception{
         HashMap<String,Object> query = new HashMap<>();
-
-
         AsyncHttpRequest task = new AsyncHttpRequest("users/"+user_id+"/edit",  newEventParams,query, "PATCH");
         task.execute();
         task.get();

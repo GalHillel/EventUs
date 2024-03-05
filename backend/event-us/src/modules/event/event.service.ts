@@ -3,7 +3,7 @@ import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestj
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { UserEvent } from './event.model';
-import { CreateEventDto, EditEventDto, SearchEventDto } from '../dto/event.dto';
+import { CreateEventDto, EditEventDto, RateEventDto, SearchEventDto } from '../dto/event.dto';
 import { ObjectId } from 'mongoose';
 
 import { User } from '../user/user.model';
@@ -112,6 +112,19 @@ export class EventService {
     return this.userEventModel.find(searchTerms,fields).exec();
   }
 
+  async rateEvent(eventId: string, rateDTO: RateEventDto): Promise<EditEventDto> {
+    return this.userEventModel.findById(eventId, 'rating num_ratings').exec().then((event) => {
+      if (!event) {
+        throw new NotFoundException('Event not found');
+      }
+      // Need to check if the user already rate this event
+      // Update the event with the new rating
+      const newRating = (event.rating * event.num_ratings + rateDTO.rating) / (event.num_ratings + 1);
+      return new EditEventDto({rating: newRating, num_ratings: event.num_ratings + 1});
+    });
+  } 
+
+
   /**
    * Removes a user from the events attendents list
    * @param _id event _id
@@ -122,7 +135,10 @@ export class EventService {
     //const tmp = await this.userEventModel.findById(_id).updateMany({},{ $unset:["attendents."+userId]}).exec();
     
     const userEvent = await this.userEventModel.findById(_id).exec();
-    userEvent.attendents.delete(userId)
+    console.log(userEvent.attendents);
+    console.log(userId);
+    userEvent.attendents.delete(userId);
+    console.log(userEvent.attendents);
     return userEvent.save()
   }
 
