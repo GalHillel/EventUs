@@ -112,7 +112,7 @@ export class EventController {
   @Get("search")
   @UsePipes(new ValidationPipe({ transform: true }))
   async searchEvent(@Query() searchTerms: SearchEventDto): Promise<UserEvent[]>{
-    return this.eventService.search(searchTerms,userEventDisplayFields);
+    return this.eventService.search(searchTerms,userEventDisplayFields,true);
   }
 
   // Implement other CRUD endpoints as needed

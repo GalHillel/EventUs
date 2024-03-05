@@ -8,7 +8,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -17,8 +16,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:layout_marginEnd="4dp"
-            style="@style/clickableListItem"
-            android:background="@color/white"
+            android:background="?android:attr/selectableItemBackground"
             android:focusable="true">
             <TextView
                 android:id="@+id/userNameTextView"
@@ -51,11 +49,11 @@
             android:text="Accept"
             style="@style/DefaultClickableButton" />
     </LinearLayout>
-
-    <LinearLayout
+    <com.google.android.material.divider.MaterialDivider
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/listSeperator">
-    </LinearLayout>
+        android:layout_height="wrap_content"
+        app:dividerColor="?attr/dividerColor"/>
+
+
 
 </LinearLayout>

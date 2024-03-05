@@ -66,12 +66,11 @@
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="clickableListItem" >
+    <style name="clickableListItem" parent="Widget.AppCompat.ImageButton">
+<!--        <item name="background">?android:attr/selectableItemBackground</item>-->
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:background">@color/white</item>
         <item name="android:clickable">true</item>
-        <item name="android:animateLayoutChanges">true</item>
     </style>
 
     <style name="message_unread" parent="clickableListItem">
@@ -85,13 +84,15 @@
         <item name="android:textColor">@android:color/black</item>
     </style>
 
-    <style name="backButton" parent="Widget.AppCompat.ImageButton">
+    <style name="backButton" parent="Widget.MaterialComponents.Button.Icon">
         <item name="android:src">@drawable/ic_back</item>
         <item name="android:contentDescription">Back</item>
         <item name="android:id">@id/backButton</item>
         <item name="android:onClick">onBackButtonClick</item>
         <item name="android:layout_height">40dp</item>
         <item name="android:layout_width">70dp</item>
+        <item name="android:backgroundTint">@color/backButtonColor</item>
+        <item name="android:backgroundTintMode">add</item>
         <item name="android:background">@color/backButtonColor</item>
         <item name="android:layout_marginBottom">16dp</item>
         <item name="android:layout_marginTop">16dp</item>
@@ -103,7 +104,19 @@
     </style>
 
 
+    <style name="LargeTextField">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:gravity">top</item>
+        <item name="android:inputType">textMultiLine</item>
+        <item name="android:isScrollContainer">true</item>
+        <item name="android:scrollbars">vertical</item>
+        <item name="android:textSize">16sp</item>
+    </style>
 
+    <style name="BaseRecyclerViewStyle">
+        <item name="android:scrollbars">vertical</item>
+    </style>
 
 
 </resources>

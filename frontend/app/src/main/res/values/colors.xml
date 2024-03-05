@@ -19,17 +19,23 @@
     <color name="transparent">#00000000</color>
 
     <color name="MAIN">#00bbff</color>
-    <color name="MAIN_VARIANT">#4fa5d5</color>
+    <color name="MAIN_VARIANT">#047098</color>
+    <color name="MAIN_WEAK">#D16FD1F7</color>
+
+
+    <color name="MAIN2">#6FD1F7</color>
+    <color name="MAIN_VARIANT2">#BDEDFF</color>
+    <color name="MAIN_WEAK2">#D1556A71</color>
+
 
     <color name="ButtonType2">#D51414</color>
-    <color name="colorButtonDefault">#00bbff</color>
+    <color name="colorButtonDefault">@color/MAIN</color>
 
-    <color name="listSeperator">#FF000000</color>
-
-    <color name="message_read">#047098</color>
-    <color name="message_unread">#00bbff</color>
+    <color name="message_read">@color/MAIN_VARIANT</color>
+    <color name="message_unread">@color/MAIN</color>
 
     <color name="backButtonColor">#ABCFDD</color>
-    <color name="big_textbox_stroke">#4fa5d5</color>
-    <color name="event_list_holder_stroke">#44292929</color>
+    <color name="big_textbox_stroke">@color/MAIN_WEAK2</color>
+<!--    <color name="event_list_holder_stroke">#44292929</color>-->
+    <color name="event_list_holder_stroke">@color/MAIN_WEAK2</color>
 </resources>

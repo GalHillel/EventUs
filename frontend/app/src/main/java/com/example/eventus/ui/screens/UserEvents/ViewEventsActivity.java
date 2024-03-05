@@ -14,7 +14,9 @@ import com.example.eventus.R;
 import com.example.eventus.data.Database;
 import com.example.eventus.data.ServerSideException;
 import com.example.eventus.data.model.LoggedInUser;
+import com.example.eventus.data.model.User;
 import com.example.eventus.data.model.UserEventDisplay;
+import com.example.eventus.data.model.UserProfile;
 import com.example.eventus.ui.screens.UserEvents.EventListFragment;
 
 import java.util.Arrays;
@@ -24,6 +26,7 @@ public class ViewEventsActivity extends AppCompatActivity {
 
     LoggedInUser user;
     List<UserEventDisplay> userEvents;
+    UserProfile userProfile;
 
     @SuppressLint("SetTextI18n")
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,18 +53,19 @@ public class ViewEventsActivity extends AppCompatActivity {
 
         Bundle args = intent.getExtras();
 
-        if (!args.containsKey("user") || !args.containsKey("other_user_id")) {
+        if (!args.containsKey("user") || !args.containsKey("other_user_profile")) {
             Intent res = new Intent();
-            res.putExtra("message", "args missing 'user' or 'other_user_id' fields");
+            res.putExtra("message", "args missing 'user' or 'other_user_profile' fields");
             setResult(Activity.RESULT_CANCELED, res);
             this.finish();
             return;
         }
+
         this.user = (LoggedInUser) args.getSerializable("user");
-        String _id  = args.getString("other_user_id");
+        this.userProfile  = (UserProfile) args.getSerializable("other_user_profile");
 
         try {
-            UserEventDisplay[] tmp = Database.getEventList(user.get_id());
+            UserEventDisplay[] tmp = Database.getEventList(userProfile.get_id());
             userEvents = Arrays.asList(tmp);
         } catch (ServerSideException e) {
             Intent res = new Intent();
@@ -79,7 +83,7 @@ public class ViewEventsActivity extends AppCompatActivity {
 
         ImageButton backButton = findViewById(R.id.backButton);
         TextView title = findViewById(R.id.user_events_title);
-        title.setText(this.user.getName()+"'s events");
+        title.setText(this.userProfile.getName()+"'s events");
         backButton.setOnClickListener(this::backButtonClick);
 
         EventListFragment userEventListFragment = new EventListFragment(this.user,this.userEvents);

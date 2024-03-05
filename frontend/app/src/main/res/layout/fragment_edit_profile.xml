@@ -13,103 +13,89 @@
         style="@style/CustomFragmentTitle"
         android:text="Edit Profile" />
 
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <ImageView
-                android:id="@+id/profilePhotoImageView"
-                android:layout_width="@dimen/profile_profilePicSize"
-                android:layout_height="@dimen/profile_profilePicSize"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_profile"
-                android:contentDescription="Profile Picture"
-                android:clickable="true"
-                android:focusable="true" />
+        <ImageView
+            android:id="@+id/profilePhotoImageView"
+            android:layout_width="@dimen/profile_profilePicSize"
+            android:layout_height="@dimen/profile_profilePicSize"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_profile"
+            android:contentDescription="Profile Picture"
+            android:clickable="true"
+            android:focusable="true" />
 
 <!--            <Button-->
 <!--                android:id="@+id/saveProfilePicture"-->
 <!--                style="@style/DefaultClickableButton"-->
 <!--                android:text="Save" />-->
-        </LinearLayout>
+    </LinearLayout>
 
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_marginTop="16dp"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="16dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 <!--            <TextView-->
 <!--                android:id="@+id/changeName"-->
 <!--                style="@style/CustomFragmentTextFieldTitle"-->
 <!--                android:text="Change Name" />-->
-            <EditText
-                android:id="@+id/Username"
-                android:layout_width="wrap_content"
-                android:layout_gravity="center"
-                style="@style/CustomFragmentEditTextField"
-                android:textStyle="bold"
-                android:inputType="textPersonName"
-                android:hint="New name"/>
+        <EditText
+            android:id="@+id/Username"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            style="@style/CustomFragmentEditTextField"
+            android:textStyle="bold"
+            android:inputType="textPersonName"
+            android:hint="New name"/>
 <!--            <Button-->
 <!--                android:id="@+id/saveName"-->
 <!--                style="@style/DefaultClickableButton"-->
 <!--                android:text="Save" />-->
 
-        </LinearLayout>
+    </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:orientation="vertical">
-            <!--            <TextView-->
-            <!--                android:id="@+id/changeBio"-->
-            <!--                style="@style/CustomFragmentTextFieldTitle"-->
-            <!--                android:text="Change Bio" />-->
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/textfield_background">
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/bio"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textMultiLine"
-                    android:gravity="top"
-                    android:text="@string/placeholder"
-                    android:textSize="16sp"
-                    android:visibility="visible" />
-            </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@drawable/textfield_background">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/bio"
+            android:inputType="textMultiLine"
+            style="@style/LargeTextField"
+            android:text="@string/placeholder"
+            />
+
 
 
 <!--            <com.google.android.material.button.MaterialButton-->
 <!--                android:id="@+id/saveBio"-->
 <!--                style="@style/DefaultClickableButton"-->
 <!--                android:text="Save" />-->
-        </LinearLayout>
+    </LinearLayout>
 
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="16dp">
-            <TextView
-                android:id="@+id/changeEmail"
-                style="@style/CustomFragmentTextFieldTitle"
-                android:text="Change Email" />
-            <EditText
-                android:id="@+id/email"
-                style="@style/CustomFragmentEditTextField"
-                android:inputType="textEmailAddress"
-                android:hint="New email"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="16dp">
+        <TextView
+            android:id="@+id/changeEmail"
+            style="@style/CustomFragmentTextFieldTitle"
+            android:text="Change Email" />
+        <EditText
+            android:id="@+id/email"
+            style="@style/CustomFragmentEditTextField"
+            android:inputType="textEmailAddress"
+            android:hint="New email"/>
 
 
 <!--            <Button-->
@@ -117,63 +103,63 @@
 <!--                style="@style/DefaultClickableButton"-->
 <!--                android:text="Save" />-->
 
-        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="16dp">
+        <TextView
+            android:id="@+id/changePassword"
+            style="@style/CustomFragmentTextFieldTitle"
+            android:text="Change Password" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="16dp">
-            <TextView
-                android:id="@+id/changePassword"
-                style="@style/CustomFragmentTextFieldTitle"
-                android:text="Change Password" />
+            android:orientation="horizontal">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/CustomFragmentEditTextField"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:hint="Old Password"
+                app:endIconMode="password_toggle">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/CustomFragmentEditTextField"
-                    android:layout_width="0dp"
-                    android:layout_weight="0.5"
-                    android:hint="Old Password"
-                    app:endIconMode="password_toggle">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/oldPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/oldPassword"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="textPassword" />
-                </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/CustomFragmentEditTextField"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:hint="New Password"
+                app:endIconMode="password_toggle">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/CustomFragmentEditTextField"
-                    android:layout_width="0dp"
-                    android:layout_weight="0.5"
-                    android:hint="New Password"
-                    app:endIconMode="password_toggle">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/newPassword"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="textPassword" />
-                </com.google.android.material.textfield.TextInputLayout>
-            </LinearLayout>
-
-
-
-
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/newPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword" />
+            </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
-        <Button
-            android:id="@+id/saveUserDetailsButton"
-            style="@style/DefaultClickableButton"
-            android:text="Save"
-            android:layout_gravity="center"
-            android:layout_marginTop="16dp"/>
+
+
+
+
     </LinearLayout>
+    <Button
+        android:id="@+id/saveUserDetailsButton"
+        style="@style/DefaultClickableButton"
+        android:text="Save"
+        android:layout_gravity="center"
+        android:layout_marginTop="16dp"/>
+
 
     <ImageButton
         android:id="@+id/backButton"

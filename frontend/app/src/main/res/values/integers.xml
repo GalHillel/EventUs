@@ -2,4 +2,5 @@
 <resources>
     <integer name="profile_profilePicSize">96</integer>
     <integer name="max_image_fileSize">512</integer>
+    <integer name="max_messageTitleLength">30</integer>
 </resources>

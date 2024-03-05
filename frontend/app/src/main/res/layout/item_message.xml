@@ -1,46 +1,66 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="16dp">
-
+    android:orientation="vertical">
     <LinearLayout
         android:id="@+id/userMessageItem"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="12dp">
+        style="@style/message_read"
+        android:orientation="horizontal"
+        android:backgroundTint="@color/MAIN_VARIANT2"
+        android:backgroundTintMode="add"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
 
         <TextView
             android:id="@+id/userMessageTitleTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
+            android:maxLength="@integer/max_messageTitleLength"
+            android:text="Message Title"
             android:textColor="@color/black"
-            android:textStyle="bold"
-            android:text="Message Title" />
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/userMessageSenderTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:text="From: Sender" />
+            android:text="From: Sender"
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/userMessageDateTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:textSize="12sp"
+            android:text="dd/mm/yyyy"
             android:textAlignment="center"
-            android:text="dd/mm/yyyy" />
+            android:textSize="12sp" />
+
+
 
     </LinearLayout>
 
-    <View
+        <ImageView
+            android:id="@+id/newMessageNotification"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@android:drawable/ic_notification_overlay" />
+
+</LinearLayout>
+
+    <com.google.android.material.divider.MaterialDivider
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#00bbff" />
+        android:layout_height="wrap_content"
+        app:dividerColor="?attr/dividerColor"/>
+
 </LinearLayout>

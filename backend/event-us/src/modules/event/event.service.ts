@@ -105,7 +105,10 @@ export class EventService {
    * @param searchTerms search fields
    * @returns List of userEvents
    */
-  async search(searchTerms: SearchEventDto,fields?:string): Promise<UserEvent[]>{
+  async search(searchTerms: SearchEventDto,fields?:string,onlyUpComing?:boolean): Promise<UserEvent[]>{
+    if (onlyUpComing){
+      return this.userEventModel.find({date:{$gte:new Date()}},fields).find(searchTerms).exec();
+    }
     return this.userEventModel.find(searchTerms,fields).exec();
   }
 

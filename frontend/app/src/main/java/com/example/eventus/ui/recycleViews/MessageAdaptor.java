@@ -1,10 +1,12 @@
 package com.example.eventus.ui.recycleViews;
 
 
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -13,6 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.eventus.R;
 import com.example.eventus.data.model.UserMessageDisplay;
+import com.google.android.material.badge.BadgeDrawable;
+import com.google.android.material.badge.BadgeUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -51,15 +55,20 @@ public class MessageAdaptor extends RecyclerView.Adapter<MessageAdaptor.MessageV
         holder.userMessageDateView.setText(msg.getDateString());
         holder.userMessageSenderView.setText("from: " + msg.getSenderName());
         if (hasRead) {
-            holder.userMessageItem.setBackgroundResource(R.color.message_read);
+            holder.userMessageItem.setBackgroundTintMode(PorterDuff.Mode.ADD);
             holder.userMessageSenderView.setTypeface(null, Typeface.NORMAL);
             holder.userMessageDateView.setTypeface(null, Typeface.NORMAL);
             holder.userMessageTitleView.setTypeface(null, Typeface.NORMAL);
+            holder.newMessageNotification.setVisibility(View.INVISIBLE);
+
         } else {
-            holder.userMessageItem.setBackgroundResource(R.color.message_unread);
+
+            holder.userMessageItem.setBackgroundTintMode(PorterDuff.Mode.CLEAR);
             holder.userMessageSenderView.setTypeface(null, Typeface.BOLD);
             holder.userMessageDateView.setTypeface(null, Typeface.BOLD);
             holder.userMessageTitleView.setTypeface(null, Typeface.BOLD);
+            holder.newMessageNotification.setVisibility(View.VISIBLE);
+
         }
 
         holder.userMessageItem.setOnClickListener(v -> {
@@ -85,6 +94,8 @@ public class MessageAdaptor extends RecyclerView.Adapter<MessageAdaptor.MessageV
         TextView userMessageSenderView;
         LinearLayout userMessageItem;
 
+        ImageView newMessageNotification;
+
 
         public MessageViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -92,6 +103,7 @@ public class MessageAdaptor extends RecyclerView.Adapter<MessageAdaptor.MessageV
             userMessageDateView = itemView.findViewById(R.id.userMessageDateTextView);
             userMessageSenderView = itemView.findViewById(R.id.userMessageSenderTextView);
             userMessageItem = itemView.findViewById(R.id.userMessageItem);
+            newMessageNotification = itemView.findViewById(R.id.newMessageNotification);
         }
     }
 }

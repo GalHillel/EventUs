@@ -1,54 +1,58 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:padding="16dp"
+    android:orientation="vertical"
 
+    xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.screens.Messages.MessageFragment"
-    android:background="@color/white">
+    >
 
 
     <TextView
+        android:layout_gravity="center"
         android:id="@+id/messageTitleTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
+        android:textSize="24sp"
         android:text="Message Title"
+        android:textAlignment="center"
         android:layout_marginBottom="8dp"
         android:textStyle="bold"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        />
 
     <TextView
+        android:layout_gravity="center"
         android:id="@+id/messageSenderTextView"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="14sp"
+        android:textSize="20sp"
         android:text="From: Sender"
-        android:layout_below="@id/messageTitleTextView"
-        android:layout_centerHorizontal="true" />
+        android:layout_marginBottom="16dp" />
 
-    <TextView
-        android:id="@+id/messageContentTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:text="Message Content"
-        android:layout_below="@id/messageSenderTextView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp" />
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginBottom="16dp"
+        android:padding="8dp"
+        android:background="@drawable/textfield_background">
 
-
+        <com.google.android.material.textfield.MaterialAutoCompleteTextView
+            android:id="@+id/messageContentTextView"
+            android:clickable="false"
+            android:contextClickable="false"
+            android:focusable="false"
+            android:visibility="visible"
+            style="@style/LargeTextField"
+            android:background="@color/white"/>
+    </LinearLayout>
     <Button
         android:id="@+id/replyButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:text="Replay"
         style="@style/DefaultClickableButton"
-        android:layout_below="@id/messageContentTextView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="430dp" />
+        android:layout_gravity="center" />
 
 
 
-</RelativeLayout>
+</LinearLayout>

@@ -119,8 +119,7 @@ public class ViewUserProfileActivity extends AppCompatActivity {
     private void onViewEventsClick(View view) {
         Bundle args = new Bundle();
         args.putSerializable("user", this.user);
-
-        args.putStringArrayList("event_list",this.profile.getEvents());
+        args.putSerializable("other_user_profile",this.profile);
 
         //TODO handle activity fail
         Intent i = new Intent(view.getContext(), ViewEventsActivity.class);

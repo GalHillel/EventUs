@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.eventus.R;
 import com.example.eventus.data.model.LoggedInUser;
+import com.example.eventus.data.model.UserDisplay;
 import com.example.eventus.data.model.UserEventDisplay;
 import com.example.eventus.ui.recycleViews.EventAdapter;
 import com.example.eventus.ui.screens.EventDetails.EventDetailsActivity;
@@ -24,7 +25,7 @@ import java.util.List;
 public class EventListFragment extends Fragment implements EventAdapter.OnShowMoreDetailsClickListener {
     private List<UserEventDisplay> lst;
     private LoggedInUser user;
-    public EventListFragment(LoggedInUser user,List<UserEventDisplay> lst){
+    public EventListFragment(LoggedInUser user, List<UserEventDisplay> lst){
         this.lst = lst;
         this.user = user;
         lst.sort(Comparator.comparing(UserEventDisplay::getDate));
