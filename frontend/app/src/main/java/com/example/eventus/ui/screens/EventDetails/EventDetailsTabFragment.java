@@ -95,6 +95,7 @@ public class EventDetailsTabFragment extends Fragment {
         this.saveRatingButton = view.findViewById(R.id.saveRatingButton);
         this.ratingBar = view.findViewById(R.id.ratingBar);
         this.ratingCount = view.findViewById(R.id.ratingCountTextView);
+        this.ratingCount.setText(this.holder.getEvent().getNum_rating() + " Ratings");
 
 
         if("Organizer".equals(this.holder.getUser().getUser_type())){

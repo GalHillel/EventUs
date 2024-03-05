@@ -12,8 +12,8 @@ export class EventDto{
   readonly isPrivate: boolean;
   readonly location: string;
   readonly name: string;
-  readonly num_ratings: number;
-  readonly rating: number;
+  num_ratings: number;
+  rating: number;
 }
 
 

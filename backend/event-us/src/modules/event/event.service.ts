@@ -50,7 +50,9 @@ export class EventService {
   }
 
   async editEvent(_id:string,edit: EditEventDto): Promise<void>{
-    this.userEventModel.updateOne({_id:_id},edit).exec();
+    console.log(edit)
+    const up = await this.userEventModel.updateOne({_id:_id},edit).exec();
+    console.log(up);
   }
 
   async findAllEvents(): Promise<UserEvent[]> {
@@ -120,7 +122,8 @@ export class EventService {
       // Need to check if the user already rate this event
       // Update the event with the new rating
       const newRating = (event.rating * event.num_ratings + rateDTO.rating) / (event.num_ratings + 1);
-      return new EditEventDto({rating: newRating, num_ratings: event.num_ratings + 1});
+      const dto = {rating: newRating, num_ratings: event.num_ratings + 1} as EditEventDto;
+      return dto;
     });
   } 
 
