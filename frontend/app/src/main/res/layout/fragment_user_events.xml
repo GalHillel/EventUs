@@ -43,6 +43,6 @@
             tools:layout="@layout/fragment_event_list" />
     </LinearLayout>
 
-    <include layout="@layout/user_navigation" />
+<!--    <include layout="@layout/user_navigation" />-->
 
 </LinearLayout>

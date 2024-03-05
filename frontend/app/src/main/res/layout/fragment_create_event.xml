@@ -89,5 +89,5 @@
         android:text="Create Event"
         android:layout_marginTop="32dp"/>
 
-    <include layout="@layout/user_navigation" />
+<!--    <include layout="@layout/user_navigation" />-->
 </LinearLayout>

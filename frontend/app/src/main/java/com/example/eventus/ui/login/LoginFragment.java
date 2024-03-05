@@ -1,6 +1,7 @@
 // LoginFragment.java
 package com.example.eventus.ui.login;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,8 +20,11 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.eventus.R;
 import com.example.eventus.data.Database;
+import com.example.eventus.data.model.LoggedInUser;
 import com.example.eventus.data.model.UserDisplay;
 import com.example.eventus.databinding.FragmentLoginBinding;
+import com.example.eventus.ui.screens.EventDetails.EventDetailsActivity;
+import com.example.eventus.ui.screens.UserMainScreen.UserMainActivity;
 
 public class LoginFragment extends Fragment {
 
@@ -69,21 +73,25 @@ public class LoginFragment extends Fragment {
                 return;
             }
 
-
+            LoggedInUser userToLogIn = null;
             try {
-                UserDisplay userToLogIn = Database.userLogin(emailToSendToLoginFunction, passwordToSendToLoginFunction, userType);
+                userToLogIn = Database.userLogin(emailToSendToLoginFunction, passwordToSendToLoginFunction, userType);
                 emailFromTheUser.setText("");
                 passwordFromTheUser.setText("");
 
-                Bundle args = new Bundle();
-                args.putSerializable("user", userToLogIn);
-
-                NavHostFragment.findNavController(LoginFragment.this).navigate(R.id.action_loginFragment_to_userEventsFragment, args);
+                //NavHostFragment.findNavController(LoginFragment.this).navigate(R.id.action_loginFragment_to_userEventsFragment, args);
                 // Prints success message
                 Toast.makeText(requireContext(), "Welcome " + userToLogIn.getName(), Toast.LENGTH_SHORT).show();
             } catch (Exception e) {
                 Toast.makeText(requireContext(), e.toString(), Toast.LENGTH_SHORT).show();
             }
+
+            Bundle args = new Bundle();
+            args.putSerializable("user", userToLogIn);
+
+            Intent i = new Intent(this.getContext(), UserMainActivity.class);
+            i.putExtras(args);
+            startActivity(i);
         });
 
 

@@ -45,5 +45,5 @@
         android:id="@+id/discoveredEventsList"
         tools:layout="@layout/fragment_event_list" />
 
-    <include layout="@layout/user_navigation" />
+<!--    <include layout="@layout/user_navigation" />-->
 </LinearLayout>

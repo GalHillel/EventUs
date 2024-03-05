@@ -35,6 +35,10 @@ public class UserEventsFragment extends Fragment {
     public UserEventsFragment() {
     }
 
+    public UserEventsFragment(LoggedInUser user) {
+        this.user = user;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -44,20 +48,23 @@ public class UserEventsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        BottomNavigationView bottomNavigationView = view.findViewById(R.id.navigation);
-        Menu navMenu = bottomNavigationView.getMenu();
+        //BottomNavigationView bottomNavigationView = view.findViewById(R.id.navigation);
+        //Menu navMenu = bottomNavigationView.getMenu();
 
         if (getArguments() != null) {
             user = (LoggedInUser) getArguments().getSerializable("user");
-
+            /*
             if (user != null && user.getUser_type().equals("Organizer")) {
                 navMenu.findItem(R.id.discover).setVisible(false);
             } else {
                 navMenu.findItem(R.id.newEvent).setVisible(false);
             }
+
+             */
         }
 
         // Set up click listeners for buttons
+        /*
         view.findViewById(R.id.discover).setOnClickListener(v ->
                 Navigation.findNavController(v).navigate(R.id.action_userEventsFragment_to_userDiscoverFragment, createNavigationBundle()));
 
@@ -69,7 +76,7 @@ public class UserEventsFragment extends Fragment {
 
         view.findViewById(R.id.newEvent).setOnClickListener(v ->
                 Navigation.findNavController(v).navigate(R.id.action_userEventsFragment_to_createEventFragment, createNavigationBundle()));
-
+        */
         // Fetch user events using the database function
         try {
             UserEventDisplay[] userEvents = Database.getEventList(user.get_id());

@@ -40,6 +40,9 @@ public class CreateEventFragment extends Fragment {
 
     private Calendar calendar;
 
+    public CreateEventFragment(LoggedInUser user) {
+        this.user = user;
+    }
     public CreateEventFragment() {
         // Required empty public constructor
     }
@@ -55,17 +58,20 @@ public class CreateEventFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        BottomNavigationView bottomNavigationView = view.findViewById(R.id.navigation);
-        Menu navMenu = bottomNavigationView.getMenu();
+        //BottomNavigationView bottomNavigationView = view.findViewById(R.id.navigation);
+        //Menu navMenu = bottomNavigationView.getMenu();
 
-        if (getArguments() != null) {
+
+        if (user == null &&getArguments() != null) {
             user = (LoggedInUser) getArguments().getSerializable("user");
-
+            /*
             if (user != null && user.getUser_type().equals("Organizer")) {
                 navMenu.findItem(R.id.discover).setVisible(false);
             } else {
                 navMenu.findItem(R.id.newEvent).setVisible(false);
             }
+
+             */
         }
 
         Log.d("CreateEventFragment", "User ID: " + this.user.get_id());
@@ -78,7 +84,7 @@ public class CreateEventFragment extends Fragment {
         setPrivateEventCheckbox = view.findViewById(R.id.setPrivateEventCheckbox);
 
         // Set up click listeners for buttons
-
+        /*
         view.findViewById(R.id.messages).setOnClickListener(v ->
                 Navigation.findNavController(v).navigate(R.id.action_createEventFragment_to_userMessagesFragment, createNavigationBundle()));
 
@@ -87,7 +93,7 @@ public class CreateEventFragment extends Fragment {
 
         view.findViewById(R.id.myevents).setOnClickListener(v ->
                 Navigation.findNavController(v).navigate(R.id.action_createEventFragment_to_userEventsFragment, createNavigationBundle()));
-
+        */
         // Initialize Calendar
         calendar = Calendar.getInstance();
 

@@ -29,6 +29,13 @@ TODO: 1. Implement rating for users and events - users may rate event *not* orga
 public class UserProfileFragment extends Fragment {
     private LoggedInUser user;
 
+    public UserProfileFragment(){
+        this.user = null;
+    }
+    public UserProfileFragment(LoggedInUser user){
+        this.user = user;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_user_profile, container, false);
@@ -38,17 +45,19 @@ public class UserProfileFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         // Get the users' data from arguments
-        if (getArguments() != null) {
+        if (user == null && getArguments() != null) {
             user = (LoggedInUser) getArguments().getSerializable("user");
         }
 
-
+        /*
         // Hide or show bottom navigation items based on user type
         if (user != null && user.getUser_type().equals("Organizer")) {
             hideNavigationItem(view, R.id.discover);
         } else {
             hideNavigationItem(view, R.id.newEvent);
         }
+
+         */
 
         view.findViewById(R.id.logout).setOnClickListener(this::onLogoutButtonClicked);
         view.findViewById(R.id.editProfileButton).setOnClickListener(this::onEditProfileButtonClicked);
@@ -60,7 +69,7 @@ public class UserProfileFragment extends Fragment {
                 .commit();
 
 
-
+        /*
         // Set up click listeners for buttons in user_navigation
         view.findViewById(R.id.discover).setOnClickListener(v ->
                 Navigation.findNavController(v).navigate(R.id.action_userProfileFragment_to_userDiscoverFragment, createNavigationBundle()));
@@ -73,7 +82,9 @@ public class UserProfileFragment extends Fragment {
 
         view.findViewById(R.id.newEvent).setOnClickListener(v ->
                 Navigation.findNavController(v).navigate(R.id.action_userProfileFragment_to_createEventFragment, createNavigationBundle()));
+        */
     }
+
 
     private void hideNavigationItem(View view, int itemId) {
         BottomNavigationView bottomNavigationView = view.findViewById(R.id.navigation);
@@ -86,12 +97,15 @@ public class UserProfileFragment extends Fragment {
         bundle.putSerializable("user", user);
         return bundle;
     }
+
+    //TODO fix
     public void onEditProfileButtonClicked(View view){
         Bundle args = createNavigationBundle();
         args.putSerializable("user", user);
         Navigation.findNavController(view).navigate(R.id.action_userProfileFragment_to_editProfileFragment, args);
     }
 
+    //TODO fix
     public void onLogoutButtonClicked(View view){
         Navigation.findNavController(view).navigate(R.id.action_userProfileFragment_to_loginFragment);
         // Prints success message

@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 
 public class UserDiscoverFragment extends Fragment {
 
@@ -38,6 +39,10 @@ public class UserDiscoverFragment extends Fragment {
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     public UserDiscoverFragment() {
+        user = null;
+    }
+    public UserDiscoverFragment(LoggedInUser user) {
+        this.user = user;
     }
 
     @Override
@@ -48,25 +53,27 @@ public class UserDiscoverFragment extends Fragment {
 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        /*
         BottomNavigationView bottomNavigationView = view.findViewById(R.id.navigation);
         Menu navMenu = bottomNavigationView.getMenu();
-
-        if (getArguments() != null) {
+        */
+        if (user == null && getArguments() != null) {
             user = (LoggedInUser) getArguments().getSerializable("user");
-
+        /*
             if (user != null && user.getUser_type().equals("Organizer")) {
                 navMenu.findItem(R.id.discover).setVisible(false);
             } else {
                 navMenu.findItem(R.id.newEvent).setVisible(false);
             }
+
+         */
         }
         searchEditText = view.findViewById(R.id.searchEditText);
         Button searchButton = view.findViewById(R.id.searchButton);
 
 
 
-
+        /*
 
         // Set up click listeners for buttons
         view.findViewById(R.id.profile).setOnClickListener(v ->
@@ -77,7 +84,7 @@ public class UserDiscoverFragment extends Fragment {
 
         view.findViewById(R.id.messages).setOnClickListener(v ->
                 Navigation.findNavController(v).navigate(R.id.action_userDiscoverFragment_to_userMessagesFragment, createNavigationBundle()));
-
+        */
         searchButton.setOnClickListener(v -> {
             // Perform event search
             performEventSearch();
@@ -111,7 +118,7 @@ public class UserDiscoverFragment extends Fragment {
             e.printStackTrace();
         }
         //filter events
-        //this.searchResults = searchResults.stream().filter(e->!this.user.getEvents().contains(e.getId())).collect(Collectors.toList());
+        this.searchResults = searchResults.stream().filter(e->!this.user.getEvents().contains(e.getId())).collect(Collectors.toList());
 
         EventListFragment searchEventListFragment = new EventListFragment(this.user,this.searchResults);
         getChildFragmentManager().beginTransaction()

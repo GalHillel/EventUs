@@ -39,6 +39,11 @@ public class UserMessagesFragment extends Fragment implements MessageAdaptor.onM
 
     public UserMessagesFragment() {
         // Required empty public constructor
+        this.user = null;
+    }
+
+    public UserMessagesFragment(LoggedInUser user){
+        this.user = user;
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -52,31 +57,32 @@ public class UserMessagesFragment extends Fragment implements MessageAdaptor.onM
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        BottomNavigationView bottomNavigationView = view.findViewById(R.id.navigation);
-        Menu navMenu = bottomNavigationView.getMenu();
+//        BottomNavigationView bottomNavigationView = view.findViewById(R.id.navigation);
+//        Menu navMenu = bottomNavigationView.getMenu();
 
-        if (getArguments() != null) {
+        if (user == null && getArguments() != null) {
             this.user = (LoggedInUser) getArguments().getSerializable("user");
-            if (user != null && user.getUser_type().equals("Organizer")) {
-                navMenu.findItem(R.id.discover).setVisible(false);
-            } else {
-                navMenu.findItem(R.id.newEvent).setVisible(false);
-            }
+
+//            if (user != null && user.getUser_type().equals("Organizer")) {
+//                navMenu.findItem(R.id.discover).setVisible(false);
+//            } else {
+//                navMenu.findItem(R.id.newEvent).setVisible(false);
+//            }
 
         }
 
-        // Set up click listeners for buttons
-        view.findViewById(R.id.discover).setOnClickListener(v ->
-                Navigation.findNavController(v).navigate(R.id.action_userMessagesFragment_to_userDiscoverFragment, createNavigationBundle()));
-
-        view.findViewById(R.id.profile).setOnClickListener(v ->
-                Navigation.findNavController(v).navigate(R.id.action_userMessagesFragment_to_userProfileFragment, createNavigationBundle()));
-
-        view.findViewById(R.id.myevents).setOnClickListener(v ->
-                Navigation.findNavController(v).navigate(R.id.action_userMessagesFragment_to_userEventsFragment, createNavigationBundle()));
-
-        view.findViewById(R.id.newEvent).setOnClickListener(v ->
-                Navigation.findNavController(v).navigate(R.id.action_userMessagesFragment_to_createEventFragment, createNavigationBundle()));
+//        // Set up click listeners for buttons
+//        view.findViewById(R.id.discover).setOnClickListener(v ->
+//                Navigation.findNavController(v).navigate(R.id.action_userMessagesFragment_to_userDiscoverFragment, createNavigationBundle()));
+//
+//        view.findViewById(R.id.profile).setOnClickListener(v ->
+//                Navigation.findNavController(v).navigate(R.id.action_userMessagesFragment_to_userProfileFragment, createNavigationBundle()));
+//
+//        view.findViewById(R.id.myevents).setOnClickListener(v ->
+//                Navigation.findNavController(v).navigate(R.id.action_userMessagesFragment_to_userEventsFragment, createNavigationBundle()));
+//
+//        view.findViewById(R.id.newEvent).setOnClickListener(v ->
+//                Navigation.findNavController(v).navigate(R.id.action_userMessagesFragment_to_createEventFragment, createNavigationBundle()));
 
 
         try {

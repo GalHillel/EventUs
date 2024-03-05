@@ -27,9 +27,7 @@
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
         android:orientation="vertical">
-    <include
-
-        layout="@layout/user_navigation" />
+<!--    <include layout="@layout/user_navigation" />-->
     </LinearLayout>
 
 </LinearLayout>
