@@ -16,63 +16,81 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <TextView
-            android:id="@+id/signUpText"
-            android:layout_width="match_parent"
+            android:id="@+id/signUpText1"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Do Not Have An Account?\nLet's Sign Up Now!"
+            android:text="Do Not Have An Account?"
             android:textColor="@android:color/white"
-            android:textSize="32sp"
+            android:textSize="28sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             android:layout_marginTop="32dp"
             android:layout_marginBottom="32dp"
             />
 
-
-        <EditText
-            android:id="@+id/email"
-            android:layout_width="0dp"
+        <TextView
+            android:id="@+id/signUpText2"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="128dp"
-            android:hint="Email"
-            android:inputType="textEmailAddress"
-            android:minHeight="48dp"
-            android:textColor="@color/black"
-            android:textColorHint="@color/grey"
-            app:layout_constraintEnd_toStartOf="@+id/username"
+            android:text="Let's Sign Up Now!"
+            android:textColor="@android:color/white"
+            android:textSize="32sp"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/signUpText" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/signUpText1"
+            android:layout_marginBottom="32dp"
+            />
 
+        <!-- Username -->
         <EditText
             android:id="@+id/username"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="128dp"
+            android:layout_marginTop="16dp"
             android:hint="Username"
             android:minHeight="48dp"
             android:textColor="@color/black"
             android:textColorHint="@color/grey"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/email"
-            app:layout_constraintTop_toBottomOf="@+id/signUpText" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/signUpText2"/>
 
+        <!-- Email -->
+        <EditText
+            android:id="@+id/email"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:hint="Email"
+            android:inputType="textEmailAddress"
+            android:minHeight="48dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/grey"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/username" />
+
+        <!-- Password -->
         <EditText
             android:id="@+id/password"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:hint="Password"
-            android:textColor="@color/black"
-            android:textColorHint="@color/grey"
             android:inputType="textPassword"
             android:minHeight="48dp"
-            app:layout_constraintEnd_toStartOf="@+id/passwordValidation"
+            android:textColor="@color/black"
+            android:textColorHint="@color/grey"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/username" />
+            app:layout_constraintTop_toBottomOf="@+id/email" />
 
+        <!-- Repeat Password -->
         <EditText
             android:id="@+id/passwordValidation"
             android:layout_width="0dp"
@@ -84,17 +102,16 @@
             android:textColorHint="@color/grey"
             android:minHeight="48dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/password"
-            app:layout_constraintTop_toBottomOf="@+id/username" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/password" />
 
+        <!-- RadioGroup for choosing organizer/participant -->
         <RadioGroup
             android:id="@+id/radioGroup"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:textColorHint="#FFFFFF"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/passwordValidation">
 
@@ -114,6 +131,7 @@
 
         </RadioGroup>
 
+        <!-- Register Button -->
         <Button
             android:id="@+id/register"
             android:layout_width="0dp"
@@ -125,19 +143,18 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
 
+        <!-- Login Link -->
         <TextView
             android:id="@+id/loginLink"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:background="#00000000"
             android:text="Already a member? Sign in here!"
             android:textColor="@color/black"
             android:textStyle="italic"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/register" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

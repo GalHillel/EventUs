@@ -8,14 +8,26 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Welcome!"
+        android:textColor="@android:color/white"
+        android:textSize="60dp"
+        android:textStyle="bold"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="100dp"
+        android:layout_marginBottom="32dp"/>
+
+
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Welcome!\nLet's Login"
+        android:text="Let's Login"
         android:textColor="@android:color/white"
         android:textSize="36sp"
         android:textStyle="bold"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="210dp"
+        android:layout_marginTop="75dp"
         android:layout_marginBottom="32dp"/>
 
     <com.google.android.material.textfield.TextInputLayout

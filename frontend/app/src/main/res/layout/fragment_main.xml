@@ -28,17 +28,29 @@
         android:layout_height="wrap_content"
         android:text="Welcome to EventUs!"
         android:textColor="@android:color/white"
-        android:textSize="32sp"
+        android:textSize="34sp"
         android:textStyle="bold"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="64dp"
         android:layout_marginBottom="16dp" />
 
     <TextView
+        android:id="@+id/slogen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Connect. Celebrate. Experience."
+        android:textColor="@color/grey"
+        android:textSize="25sp"
+        android:textAlignment="center"
+        android:textStyle="italic"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="64dp" />
+
+    <TextView
         android:id="@+id/explanationText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Discover exciting events near you and connect with like-minded people."
+        android:text="Discover exciting events near you and connect with like-minded people"
         android:textColor="@color/grey"
         android:textSize="18sp"
         android:textAlignment="center"
