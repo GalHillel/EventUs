@@ -41,7 +41,7 @@
         <com.google.android.material.textfield.MaterialAutoCompleteTextView
             android:id="@+id/messageContentTextView"
             android:clickable="false"
-            android:contextClickable="false"
+            android:cursorVisible="false"
             android:focusable="false"
             android:visibility="visible"
             style="@style/LargeTextField"

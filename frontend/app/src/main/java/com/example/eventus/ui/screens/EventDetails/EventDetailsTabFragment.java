@@ -271,10 +271,15 @@ public class EventDetailsTabFragment extends Fragment {
 
     private void setAsTextView(EditText tv, boolean flg) {
         if (flg) {
-            tv.setInputType(EditorInfo.TYPE_CLASS_TEXT);
+
+            tv.setClickable(true);
+            tv.setFocusable(true);
+            tv.setCursorVisible(true);
             tv.setBackground(new AppCompatEditText(tv.getContext()).getBackground());
         } else {
-            tv.setInputType(EditorInfo.TYPE_NULL);
+            tv.setClickable(false);
+            tv.setFocusable(false);
+            tv.setCursorVisible(false);
             tv.setBackground(null);
         }
 

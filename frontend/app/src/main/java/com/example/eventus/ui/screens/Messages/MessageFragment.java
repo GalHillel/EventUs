@@ -50,8 +50,6 @@ public class MessageFragment extends Fragment {
         TextView titleTextView = view.findViewById(R.id.messageTitleTextView);
         TextView senderTextView = view.findViewById(R.id.messageSenderTextView);
         MaterialAutoCompleteTextView contentTextView = view.findViewById(R.id.messageContentTextView);
-        contentTextView.setInputType(EditorInfo.TYPE_NULL);
-
         titleTextView.setText(this.holder.getMessage().getTitle());
         senderTextView.setText("From: "+this.holder.getSender().getName());
         contentTextView.setText(this.holder.getMessage().getContent());

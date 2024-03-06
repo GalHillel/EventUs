@@ -111,7 +111,7 @@ public class BaseUserProfileFragment extends Fragment {
 
         // Set actual user name and bio
 
-        bioTextView.setInputType(EditorInfo.TYPE_NULL);
+
         bioTextView.setBackground(null);
         bioTextView.setText(userProfile.getBio());
         usernameTextView.setText(userProfile.getName());

@@ -89,8 +89,7 @@ public class CreateMessageActivity extends BaseActivity {
 
     public void backButtonClick(View view) {
         // Navigate back
-        this.setResult(Activity.RESULT_OK);
-        this.finish();
+        success();
     }
 }
 
