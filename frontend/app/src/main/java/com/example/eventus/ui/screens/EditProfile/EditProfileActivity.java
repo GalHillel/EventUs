@@ -12,52 +12,29 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.eventus.R;
+import com.example.eventus.data.BaseActivity;
 import com.example.eventus.data.Database;
 import com.example.eventus.data.model.LoggedInUser;
 import com.example.eventus.ui.screens.Profile.BaseUserProfileFragment;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
-public class EditProfileActivity extends AppCompatActivity {
-    LoggedInUser user;
+public class EditProfileActivity extends BaseActivity {
+    EditProfileFragment userProfileFragment;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
 
-        if (getIntent() == null) {
-            Intent res = new Intent();
-            res.putExtra("message", "null intent given");
-            setResult(Activity.RESULT_CANCELED, res);
-            this.finish();
-            return;
-        }
-
-        Intent intent = getIntent();
-
-        if (intent.getExtras() == null) {
-            Intent res = new Intent();
-            res.putExtra("message", "intent missing bundle");
-            setResult(Activity.RESULT_CANCELED, res);
-            this.finish();
-            return;
-        }
-
-        Bundle args = intent.getExtras();
-
-        if (!args.containsKey("user")){
-            Intent res = new Intent();
-            res.putExtra("message", "args missing 'user' field");
-            setResult(Activity.RESULT_CANCELED, res);
-            this.finish();
-            return;
-        }
         this.user = (LoggedInUser) args.getSerializable("user");
 
-        ImageButton backButton = findViewById(R.id.backButton);
+        backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(this::backButtonClick);
 
-        EditProfileFragment userProfileFragment = new EditProfileFragment(this);
+        userProfileFragment = new EditProfileFragment(this);
         getSupportFragmentManager().beginTransaction()
                 .setReorderingAllowed(true)
                 .replace(R.id.EditProfileFrame, userProfileFragment)
@@ -69,7 +46,7 @@ public class EditProfileActivity extends AppCompatActivity {
         return this.user;
     }
 
-    public boolean updateParams(HashMap<String, Object> updatedUserParams){
+    public void updateParams(HashMap<String, Object> updatedUserParams){
         try {
             Database.editUser(this.user.get_id(), updatedUserParams);
             if (updatedUserParams.containsKey("name")) {
@@ -81,22 +58,20 @@ public class EditProfileActivity extends AppCompatActivity {
             if(updatedUserParams.containsKey("profile_pic")){
                 this.user.setProfile_pic((String) updatedUserParams.get("profile_pic"));
             }
-            return true;
 
 
         } catch (Exception e) {
             Log.e("Err", Objects.requireNonNull(e.getMessage()));
         }
-        return false;
     }
 
     public void backButtonClick(View view) {
         // Navigate back
-        this.setResult(Activity.RESULT_OK);
-        this.finish();
+        success();
     }
-    public void success(){
-        this.setResult(Activity.RESULT_OK);
-        this.finish();
+
+    @Override
+    public Set<String> getRequiredArgs() {
+        return new HashSet<String>(Arrays.asList("user"));
     }
 }

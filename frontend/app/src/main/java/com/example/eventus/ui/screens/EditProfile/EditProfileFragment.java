@@ -127,26 +127,29 @@ public class EditProfileFragment extends Fragment {
             }
             if(isValidProfilePic){
                 saveProfilePicture();
+                reset();
+            } else if (updatedUserParams.size()>0) {
+                holder.updateParams(updatedUserParams);
+                reset();
             }
-            if(updatedUserParams.size() == 0)
-                return;
 
-            if(this.holder.updateParams(this.updatedUserParams)) {
-                oldPasswordEditText.setText("");
-                newPasswordEditText.setText("");
-                usernameEditText.setText(this.holder.getUser().getName());
-                bioEditText.setText(this.holder.getUser().getBio());
-                emailEditText.setText("");
-                // Prints success message
-                Toast.makeText(requireContext(), "Account details have changed successfully", Toast.LENGTH_SHORT).show();
-                this.isValidProfilePic = false;
-            }
 
         });
 
 
         setUpTextListeners();
 
+    }
+
+    public void reset(){
+        oldPasswordEditText.setText("");
+        newPasswordEditText.setText("");
+        usernameEditText.setText(holder.getUser().getName());
+        bioEditText.setText(holder.getUser().getBio());
+        emailEditText.setText("");
+        // Prints success message
+        Toast.makeText(requireContext(), "Account details have changed successfully", Toast.LENGTH_SHORT).show();
+        isValidProfilePic = false;
     }
 
     private void setUpTextListeners() {
@@ -398,6 +401,7 @@ public class EditProfileFragment extends Fragment {
             public void onSuccess(ServerResponse response) {
                 String profile_id = response.getPayload();
                 updatedUserParams.put("profile_pic", profile_id);
+                holder.updateParams(updatedUserParams);
 
             }
 

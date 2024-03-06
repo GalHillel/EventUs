@@ -78,7 +78,7 @@ public class ViewEventsActivity extends BaseActivity {
             mode = mode+" ";
         }
 
-        ImageButton backButton = findViewById(R.id.backButton);
+        backButton = findViewById(R.id.backButton);
         TextView title = findViewById(R.id.user_events_title);
         title.setText(this.userProfile.getName()+"'s "+mode+"events");
         backButton.setOnClickListener(this::backButtonClick);

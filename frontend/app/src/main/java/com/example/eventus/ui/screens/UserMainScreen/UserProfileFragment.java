@@ -1,5 +1,6 @@
 package com.example.eventus.ui.screens.UserMainScreen;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -101,7 +102,23 @@ public class UserProfileFragment extends Fragment {
         bundle.putSerializable("user", holder.getUser());
         return bundle;
     }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == R.id.activity_edit_profile){
+            if(resultCode == Activity.RESULT_OK){
+                if(data != null && data.getExtras() != null){
+                    LoggedInUser newUser = (LoggedInUser) data.getExtras().getSerializable("user");
+                    if(newUser != null){
+                        this.holder.setUser(newUser);
+                    }
 
+                    this.holder.update(R.id.profile);
+                }
+            } else if (resultCode == Activity.RESULT_CANCELED) {
+                Toast.makeText(requireContext(), "an error has occurred",Toast.LENGTH_LONG).show();
+            }
+        }
+    }
     //TODO fix
     public void onEditProfileButtonClicked(View view){
         Bundle args = new Bundle();
@@ -109,7 +126,7 @@ public class UserProfileFragment extends Fragment {
         //TODO handle activity fail
         Intent i = new Intent(this.getContext(), EditProfileActivity.class);
         i.putExtras(args);
-        startActivity(i);
+        startActivityForResult(i,R.id.activity_edit_profile);
     }
 
     //TODO fix

@@ -58,7 +58,7 @@ public class ViewUserProfileActivity extends BaseActivity {
         }
 
 
-        ImageButton backButton = findViewById(R.id.backButton);
+        backButton = findViewById(R.id.backButton);
         Button messageButton = findViewById(R.id.sendMessageButton);
         Button viewPastUserEventsButton = findViewById(R.id.viewPastUserEventsButton);
         Button viewUpcomingUserEventsButton = findViewById(R.id.viewUpcomingUserEventsButton);
