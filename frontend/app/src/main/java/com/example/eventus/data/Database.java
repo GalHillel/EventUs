@@ -505,7 +505,7 @@ public class Database {
      * @throws Exception ServerSideException or other exception
      */
     public static void editEvent(String event_id, HashMap<String,Object> newEventParams) throws Exception{
-        AsyncHttpRequest task = new AsyncHttpRequest("users/"+event_id+"/edit",  newEventParams, null, "PATCH");
+        AsyncHttpRequest task = new AsyncHttpRequest("events/"+event_id+"/edit",  newEventParams, null, "PATCH");
         task.execute();
         task.get();
         ServerResponse response = task.getServerResponse();

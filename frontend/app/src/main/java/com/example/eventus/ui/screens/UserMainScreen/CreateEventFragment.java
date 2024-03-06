@@ -1,6 +1,7 @@
 package com.example.eventus.ui.screens.UserMainScreen;
 
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -123,8 +125,7 @@ public class CreateEventFragment extends Fragment {
                 calendar.set(Calendar.YEAR, year);
                 calendar.set(Calendar.MONTH, month);
                 calendar.set(Calendar.DAY_OF_MONTH, day);
-
-                updateDateEditText();
+                timePicker();
             }
         };
 
@@ -136,10 +137,28 @@ public class CreateEventFragment extends Fragment {
                 calendar.get(Calendar.DAY_OF_MONTH)
         ).show();
     }
+    private void timePicker(){
+        // Launch Time Picker Dialog
+        TimePickerDialog.OnTimeSetListener timePickerDialog = new TimePickerDialog.OnTimeSetListener() {
 
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                calendar.set(Calendar.MINUTE, minute);
+                calendar.set(Calendar.SECOND,0);
+                updateDateEditText();
+            }
+        };
+        new TimePickerDialog(requireContext(),
+                timePickerDialog,
+                calendar.get(Calendar.HOUR_OF_DAY),
+                calendar.get(Calendar.MINUTE),true).show();
+
+
+
+
+    }
     private void updateDateEditText() {
-        String dateFormat = "yyyy-MM-dd";
-        SimpleDateFormat sdf = new SimpleDateFormat(dateFormat, Locale.getDefault());
         eventDateEditText.setText(calendar.getTime().toString());
     }
 

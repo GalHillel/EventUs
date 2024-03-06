@@ -1,6 +1,7 @@
 package com.example.eventus.ui.screens.EventDetails;
 
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.icu.util.Calendar;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -293,26 +295,44 @@ public class EventDetailsTabFragment extends Fragment {
         DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                calendar.set(Calendar.YEAR, year);
-                calendar.set(Calendar.MONTH, month);
-                calendar.set(Calendar.DAY_OF_MONTH, day);
-
-                updateDateTextView();
+                calendar.set(java.util.Calendar.YEAR, year);
+                calendar.set(java.util.Calendar.MONTH, month);
+                calendar.set(java.util.Calendar.DAY_OF_MONTH, day);
+                timePicker();
             }
         };
 
         new DatePickerDialog(
                 requireContext(),
                 dateSetListener,
-                calendar.get(Calendar.YEAR),
-                calendar.get(Calendar.MONTH),
-                calendar.get(Calendar.DAY_OF_MONTH)
+                calendar.get(java.util.Calendar.YEAR),
+                calendar.get(java.util.Calendar.MONTH),
+                calendar.get(java.util.Calendar.DAY_OF_MONTH)
         ).show();
     }
+    private void timePicker(){
+        // Launch Time Picker Dialog
+        TimePickerDialog.OnTimeSetListener timePickerDialog = new TimePickerDialog.OnTimeSetListener() {
+
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                calendar.set(java.util.Calendar.HOUR_OF_DAY, hourOfDay);
+                calendar.set(java.util.Calendar.MINUTE, minute);
+                calendar.set(java.util.Calendar.SECOND,0);
+                updateDateTextView();
+            }
+        };
+        new TimePickerDialog(requireContext(),
+                timePickerDialog,
+                calendar.get(java.util.Calendar.HOUR_OF_DAY),
+                calendar.get(java.util.Calendar.MINUTE),true).show();
+
+
+    }
+
 
     private void updateDateTextView() {
-        String dateFormat = "yyyy-MM-dd";
-        SimpleDateFormat sdf = new SimpleDateFormat(dateFormat, Locale.getDefault());
+
         eventDateView.setText(calendar.getTime().toString());
     }
 

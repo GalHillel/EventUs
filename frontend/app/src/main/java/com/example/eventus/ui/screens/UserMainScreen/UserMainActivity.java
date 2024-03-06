@@ -164,6 +164,7 @@ public class UserMainActivity extends AppCompatActivity implements NavigationBar
         }
 
         if (itemId == R.id.myevents) {
+            loadEvents();
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.userMainMenuFrame, new UserEventsFragment(this))
