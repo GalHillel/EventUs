@@ -99,7 +99,11 @@ public class MessageActivity extends AppCompatActivity {
 
     public void backButtonClick(View view) {
         // Navigate back
-        this.setResult(Activity.RESULT_OK);
+        Intent i = new Intent();
+        Bundle args = new Bundle();
+        args.putSerializable("user",this.user);
+        i.putExtra("testing",args);
+        this.setResult(Activity.RESULT_OK,i);
         this.finish();
     }
 

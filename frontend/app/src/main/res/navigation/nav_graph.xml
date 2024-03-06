@@ -79,7 +79,7 @@
 
     <fragment
         android:id="@+id/editProfileFragment"
-        android:name="com.example.eventus.ui.screens.EditProfileFragment"
+        android:name="com.example.eventus.ui.screens.EditProfile.EditProfileFragment"
         android:label="EditProfileFragment"
         tools:layout="@layout/fragment_edit_profile">
 

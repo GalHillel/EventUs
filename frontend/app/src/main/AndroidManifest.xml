@@ -47,6 +47,9 @@
         <activity
             android:name=".ui.screens.UserMainScreen.UserMainActivity"
             android:exported="true"/>
+        <activity
+            android:name=".ui.screens.EditProfile.EditProfileActivity"
+            android:exported="true"/>
 
 
     </application>

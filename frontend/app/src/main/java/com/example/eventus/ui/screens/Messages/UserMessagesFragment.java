@@ -3,10 +3,12 @@ package com.example.eventus.ui.screens.Messages;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,6 +26,7 @@ import com.example.eventus.data.model.UserDisplay;
 import com.example.eventus.data.model.UserMessageDisplay;
 import com.example.eventus.ui.recycleViews.MessageAdaptor;
 import com.example.eventus.ui.screens.EventDetails.EventDetailsActivity;
+import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
@@ -127,14 +130,28 @@ public class UserMessagesFragment extends Fragment implements MessageAdaptor.onM
     }
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == R.id.activity_user_message){
+            if(resultCode == Activity.RESULT_OK){
+                //TODO handle message read
+                Toast.makeText(requireContext(), "returned from read message", Toast.LENGTH_SHORT).show();
+
+                //Log.w("UserMessageFragment", "intent keys: "+data.getExtras().keySet().toString());
+
+            }
+        }
+    }
+
+    @Override
     public void onMessageClick(int position) {
 
         UserMessageDisplay messageClicked = messageList.get(position);
         Bundle args = createNavigationBundle();
         args.putString("message_id", messageClicked.get_id());
+
         //TODO handle activity fail
         Intent i = new Intent(this.getContext(), MessageActivity.class);
         i.putExtras(args);
-        startActivity(i);
+        startActivityForResult(i,R.id.activity_user_message);
     }
 }

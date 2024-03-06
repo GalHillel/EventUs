@@ -1,4 +1,4 @@
-package com.example.eventus.ui.screens;
+package com.example.eventus.ui.screens.EditProfile;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -51,13 +51,17 @@ public class EditProfileFragment extends Fragment {
     private ImageView profilePhotoImageView;
     Button saveUserDetailsButton;
 
-    private LoggedInUser user;
     private boolean isValidProfilePic;
     HashMap<String, Object>  updatedUserParams = new HashMap<>();
+    EditProfileActivity holder;
 
     /*TODO: Make edit profile cleaner and easier to use, one click save for all fields like edit event - DONE
             TEST IMPLEMENTATION
      */
+
+    public EditProfileFragment(EditProfileActivity holder){
+        this.holder = holder;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -67,11 +71,6 @@ public class EditProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        if (getArguments() != null) {
-            user = (LoggedInUser) getArguments().getSerializable("user");
-
-        }
-
         usernameEditText = view.findViewById(R.id.Username);
         emailEditText = view.findViewById(R.id.email);
         oldPasswordEditText = view.findViewById(R.id.oldPassword);
@@ -80,10 +79,9 @@ public class EditProfileFragment extends Fragment {
         bioEditText = view.findViewById(R.id.bio);
         profilePhotoImageView = view.findViewById(R.id.profilePhotoImageView);
 
-        if (user.getProfile_pic().length() > 0) {
+        if (this.holder.getUser().getProfile_pic().length() > 0) {
             try {
-
-                Bitmap profile_icon = Database.getProfilePic(user.get_id());
+                Bitmap profile_icon = Database.getProfilePic(this.holder.getUser().get_id());
                 int width = getResources().getInteger(R.integer.profile_profilePicSize);
                 int height = getResources().getInteger(R.integer.profile_profilePicSize);
                 profile_icon = Bitmap.createScaledBitmap(profile_icon, width, height, false);
@@ -97,20 +95,14 @@ public class EditProfileFragment extends Fragment {
                 e.printStackTrace();
             }
         }
-        if(user != null){
-            usernameEditText.setText(user.getName());
-            bioEditText.setText(user.getBio());
+        if(this.holder.getUser() != null){
+            usernameEditText.setText(this.holder.getUser().getName());
+            bioEditText.setText(this.holder.getUser().getBio());
         }
-
-
-        // Set up listeners
-        ImageButton backButton = view.findViewById(R.id.backButton);
-        backButton.setOnClickListener(v -> getParentFragmentManager().popBackStack());
 
 
 
         profilePhotoImageView.setOnClickListener(v -> choosePhotoFromGallery());
-
 
         saveUserDetailsButton.setOnClickListener(v -> {
             updatedUserParams = new HashMap<>();
@@ -139,28 +131,15 @@ public class EditProfileFragment extends Fragment {
             if(updatedUserParams.size() == 0)
                 return;
 
-
-            try {
-                Database.editUser(user.get_id(), updatedUserParams);
-                if (updatedUserParams.containsKey("name")) {
-                    user.setName((String) updatedUserParams.get("name"));
-                }
-                if (updatedUserParams.containsKey("bio")) {
-                    user.setBio((String) updatedUserParams.get("bio"));
-                }
-                if(updatedUserParams.containsKey("profile_pic")){
-                    user.setProfile_pic((String) updatedUserParams.get("profile_pic"));
-                }
+            if(this.holder.updateParams(this.updatedUserParams)) {
                 oldPasswordEditText.setText("");
                 newPasswordEditText.setText("");
-                usernameEditText.setText(user.getName());
-                bioEditText.setText(user.getBio());
+                usernameEditText.setText(this.holder.getUser().getName());
+                bioEditText.setText(this.holder.getUser().getBio());
                 emailEditText.setText("");
+                // Prints success message
                 Toast.makeText(requireContext(), "Account details have changed successfully", Toast.LENGTH_SHORT).show();
                 this.isValidProfilePic = false;
-                    // Prints success message
-            } catch (Exception e) {
-                Log.e("Err", Objects.requireNonNull(e.getMessage()));
             }
 
         });
@@ -343,7 +322,7 @@ public class EditProfileFragment extends Fragment {
 
     boolean hasNewName(){
         String newUsername = Objects.requireNonNull(usernameEditText.getText()).toString();
-        return !user.getName().equals(newUsername);
+        return !holder.getUser().getName().equals(newUsername);
     }
 
 
@@ -359,7 +338,7 @@ public class EditProfileFragment extends Fragment {
     }
     boolean hasNewBio(){
         String newBio = Objects.requireNonNull(bioEditText.getText()).toString();
-        return !user.getBio().equals(newBio);
+        return !holder.getUser().getBio().equals(newBio);
     }
 
     // Method to choose a photo from the gallery

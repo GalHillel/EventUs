@@ -1,5 +1,6 @@
 package com.example.eventus.ui.screens.UserMainScreen;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -14,6 +15,8 @@ import androidx.navigation.Navigation;
 
 import com.example.eventus.R;
 import com.example.eventus.data.model.LoggedInUser;
+import com.example.eventus.ui.screens.EditProfile.EditProfileActivity;
+import com.example.eventus.ui.screens.Messages.CreateMessageActivity;
 import com.example.eventus.ui.screens.Profile.BaseUserProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -101,9 +104,12 @@ public class UserProfileFragment extends Fragment {
 
     //TODO fix
     public void onEditProfileButtonClicked(View view){
-        Bundle args = createNavigationBundle();
+        Bundle args = new Bundle();
         args.putSerializable("user", holder.getUser());
-        Navigation.findNavController(view).navigate(R.id.action_userProfileFragment_to_editProfileFragment, args);
+        //TODO handle activity fail
+        Intent i = new Intent(this.getContext(), EditProfileActivity.class);
+        i.putExtras(args);
+        startActivity(i);
     }
 
     //TODO fix

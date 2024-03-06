@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.screens.EditProfile.EditProfileActivity"
+    style="@style/CustomFragmentScreen"
+    android:orientation="vertical"
+    android:id="@+id/activity_edit_profile">
+
+    <androidx.fragment.app.FragmentContainerView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:id="@+id/EditProfileFrame"
+        tools:layout="@layout/fragment_edit_profile" />
+
+    <ImageButton
+        android:id="@+id/backButton"
+        style="@style/backButton"
+        android:contentDescription="Back" />
+</LinearLayout>

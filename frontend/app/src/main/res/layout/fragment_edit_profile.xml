@@ -3,9 +3,10 @@
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.screens.EditProfileFragment"
+    tools:context=".ui.screens.EditProfile.EditProfileFragment"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/CustomFragmentScreen">
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
 
 
 
@@ -28,10 +29,6 @@
             android:clickable="true"
             android:focusable="true" />
 
-<!--            <Button-->
-<!--                android:id="@+id/saveProfilePicture"-->
-<!--                style="@style/DefaultClickableButton"-->
-<!--                android:text="Save" />-->
     </LinearLayout>
 
 
@@ -40,10 +37,7 @@
         android:layout_marginTop="16dp"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-<!--            <TextView-->
-<!--                android:id="@+id/changeName"-->
-<!--                style="@style/CustomFragmentTextFieldTitle"-->
-<!--                android:text="Change Name" />-->
+
         <EditText
             android:id="@+id/Username"
             android:layout_width="wrap_content"
@@ -52,10 +46,7 @@
             android:textStyle="bold"
             android:inputType="textPersonName"
             android:hint="New name"/>
-<!--            <Button-->
-<!--                android:id="@+id/saveName"-->
-<!--                style="@style/DefaultClickableButton"-->
-<!--                android:text="Save" />-->
+
 
     </LinearLayout>
 
@@ -73,12 +64,6 @@
             android:text="@string/placeholder"
             />
 
-
-
-<!--            <com.google.android.material.button.MaterialButton-->
-<!--                android:id="@+id/saveBio"-->
-<!--                style="@style/DefaultClickableButton"-->
-<!--                android:text="Save" />-->
     </LinearLayout>
 
 
@@ -97,11 +82,6 @@
             android:inputType="textEmailAddress"
             android:hint="New email"/>
 
-
-<!--            <Button-->
-<!--                android:id="@+id/saveContact"-->
-<!--                style="@style/DefaultClickableButton"-->
-<!--                android:text="Save" />-->
 
     </LinearLayout>
 
@@ -159,12 +139,5 @@
         android:text="Save"
         android:layout_gravity="center"
         android:layout_marginTop="16dp"/>
-
-
-    <ImageButton
-        android:id="@+id/backButton"
-        style="@style/backButton"
-        android:onClick="onBackButtonClick"
-        android:contentDescription="@string/back" />
 
 </LinearLayout>
