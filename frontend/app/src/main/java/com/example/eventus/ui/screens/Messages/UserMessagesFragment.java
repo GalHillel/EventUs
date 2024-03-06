@@ -26,6 +26,7 @@ import com.example.eventus.data.model.UserDisplay;
 import com.example.eventus.data.model.UserMessageDisplay;
 import com.example.eventus.ui.recycleViews.MessageAdaptor;
 import com.example.eventus.ui.screens.EventDetails.EventDetailsActivity;
+import com.example.eventus.ui.screens.UserMainScreen.UserMainActivity;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -33,94 +34,72 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class UserMessagesFragment extends Fragment implements MessageAdaptor.onMessageClickListener {
-    private LoggedInUser user;
-    private final List<UserMessageDisplay> messageList = new ArrayList<>();
-
+    private UserMainActivity holder;
+    RecyclerView messagesRecyclerView;
+    MessageAdaptor messageAdaptor;
     public UserMessagesFragment() {
         // Required empty public constructor
-        this.user = null;
+
     }
 
-    public UserMessagesFragment(LoggedInUser user){
-        this.user = user;
+    public UserMessagesFragment(UserMainActivity holder){
+        this.holder = holder;
+
+
+
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_user_messages, container, false);
     }
-    /*
-        TODO:
-            1. Make this page much prettier
-     */
+
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-//        BottomNavigationView bottomNavigationView = view.findViewById(R.id.navigation);
-//        Menu navMenu = bottomNavigationView.getMenu();
+        List<UserMessageDisplay> messageList= this.holder.getMessageList();
+        Map<String, Boolean> inboxRead = this.holder.getMessageInbox();
 
-        if (user == null && getArguments() != null) {
-            this.user = (LoggedInUser) getArguments().getSerializable("user");
-
-//            if (user != null && user.getUser_type().equals("Organizer")) {
-//                navMenu.findItem(R.id.discover).setVisible(false);
-//            } else {
-//                navMenu.findItem(R.id.newEvent).setVisible(false);
-//            }
-
+        if(messageList == null){//load messages only once
+            try {
+                this.holder.loadMessages();
+                messageList = this.holder.getMessageList();
+                inboxRead = this.holder.getMessageInbox();
+            }
+            catch (ServerSideException e) {
+                //could not load messages from server
+                messageList = new ArrayList<>();
+                inboxRead = new HashMap<>();
+                e.printStackTrace();
+            }
+            catch (Exception e) {
+                // other
+                messageList = new ArrayList<>();
+                inboxRead = new HashMap<>();
+                e.printStackTrace();
+            }
         }
+        Map<String, Boolean> finalInboxRead = inboxRead;
+        messageList.sort((message1, message2) -> {
+            if (Boolean.TRUE.equals(finalInboxRead.getOrDefault(message1.get_id(), false)) && Boolean.FALSE.equals(finalInboxRead.getOrDefault(message2.get_id(), false))) {
+                return 1;
+            } else if (Boolean.FALSE.equals(finalInboxRead.getOrDefault(message1.get_id(), false)) && Boolean.TRUE.equals(finalInboxRead.getOrDefault(message2.get_id(), false))) {
+                return -1;
+            } else {
+                return message2.getDate_sent().compareTo(message1.getDate_sent());
+            }
+        });
 
-        user.getMessages().remove(null);
-
-
-//        // Set up click listeners for buttons
-//        view.findViewById(R.id.discover).setOnClickListener(v ->
-//                Navigation.findNavController(v).navigate(R.id.action_userMessagesFragment_to_userDiscoverFragment, createNavigationBundle()));
-//
-//        view.findViewById(R.id.profile).setOnClickListener(v ->
-//                Navigation.findNavController(v).navigate(R.id.action_userMessagesFragment_to_userProfileFragment, createNavigationBundle()));
-//
-//        view.findViewById(R.id.myevents).setOnClickListener(v ->
-//                Navigation.findNavController(v).navigate(R.id.action_userMessagesFragment_to_userEventsFragment, createNavigationBundle()));
-//
-//        view.findViewById(R.id.newEvent).setOnClickListener(v ->
-//                Navigation.findNavController(v).navigate(R.id.action_userMessagesFragment_to_createEventFragment, createNavigationBundle()));
-
-
-        try {
-
-            UserMessageDisplay[] newList = Database.getMessageInbox(this.user.get_id());
-            Map<String, Boolean> inboxRead = Database.getMessageInboxStatus(this.user.get_id());
-            messageList.clear();
-            Collections.addAll(messageList, newList);
-
-            Collections.sort(messageList, (message1, message2) -> {
-                if (Boolean.TRUE.equals(inboxRead.getOrDefault(message1.get_id(), false)) && Boolean.FALSE.equals(inboxRead.getOrDefault(message2.get_id(), false))) {
-                    return 1;
-                } else if (Boolean.FALSE.equals(inboxRead.getOrDefault(message1.get_id(), false)) && Boolean.TRUE.equals(inboxRead.getOrDefault(message2.get_id(), false))) {
-                    return -1;
-                } else {
-                    return message2.getDate_sent().compareTo(message1.getDate_sent());
-                }
-            });
-
-            RecyclerView messagesRecyclerView = view.findViewById(R.id.userMessagesList);
-            MessageAdaptor messageAdaptor = new MessageAdaptor(messageList, inboxRead);
-            messageAdaptor.setOnMessageClickListener(this);
-            messagesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-            messagesRecyclerView.setAdapter(messageAdaptor);
-
-        } catch (ServerSideException e) {
-            // Handle the exception (e.g., show an error message)
-            e.printStackTrace();
-        } catch (Exception e) {
-            // Handle other exceptions
-            e.printStackTrace();
-        }
+        messagesRecyclerView = view.findViewById(R.id.userMessagesList);
+        messageAdaptor = new MessageAdaptor(messageList, inboxRead);
+        messageAdaptor.setOnMessageClickListener(this);
+        messagesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        messagesRecyclerView.setAdapter(messageAdaptor);
 
     }
 
@@ -128,7 +107,7 @@ public class UserMessagesFragment extends Fragment implements MessageAdaptor.onM
     // Method to create a common bundle for navigation
     private Bundle createNavigationBundle() {
         Bundle bundle = new Bundle();
-        bundle.putSerializable("user", user);
+        bundle.putSerializable("user", holder.getUser());
         return bundle;
     }
 
@@ -136,10 +115,14 @@ public class UserMessagesFragment extends Fragment implements MessageAdaptor.onM
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == R.id.activity_user_message){
             if(resultCode == Activity.RESULT_OK){
-                //TODO handle message read
-                Toast.makeText(requireContext(), "returned from read message", Toast.LENGTH_SHORT).show();
-
-                //Log.w("UserMessageFragment", "intent keys: "+data.getExtras().keySet().toString());
+                //update message as read
+                if(data != null && data.getExtras() != null){
+                    String msg_id = data.getExtras().getString("message_id","");
+                    if(msg_id.length() >0){
+                        this.holder.getMessageInbox().put(msg_id,true);
+                        this.holder.update(R.id.messages);
+                    }
+                }
 
             } else if (resultCode == Activity.RESULT_CANCELED) {
                 Toast.makeText(requireContext(), data.getStringExtra("error"),Toast.LENGTH_LONG).show();

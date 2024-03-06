@@ -1,5 +1,6 @@
 package com.example.eventus.ui.screens.Messages;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,6 +12,8 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -59,6 +62,18 @@ public class MessageFragment extends Fragment {
         replyButton.setOnClickListener(this::onReplyButtonClick);
 
     }
+
+   @Override
+   public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == R.id.activity_create_messages) {
+            if (resultCode == Activity.RESULT_OK) {
+                this.holder.success();
+            } else if (resultCode == Activity.RESULT_CANCELED) {
+                Toast.makeText(requireContext(), data.getStringExtra("error"), Toast.LENGTH_LONG).show();
+            }
+        }
+   }
+
     public void onReplyButtonClick(View view) {
         Bundle args = new Bundle();
         args.putSerializable("user", this.holder.getUser());
@@ -69,7 +84,7 @@ public class MessageFragment extends Fragment {
         //TODO handle activity fail
         Intent i = new Intent(this.getContext(), CreateMessageActivity.class);
         i.putExtras(args);
-        startActivity(i);
+        startActivityForResult(i,R.id.activity_create_messages);
 
     }
 

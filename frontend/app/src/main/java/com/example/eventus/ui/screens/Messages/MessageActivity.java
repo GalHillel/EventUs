@@ -26,7 +26,6 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 public class MessageActivity extends BaseActivity {
-    FragmentContainerView frag;
     private UserDisplay user,sender;
     private UserMessage message;
 
@@ -36,18 +35,19 @@ public class MessageActivity extends BaseActivity {
 
         this.user = (UserDisplay) args.getSerializable("user");
         String message_id = args.getString("message_id","");
+
         try {
             this.message = Database.loadMessage(message_id, this.user.get_id());
             this.sender = Database.userDisplay(this.message.getSender_id());
         } catch (ServerSideException e) {
             Intent res = new Intent();
-            res.putExtra("message", e.getMessage());
+            res.putExtra("error", e.getMessage());
             setResult(e.getReturnCode(), res);
             this.finish();
             return;
         } catch (Exception e) {
             Intent res = new Intent();
-            res.putExtra("message", e.getMessage());
+            res.putExtra("error", e.getMessage());
             setResult(Activity.RESULT_CANCELED, res);
             this.finish();
             return;
@@ -77,14 +77,19 @@ public class MessageActivity extends BaseActivity {
         return message;
     }
 
-    public void backButtonClick(View view) {
-        // Navigate back
+    public void success(){
         Intent i = new Intent();
         Bundle args = new Bundle();
+        args.putString("message_id",this.message.get_id());
         args.putSerializable("user",this.user);
-        i.putExtra("testing",args);
+        i.putExtras(args);
         this.setResult(Activity.RESULT_OK,i);
         this.finish();
+    }
+
+    public void backButtonClick(View view) {
+        // Navigate back
+        success();
     }
 
     @Override
