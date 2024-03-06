@@ -101,9 +101,7 @@ public class EventParticipantsTabFragment extends Fragment implements UserAdapte
         userAdapter.setProfileWrapper(this);
         userAdapter.setAcceptClickListener(this);
 
-        if (this.holder.getUser().get_id().equals(this.holder.getEvent().getCreator_id())) {
-            this.exitEventButton.setText("Delete Event");
-        }
+
         if (this.holder.getEvent().getAttendents().containsKey(this.holder.getUser().get_id())) {
             this.joinEventButton.setVisibility(View.GONE);
             this.exitEventButton.setVisibility(View.VISIBLE);
@@ -130,6 +128,9 @@ public class EventParticipantsTabFragment extends Fragment implements UserAdapte
         if(this.holder.hasPassed()){
             exitEventButton.setVisibility(View.GONE);
             joinEventButton.setVisibility(View.GONE);
+        }
+        if (this.holder.getUser().get_id().equals(this.holder.getEvent().getCreator_id())) {
+            this.exitEventButton.setText("Delete Event");
         }
 
         userListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
