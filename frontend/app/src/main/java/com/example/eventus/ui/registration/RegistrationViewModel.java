@@ -20,16 +20,18 @@ public class RegistrationViewModel extends ViewModel {
         return errorMessage;
     }
 
-    public void register(String email, String password, String username, String userType) {
+    public boolean register(String email, String password, String username, String userType) {
         try {
             User user = Database.addUser(email, username, password, userType);
 
             // Use postValue to update LiveData on the main thread
             registrationSuccess.postValue(user != null);
             errorMessage.postValue(user == null ? "Registration failed. Please try again." : null);
+            return true;
         } catch (Exception e) {
             // Handle exceptions, log them, or show appropriate error messages
             errorMessage.postValue("An error occurred during registration.");
+            return false;
         }
 
     }

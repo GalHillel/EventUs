@@ -1,4 +1,3 @@
-// LoginFragment.java
 package com.example.eventus.ui.login;
 
 import android.content.Intent;
@@ -12,7 +11,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -21,9 +19,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.example.eventus.R;
 import com.example.eventus.data.Database;
 import com.example.eventus.data.model.LoggedInUser;
-import com.example.eventus.data.model.UserDisplay;
 import com.example.eventus.databinding.FragmentLoginBinding;
-import com.example.eventus.ui.screens.EventDetails.EventDetailsActivity;
 import com.example.eventus.ui.screens.UserMainScreen.UserMainActivity;
 
 public class LoginFragment extends Fragment {
@@ -35,17 +31,14 @@ public class LoginFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentLoginBinding.inflate(inflater, container, false);
         return binding.getRoot();
-
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
         final EditText emailFromTheUser = binding.email;
         final EditText passwordFromTheUser = binding.password;
-
         final ProgressBar loadingProgressBar = binding.loading;
         final CheckBox checkOrganizer = binding.checkOrganizer;
 
@@ -66,10 +59,9 @@ public class LoginFragment extends Fragment {
                 }
             }
 
-            if (passwordToSendToLoginFunction.length() <= 5) {
-                // Show a message indicating incorrect password length
-                Toast.makeText(requireContext(), "The password length must be greater than 5", Toast.LENGTH_SHORT).show();
-                loadingProgressBar.setVisibility(View.GONE); // Hide loading indicator
+            // Check if all fields are filled
+            if (emailToSendToLoginFunction.isEmpty() || passwordToSendToLoginFunction.isEmpty()) {
+                Toast.makeText(requireContext(), "Please fill in all fields", Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -79,7 +71,6 @@ public class LoginFragment extends Fragment {
                 emailFromTheUser.setText("");
                 passwordFromTheUser.setText("");
 
-                //NavHostFragment.findNavController(LoginFragment.this).navigate(R.id.action_loginFragment_to_userEventsFragment, args);
                 // Prints success message
                 Toast.makeText(requireContext(), "Welcome " + userToLogIn.getName(), Toast.LENGTH_SHORT).show();
             } catch (Exception e) {
@@ -89,15 +80,13 @@ public class LoginFragment extends Fragment {
             Bundle args = new Bundle();
             args.putSerializable("user", userToLogIn);
 
-            Intent i = new Intent(this.getContext(), UserMainActivity.class);
+            Intent i = new Intent(requireContext(), UserMainActivity.class);
             i.putExtras(args);
             startActivity(i);
         });
 
-
         TextView registerLink = binding.registerLink;
         registerLink.setOnClickListener(view1 -> NavHostFragment.findNavController(LoginFragment.this).navigate(R.id.action_loginFragment_to_registrationFragment));
-
     }
 
     @Override
@@ -105,5 +94,4 @@ public class LoginFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
-
 }
