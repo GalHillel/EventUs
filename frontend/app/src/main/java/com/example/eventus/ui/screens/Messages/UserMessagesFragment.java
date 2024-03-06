@@ -74,6 +74,9 @@ public class UserMessagesFragment extends Fragment implements MessageAdaptor.onM
 
         }
 
+        user.getMessages().remove(null);
+
+
 //        // Set up click listeners for buttons
 //        view.findViewById(R.id.discover).setOnClickListener(v ->
 //                Navigation.findNavController(v).navigate(R.id.action_userMessagesFragment_to_userDiscoverFragment, createNavigationBundle()));
@@ -138,14 +141,14 @@ public class UserMessagesFragment extends Fragment implements MessageAdaptor.onM
 
                 //Log.w("UserMessageFragment", "intent keys: "+data.getExtras().keySet().toString());
 
+            } else if (resultCode == Activity.RESULT_CANCELED) {
+                Toast.makeText(requireContext(), data.getStringExtra("error"),Toast.LENGTH_LONG).show();
             }
         }
     }
 
     @Override
-    public void onMessageClick(int position) {
-
-        UserMessageDisplay messageClicked = messageList.get(position);
+    public void onMessageClick(UserMessageDisplay messageClicked) {
         Bundle args = createNavigationBundle();
         args.putString("message_id", messageClicked.get_id());
 

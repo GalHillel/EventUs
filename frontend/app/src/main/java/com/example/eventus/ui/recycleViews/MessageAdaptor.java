@@ -25,7 +25,7 @@ public class MessageAdaptor extends RecyclerView.Adapter<MessageAdaptor.MessageV
 
 
     public interface onMessageClickListener {
-        void onMessageClick(int position);
+        void onMessageClick(UserMessageDisplay messageClicked);
     }
 
     private final List<UserMessageDisplay> messageList;
@@ -74,7 +74,7 @@ public class MessageAdaptor extends RecyclerView.Adapter<MessageAdaptor.MessageV
         holder.userMessageItem.setOnClickListener(v -> {
             // Notify the listener that the button was clicked
             if (listener != null) {
-                listener.onMessageClick(holder.getAdapterPosition());
+                listener.onMessageClick(msg);
             }
         });
     }

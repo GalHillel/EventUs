@@ -12,12 +12,20 @@ import androidx.fragment.app.FragmentContainerView;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.eventus.R;
+import com.example.eventus.data.BaseActivity;
 import com.example.eventus.data.Database;
 import com.example.eventus.data.ServerSideException;
 import com.example.eventus.data.model.UserDisplay;
 import com.example.eventus.data.model.UserMessage;
 
-public class MessageActivity extends AppCompatActivity {
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.EnumSet;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Stream;
+
+public class MessageActivity extends BaseActivity {
     FragmentContainerView frag;
     private UserDisplay user,sender;
     private UserMessage message;
@@ -25,50 +33,22 @@ public class MessageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_message);
-        if(getIntent() == null){
-            Intent res = new Intent();
-            res.putExtra("message","null intent given");
-            setResult(Activity.RESULT_CANCELED,res);
-            this.finish();
-            return;
-        }
-
-        Intent intent = getIntent();
-
-        if(intent.getExtras() == null){
-            Intent res = new Intent();
-            res.putExtra("message","intent missing bundle");
-            setResult(Activity.RESULT_CANCELED,res);
-            this.finish();
-            return;
-        }
-
-        Bundle args = intent.getExtras();
-
-        if(!args.containsKey("user") || !args.containsKey("message_id")){
-            Intent res = new Intent();
-            res.putExtra("message","args missing 'user' or 'message_id' fields");
-            setResult(Activity.RESULT_CANCELED,res);
-            this.finish();
-            return;
-        }
 
         this.user = (UserDisplay) args.getSerializable("user");
-        String message_id = args.getString("message_id");
-
+        String message_id = args.getString("message_id","");
         try {
             this.message = Database.loadMessage(message_id, this.user.get_id());
             this.sender = Database.userDisplay(this.message.getSender_id());
         } catch (ServerSideException e) {
             Intent res = new Intent();
-            res.putExtra("message",e.getMessage());
-            setResult(e.getReturnCode(),res);
+            res.putExtra("message", e.getMessage());
+            setResult(e.getReturnCode(), res);
             this.finish();
             return;
         } catch (Exception e) {
             Intent res = new Intent();
-            res.putExtra("message",e.getMessage());
-            setResult(Activity.RESULT_CANCELED,res);
+            res.putExtra("message", e.getMessage());
+            setResult(Activity.RESULT_CANCELED, res);
             this.finish();
             return;
         }
@@ -81,10 +61,10 @@ public class MessageActivity extends AppCompatActivity {
 
         ImageButton backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(this::backButtonClick);
-
-
-
     }
+
+
+
     public UserDisplay getUser() {
         return user;
     }
@@ -105,6 +85,11 @@ public class MessageActivity extends AppCompatActivity {
         i.putExtra("testing",args);
         this.setResult(Activity.RESULT_OK,i);
         this.finish();
+    }
+
+    @Override
+    public Set<String> getRequiredArgs() {
+        return new HashSet<String>(Arrays.asList("user","message_id"));
     }
 
 
