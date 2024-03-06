@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.Navigation;
 
 import com.example.eventus.R;
+import com.example.eventus.data.BaseActivity;
 import com.example.eventus.data.Database;
 import com.example.eventus.data.ServerSideException;
 import com.example.eventus.data.model.LoggedInUser;
@@ -18,12 +19,13 @@ import com.example.eventus.data.model.UserDisplay;
 import com.example.eventus.data.model.UserMessage;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
-public class CreateMessageActivity extends AppCompatActivity {
+public class CreateMessageActivity extends BaseActivity {
 
-    private LoggedInUser user;
     private UserDisplay[] other_users;
 
     private String defaultTitle;
@@ -31,34 +33,6 @@ public class CreateMessageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_message);
-        if (getIntent() == null) {
-            Intent res = new Intent();
-            res.putExtra("message", "null intent given");
-            setResult(Activity.RESULT_CANCELED, res);
-            this.finish();
-            return;
-        }
-
-        Intent intent = getIntent();
-
-        if (intent.getExtras() == null) {
-            Intent res = new Intent();
-            res.putExtra("message", "intent missing bundle");
-            setResult(Activity.RESULT_CANCELED, res);
-            this.finish();
-            return;
-        }
-
-        Bundle args = intent.getExtras();
-
-        if (!args.containsKey("user") || !args.containsKey("other_users")) {
-            Intent res = new Intent();
-            res.putExtra("message", "args missing 'user' or 'other_users' fields");
-            setResult(Activity.RESULT_CANCELED, res);
-            this.finish();
-            return;
-        }
-
         this.user = (LoggedInUser) args.getSerializable("user");
         this.other_users = (UserDisplay[]) args.getSerializable("other_users");
         this.defaultTitle = args.getString("title", "");
@@ -70,7 +44,7 @@ public class CreateMessageActivity extends AppCompatActivity {
                 .replace(R.id.fragment_create_message, createMessageFragment)
                 .commit();
 
-        ImageButton backButton = findViewById(R.id.backButton);
+        backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(this::backButtonClick);
 
 
@@ -107,9 +81,10 @@ public class CreateMessageActivity extends AppCompatActivity {
         return res;
     }
 
-    public void success(){
-        this.setResult(Activity.RESULT_OK);
-        this.finish();
+
+    @Override
+    public Set<String> getRequiredArgs() {
+        return new HashSet<String>(Arrays.asList("user","other_users"));
     }
 
     public void backButtonClick(View view) {
