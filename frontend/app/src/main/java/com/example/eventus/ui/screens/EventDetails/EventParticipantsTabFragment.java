@@ -145,6 +145,7 @@ public class EventParticipantsTabFragment extends Fragment implements UserAdapte
             this.exitEventButton.setVisibility(View.VISIBLE);
             this.holder.getUsers().add(this.holder.getUser());
             this.holder.getEvent().getAttendents().put(this.holder.getUser().get_id(),false);
+            this.holder.getUser().getEvents().add(this.holder.getEvent().getId());
             if(this.holder.getEvent().getIsPrivate()) {
                 if (Boolean.FALSE.equals(this.holder.getEvent().getAttendents().get(this.holder.getUser().get_id()))) {
                     this.exitEventButton.setText("Cancel Request");
@@ -166,6 +167,7 @@ public class EventParticipantsTabFragment extends Fragment implements UserAdapte
             try {
                 //TODO maybe change this?
                 Database.delEvent(this.holder.getEvent().getId());
+                this.holder.getUser().getEvents().remove(this.holder.getEvent().getId());
                 this.holder.success();
             } catch (Exception e) {
                 //handle
@@ -194,7 +196,7 @@ public class EventParticipantsTabFragment extends Fragment implements UserAdapte
     }
     private void acceptUser(UserDisplay user){
         try {
-            Database.acceptUser( this.holder.getEvent().getId(),user.get_id());
+            Database.acceptUser(this.holder.getEvent().getId(),user.get_id());
             int idx = this.holder.getUsers().indexOf(user);
             this.holder.getEvent().getAttendents().put(user.get_id(),true);
             this.userAdapter.notifyItemChanged(idx);
