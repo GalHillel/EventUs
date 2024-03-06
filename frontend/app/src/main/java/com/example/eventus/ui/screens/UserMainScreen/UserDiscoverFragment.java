@@ -1,5 +1,7 @@
 package com.example.eventus.ui.screens.UserMainScreen;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -7,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,17 +35,16 @@ public class UserDiscoverFragment extends Fragment {
 
     private EditText searchEditText;
     private List<UserEventDisplay> searchResults = new ArrayList<>();
-    private LoggedInUser user;
 
     // TODO: Add an option for searching users by username
-
+    private UserMainActivity holder;
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     public UserDiscoverFragment() {
-        user = null;
+        holder = null;
     }
-    public UserDiscoverFragment(LoggedInUser user) {
-        this.user = user;
+    public UserDiscoverFragment(UserMainActivity holder) {
+        this.holder = holder;
     }
 
     @Override
@@ -53,49 +55,14 @@ public class UserDiscoverFragment extends Fragment {
 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        /*
-        BottomNavigationView bottomNavigationView = view.findViewById(R.id.navigation);
-        Menu navMenu = bottomNavigationView.getMenu();
-        */
-        if (user == null && getArguments() != null) {
-            user = (LoggedInUser) getArguments().getSerializable("user");
-        /*
-            if (user != null && user.getUser_type().equals("Organizer")) {
-                navMenu.findItem(R.id.discover).setVisible(false);
-            } else {
-                navMenu.findItem(R.id.newEvent).setVisible(false);
-            }
 
-         */
-        }
+
         searchEditText = view.findViewById(R.id.searchEditText);
         Button searchButton = view.findViewById(R.id.searchButton);
-
-
-
-        /*
-
-        // Set up click listeners for buttons
-        view.findViewById(R.id.profile).setOnClickListener(v ->
-                Navigation.findNavController(v).navigate(R.id.action_userDiscoverFragment_to_userProfileFragment, createNavigationBundle()));
-
-        view.findViewById(R.id.myevents).setOnClickListener(v ->
-                Navigation.findNavController(v).navigate(R.id.action_userDiscoverFragment_to_userEventsFragment, createNavigationBundle()));
-
-        view.findViewById(R.id.messages).setOnClickListener(v ->
-                Navigation.findNavController(v).navigate(R.id.action_userDiscoverFragment_to_userMessagesFragment, createNavigationBundle()));
-        */
         searchButton.setOnClickListener(v -> {
             // Perform event search
             performEventSearch();
         });
-    }
-
-    // Method to create a common bundle for navigation
-    private Bundle createNavigationBundle() {
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("user", user);
-        return bundle;
     }
 
     private void performEventSearch() {
@@ -118,13 +85,34 @@ public class UserDiscoverFragment extends Fragment {
             e.printStackTrace();
         }
         //filter events
-        this.searchResults = searchResults.stream().filter(e->!this.user.getEvents().contains(e.getId())).collect(Collectors.toList());
+        this.searchResults = searchResults.stream().filter(e->!this.holder.getUser().getEvents().contains(e.getId())).collect(Collectors.toList());
 
-        EventListFragment searchEventListFragment = new EventListFragment(this.user,this.searchResults);
+        EventListFragment searchEventListFragment = new EventListFragment(this.holder.getUser(),this.searchResults);
         getChildFragmentManager().beginTransaction()
                 .setReorderingAllowed(true)
                 .replace(R.id.discoveredEventsList, searchEventListFragment)
                 .commit();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == R.id.showMoreDetails){
+            if(resultCode == Activity.RESULT_OK){
+                if(data != null && data.getExtras() != null){
+                    LoggedInUser newUser = (LoggedInUser) data.getExtras().getSerializable("user");
+                    if(newUser != null){
+                        if(newUser.getEvents().size() != this.holder.getUser().getEvents().size() || !newUser.getEvents().containsAll(this.holder.getUser().getEvents())){
+                            this.holder.setUser(newUser);
+                            this.holder.loadEvents();
+                        }
+                    }
+
+                    this.holder.update(R.id.discover);
+                }
+            } else if (resultCode == Activity.RESULT_CANCELED) {
+                Toast.makeText(requireContext(), "an error has occurred",Toast.LENGTH_LONG).show();
+            }
+        }
     }
 
     @Override

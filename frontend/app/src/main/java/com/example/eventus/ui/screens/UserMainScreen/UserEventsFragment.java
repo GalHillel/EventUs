@@ -1,10 +1,13 @@
 package com.example.eventus.ui.screens.UserMainScreen;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,16 +30,18 @@ import java.util.List;
 // TODO: Add an option for users to rate past events
 
 public class UserEventsFragment extends Fragment {
-
+    UserMainActivity holder;
     private final List<UserEventDisplay> upcomingEventsList = new ArrayList<>();
     private final List<UserEventDisplay> pastEventsList = new ArrayList<>();
-    private LoggedInUser user;
+
+    EventListFragment pastEventsListFragment;
+    EventListFragment upcomingEventsFragment;
 
     public UserEventsFragment() {
     }
 
-    public UserEventsFragment(LoggedInUser user) {
-        this.user = user;
+    public UserEventsFragment(UserMainActivity holder) {
+        this.holder = holder;
     }
 
     @Override
@@ -48,79 +53,53 @@ public class UserEventsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        //BottomNavigationView bottomNavigationView = view.findViewById(R.id.navigation);
-        //Menu navMenu = bottomNavigationView.getMenu();
-
-        if (user == null && getArguments() != null) {
-            user = (LoggedInUser) getArguments().getSerializable("user");
-            /*
-            if (user != null && user.getUser_type().equals("Organizer")) {
-                navMenu.findItem(R.id.discover).setVisible(false);
-            } else {
-                navMenu.findItem(R.id.newEvent).setVisible(false);
-            }
-
-             */
+        if(this.holder.getUserEvents() == null){
+            this.holder.loadEvents();
         }
-
-        // Set up click listeners for buttons
-        /*
-        view.findViewById(R.id.discover).setOnClickListener(v ->
-                Navigation.findNavController(v).navigate(R.id.action_userEventsFragment_to_userDiscoverFragment, createNavigationBundle()));
-
-        view.findViewById(R.id.profile).setOnClickListener(v ->
-                Navigation.findNavController(v).navigate(R.id.action_userEventsFragment_to_userProfileFragment, createNavigationBundle()));
-
-        view.findViewById(R.id.messages).setOnClickListener(v ->
-                Navigation.findNavController(v).navigate(R.id.action_userEventsFragment_to_userMessagesFragment, createNavigationBundle()));
-
-        view.findViewById(R.id.newEvent).setOnClickListener(v ->
-                Navigation.findNavController(v).navigate(R.id.action_userEventsFragment_to_createEventFragment, createNavigationBundle()));
-        */
         // Fetch user events using the database function
-        try {
-            UserEventDisplay[] userEvents = Database.getEventList(user.get_id());
-            // Clear the existing list and add the fetched events
-            upcomingEventsList.clear();
-            pastEventsList.clear();
-            Date d = new Date();
-            for(UserEventDisplay e: userEvents){
-                if(e.getDate().after(d)){
-                    upcomingEventsList.add(e);
-                }
-                else{
-                    pastEventsList.add(e);
-                }
+        upcomingEventsList.clear();
+        pastEventsList.clear();
+        Date d = new Date();
+        for(UserEventDisplay e: this.holder.getUserEvents()) {
+            if (e.getDate().after(d)) {
+                upcomingEventsList.add(e);
+            } else {
+                pastEventsList.add(e);
             }
-
-            upcomingEventsList.sort(Comparator.comparing(UserEventDisplay::getDate));
-            pastEventsList.sort(Comparator.comparing(UserEventDisplay::getDate));
-
-        } catch (ServerSideException e) {
-            // Handle the exception
-            e.printStackTrace();
-        } catch (Exception e) {
-            // Handle other exceptions
-            e.printStackTrace();
         }
+        upcomingEventsList.sort(Comparator.comparing(UserEventDisplay::getDate));
+        pastEventsList.sort(Comparator.comparing(UserEventDisplay::getDate));
 
-        EventListFragment upcomingEventsFragment = new EventListFragment(this.user,upcomingEventsList);
+        upcomingEventsFragment = new EventListFragment(this.holder.getUser(),upcomingEventsList);
         getChildFragmentManager().beginTransaction()
                 .setReorderingAllowed(true)
                 .replace(R.id.upcomingEventsList, upcomingEventsFragment)
                 .commit();
 
-        EventListFragment pastEventsListFragment = new EventListFragment(this.user,pastEventsList);
+        pastEventsListFragment = new EventListFragment(this.holder.getUser(),pastEventsList);
         getChildFragmentManager().beginTransaction()
                 .setReorderingAllowed(true)
                 .replace(R.id.pastEventsList, pastEventsListFragment)
                 .commit();
     }
 
-    // Method to create a common bundle for navigation
-    private Bundle createNavigationBundle() {
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("user", user);
-        return bundle;
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == R.id.showMoreDetails){
+            if(resultCode == Activity.RESULT_OK){
+                if(data != null && data.getExtras() != null){
+                    LoggedInUser newUser = (LoggedInUser) data.getExtras().getSerializable("user");
+                    if(newUser != null){
+                        if(newUser.getEvents().size() != this.holder.getUser().getEvents().size() || !newUser.getEvents().containsAll(this.holder.getUser().getEvents())){
+                            this.holder.setUser(newUser);
+                            this.holder.loadEvents();
+                        }
+                    }
+                    this.holder.update(R.id.myevents);
+                }
+            } else if (resultCode == Activity.RESULT_CANCELED) {
+                Toast.makeText(requireContext(), "an error has occurred",Toast.LENGTH_LONG).show();
+            }
+        }
     }
 }

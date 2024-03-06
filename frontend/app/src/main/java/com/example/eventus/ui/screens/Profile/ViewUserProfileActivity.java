@@ -7,10 +7,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.eventus.R;
+import com.example.eventus.data.BaseActivity;
 import com.example.eventus.data.Database;
 import com.example.eventus.data.ServerSideException;
 import com.example.eventus.data.model.LoggedInUser;
@@ -20,10 +23,12 @@ import com.example.eventus.data.model.UserProfile;
 import com.example.eventus.ui.screens.Messages.CreateMessageActivity;
 import com.example.eventus.ui.screens.UserEvents.ViewEventsActivity;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-public class ViewUserProfileActivity extends AppCompatActivity {
-    LoggedInUser user;
+public class ViewUserProfileActivity extends BaseActivity {
     UserProfile profile;
 
     UserEventDisplay[] eventList;
@@ -32,33 +37,7 @@ public class ViewUserProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_user_profile);
 
-        if (getIntent() == null) {
-            Intent res = new Intent();
-            res.putExtra("message", "null intent given");
-            setResult(Activity.RESULT_CANCELED, res);
-            this.finish();
-            return;
-        }
 
-        Intent intent = getIntent();
-
-        if (intent.getExtras() == null) {
-            Intent res = new Intent();
-            res.putExtra("message", "intent missing bundle");
-            setResult(Activity.RESULT_CANCELED, res);
-            this.finish();
-            return;
-        }
-
-        Bundle args = intent.getExtras();
-
-        if (!args.containsKey("user") || !args.containsKey("other_user_id")) {
-            Intent res = new Intent();
-            res.putExtra("message", "args missing 'user' or 'other_user_id' fields");
-            setResult(Activity.RESULT_CANCELED, res);
-            this.finish();
-            return;
-        }
         this.user = (LoggedInUser) args.getSerializable("user");
         String _id  = args.getString("other_user_id");
 
@@ -103,21 +82,19 @@ public class ViewUserProfileActivity extends AppCompatActivity {
     }
 
 
-
-
     public void backButtonClick(View view) {
         // Navigate back
-        this.setResult(Activity.RESULT_OK);
-        this.finish();
+        this.success();
     }
-    public void success(){
-        this.setResult(Activity.RESULT_OK);
-        this.finish();
+
+    @Override
+    public Set<String> getRequiredArgs() {
+        return new HashSet<String>(Arrays.asList("user","other_user_id"));
     }
+
     private void onSendMessageButtonClick(View view) {
         Bundle args = new Bundle();
         args.putSerializable("user", this.user);
-
         UserDisplay[] others = {this.profile};
         args.putSerializable("other_users", others);
 

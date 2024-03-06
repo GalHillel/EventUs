@@ -8,6 +8,8 @@ import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.eventus.data.model.LoggedInUser;
+
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -16,6 +18,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected ImageButton backButton;
     protected Intent intent;
     protected Bundle args;
+    protected LoggedInUser user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +62,17 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     public abstract void backButtonClick(View view);
+
+    public void success(){
+        Bundle arg = new Bundle();
+        if(this.user!=null){
+            arg.putSerializable("user",user);
+        }
+        Intent i = new Intent();
+        i.putExtras(arg);
+        setResult(Activity.RESULT_OK,i);
+        finish();
+    }
 
     public abstract Set<String> getRequiredArgs();
 }

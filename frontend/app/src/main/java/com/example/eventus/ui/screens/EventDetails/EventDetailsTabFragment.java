@@ -159,6 +159,7 @@ public class EventDetailsTabFragment extends Fragment {
         try {
             // Call the rateEvent method with eventId, userId, and rating
             Database.rateEvent(userId, eventId, rating);
+            holder.getUser().getEvents().remove(eventId);
             holder.success();
         } catch (Exception e) {
             // Handle exceptions

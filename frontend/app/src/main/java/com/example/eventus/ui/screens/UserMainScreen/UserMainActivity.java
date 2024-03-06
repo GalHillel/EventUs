@@ -12,6 +12,7 @@ import com.example.eventus.R;
 import com.example.eventus.data.Database;
 import com.example.eventus.data.ServerSideException;
 import com.example.eventus.data.model.LoggedInUser;
+import com.example.eventus.data.model.UserEventDisplay;
 import com.example.eventus.data.model.UserMessageDisplay;
 import com.example.eventus.ui.screens.Messages.UserMessagesFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -19,6 +20,8 @@ import com.google.android.material.navigation.NavigationBarView;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +31,8 @@ public class UserMainActivity extends AppCompatActivity implements NavigationBar
     LoggedInUser user;
     List<UserMessageDisplay> messageList = null;
     Map<String, Boolean> inboxRead = null;
+
+    List<UserEventDisplay> userEvents = null;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,13 +64,7 @@ public class UserMainActivity extends AppCompatActivity implements NavigationBar
             this.finish();
             return;
         }
-
-
         this.user = (LoggedInUser) args.getSerializable("user");
-
-        //load messages
-
-
 
         setContentView(R.layout.activity_user_main_menu);
         BottomNavigationView navigationView = findViewById(R.id.mainMenuUserNavigation);
@@ -90,25 +89,43 @@ public class UserMainActivity extends AppCompatActivity implements NavigationBar
 
     }
 
-    public LoggedInUser getUser(){
-        return this.user;
-    }
+
 
     public void loadMessages() throws Exception{
         UserMessageDisplay[] newList = Database.getMessageInbox(this.user.get_id());
         inboxRead = Database.getMessageInboxStatus(this.user.get_id());
         messageList = new ArrayList<>();
         Collections.addAll(messageList, newList);
-
-
     }
 
+    public void loadEvents(){
+        try {
+            UserEventDisplay[] tmp = Database.getEventList(user.get_id());
+            // Clear the existing list and add the fetched events
+            userEvents = new ArrayList<>();
+            Collections.addAll(userEvents, tmp);
+
+        } catch (ServerSideException e) {
+            // Handle the exception
+            e.printStackTrace();
+        } catch (Exception e) {
+            // Handle other exceptions
+            e.printStackTrace();
+        }
+    }
+
+
+    public LoggedInUser getUser(){
+        return this.user;
+    }
     public List<UserMessageDisplay> getMessageList(){
         return messageList;
     }
     public Map<String,Boolean> getMessageInbox(){
         return this.inboxRead;
     }
+
+    public List<UserEventDisplay> getUserEvents(){return this.userEvents;}
 
     public void success(){
         this.setResult(Activity.RESULT_OK);
@@ -134,14 +151,14 @@ public class UserMainActivity extends AppCompatActivity implements NavigationBar
         if (itemId == R.id.newEvent) {
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.userMainMenuFrame, new CreateEventFragment(this.user))
+                    .replace(R.id.userMainMenuFrame, new CreateEventFragment(this))
                     .commit();
             return true;
         }
         if (itemId == R.id.discover) {
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.userMainMenuFrame, new UserDiscoverFragment(this.user))
+                    .replace(R.id.userMainMenuFrame, new UserDiscoverFragment(this))
                     .commit();
             return true;
         }
@@ -149,7 +166,7 @@ public class UserMainActivity extends AppCompatActivity implements NavigationBar
         if (itemId == R.id.myevents) {
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.userMainMenuFrame, new UserEventsFragment(this.user))
+                    .replace(R.id.userMainMenuFrame, new UserEventsFragment(this))
                     .commit();
             return true;
         }
@@ -161,5 +178,10 @@ public class UserMainActivity extends AppCompatActivity implements NavigationBar
             return true;
         }
         return false;
+    }
+
+
+    public void setUser(LoggedInUser newUser) {
+        this.user = newUser;
     }
 }

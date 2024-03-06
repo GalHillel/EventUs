@@ -36,12 +36,12 @@ public class CreateEventFragment extends Fragment {
     private EditText eventLocationEditText;
     private EditText eventDescriptionEditText;
     private CheckBox setPrivateEventCheckbox;
-    private LoggedInUser user;
+    private UserMainActivity holder;
 
     private Calendar calendar;
 
-    public CreateEventFragment(LoggedInUser user) {
-        this.user = user;
+    public CreateEventFragment(UserMainActivity holder) {
+        this.holder = holder;
     }
     public CreateEventFragment() {
         // Required empty public constructor
@@ -57,25 +57,6 @@ public class CreateEventFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        //BottomNavigationView bottomNavigationView = view.findViewById(R.id.navigation);
-        //Menu navMenu = bottomNavigationView.getMenu();
-
-
-        if (user == null &&getArguments() != null) {
-            user = (LoggedInUser) getArguments().getSerializable("user");
-            /*
-            if (user != null && user.getUser_type().equals("Organizer")) {
-                navMenu.findItem(R.id.discover).setVisible(false);
-            } else {
-                navMenu.findItem(R.id.newEvent).setVisible(false);
-            }
-
-             */
-        }
-
-        Log.d("CreateEventFragment", "User ID: " + this.user.get_id());
-
         eventNameEditText = view.findViewById(R.id.eventNameEditText);
         eventDateEditText = view.findViewById(R.id.eventDateEditText);
         eventLocationEditText = view.findViewById(R.id.eventLocationEditText);
@@ -83,18 +64,6 @@ public class CreateEventFragment extends Fragment {
         Button createEventButton = view.findViewById(R.id.createEventButton);
         setPrivateEventCheckbox = view.findViewById(R.id.setPrivateEventCheckbox);
 
-        // Set up click listeners for buttons
-        /*
-        view.findViewById(R.id.messages).setOnClickListener(v ->
-                Navigation.findNavController(v).navigate(R.id.action_createEventFragment_to_userMessagesFragment, createNavigationBundle()));
-
-        view.findViewById(R.id.profile).setOnClickListener(v ->
-                Navigation.findNavController(v).navigate(R.id.action_createEventFragment_to_userProfileFragment, createNavigationBundle()));
-
-        view.findViewById(R.id.myevents).setOnClickListener(v ->
-                Navigation.findNavController(v).navigate(R.id.action_createEventFragment_to_userEventsFragment, createNavigationBundle()));
-        */
-        // Initialize Calendar
         calendar = Calendar.getInstance();
 
         view.findViewById(R.id.pickDateButton).setOnClickListener(this::showDatePickerDialog);
@@ -112,7 +81,7 @@ public class CreateEventFragment extends Fragment {
         boolean isPrivate = setPrivateEventCheckbox.isChecked();
         try {
             // Call the Database method to add the event with the correct creator_id
-            UserEvent userEvent = Database.addEvent(user.get_id(), eventName, eventDate, eventLocation, eventDescription,isPrivate);
+            UserEvent userEvent = Database.addEvent(this.holder.getUser().get_id(), eventName, eventDate, eventLocation, eventDescription,isPrivate);
 
             // Display information about the created event using UserEventDisplay
             displayEventDetails(userEvent);
@@ -136,6 +105,14 @@ public class CreateEventFragment extends Fragment {
                 "Location: " + userEventDisplay.getLocation();
 
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
+
+
+        if(this.holder.getUserEvents() != null){
+            this.holder.getUser().getEvents().add(userEventDisplay.getId());
+            this.holder.getUserEvents().add(userEventDisplay);
+            this.holder.loadEvents();
+        }
+
 
         // You can also perform other actions, such as updating UI elements or navigating to another fragment
     }
@@ -170,7 +147,7 @@ public class CreateEventFragment extends Fragment {
     // Method to create a common bundle for navigation
     private Bundle createNavigationBundle() {
         Bundle bundle = new Bundle();
-        bundle.putSerializable("user", user);
+        bundle.putSerializable("user", this.holder.getUser());
         return bundle;
     }
 

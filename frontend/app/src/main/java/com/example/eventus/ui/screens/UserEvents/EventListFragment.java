@@ -1,11 +1,13 @@
 package com.example.eventus.ui.screens.UserEvents;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -52,15 +54,36 @@ public class EventListFragment extends Fragment implements EventAdapter.OnShowMo
     }
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(requestCode == R.id.showMoreDetails){
+            if(resultCode == Activity.RESULT_OK){
+                if(data != null && data.getExtras() != null){
+                    LoggedInUser newUser = (LoggedInUser) data.getExtras().getSerializable("user");
+                    if(newUser!=null){
+                        this.user = newUser;
+                    }
+                }
+            } else if (resultCode == Activity.RESULT_CANCELED) {
+                Toast.makeText(requireContext(), "an error has occurred",Toast.LENGTH_LONG).show();
+            }
+        }
+        if(getParentFragment() != null)
+            requireParentFragment().onActivityResult(requestCode,resultCode,data);
+        else {
+            requireActivity().setResult(resultCode,data);
+        }
+    }
+
+    @Override
     public void onShowMoreDetailsClick(UserEventDisplay clickedEvent) {
         Bundle args = new Bundle();
         args.putSerializable("user", this.user);
 
         args.putString("eventId", clickedEvent.getId());
-        //TODO handle activity fail
-        Intent i = new Intent(this.getContext(), EventDetailsActivity.class);
+
+        Intent i = new Intent(getContext(), EventDetailsActivity.class);
         i.putExtras(args);
-        startActivity(i);
+        startActivityForResult(i,R.id.showMoreDetails);
 
     }
 }

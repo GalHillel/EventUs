@@ -100,9 +100,6 @@ public class EventParticipantsTabFragment extends Fragment implements UserAdapte
         userAdapter.setOnUserItemClickListener(this);
         userAdapter.setProfileWrapper(this);
 
-
-
-
         if (this.holder.getUser().get_id().equals(this.holder.getEvent().getCreator_id())) {
             this.exitEventButton.setText("Delete Event");
         }
@@ -173,19 +170,24 @@ public class EventParticipantsTabFragment extends Fragment implements UserAdapte
                 //handle
             }
         } else {
-            removeUser(holder.getUser());
-            this.exitEventButton.setVisibility(View.GONE);
-            this.joinEventButton.setVisibility(View.VISIBLE);
+            boolean removed = removeUser(holder.getUser());
+            if(removed) {
+                this.exitEventButton.setVisibility(View.GONE);
+                this.joinEventButton.setVisibility(View.VISIBLE);
+                this.holder.getUser().getEvents().remove(this.holder.getEvent().getId());
+            }
         }
     }
 
-    private void removeUser(UserDisplay user) {
+    private boolean removeUser(UserDisplay user) {
         try {
             Database.exitEvent(user.get_id(), this.holder.getEvent().getId());
             int idx = this.holder.getUsers().indexOf(user);
             this.holder.getUsers().remove(idx);
             this.userAdapter.notifyItemRemoved(idx);
+            return true;
         } catch (Exception e) {
+            return false;
             //handle
         }
     }

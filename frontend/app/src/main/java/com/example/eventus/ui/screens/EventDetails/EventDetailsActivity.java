@@ -13,6 +13,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
 import com.example.eventus.R;
+import com.example.eventus.data.BaseActivity;
 import com.example.eventus.data.Database;
 import com.example.eventus.data.ServerSideException;
 import com.example.eventus.data.model.LoggedInUser;
@@ -26,14 +27,15 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
-public class EventDetailsActivity extends AppCompatActivity {
+public class EventDetailsActivity extends BaseActivity {
     TabLayout tabLayout;
     ViewPager viewPager;
 
-    LoggedInUser user;
     private UserEvent userEvent;
     private List<UserDisplay> users = new ArrayList<>();
     private boolean passed;
@@ -47,31 +49,34 @@ public class EventDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_details);
 
-        ImageButton backButton = findViewById(R.id.backButton);
+        backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(this::backButtonClick);
 
-        tabLayout = (TabLayout)findViewById(R.id.tabLayout);
+        tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         viewPager = (ViewPager) findViewById(R.id.viewPager);
-        //TODO close activity on fail and return the response
 
-        if(getIntent() != null){
-            Intent intent = getIntent();
-            if(intent.getExtras() != null){
-                Bundle args = intent.getExtras();
-                this.user = (LoggedInUser) args.getSerializable("user");
-                String eventId = args.getString("eventId", "");
-                try {
-                    this.userEvent = Database.loadEvent(eventId);
-                    UserDisplay[] tmp = Database.getUserList(eventId);
-                    this.users.clear();
-                    this.users.addAll(Arrays.asList(tmp));
-                    //TODO fast load profile pictures
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
 
-            }
+        this.user = (LoggedInUser) args.getSerializable("user");
+        String eventId = args.getString("eventId", "");
+        try {
+            this.userEvent = Database.loadEvent(eventId);
+            UserDisplay[] tmp = Database.getUserList(eventId);
+            this.users.clear();
+            this.users.addAll(Arrays.asList(tmp));
+        } catch (ServerSideException e) {
+            Intent res = new Intent();
+            res.putExtra("error", e.getMessage());
+            setResult(e.getReturnCode(), res);
+            this.finish();
+            return;
+        } catch (Exception e) {
+            Intent res = new Intent();
+            res.putExtra("error", e.getMessage());
+            setResult(Activity.RESULT_CANCELED, res);
+            this.finish();
+            return;
         }
+
         Date d = new Date();
         this.passed = !userEvent.getDate().after(d);
         if(passed && !users.contains(user)){
@@ -128,13 +133,13 @@ public class EventDetailsActivity extends AppCompatActivity {
 
     public void backButtonClick(View view) {
         // Navigate back
-        this.setResult(Activity.RESULT_OK);
-        this.finish();
+        success();
 
     }
-    public void success(){
-        this.setResult(Activity.RESULT_OK);
-        this.finish();
+
+    @Override
+    public Set<String> getRequiredArgs() {
+        return new HashSet<String>(Arrays.asList("user","eventId"));
     }
 
     public void updateBadge() {
@@ -177,6 +182,8 @@ public class EventDetailsActivity extends AppCompatActivity {
         }
         return profile_icon;
     }
+
+
 
     public boolean hasPassed(){return this.passed;}
 }

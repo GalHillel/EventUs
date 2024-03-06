@@ -8,9 +8,11 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.eventus.R;
+import com.example.eventus.data.BaseActivity;
 import com.example.eventus.data.Database;
 import com.example.eventus.data.ServerSideException;
 import com.example.eventus.data.model.LoggedInUser;
@@ -21,12 +23,13 @@ import com.example.eventus.ui.screens.UserEvents.EventListFragment;
 
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
-public class ViewEventsActivity extends AppCompatActivity {
+public class ViewEventsActivity extends BaseActivity {
 
-    LoggedInUser user;
     List<UserEventDisplay> userEvents;
     UserProfile userProfile;
 
@@ -35,33 +38,6 @@ public class ViewEventsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_user_events);
 
-        if (getIntent() == null) {
-            Intent res = new Intent();
-            res.putExtra("message", "null intent given");
-            setResult(Activity.RESULT_CANCELED, res);
-            this.finish();
-            return;
-        }
-
-        Intent intent = getIntent();
-
-        if (intent.getExtras() == null) {
-            Intent res = new Intent();
-            res.putExtra("message", "intent missing bundle");
-            setResult(Activity.RESULT_CANCELED, res);
-            this.finish();
-            return;
-        }
-
-        Bundle args = intent.getExtras();
-
-        if (!args.containsKey("user") || !args.containsKey("other_user_profile")) {
-            Intent res = new Intent();
-            res.putExtra("message", "args missing 'user' or 'other_user_profile' fields");
-            setResult(Activity.RESULT_CANCELED, res);
-            this.finish();
-            return;
-        }
         UserEventDisplay[] tmp = null;
         if(args.containsKey("eventArr")){
             tmp = (UserEventDisplay[]) args.getSerializable("eventArr");
@@ -117,11 +93,11 @@ public class ViewEventsActivity extends AppCompatActivity {
     }
     public void backButtonClick(View view) {
         // Navigate back
-        this.setResult(Activity.RESULT_OK);
-        this.finish();
+        this.success();
     }
-    public void success(){
-        this.setResult(Activity.RESULT_OK);
-        this.finish();
+    @Override
+    public Set<String> getRequiredArgs() {
+        return new HashSet<String>(Arrays.asList("user","other_user_profile","mode"));
     }
+
 }
