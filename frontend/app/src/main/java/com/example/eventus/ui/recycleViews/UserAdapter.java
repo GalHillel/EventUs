@@ -68,6 +68,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
     public void setOnKickClickListener(ButtonListener listener) {
         this.kickListener = listener;
     }
+    public void setAcceptClickListener(ButtonListener listener) {
+        this.acceptListener = listener;
+    }
 
     public void setOnMessageClickListener(ButtonListener listener) {
         this.messageListener = listener;
@@ -102,11 +105,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
             holder.userName.setText(user.getName());
         }
 
-        holder.kickButton.setOnClickListener(v -> {
-            if (kickListener != null) {
-                kickListener.onKickClick(position);
-            }
-        });
+
         holder.messageButton.setOnClickListener(v -> {
             if (messageListener != null) {
                 messageListener.onMessageClick(position);
@@ -122,6 +121,11 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
                 acceptListener.onAcceptClick(position);
             }
         });
+        holder.kickButton.setOnClickListener(v -> {
+            if (kickListener != null) {
+                kickListener.onKickClick(position);
+            }
+        });
 
 
         Boolean status = this.userStatus.get(user.get_id());
@@ -132,11 +136,25 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
             holder.messageButton.setVisibility(View.GONE);
         }
         else{
-            if(this.isPrivate && status != null && status){
+            if(this.isPrivate && status != null){
                 holder.setKickButtonMode(status);
+                if(!status) {
+                    holder.acceptButton.setOnClickListener(v -> {
+                        if (acceptListener != null) {
+                            acceptListener.onAcceptClick(position);
+                        }
+                    });
+                }
+                else {
+                    holder.kickButton.setOnClickListener(v -> {
+                        if (kickListener != null) {
+                            kickListener.onKickClick(position);
+                        }
+                    });
+                }
             }
         }
-        if(!mode.equals("Organizer") && this.isPrivate && status != null && status){
+        if(!mode.equals("Organizer") && this.isPrivate && status != null && !status){
             holder.userItem.setVisibility(View.GONE);
         }
         else{

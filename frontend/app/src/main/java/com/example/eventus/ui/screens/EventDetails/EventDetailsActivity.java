@@ -146,7 +146,7 @@ public class EventDetailsActivity extends BaseActivity {
         if(this.badge != null){
             int badgeNum = 0;
             if(this.userEvent.getIsPrivate()){
-                badgeNum = (int) this.userEvent.getAttendents().entrySet().stream().filter(Map.Entry::getValue).count();
+                badgeNum = (int) this.userEvent.getAttendents().entrySet().stream().filter(e->!e.getValue()).count();
             }
 
             if(badgeNum > 0) {

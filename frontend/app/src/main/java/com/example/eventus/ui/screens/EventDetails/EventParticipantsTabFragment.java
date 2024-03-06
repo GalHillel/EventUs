@@ -99,6 +99,7 @@ public class EventParticipantsTabFragment extends Fragment implements UserAdapte
         userAdapter.setOnMessageClickListener(this);
         userAdapter.setOnUserItemClickListener(this);
         userAdapter.setProfileWrapper(this);
+        userAdapter.setAcceptClickListener(this);
 
         if (this.holder.getUser().get_id().equals(this.holder.getEvent().getCreator_id())) {
             this.exitEventButton.setText("Delete Event");
@@ -193,7 +194,7 @@ public class EventParticipantsTabFragment extends Fragment implements UserAdapte
     }
     private void acceptUser(UserDisplay user){
         try {
-            Database.acceptUser(user.get_id(), this.holder.getEvent().getId());
+            Database.acceptUser( this.holder.getEvent().getId(),user.get_id());
             int idx = this.holder.getUsers().indexOf(user);
             this.holder.getEvent().getAttendents().put(user.get_id(),true);
             this.userAdapter.notifyItemChanged(idx);

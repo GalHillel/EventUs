@@ -99,7 +99,8 @@ export class EventService {
   }
 
   async acceptUser(_id:string,userId:string): Promise<void>{
-    this.userEventModel.updateOne({_id:_id},{$set:{[`attendents.${userId}`]:true}}).exec();
+    var k = `attendents.${userId}`
+    const up = await this.userEventModel.updateOne({_id:{$in:[_id]}},{$set:{[k]:true}}).exec();
   }
 
   /**

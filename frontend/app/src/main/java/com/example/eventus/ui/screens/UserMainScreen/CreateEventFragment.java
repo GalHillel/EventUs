@@ -110,7 +110,6 @@ public class CreateEventFragment extends Fragment {
         if(this.holder.getUserEvents() != null){
             this.holder.getUser().getEvents().add(userEventDisplay.getId());
             this.holder.getUserEvents().add(userEventDisplay);
-            this.holder.loadEvents();
         }
 
 
