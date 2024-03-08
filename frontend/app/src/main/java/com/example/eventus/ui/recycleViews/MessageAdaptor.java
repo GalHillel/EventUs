@@ -15,8 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.eventus.R;
 import com.example.eventus.data.model.UserMessageDisplay;
-import com.google.android.material.badge.BadgeDrawable;
-import com.google.android.material.badge.BadgeUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -40,8 +38,7 @@ public class MessageAdaptor extends RecyclerView.Adapter<MessageAdaptor.MessageV
     @NonNull
     @Override
     public MessageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_message, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_message, parent, false);
         return new MessageViewHolder(view);
     }
 
@@ -59,16 +56,12 @@ public class MessageAdaptor extends RecyclerView.Adapter<MessageAdaptor.MessageV
             holder.userMessageSenderView.setTypeface(null, Typeface.NORMAL);
             holder.userMessageDateView.setTypeface(null, Typeface.NORMAL);
             holder.userMessageTitleView.setTypeface(null, Typeface.NORMAL);
-            holder.newMessageNotification.setVisibility(View.INVISIBLE);
-
         } else {
 
             holder.userMessageItem.setBackgroundTintMode(PorterDuff.Mode.CLEAR);
             holder.userMessageSenderView.setTypeface(null, Typeface.BOLD);
             holder.userMessageDateView.setTypeface(null, Typeface.BOLD);
             holder.userMessageTitleView.setTypeface(null, Typeface.BOLD);
-            holder.newMessageNotification.setVisibility(View.VISIBLE);
-
         }
 
         holder.userMessageItem.setOnClickListener(v -> {
@@ -94,8 +87,6 @@ public class MessageAdaptor extends RecyclerView.Adapter<MessageAdaptor.MessageV
         TextView userMessageSenderView;
         LinearLayout userMessageItem;
 
-        ImageView newMessageNotification;
-
 
         public MessageViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -103,7 +94,6 @@ public class MessageAdaptor extends RecyclerView.Adapter<MessageAdaptor.MessageV
             userMessageDateView = itemView.findViewById(R.id.userMessageDateTextView);
             userMessageSenderView = itemView.findViewById(R.id.userMessageSenderTextView);
             userMessageItem = itemView.findViewById(R.id.userMessageItem);
-            newMessageNotification = itemView.findViewById(R.id.newMessageNotification);
         }
     }
 }

@@ -2,10 +2,9 @@ package com.example.eventus.data.model;
 
 import java.util.ArrayList;
 
-public class UserProfile extends UserDisplay{
+public class UserProfile extends UserDisplay {
     protected String bio;
     protected int rating;
-    protected int num_ratings;
     protected ArrayList<String> events;
 
 

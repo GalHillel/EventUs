@@ -4,16 +4,15 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class UserEvent extends UserEventDisplay{
+public class UserEvent extends UserEventDisplay {
 
     protected String creator_id, description;
 
-    protected Map<String,Boolean> attendents;
-
+    protected Map<String, Boolean> attendents;
 
 
     public UserEvent(String _id, String creator_id, String name, String location, String description, Date date) {
-        super(_id,name,date,location);
+        super(_id, name, date, location);
 
         this.creator_id = creator_id;
 
@@ -25,13 +24,17 @@ public class UserEvent extends UserEventDisplay{
 
     }
 
-    public String getDescription(){
+    public String getDescription() {
         return this.description;
     }
-    public Map<String,Boolean> getAttendents(){
+
+    public Map<String, Boolean> getAttendents() {
         return this.attendents;
     }
-    public String getCreator_id(){return this.creator_id;}
+
+    public String getCreator_id() {
+        return this.creator_id;
+    }
 
 
     public void setDescription(String description) {

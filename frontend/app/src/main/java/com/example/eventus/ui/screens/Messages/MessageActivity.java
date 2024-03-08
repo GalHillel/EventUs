@@ -4,12 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentContainerView;
-import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.eventus.R;
 import com.example.eventus.data.BaseActivity;
@@ -19,14 +14,11 @@ import com.example.eventus.data.model.UserDisplay;
 import com.example.eventus.data.model.UserMessage;
 
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Stream;
 
 public class MessageActivity extends BaseActivity {
-    private UserDisplay user,sender;
+    private UserDisplay user, sender;
     private UserMessage message;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +26,7 @@ public class MessageActivity extends BaseActivity {
         setContentView(R.layout.activity_user_message);
 
         this.user = (UserDisplay) args.getSerializable("user");
-        String message_id = args.getString("message_id","");
+        String message_id = args.getString("message_id", "");
 
         try {
             this.message = Database.loadMessage(message_id, this.user.get_id());
@@ -54,15 +46,11 @@ public class MessageActivity extends BaseActivity {
         }
 
         MessageFragment messageFragment = new MessageFragment(this);
-        getSupportFragmentManager().beginTransaction()
-                .setReorderingAllowed(true)
-                .replace(R.id.fragment_message, messageFragment)
-                .commit();
+        getSupportFragmentManager().beginTransaction().setReorderingAllowed(true).replace(R.id.fragment_message, messageFragment).commit();
 
         ImageButton backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(this::backButtonClick);
     }
-
 
 
     public UserDisplay getUser() {
@@ -77,13 +65,13 @@ public class MessageActivity extends BaseActivity {
         return message;
     }
 
-    public void success(){
+    public void success() {
         Intent i = new Intent();
         Bundle args = new Bundle();
-        args.putString("message_id",this.message.get_id());
-        args.putSerializable("user",this.user);
+        args.putString("message_id", this.message.get_id());
+        args.putSerializable("user", this.user);
         i.putExtras(args);
-        this.setResult(Activity.RESULT_OK,i);
+        this.setResult(Activity.RESULT_OK, i);
         this.finish();
     }
 
@@ -94,7 +82,7 @@ public class MessageActivity extends BaseActivity {
 
     @Override
     public Set<String> getRequiredArgs() {
-        return new HashSet<String>(Arrays.asList("user","message_id"));
+        return new HashSet<>(Arrays.asList("user", "message_id"));
     }
 
 

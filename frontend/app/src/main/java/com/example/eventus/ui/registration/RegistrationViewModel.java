@@ -1,6 +1,5 @@
 package com.example.eventus.ui.registration;
 
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -11,14 +10,6 @@ public class RegistrationViewModel extends ViewModel {
 
     private final MutableLiveData<Boolean> registrationSuccess = new MutableLiveData<>();
     private final MutableLiveData<String> errorMessage = new MutableLiveData<>();
-
-    public LiveData<Boolean> getRegistrationSuccess() {
-        return registrationSuccess;
-    }
-
-    public LiveData<String> getErrorMessage() {
-        return errorMessage;
-    }
 
     public boolean register(String email, String password, String username, String userType) {
         try {

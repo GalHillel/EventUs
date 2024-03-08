@@ -2,36 +2,36 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/newEvent"
-        android:state_checked="false"
-        android:title="New Event"
         android:icon="@drawable/ic_create_event"
+        android:state_checked="false"
+        android:title="@string/new_event"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/discover"
-        android:state_checked="true"
-        android:title="Discover"
         android:icon="@drawable/ic_compass"
+        android:state_checked="true"
+        android:title="@string/discover"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/messages"
-        android:state_checked="true"
-        android:title="Messages"
         android:icon="@drawable/ic_messages"
-        app:showAsAction="always" />
+        android:state_checked="true"
+        android:title="@string/messages"
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/myevents"
-        android:state_checked="true"
-        android:title="My Events"
         android:icon="@drawable/ic_schedule"
-        app:showAsAction="always" />
+        android:state_checked="true"
+        android:title="@string/my_events"
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/profile"
-        android:state_checked="true"
-        android:title="Profile"
         android:icon="@drawable/ic_profile"
-        app:showAsAction="always" />
+        android:state_checked="true"
+        android:title="@string/profile"
+        app:showAsAction="ifRoom" />
 </menu>

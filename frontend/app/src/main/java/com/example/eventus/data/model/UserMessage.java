@@ -1,8 +1,8 @@
 package com.example.eventus.data.model;
 
 import java.util.List;
-import java.util.Date;
-public class UserMessage extends UserMessageDisplay{
+
+public class UserMessage extends UserMessageDisplay {
 
     protected List<String> receiver_ids;
     protected String content;

@@ -29,20 +29,27 @@ public class UserEventDisplay implements Serializable, Comparable<UserEventDispl
     public String getLocation() {
         return this.location;
     }
+
     public String getId() {
         return this._id;
     }
+
     public String getName() {
         return this.name;
     }
-    public boolean getIsPrivate(){return this.isPrivate;}
+
+    public boolean getIsPrivate() {
+        return this.isPrivate;
+    }
 
     public void setDate(Date date) {
         this.date = date;
     }
+
     public void setLocation(String location) {
         this.location = location;
     }
+
     public void setName(String name) {
         this.name = name;
     }

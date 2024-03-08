@@ -5,13 +5,9 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
-import com.bumptech.glide.Glide;
 import com.example.eventus.R;
 import com.example.eventus.data.BaseActivity;
 import com.example.eventus.data.Database;
@@ -30,6 +26,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 public class EventDetailsActivity extends BaseActivity {
@@ -37,11 +34,11 @@ public class EventDetailsActivity extends BaseActivity {
     ViewPager viewPager;
 
     private UserEvent userEvent;
-    private List<UserDisplay> users = new ArrayList<>();
+    private final List<UserDisplay> users = new ArrayList<>();
     private boolean passed;
     BadgeDrawable badge;
 
-    private Map<String,Bitmap> profilePic_lookup = new HashMap<>();
+    private final Map<String, Bitmap> profilePic_lookup = new HashMap<>();
 
 
     @Override
@@ -79,13 +76,13 @@ public class EventDetailsActivity extends BaseActivity {
 
         Date d = new Date();
         this.passed = !userEvent.getDate().after(d);
-        if(passed && !users.contains(user)){
+        if (passed && !users.contains(user)) {
             tabLayout.removeTabAt(1);
         }
 
         this.users.sort(Comparator.comparing(UserDisplay::getUser_type));
 
-        EventDetailsPagerAdaptor myAdaptor = new EventDetailsPagerAdaptor(this,getSupportFragmentManager(), tabLayout.getTabCount());
+        EventDetailsPagerAdaptor myAdaptor = new EventDetailsPagerAdaptor(this, getSupportFragmentManager(), tabLayout.getTabCount());
         viewPager.setAdapter(myAdaptor);
 
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
@@ -107,28 +104,22 @@ public class EventDetailsActivity extends BaseActivity {
             }
         });
         this.badge = null;
-        if(!passed && user.get_id().equals(userEvent.getCreator_id())) {
-            this.badge = tabLayout.getTabAt(1).getOrCreateBadge();
+        if (!passed && user.get_id().equals(userEvent.getCreator_id())) {
+            this.badge = Objects.requireNonNull(tabLayout.getTabAt(1)).getOrCreateBadge();
             updateBadge();
         }
     }
 
-    LoggedInUser getUser(){
+    LoggedInUser getUser() {
         return this.user;
     }
-    UserEvent getEvent(){
+
+    UserEvent getEvent() {
         return this.userEvent;
     }
-    List<UserDisplay> getUsers(){
+
+    List<UserDisplay> getUsers() {
         return this.users;
-    }
-
-    public void setUserEvent(UserEvent userEvent) {
-        this.userEvent = userEvent;
-    }
-
-    public void setUsers(List<UserDisplay> users) {
-        this.users = users;
     }
 
     public void backButtonClick(View view) {
@@ -139,17 +130,17 @@ public class EventDetailsActivity extends BaseActivity {
 
     @Override
     public Set<String> getRequiredArgs() {
-        return new HashSet<String>(Arrays.asList("user","eventId"));
+        return new HashSet<>(Arrays.asList("user", "eventId"));
     }
 
     public void updateBadge() {
-        if(this.badge != null){
+        if (this.badge != null) {
             int badgeNum = 0;
-            if(this.userEvent.getIsPrivate()){
-                badgeNum = (int) this.userEvent.getAttendents().entrySet().stream().filter(e->!e.getValue()).count();
+            if (this.userEvent.getIsPrivate()) {
+                badgeNum = (int) this.userEvent.getAttendents().entrySet().stream().filter(e -> !e.getValue()).count();
             }
 
-            if(badgeNum > 0) {
+            if (badgeNum > 0) {
                 badge.setVisible(true);
                 badge.setNumber(badgeNum);
                 return;
@@ -162,7 +153,7 @@ public class EventDetailsActivity extends BaseActivity {
 
     public Bitmap getProfilePicBitmap(String userId) {
 
-        if(profilePic_lookup.containsKey(userId)){
+        if (profilePic_lookup.containsKey(userId)) {
 
             return profilePic_lookup.get(userId);
         }
@@ -171,7 +162,7 @@ public class EventDetailsActivity extends BaseActivity {
             profile_icon = Database.getProfilePic(userId);
             int width = getResources().getInteger(R.integer.participant_list_profilePicSize);
             int height = getResources().getInteger(R.integer.participant_list_profilePicSize);
-            profile_icon = Bitmap.createScaledBitmap(profile_icon,width,height,false);
+            profile_icon = Bitmap.createScaledBitmap(profile_icon, width, height, false);
 
         } catch (ServerSideException e) {
             // Handle the exception (e.g., show an error message)
@@ -184,6 +175,7 @@ public class EventDetailsActivity extends BaseActivity {
     }
 
 
-
-    public boolean hasPassed(){return this.passed;}
+    public boolean hasPassed() {
+        return this.passed;
+    }
 }

@@ -1,16 +1,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="match_parent"
-    android:layout_width="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.screens.Profile.BaseUserProfileFragment"
-    android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.screens.Profile.BaseUserProfileFragment">
 
     <ImageView
         android:id="@+id/userPhotoImageView"
         android:layout_width="@dimen/profile_profilePicSize"
         android:layout_height="@dimen/profile_profilePicSize"
         android:layout_gravity="center"
+        android:importantForAccessibility="no"
         android:src="@drawable/default_user_photo" />
 
     <TextView
@@ -19,10 +19,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="16dp"
-        android:text="User Name"
+        android:text="@string/user_name"
         android:textSize="18sp"
         android:textStyle="bold" />
-
 
 
     <RatingBar
@@ -42,28 +41,28 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="8dp"
-        android:text="0 Ratings"
+        android:text="@string/_0_ratings"
         android:textColor="@color/black"
         android:textSize="14sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="16dp"
         android:layout_weight="1"
-        android:padding="8dp"
         android:background="@drawable/textfield_background"
-        android:layout_marginTop="16dp">
+        android:padding="8dp">
+
         <com.google.android.material.textfield.MaterialAutoCompleteTextView
             android:id="@+id/bioTextView"
-            android:text="@string/descriptionPlaceholder"
+            style="@style/LargeTextField"
+            android:background="@color/white"
             android:clickable="false"
             android:cursorVisible="false"
             android:focusable="false"
-            android:visibility="visible"
-            android:background="@color/white"
-            style="@style/LargeTextField" />
+            android:text="@string/descriptionPlaceholder"
+            android:visibility="visible" />
     </LinearLayout>
-
 
 
 </LinearLayout>

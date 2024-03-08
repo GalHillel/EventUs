@@ -2,26 +2,19 @@ package com.example.eventus.ui.recycleViews;
 
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
-import android.net.Uri;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.example.eventus.R;
-import com.example.eventus.data.Database;
-import com.example.eventus.data.ServerSideException;
 import com.example.eventus.data.model.UserDisplay;
 import com.example.eventus.data.model.UserEvent;
-
 
 import java.util.Date;
 import java.util.List;
@@ -33,8 +26,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
 
     private final List<UserDisplay> userList;
     private final String mode;
-    private Map<String,Boolean> userStatus;
-    private boolean isPrivate;
+    private final Map<String, Boolean> userStatus;
+    private final boolean isPrivate;
 
     private ButtonListener kickListener;
     private ButtonListener acceptListener;
@@ -43,7 +36,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
     private Wrappers getProfile;
     boolean passed;
 
-    public UserAdapter(List<UserDisplay> userList,UserEvent uEvent, String mode) {
+    public UserAdapter(List<UserDisplay> userList, UserEvent uEvent, String mode) {
         this.userList = userList;
         Date d = new Date();
         this.passed = !uEvent.getDate().after(d);
@@ -58,16 +51,19 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         void onMessageClick(int position);
 
         void onUserItemClick(int position);
+
         void onAcceptClick(int position);
 
     }
-    public interface Wrappers{
+
+    public interface Wrappers {
         Bitmap getUserProfile(String profile_pic_id);
     }
 
     public void setOnKickClickListener(ButtonListener listener) {
         this.kickListener = listener;
     }
+
     public void setAcceptClickListener(ButtonListener listener) {
         this.acceptListener = listener;
     }
@@ -79,15 +75,15 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
     public void setOnUserItemClickListener(ButtonListener listener) {
         this.userItemListener = listener;
     }
-    public void setProfileWrapper(Wrappers profileWrapper){
+
+    public void setProfileWrapper(Wrappers profileWrapper) {
         this.getProfile = profileWrapper;
     }
 
     @NonNull
     @Override
     public UserViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_user, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_user, parent, false);
         return new UserViewHolder(view);
     }
 
@@ -95,13 +91,12 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
     @Override
     public void onBindViewHolder(@NonNull UserViewHolder holder, int position) {
         UserDisplay user = userList.get(position);
-        if(user==null){
+        if (user == null) {
             return;
         }
-        if(user.getUser_type().equals("Organizer")){
+        if (user.getUser_type().equals("Organizer")) {
             holder.userName.setText(user.getName() + " (Host)");
-        }
-        else {
+        } else {
             holder.userName.setText(user.getName());
         }
 
@@ -116,8 +111,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
                 userItemListener.onUserItemClick(position);
             }
         });
-        holder.acceptButton.setOnClickListener(v->{
-            if(acceptListener != null){
+        holder.acceptButton.setOnClickListener(v -> {
+            if (acceptListener != null) {
                 acceptListener.onAcceptClick(position);
             }
         });
@@ -134,18 +129,16 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         if (!mode.equals("Organizer") || user.getUser_type().equals("Organizer")) {
             holder.kickButton.setVisibility(View.GONE);
             holder.messageButton.setVisibility(View.GONE);
-        }
-        else{
-            if(this.isPrivate && status != null){
+        } else {
+            if (this.isPrivate && status != null) {
                 holder.setKickButtonMode(status);
-                if(!status) {
+                if (!status) {
                     holder.acceptButton.setOnClickListener(v -> {
                         if (acceptListener != null) {
                             acceptListener.onAcceptClick(position);
                         }
                     });
-                }
-                else {
+                } else {
                     holder.kickButton.setOnClickListener(v -> {
                         if (kickListener != null) {
                             kickListener.onKickClick(position);
@@ -154,19 +147,17 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
                 }
             }
         }
-        if(!mode.equals("Organizer") && this.isPrivate && status != null && !status){
+        if (!mode.equals("Organizer") && this.isPrivate && status != null && !status) {
             holder.userItem.setVisibility(View.GONE);
-        }
-        else{
-            if (user.getProfile_pic().length() > 0 && getProfile != null) {
+        } else {
+            if (!user.getProfile_pic().isEmpty() && getProfile != null) {
                 holder.profile.setImageBitmap(getProfile.getUserProfile(user.get_id()));
             }
         }
-        if(passed){
+        if (passed) {
             holder.kickButton.setVisibility(View.GONE);
         }
         // Set click listeners for kick and message buttons
-
 
 
     }
@@ -196,11 +187,10 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
 
         /**
          * sets the kick button as an accept button if flg=false
-         * @param flg
          */
         @SuppressLint("ResourceAsColor")
-        public void setKickButtonMode(Boolean flg){
-            if(flg){
+        public void setKickButtonMode(Boolean flg) {
+            if (flg) {
                 this.kickButton.setVisibility(View.VISIBLE);
                 this.acceptButton.setVisibility(View.GONE);
                 return;

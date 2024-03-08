@@ -9,48 +9,33 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.TimePicker;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatEditText;
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.fragment.NavHostFragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.eventus.R;
 import com.example.eventus.data.Database;
 import com.example.eventus.data.model.UserDisplay;
-import com.example.eventus.data.model.UserEvent;
-import com.example.eventus.ui.recycleViews.UserAdapter;
 import com.example.eventus.ui.screens.Messages.CreateMessageActivity;
 
-import org.w3c.dom.Text;
-
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
 
 public class EventDetailsTabFragment extends Fragment {
 
     private RatingBar ratingBar;
-    private Button editEventButton, saveEventButton, pickDateButton, contactUserButton, saveRatingButton;
+    private Button editEventButton;
+    private Button saveEventButton;
+    private Button pickDateButton;
+    private Button saveRatingButton;
     private Calendar calendar;
     private EditText eventNameView, eventDateView, eventLocationview, eventDescription;
-    private TextView ratingCount;
 
     EventDetailsActivity holder;
 
@@ -68,14 +53,12 @@ public class EventDetailsTabFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-
-        View view = inflater.inflate(R.layout.fragment_event_details_tab, container, false);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
-        return view;
+        return inflater.inflate(R.layout.fragment_event_details_tab, container, false);
     }
+
     /*
         TODO:
             1. Add the option for an Organizer to send a message to all users in event - DONE
@@ -93,56 +76,49 @@ public class EventDetailsTabFragment extends Fragment {
         this.editEventButton = view.findViewById(R.id.editEventButton);
         this.saveEventButton = view.findViewById(R.id.saveEventButton);
         this.pickDateButton = view.findViewById(R.id.pickDateButton);
-        this.contactUserButton = view.findViewById(R.id.contanctUserButton);
+        Button contactUserButton = view.findViewById(R.id.contanctUserButton);
         this.saveRatingButton = view.findViewById(R.id.saveRatingButton);
         this.ratingBar = view.findViewById(R.id.ratingBar);
-        this.ratingCount = view.findViewById(R.id.ratingCountTextView);
-        this.ratingCount.setText(this.holder.getEvent().getNum_rating() + " Ratings");
+        TextView ratingCount = view.findViewById(R.id.ratingCountTextView);
+        ratingCount.setText(this.holder.getEvent().getNum_rating() + " Ratings");
 
 
-        if("Organizer".equals(this.holder.getUser().getUser_type())){
-            this.contactUserButton.setText("Contact all participants");
-            this.contactUserButton.setOnClickListener(this::onContactAllParticipantsClick);
+        if ("Organizer".equals(this.holder.getUser().getUser_type())) {
+            contactUserButton.setText("Contact all participants");
+            contactUserButton.setOnClickListener(this::onContactAllParticipantsClick);
+        } else {
+            contactUserButton.setOnClickListener(this::onContactOrganizerClick);
         }
-        else{
-            this.contactUserButton.setOnClickListener(this::onContactOrganizerClick);
-        }
 
-        this.pickDateButton.setOnClickListener(this::onPickDateClick);
+        this.pickDateButton.setOnClickListener(v -> onPickDateClick());
         this.editEventButton.setOnClickListener(this::onEditEventClick);
         this.saveEventButton.setOnClickListener(this::onSaveEventClick);
         this.saveRatingButton.setOnClickListener(this::onSaveRatingClick);
         this.saveRatingButton.setEnabled(false);
-        ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-            @Override
-            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                saveRatingButton.setEnabled(true);
-            }
-        });
+        ratingBar.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> saveRatingButton.setEnabled(true));
 
         updateFields();
-        boolean user_in_event = holder.getEvent().getAttendents().containsKey(holder.getUser().get_id()) &&
-                (!holder.getEvent().getIsPrivate() || Boolean.TRUE.equals(holder.getEvent().getAttendents().get(holder.getUser().get_id())));
+        boolean user_in_event = holder.getEvent().getAttendents().containsKey(holder.getUser().get_id()) && (!holder.getEvent().getIsPrivate() || Boolean.TRUE.equals(holder.getEvent().getAttendents().get(holder.getUser().get_id())));
 
         toggleEditableMode(false);
 
-        if(!holder.hasPassed()){
+        if (!holder.hasPassed()) {
             ratingBar.setVisibility(View.GONE);
             saveRatingButton.setVisibility(View.GONE);
             ratingCount.setVisibility(View.GONE);
-        }else{
+        } else {
             ratingBar.setVisibility(View.VISIBLE);
             saveRatingButton.setVisibility(View.VISIBLE);
             ratingCount.setVisibility(View.VISIBLE);
             editEventButton.setVisibility(View.GONE);
-            if(holder.getUser().getUser_type().equals("Organizer") || !user_in_event){
+            if (holder.getUser().getUser_type().equals("Organizer") || !user_in_event) {
                 ratingBar.setEnabled(false);
                 ratingBar.setRating(this.holder.getEvent().getRating());
                 saveRatingButton.setEnabled(false);
                 saveRatingButton.setVisibility(View.GONE);
             }
         }
-        if(!user_in_event || holder.hasPassed()){
+        if (!user_in_event || holder.hasPassed()) {
             contactUserButton.setVisibility(View.GONE);
         }
 
@@ -169,8 +145,6 @@ public class EventDetailsTabFragment extends Fragment {
         }
 
     }
-
-
 
 
     private void updateFields() {
@@ -200,13 +174,14 @@ public class EventDetailsTabFragment extends Fragment {
         startActivity(i);
 
     }
+
     public void onContactOrganizerClick(View view) {
         Bundle args = new Bundle();
         args.putSerializable("user", this.holder.getUser());
 
         Optional<UserDisplay> org;
-        org = this.holder.getUsers().stream().filter(e->e.get_id().equals(this.holder.getEvent().getCreator_id())).findFirst();
-        if(org.isPresent()){
+        org = this.holder.getUsers().stream().filter(e -> e.get_id().equals(this.holder.getEvent().getCreator_id())).findFirst();
+        if (org.isPresent()) {
             UserDisplay[] others = new UserDisplay[]{org.get()};
             args.putSerializable("other_users", others);
 
@@ -287,45 +262,30 @@ public class EventDetailsTabFragment extends Fragment {
 
     }
 
-    public void onPickDateClick(View view) {
-        showDatePickerDialog(view);
+    public void onPickDateClick() {
+        showDatePickerDialog();
     }
 
-    public void showDatePickerDialog(View view) {
-        DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                calendar.set(java.util.Calendar.YEAR, year);
-                calendar.set(java.util.Calendar.MONTH, month);
-                calendar.set(java.util.Calendar.DAY_OF_MONTH, day);
-                timePicker();
-            }
+    public void showDatePickerDialog() {
+        DatePickerDialog.OnDateSetListener dateSetListener = (datePicker, year, month, day) -> {
+            calendar.set(java.util.Calendar.YEAR, year);
+            calendar.set(java.util.Calendar.MONTH, month);
+            calendar.set(java.util.Calendar.DAY_OF_MONTH, day);
+            timePicker();
         };
 
-        new DatePickerDialog(
-                requireContext(),
-                dateSetListener,
-                calendar.get(java.util.Calendar.YEAR),
-                calendar.get(java.util.Calendar.MONTH),
-                calendar.get(java.util.Calendar.DAY_OF_MONTH)
-        ).show();
+        new DatePickerDialog(requireContext(), dateSetListener, calendar.get(java.util.Calendar.YEAR), calendar.get(java.util.Calendar.MONTH), calendar.get(java.util.Calendar.DAY_OF_MONTH)).show();
     }
-    private void timePicker(){
+
+    private void timePicker() {
         // Launch Time Picker Dialog
-        TimePickerDialog.OnTimeSetListener timePickerDialog = new TimePickerDialog.OnTimeSetListener() {
-
-            @Override
-            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                calendar.set(java.util.Calendar.HOUR_OF_DAY, hourOfDay);
-                calendar.set(java.util.Calendar.MINUTE, minute);
-                calendar.set(java.util.Calendar.SECOND,0);
-                updateDateTextView();
-            }
+        TimePickerDialog.OnTimeSetListener timePickerDialog = (view, hourOfDay, minute) -> {
+            calendar.set(java.util.Calendar.HOUR_OF_DAY, hourOfDay);
+            calendar.set(java.util.Calendar.MINUTE, minute);
+            calendar.set(java.util.Calendar.SECOND, 0);
+            updateDateTextView();
         };
-        new TimePickerDialog(requireContext(),
-                timePickerDialog,
-                calendar.get(java.util.Calendar.HOUR_OF_DAY),
-                calendar.get(java.util.Calendar.MINUTE),true).show();
+        new TimePickerDialog(requireContext(), timePickerDialog, calendar.get(java.util.Calendar.HOUR_OF_DAY), calendar.get(java.util.Calendar.MINUTE), true).show();
 
 
     }
@@ -335,7 +295,6 @@ public class EventDetailsTabFragment extends Fragment {
 
         eventDateView.setText(calendar.getTime().toString());
     }
-
 
 
 }

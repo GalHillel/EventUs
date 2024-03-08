@@ -156,14 +156,7 @@
         android:id="@+id/itemEventFragment"
         android:name="com.example.eventus.ui.recycleViews.ItemEventFragment"
         android:label="ItemEventFragment"
-        tools:layout="@layout/item_event">
-    </fragment>
-
-
-
-
-
-
+        tools:layout="@layout/item_event"></fragment>
 
 
 </navigation>

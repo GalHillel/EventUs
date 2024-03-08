@@ -3,33 +3,24 @@ package com.example.eventus.ui.screens.UserMainScreen;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
 
 import com.example.eventus.R;
 import com.example.eventus.data.Database;
-import com.example.eventus.data.model.LoggedInUser;
 import com.example.eventus.data.model.UserEvent;
 import com.example.eventus.data.model.UserEventDisplay;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Locale;
 
 public class CreateEventFragment extends Fragment {
 
@@ -45,13 +36,13 @@ public class CreateEventFragment extends Fragment {
     public CreateEventFragment(UserMainActivity holder) {
         this.holder = holder;
     }
+
     public CreateEventFragment() {
         // Required empty public constructor
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_create_event, container, false);
     }
@@ -83,7 +74,7 @@ public class CreateEventFragment extends Fragment {
         boolean isPrivate = setPrivateEventCheckbox.isChecked();
         try {
             // Call the Database method to add the event with the correct creator_id
-            UserEvent userEvent = Database.addEvent(this.holder.getUser().get_id(), eventName, eventDate, eventLocation, eventDescription,isPrivate);
+            UserEvent userEvent = Database.addEvent(this.holder.getUser().get_id(), eventName, eventDate, eventLocation, eventDescription, isPrivate);
 
             // Display information about the created event using UserEventDisplay
             displayEventDetails(userEvent);
@@ -101,15 +92,12 @@ public class CreateEventFragment extends Fragment {
 
     private void displayEventDetails(UserEventDisplay userEventDisplay) {
         // Example: Displaying event details in a Toast message
-        String message = "Event created:\n" +
-                "Name: " + userEventDisplay.getEventName() + "\n" +
-                "Date: " + userEventDisplay.getDate() + "\n" +
-                "Location: " + userEventDisplay.getLocation();
+        String message = "Event created:\n" + "Name: " + userEventDisplay.getEventName() + "\n" + "Date: " + userEventDisplay.getDate() + "\n" + "Location: " + userEventDisplay.getLocation();
 
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
 
 
-        if(this.holder.getUserEvents() != null){
+        if (this.holder.getUserEvents() != null) {
             this.holder.getUser().getEvents().add(userEventDisplay.getId());
             this.holder.getUserEvents().add(userEventDisplay);
         }
@@ -119,54 +107,31 @@ public class CreateEventFragment extends Fragment {
     }
 
     public void showDatePickerDialog(View view) {
-        DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                calendar.set(Calendar.YEAR, year);
-                calendar.set(Calendar.MONTH, month);
-                calendar.set(Calendar.DAY_OF_MONTH, day);
-                timePicker();
-            }
+        DatePickerDialog.OnDateSetListener dateSetListener = (datePicker, year, month, day) -> {
+            calendar.set(Calendar.YEAR, year);
+            calendar.set(Calendar.MONTH, month);
+            calendar.set(Calendar.DAY_OF_MONTH, day);
+            timePicker();
         };
 
-        new DatePickerDialog(
-                requireContext(),
-                dateSetListener,
-                calendar.get(Calendar.YEAR),
-                calendar.get(Calendar.MONTH),
-                calendar.get(Calendar.DAY_OF_MONTH)
-        ).show();
+        new DatePickerDialog(requireContext(), dateSetListener, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
     }
-    private void timePicker(){
+
+    private void timePicker() {
         // Launch Time Picker Dialog
-        TimePickerDialog.OnTimeSetListener timePickerDialog = new TimePickerDialog.OnTimeSetListener() {
-
-            @Override
-            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
-                calendar.set(Calendar.MINUTE, minute);
-                calendar.set(Calendar.SECOND,0);
-                updateDateEditText();
-            }
+        TimePickerDialog.OnTimeSetListener timePickerDialog = (view, hourOfDay, minute) -> {
+            calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+            calendar.set(Calendar.MINUTE, minute);
+            calendar.set(Calendar.SECOND, 0);
+            updateDateEditText();
         };
-        new TimePickerDialog(requireContext(),
-                timePickerDialog,
-                calendar.get(Calendar.HOUR_OF_DAY),
-                calendar.get(Calendar.MINUTE),true).show();
-
-
+        new TimePickerDialog(requireContext(), timePickerDialog, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true).show();
 
 
     }
+
     private void updateDateEditText() {
         eventDateEditText.setText(calendar.getTime().toString());
-    }
-
-    // Method to create a common bundle for navigation
-    private Bundle createNavigationBundle() {
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("user", this.holder.getUser());
-        return bundle;
     }
 
 

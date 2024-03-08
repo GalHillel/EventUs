@@ -2,11 +2,9 @@ package com.example.eventus.ui.screens.Profile;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -18,31 +16,22 @@ import androidx.fragment.app.Fragment;
 import com.example.eventus.R;
 import com.example.eventus.data.Database;
 import com.example.eventus.data.ServerSideException;
-import com.example.eventus.data.model.UserDisplay;
 import com.example.eventus.data.model.UserEventDisplay;
 import com.example.eventus.data.model.UserProfile;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 public class BaseUserProfileFragment extends Fragment {
     private final UserProfile userProfile;
 
 
-
     private UserEventDisplay[] eventList;
 
 
-    public BaseUserProfileFragment(UserProfile p){
+    public BaseUserProfileFragment(UserProfile p) {
         this.userProfile = p;
         this.eventList = null;
-    }
-    public BaseUserProfileFragment(UserProfile p, UserEventDisplay[] uEvents){
-        this.userProfile = p;
-        this.eventList = uEvents;
     }
 
     @Override
@@ -56,12 +45,12 @@ public class BaseUserProfileFragment extends Fragment {
 
         ImageView profilePic = view.findViewById(R.id.userPhotoImageView);
 
-        if (userProfile.getProfile_pic().length() > 0) {
+        if (!userProfile.getProfile_pic().isEmpty()) {
             try {
                 Bitmap profile_icon = Database.getProfilePic(userProfile.get_id());
                 int width = getResources().getInteger(R.integer.profile_profilePicSize);
                 int height = getResources().getInteger(R.integer.profile_profilePicSize);
-                profile_icon = Bitmap.createScaledBitmap(profile_icon,width,height,false);
+                profile_icon = Bitmap.createScaledBitmap(profile_icon, width, height, false);
                 profilePic.setImageBitmap(profile_icon);
             } catch (ServerSideException e) {
                 // Handle the exception (e.g., show an error message)
@@ -83,7 +72,7 @@ public class BaseUserProfileFragment extends Fragment {
             userRatingBar.setVisibility(View.VISIBLE);
             ratingCountTextView.setVisibility(View.VISIBLE);
 
-            if(eventList == null) {
+            if (eventList == null) {
                 try {
                     eventList = Database.getEventList(userProfile.get_id());
 
@@ -96,12 +85,10 @@ public class BaseUserProfileFragment extends Fragment {
                 }
             }
             List<UserEventDisplay> tmp = Arrays.asList(eventList);
-            int num_ratings = tmp.stream().map(UserEventDisplay::getNum_rating).reduce(0,Integer::sum);
-            float avg_rating = tmp.stream().map(e->e.getNum_rating()*e.getRating()).reduce(0.0F,Float::sum)/num_ratings;
+            int num_ratings = tmp.stream().map(UserEventDisplay::getNum_rating).reduce(0, Integer::sum);
+            float avg_rating = tmp.stream().map(e -> e.getNum_rating() * e.getRating()).reduce(0.0F, Float::sum) / num_ratings;
             ratingCountTextView.setText(num_ratings + " Ratings");
             userRatingBar.setRating(avg_rating);
-
-
 
 
         } else {
@@ -117,10 +104,6 @@ public class BaseUserProfileFragment extends Fragment {
         usernameTextView.setText(userProfile.getName());
 
 
-    }
-
-    public UserEventDisplay[] getEventList() {
-        return eventList;
     }
 
 }

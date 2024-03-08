@@ -1,50 +1,50 @@
-<LinearLayout
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/main_background"
     android:orientation="vertical"
     android:paddingStart="30dp"
-    android:paddingEnd="30dp"
-    android:background="@drawable/main_background"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:paddingEnd="30dp">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Welcome!"
-        android:textColor="@android:color/white"
-        android:textSize="60dp"
-        android:textStyle="bold"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="100dp"
-        android:layout_marginBottom="32dp"/>
+        android:layout_marginBottom="32dp"
+        android:text="@string/welcome"
+        android:textColor="@android:color/white"
+        android:textSize="60sp"
+        android:textStyle="bold" />
 
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Let's Login"
-        android:textColor="@android:color/white"
-        android:textSize="36sp"
-        android:textStyle="bold"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="75dp"
-        android:layout_marginBottom="32dp"/>
+        android:layout_marginBottom="32dp"
+        android:text="@string/let_s_login"
+        android:textColor="@android:color/white"
+        android:textSize="36sp"
+        android:textStyle="bold" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputEmail"
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/prompt_email"
         android:layout_marginBottom="16dp"
-        android:background="@android:color/transparent">
+        android:background="@android:color/transparent"
+        android:hint="@string/prompt_email">
+
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
             android:inputType="textEmailAddress"
-            android:maxLines="1"
-            android:background="@android:color/transparent"/>
+            android:maxLines="1" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -52,44 +52,45 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/prompt_password"
         android:layout_marginBottom="16dp"
-        android:background="@android:color/transparent">
+        android:background="@android:color/transparent"
+        android:hint="@string/prompt_password">
+
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
             android:inputType="textPassword"
-            android:maxLines="1"
-            android:background="@android:color/transparent"/>
+            android:maxLines="1" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <CheckBox
         android:id="@+id/checkOrganizer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="I am an organizer"
-        android:textColor="@android:color/black"
-        android:layout_marginBottom="16dp"/>
+        android:layout_marginBottom="16dp"
+        android:text="@string/i_am_an_organizer"
+        android:textColor="@android:color/black" />
 
     <Button
         android:id="@+id/login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Log In"
-        android:textColor="@android:color/white"
+        android:layout_marginBottom="16dp"
         android:background="@drawable/rounded_button_background"
-        android:layout_marginBottom="16dp" />
+        android:text="@string/log_in"
+        android:textColor="#00695C"/>
 
     <TextView
         android:id="@+id/registerLink"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Don't have an account yet? Sign up now!"
-        android:textColor="@android:color/black"
-        android:textStyle="italic"
         android:layout_gravity="center"
-        android:layout_marginBottom="16dp"/>
+        android:layout_marginBottom="16dp"
+        android:text="@string/don_t_have_an_account_yet_sign_up_now"
+        android:textColor="@android:color/black"
+        android:textStyle="italic" />
 
 
     <ProgressBar

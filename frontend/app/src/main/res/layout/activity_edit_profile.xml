@@ -1,20 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.screens.EditProfile.EditProfileActivity"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_edit_profile"
     style="@style/CustomFragmentScreen"
     android:orientation="vertical"
-    android:id="@+id/activity_edit_profile">
+    tools:context=".ui.screens.EditProfile.EditProfileActivity">
 
     <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/EditProfileFrame"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:id="@+id/EditProfileFrame"
         tools:layout="@layout/fragment_edit_profile" />
 
-    <ImageButton
-        android:id="@+id/backButton"
-        style="@style/backButton"
-        android:contentDescription="Back" />
+    <androidx.cardview.widget.CardView
+        style="@style/DefaultClickableButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="24dp"
+        app:cardElevation="4dp"
+        tools:ignore="DuplicateClickableBoundsCheck">
+
+        <!-- Use an ImageButton for back navigation -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical">
+
+            <ImageButton
+                android:id="@+id/backButton"
+                style="@style/DefaultClickableButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/back"
+                android:src="@drawable/ic_back"
+                app:tint="#00695C" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 </LinearLayout>

@@ -1,33 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.screens.Messages.UserMessagesFragment"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/CustomFragmentScreen"
+    android:orientation="vertical"
     android:paddingLeft="0dp"
     android:paddingRight="0dp"
-    android:orientation="vertical">
+    tools:context=".ui.screens.Messages.UserMessagesFragment">
 
-    <TextView
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:id="@+id/user_messages_title"
-        style="@style/CustomFragmentTitle"
-        android:text="Messages" />
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="4dp">
+
+        <!-- Add a top app bar with a title -->
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/topAppBar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorButtonDefault"
+            android:contentInsetStart="0dp"
+            android:contentInsetLeft="0dp"
+            android:contentInsetEnd="0dp"
+            android:contentInsetRight="0dp"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/messages"
+                android:textColor="#00695C"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                android:layout_gravity="center" />
+        </com.google.android.material.appbar.MaterialToolbar>
+    </androidx.cardview.widget.CardView>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/userMessagesList"
+        style="@style/BaseRecyclerViewStyle"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        tools:listitem="@layout/item_message"
-        style="@style/BaseRecyclerViewStyle" />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:orientation="vertical">
-<!--    <include layout="@layout/user_navigation" />-->
-    </LinearLayout>
+        tools:listitem="@layout/item_message" />
 
 </LinearLayout>

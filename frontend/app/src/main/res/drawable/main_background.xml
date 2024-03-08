@@ -2,18 +2,18 @@
     android:shape="rectangle">
 
     <gradient
-        android:startColor="@color/colorButtonDefault"
-    android:endColor="@color/white"
-    android:angle="200"/>
+        android:angle="200"
+        android:endColor="@color/white"
+        android:startColor="@color/colorButtonDefault" />
 
     <padding
+        android:bottom="10dp"
         android:left="10dp"
-        android:top="10dp"
         android:right="10dp"
-        android:bottom="10dp"/>
+        android:top="10dp" />
 
     <stroke
         android:width="2dp"
-    android:color="@android:color/black"/>
+        android:color="@android:color/black" />
 
 </shape>

@@ -19,7 +19,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -31,9 +30,7 @@ import com.example.eventus.R;
 import com.example.eventus.data.Database;
 import com.example.eventus.data.FileUploader;
 import com.example.eventus.data.ServerSideException;
-import com.example.eventus.data.model.LoggedInUser;
 import com.example.eventus.data.model.ServerResponse;
-import com.example.eventus.data.model.UserProfile;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -52,14 +49,10 @@ public class EditProfileFragment extends Fragment {
     Button saveUserDetailsButton;
 
     private boolean isValidProfilePic;
-    HashMap<String, Object>  updatedUserParams = new HashMap<>();
+    HashMap<String, Object> updatedUserParams = new HashMap<>();
     EditProfileActivity holder;
 
-    /*TODO: Make edit profile cleaner and easier to use, one click save for all fields like edit event - DONE
-            TEST IMPLEMENTATION
-     */
-
-    public EditProfileFragment(EditProfileActivity holder){
+    public EditProfileFragment(EditProfileActivity holder) {
         this.holder = holder;
     }
 
@@ -79,7 +72,7 @@ public class EditProfileFragment extends Fragment {
         bioEditText = view.findViewById(R.id.bio);
         profilePhotoImageView = view.findViewById(R.id.profilePhotoImageView);
 
-        if (this.holder.getUser().getProfile_pic().length() > 0) {
+        if (!this.holder.getUser().getProfile_pic().isEmpty()) {
             try {
                 Bitmap profile_icon = Database.getProfilePic(this.holder.getUser().get_id());
                 int width = getResources().getInteger(R.integer.profile_profilePicSize);
@@ -95,11 +88,10 @@ public class EditProfileFragment extends Fragment {
                 e.printStackTrace();
             }
         }
-        if(this.holder.getUser() != null){
+        if (this.holder.getUser() != null) {
             usernameEditText.setText(this.holder.getUser().getName());
             bioEditText.setText(this.holder.getUser().getBio());
         }
-
 
 
         profilePhotoImageView.setOnClickListener(v -> choosePhotoFromGallery());
@@ -116,7 +108,7 @@ public class EditProfileFragment extends Fragment {
                 updatedUserParams.put("oldPassword", oldPass);
                 updatedUserParams.put("password", newPass);
             }
-            if (hasNewEmail()){
+            if (hasNewEmail()) {
                 updatedUserParams.put("email", newEmail);
             }
             if (hasNewName()) {
@@ -125,10 +117,10 @@ public class EditProfileFragment extends Fragment {
             if (hasNewBio()) {
                 updatedUserParams.put("bio", newBio);
             }
-            if(isValidProfilePic){
+            if (isValidProfilePic) {
                 saveProfilePicture();
                 reset();
-            } else if (updatedUserParams.size()>0) {
+            } else if (!updatedUserParams.isEmpty()) {
                 holder.updateParams(updatedUserParams);
                 reset();
             }
@@ -141,7 +133,7 @@ public class EditProfileFragment extends Fragment {
 
     }
 
-    public void reset(){
+    public void reset() {
         oldPasswordEditText.setText("");
         newPasswordEditText.setText("");
         usernameEditText.setText(holder.getUser().getName());
@@ -168,7 +160,7 @@ public class EditProfileFragment extends Fragment {
             }
         };
 
-        TextWatcher newpPasswordListener = new TextWatcher(){
+        TextWatcher newpPasswordListener = new TextWatcher() {
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -182,7 +174,7 @@ public class EditProfileFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if(!hasNewPassword()) {
+                if (!hasNewPassword()) {
                     newPasswordEditText.setError(null);
                     updateSaveButtonsState();
                     return;
@@ -191,12 +183,12 @@ public class EditProfileFragment extends Fragment {
                 String oldPass = Objects.requireNonNull(oldPasswordEditText.getText()).toString();
                 String newPass = Objects.requireNonNull(newPasswordEditText.getText()).toString();
 
-                if(oldPass.equals(newPass)){
+                if (oldPass.equals(newPass)) {
                     newPasswordEditText.setError("Passwords may not match");
                     updateSaveButtonsState();
                     return;
                 }
-                if(newPass.length() <= 5){
+                if (newPass.length() <= 5) {
                     newPasswordEditText.setError("The password length must be greater than 5");
                     updateSaveButtonsState();
                     return;
@@ -208,7 +200,7 @@ public class EditProfileFragment extends Fragment {
 
             }
         };
-        TextWatcher oldPasswordListener = new TextWatcher(){
+        TextWatcher oldPasswordListener = new TextWatcher() {
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -222,13 +214,13 @@ public class EditProfileFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if(!hasNewPassword()) {
+                if (!hasNewPassword()) {
                     oldPasswordEditText.setError(null);
                     updateSaveButtonsState();
                     return;
                 }
                 String oldPass = Objects.requireNonNull(oldPasswordEditText.getText()).toString();
-                if(oldPass.length() <= 5){
+                if (oldPass.length() <= 5) {
                     oldPasswordEditText.setError("The password length must be greater than 5");
                     updateSaveButtonsState();
                     return;
@@ -252,20 +244,19 @@ public class EditProfileFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if(!hasNewEmail()) {
+                if (!hasNewEmail()) {
                     emailEditText.setError(null);
                     updateSaveButtonsState();
                     return;
                 }
                 String newEmail = Objects.requireNonNull(emailEditText.getText()).toString();
-                if(!Patterns.EMAIL_ADDRESS.matcher(newEmail).matches()){
+                if (!Patterns.EMAIL_ADDRESS.matcher(newEmail).matches()) {
                     emailEditText.setError("Invalid Email address");
                     updateSaveButtonsState();
                     return;
                 }
                 emailEditText.setError(null);
                 updateSaveButtonsState();
-
 
 
             }
@@ -283,13 +274,13 @@ public class EditProfileFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if(!hasNewName()) {
+                if (!hasNewName()) {
                     usernameEditText.setError(null);
                     updateSaveButtonsState();
                     return;
                 }
                 String newName = Objects.requireNonNull(usernameEditText.getText()).toString();
-                if(newName.length() == 0){
+                if (newName.isEmpty()) {
                     usernameEditText.setError("Must have name");
                     updateSaveButtonsState();
                     return;
@@ -309,13 +300,8 @@ public class EditProfileFragment extends Fragment {
         updateSaveButtonsState();
     }
 
-    void updateSaveButtonsState(){
-        boolean btnState = (hasNewName() || hasNewPassword() || hasNewEmail() || hasNewBio() || isValidProfilePic) &&
-                usernameEditText.getError() == null &&
-                emailEditText.getError()==null &&
-                oldPasswordEditText.getError()==null &&
-                newPasswordEditText.getError()==null &&
-                bioEditText.getError() == null;
+    void updateSaveButtonsState() {
+        boolean btnState = (hasNewName() || hasNewPassword() || hasNewEmail() || hasNewBio() || isValidProfilePic) && usernameEditText.getError() == null && emailEditText.getError() == null && oldPasswordEditText.getError() == null && newPasswordEditText.getError() == null && bioEditText.getError() == null;
 
         saveUserDetailsButton.setClickable(btnState);
         saveUserDetailsButton.setEnabled(btnState);
@@ -323,37 +309,31 @@ public class EditProfileFragment extends Fragment {
 
     }
 
-    boolean hasNewName(){
+    boolean hasNewName() {
         String newUsername = Objects.requireNonNull(usernameEditText.getText()).toString();
         return !holder.getUser().getName().equals(newUsername);
     }
 
 
-    boolean hasNewPassword(){
+    boolean hasNewPassword() {
         String oldPass = Objects.requireNonNull(oldPasswordEditText.getText()).toString();
         String newPass = Objects.requireNonNull(newPasswordEditText.getText()).toString();
         return !TextUtils.isEmpty(oldPass) && !TextUtils.isEmpty(newPass);
     }
 
-    boolean hasNewEmail(){
+    boolean hasNewEmail() {
         String newEmail = Objects.requireNonNull(emailEditText.getText()).toString();
         return !TextUtils.isEmpty(newEmail);
     }
-    boolean hasNewBio(){
+
+    boolean hasNewBio() {
         String newBio = Objects.requireNonNull(bioEditText.getText()).toString();
         return !holder.getUser().getBio().equals(newBio);
     }
 
     // Method to choose a photo from the gallery
     private void choosePhotoFromGallery() {
-//        Intent intent = new Intent(Intent.ACTION_PICK);
-//        intent.setType("image/*");
-//        startActivityForResult(intent, 1);
-        ImagePicker.with(this)
-                .cropSquare()
-                .compress(getResources().getInteger(R.integer.max_image_fileSize))
-                .maxResultSize(getResources().getInteger(R.integer.profile_profilePicSize),getResources().getInteger(R.integer.profile_profilePicSize))
-                .start();
+        ImagePicker.with(this).cropSquare().compress(getResources().getInteger(R.integer.max_image_fileSize)).maxResultSize(getResources().getInteger(R.integer.profile_profilePicSize), getResources().getInteger(R.integer.profile_profilePicSize)).start();
 
 
     }
@@ -368,20 +348,19 @@ public class EditProfileFragment extends Fragment {
             profilePhotoImageView.setImageURI(uri);
             this.isValidProfilePic = true;
             updateSaveButtonsState();
-        }
-        else if (resultCode == ImagePicker.RESULT_ERROR) {
+        } else if (resultCode == ImagePicker.RESULT_ERROR) {
             Toast.makeText(requireContext(), ImagePicker.getError(data), Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(requireContext(), "Task Cancelled", Toast.LENGTH_SHORT).show();
         }
     }
 
-    public void saveProfilePicture(){
+    public void saveProfilePicture() {
         // Get the Drawable from the ImageView
         Drawable drawable = profilePhotoImageView.getDrawable();
 
         // Convert the Drawable into a Bitmap
-        Bitmap bitmap = null;
+        Bitmap bitmap;
         if (drawable instanceof BitmapDrawable) {
             bitmap = ((BitmapDrawable) drawable).getBitmap();
         } else {

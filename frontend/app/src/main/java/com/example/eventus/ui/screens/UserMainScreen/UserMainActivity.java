@@ -26,7 +26,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class UserMainActivity extends AppCompatActivity implements NavigationBarView.OnItemSelectedListener{
+public class UserMainActivity extends AppCompatActivity implements NavigationBarView.OnItemSelectedListener {
 
     LoggedInUser user;
     List<UserMessageDisplay> messageList = null;
@@ -90,15 +90,14 @@ public class UserMainActivity extends AppCompatActivity implements NavigationBar
     }
 
 
-
-    public void loadMessages() throws Exception{
+    public void loadMessages() throws Exception {
         UserMessageDisplay[] newList = Database.getMessageInbox(this.user.get_id());
         inboxRead = Database.getMessageInboxStatus(this.user.get_id());
         messageList = new ArrayList<>();
         Collections.addAll(messageList, newList);
     }
 
-    public void loadEvents(){
+    public void loadEvents() {
         try {
             UserEventDisplay[] tmp = Database.getEventList(user.get_id());
             // Clear the existing list and add the fetched events
@@ -115,67 +114,55 @@ public class UserMainActivity extends AppCompatActivity implements NavigationBar
     }
 
 
-    public LoggedInUser getUser(){
+    public LoggedInUser getUser() {
         return this.user;
     }
-    public List<UserMessageDisplay> getMessageList(){
+
+    public List<UserMessageDisplay> getMessageList() {
         return messageList;
     }
-    public Map<String,Boolean> getMessageInbox(){
+
+    public Map<String, Boolean> getMessageInbox() {
         return this.inboxRead;
     }
 
-    public List<UserEventDisplay> getUserEvents(){return this.userEvents;}
+    public List<UserEventDisplay> getUserEvents() {
+        return this.userEvents;
+    }
 
-    public void success(){
+    public void success() {
         this.setResult(Activity.RESULT_OK);
         this.finish();
     }
 
     public boolean update(int itemId) {
         if (itemId == R.id.messages) {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.userMainMenuFrame, new UserMessagesFragment(this))
-                    .commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.userMainMenuFrame, new UserMessagesFragment(this)).commit();
             return true;
         }
 
         //update messages
-        try{
+        try {
             loadMessages();
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
 
         if (itemId == R.id.newEvent) {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.userMainMenuFrame, new CreateEventFragment(this))
-                    .commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.userMainMenuFrame, new CreateEventFragment(this)).commit();
             return true;
         }
         if (itemId == R.id.discover) {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.userMainMenuFrame, new UserDiscoverFragment(this))
-                    .commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.userMainMenuFrame, new UserDiscoverFragment(this)).commit();
             return true;
         }
 
         if (itemId == R.id.myevents) {
-            loadEvents();
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.userMainMenuFrame, new UserEventsFragment(this))
-                    .commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.userMainMenuFrame, new UserEventsFragment(this)).commit();
             return true;
         }
         if (itemId == R.id.profile) {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.userMainMenuFrame, new UserProfileFragment(this))
-                    .commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.userMainMenuFrame, new UserProfileFragment(this)).commit();
             return true;
         }
         return false;

@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +20,8 @@ import com.example.eventus.data.Database;
 import com.example.eventus.data.model.LoggedInUser;
 import com.example.eventus.databinding.FragmentLoginBinding;
 import com.example.eventus.ui.screens.UserMainScreen.UserMainActivity;
+
+import java.util.Objects;
 
 public class LoginFragment extends Fragment {
 
@@ -39,17 +40,16 @@ public class LoginFragment extends Fragment {
 
         final EditText emailFromTheUser = binding.email;
         final EditText passwordFromTheUser = binding.password;
-        final ProgressBar loadingProgressBar = binding.loading;
         final CheckBox checkOrganizer = binding.checkOrganizer;
 
         TextView loginBtn = view.findViewById(R.id.login);
         loginBtn.setOnClickListener(v -> {
             String userType = (checkOrganizer.isChecked()) ? "Organizer" : "Participant";
-            String emailToSendToLoginFunction = emailFromTheUser.getText().toString().trim();
-            String passwordToSendToLoginFunction = passwordFromTheUser.getText().toString().trim();
+            String emailToSendToLoginFunction = Objects.requireNonNull(emailFromTheUser.getText()).toString().trim();
+            String passwordToSendToLoginFunction = Objects.requireNonNull(passwordFromTheUser.getText()).toString().trim();
 
             //default users for testing
-            if (emailToSendToLoginFunction.equals("") && passwordToSendToLoginFunction.equals("")) {
+            if (emailToSendToLoginFunction.isEmpty() && passwordToSendToLoginFunction.isEmpty()) {
                 if (userType.equals("Participant")) {
                     emailToSendToLoginFunction = "ziv@gmail.com";
                     passwordToSendToLoginFunction = "zivPass";

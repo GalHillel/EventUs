@@ -71,8 +71,7 @@ public class RegistrationFragment extends Fragment {
             if (registrationSuccess) {
                 // Registration successful, display message
                 Toast.makeText(requireContext(), "Registration successful!", Toast.LENGTH_SHORT).show();
-                NavHostFragment.findNavController(RegistrationFragment.this)
-                        .navigate(R.id.action_registrationFragment_to_loginFragment);
+                NavHostFragment.findNavController(RegistrationFragment.this).navigate(R.id.action_registrationFragment_to_loginFragment);
             } else {
                 // Registration failed
                 Toast.makeText(requireContext(), "Registration failed. Please try again later.", Toast.LENGTH_SHORT).show();
@@ -80,7 +79,6 @@ public class RegistrationFragment extends Fragment {
         });
 
         TextView loginLink = view.findViewById(R.id.loginLink);
-        loginLink.setOnClickListener(v -> NavHostFragment.findNavController(RegistrationFragment.this)
-                .navigate(R.id.action_registrationFragment_to_loginFragment));
+        loginLink.setOnClickListener(v -> NavHostFragment.findNavController(RegistrationFragment.this).navigate(R.id.action_registrationFragment_to_loginFragment));
     }
 }

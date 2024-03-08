@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.eventus.data.model.LoggedInUser;
 
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -42,13 +41,12 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         args = intent.getExtras();
         Set<String> required = getRequiredArgs();
-        Set<String> missingArgs = required.stream().filter(e->!args.containsKey(e)).collect(Collectors.toSet());
-        if(missingArgs.size() != 0){
+        Set<String> missingArgs = required.stream().filter(e -> !args.containsKey(e)).collect(Collectors.toSet());
+        if (!missingArgs.isEmpty()) {
             Intent res = new Intent();
-            res.putExtra("error","Missing "+missingArgs + " fields");
-            setResult(Activity.RESULT_CANCELED,res);
+            res.putExtra("error", "Missing " + missingArgs + " fields");
+            setResult(Activity.RESULT_CANCELED, res);
             this.finish();
-            return;
         }
 
 
@@ -57,20 +55,20 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        if(backButton != null)
+        if (backButton != null)
             backButtonClick(backButton);
     }
 
     public abstract void backButtonClick(View view);
 
-    public void success(){
+    public void success() {
         Bundle arg = new Bundle();
-        if(this.user!=null){
-            arg.putSerializable("user",user);
+        if (this.user != null) {
+            arg.putSerializable("user", user);
         }
         Intent i = new Intent();
         i.putExtras(arg);
-        setResult(Activity.RESULT_OK,i);
+        setResult(Activity.RESULT_OK, i);
         finish();
     }
 

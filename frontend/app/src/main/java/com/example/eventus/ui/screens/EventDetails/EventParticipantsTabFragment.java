@@ -1,47 +1,27 @@
 package com.example.eventus.ui.screens.EventDetails;
 
-import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatEditText;
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.eventus.R;
 import com.example.eventus.data.Database;
 import com.example.eventus.data.model.UserDisplay;
-import com.example.eventus.data.model.UserEvent;
 import com.example.eventus.ui.recycleViews.UserAdapter;
 import com.example.eventus.ui.screens.Messages.CreateMessageActivity;
-import com.example.eventus.ui.screens.Messages.MessageActivity;
 import com.example.eventus.ui.screens.Profile.ViewUserProfileActivity;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-
-public class EventParticipantsTabFragment extends Fragment implements UserAdapter.ButtonListener,UserAdapter.Wrappers {
+public class EventParticipantsTabFragment extends Fragment implements UserAdapter.ButtonListener, UserAdapter.Wrappers {
 
     private UserAdapter userAdapter;
 
@@ -49,12 +29,11 @@ public class EventParticipantsTabFragment extends Fragment implements UserAdapte
 
     private RecyclerView userListRecyclerView;
 
-    private EventDetailsActivity holder;
+    private final EventDetailsActivity holder;
 
     public EventParticipantsTabFragment(EventDetailsActivity myContext) {
         this.holder = myContext;
     }
-
 
 
     @Override
@@ -66,14 +45,12 @@ public class EventParticipantsTabFragment extends Fragment implements UserAdapte
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-
-        View view = inflater.inflate(R.layout.fragment_participants_tab, container, false);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
-        return view;
+        return inflater.inflate(R.layout.fragment_participants_tab, container, false);
     }
+
     /*
         TODO:
             1. Add the option for an Organizer to accept a new user - NEEDS CHECKING
@@ -94,7 +71,7 @@ public class EventParticipantsTabFragment extends Fragment implements UserAdapte
         this.joinEventButton.setOnClickListener(this::onJoinEventClick);
         this.exitEventButton.setOnClickListener(this::onLeaveEventClick);
 
-        userAdapter = new UserAdapter(this.holder.getUsers(),this.holder.getEvent(), (this.holder.getUser().get_id().equals(this.holder.getEvent().getCreator_id())) ? "Organizer" : "Participant");
+        userAdapter = new UserAdapter(this.holder.getUsers(), this.holder.getEvent(), (this.holder.getUser().get_id().equals(this.holder.getEvent().getCreator_id())) ? "Organizer" : "Participant");
         userAdapter.setOnKickClickListener(this);
         userAdapter.setOnMessageClickListener(this);
         userAdapter.setOnUserItemClickListener(this);
@@ -105,12 +82,11 @@ public class EventParticipantsTabFragment extends Fragment implements UserAdapte
         if (this.holder.getEvent().getAttendents().containsKey(this.holder.getUser().get_id())) {
             this.joinEventButton.setVisibility(View.GONE);
             this.exitEventButton.setVisibility(View.VISIBLE);
-            if(this.holder.getEvent().getIsPrivate()){
-                if(Boolean.FALSE.equals(this.holder.getEvent().getAttendents().get(this.holder.getUser().get_id()))) {
+            if (this.holder.getEvent().getIsPrivate()) {
+                if (Boolean.FALSE.equals(this.holder.getEvent().getAttendents().get(this.holder.getUser().get_id()))) {
                     this.exitEventButton.setText("Cancel Request");
                     this.userListRecyclerView.setVisibility(View.INVISIBLE);
-                }
-                else{
+                } else {
                     this.exitEventButton.setText("Leave Event");
                 }
             }
@@ -119,13 +95,13 @@ public class EventParticipantsTabFragment extends Fragment implements UserAdapte
         } else {
             this.exitEventButton.setVisibility(View.GONE);
             this.joinEventButton.setVisibility(View.VISIBLE);
-            if(this.holder.getEvent().getIsPrivate()){
+            if (this.holder.getEvent().getIsPrivate()) {
                 this.userListRecyclerView.setVisibility(View.INVISIBLE);
 
             }
         }
 
-        if(this.holder.hasPassed()){
+        if (this.holder.hasPassed()) {
             exitEventButton.setVisibility(View.GONE);
             joinEventButton.setVisibility(View.GONE);
         }
@@ -145,9 +121,9 @@ public class EventParticipantsTabFragment extends Fragment implements UserAdapte
             this.joinEventButton.setVisibility(View.GONE);
             this.exitEventButton.setVisibility(View.VISIBLE);
             this.holder.getUsers().add(this.holder.getUser());
-            this.holder.getEvent().getAttendents().put(this.holder.getUser().get_id(),false);
+            this.holder.getEvent().getAttendents().put(this.holder.getUser().get_id(), false);
             this.holder.getUser().getEvents().add(this.holder.getEvent().getId());
-            if(this.holder.getEvent().getIsPrivate()) {
+            if (this.holder.getEvent().getIsPrivate()) {
                 if (Boolean.FALSE.equals(this.holder.getEvent().getAttendents().get(this.holder.getUser().get_id()))) {
                     this.exitEventButton.setText("Cancel Request");
                     this.userListRecyclerView.setVisibility(View.INVISIBLE);
@@ -175,7 +151,7 @@ public class EventParticipantsTabFragment extends Fragment implements UserAdapte
             }
         } else {
             boolean removed = removeUser(holder.getUser());
-            if(removed) {
+            if (removed) {
                 this.exitEventButton.setVisibility(View.GONE);
                 this.joinEventButton.setVisibility(View.VISIBLE);
                 this.holder.getUser().getEvents().remove(this.holder.getEvent().getId());
@@ -195,11 +171,12 @@ public class EventParticipantsTabFragment extends Fragment implements UserAdapte
             //handle
         }
     }
-    private void acceptUser(UserDisplay user){
+
+    private void acceptUser(UserDisplay user) {
         try {
-            Database.acceptUser(this.holder.getEvent().getId(),user.get_id());
+            Database.acceptUser(this.holder.getEvent().getId(), user.get_id());
             int idx = this.holder.getUsers().indexOf(user);
-            this.holder.getEvent().getAttendents().put(user.get_id(),true);
+            this.holder.getEvent().getAttendents().put(user.get_id(), true);
             this.userAdapter.notifyItemChanged(idx);
         } catch (Exception e) {
             //handle

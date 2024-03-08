@@ -6,11 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.Toast;
-
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.eventus.R;
 import com.example.eventus.data.BaseActivity;
@@ -25,7 +20,6 @@ import com.example.eventus.ui.screens.UserEvents.ViewEventsActivity;
 
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class ViewUserProfileActivity extends BaseActivity {
@@ -39,20 +33,20 @@ public class ViewUserProfileActivity extends BaseActivity {
 
 
         this.user = (LoggedInUser) args.getSerializable("user");
-        String _id  = args.getString("other_user_id");
+        String _id = args.getString("other_user_id");
 
         try {
             this.profile = Database.userProfile(_id);
         } catch (ServerSideException e) {
             Intent res = new Intent();
-            res.putExtra("message",e.getMessage());
-            setResult(e.getReturnCode(),res);
+            res.putExtra("message", e.getMessage());
+            setResult(e.getReturnCode(), res);
             this.finish();
             return;
         } catch (Exception e) {
             Intent res = new Intent();
-            res.putExtra("message",e.getMessage());
-            setResult(Activity.RESULT_CANCELED,res);
+            res.putExtra("message", e.getMessage());
+            setResult(Activity.RESULT_CANCELED, res);
             this.finish();
             return;
         }
@@ -68,16 +62,13 @@ public class ViewUserProfileActivity extends BaseActivity {
         viewPastUserEventsButton.setOnClickListener(this::onViewPastEventsClick);
         viewUpcomingUserEventsButton.setOnClickListener(this::onViewUpcomingEventsClick);
 
-        if(!profile.getUser_type().equals("Organizer")){
+        if (!profile.getUser_type().equals("Organizer")) {
             viewPastUserEventsButton.setVisibility(View.GONE);
             viewUpcomingUserEventsButton.setVisibility(View.GONE);
         }
 
         BaseUserProfileFragment userProfileFragment = new BaseUserProfileFragment(profile);
-        getSupportFragmentManager().beginTransaction()
-                .setReorderingAllowed(true)
-                .replace(R.id.fragment_base_user_profile, userProfileFragment)
-                .commit();
+        getSupportFragmentManager().beginTransaction().setReorderingAllowed(true).replace(R.id.fragment_base_user_profile, userProfileFragment).commit();
 
     }
 
@@ -89,7 +80,7 @@ public class ViewUserProfileActivity extends BaseActivity {
 
     @Override
     public Set<String> getRequiredArgs() {
-        return new HashSet<String>(Arrays.asList("user","other_user_id"));
+        return new HashSet<>(Arrays.asList("user", "other_user_id"));
     }
 
     private void onSendMessageButtonClick(View view) {
@@ -103,29 +94,28 @@ public class ViewUserProfileActivity extends BaseActivity {
         i.putExtras(args);
         startActivity(i);
     }
+
     private void onViewUpcomingEventsClick(View view) {
-        viewEvents(view,"upcoming");
+        viewEvents(view, "upcoming");
     }
 
     private void onViewPastEventsClick(View view) {
-        viewEvents(view,"past");
+        viewEvents(view, "past");
     }
 
 
     private void viewEvents(View view, String mode) {
         Bundle args = new Bundle();
         args.putSerializable("user", this.user);
-        args.putSerializable("other_user_profile",this.profile);
-        args.putSerializable("eventArr",this.eventList);
-        args.putSerializable("mode",mode);
+        args.putSerializable("other_user_profile", this.profile);
+        args.putSerializable("eventArr", this.eventList);
+        args.putSerializable("mode", mode);
 
         //TODO handle activity fail
         Intent i = new Intent(view.getContext(), ViewEventsActivity.class);
         i.putExtras(args);
         startActivity(i);
     }
-
-
 
 
 }

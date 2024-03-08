@@ -6,25 +6,16 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
-//import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.MultiAutoCompleteTextView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.eventus.R;
-import com.example.eventus.data.Database;
-import com.example.eventus.data.ServerSideException;
 import com.example.eventus.data.model.UserDisplay;
-import com.example.eventus.data.model.UserMessage;
-import com.example.eventus.ui.screens.EventDetails.EventDetailsActivity;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 
 public class MessageFragment extends Fragment {
@@ -51,9 +42,8 @@ public class MessageFragment extends Fragment {
         TextView senderTextView = view.findViewById(R.id.messageSenderTextView);
         MaterialAutoCompleteTextView contentTextView = view.findViewById(R.id.messageContentTextView);
         titleTextView.setText(this.holder.getMessage().getTitle());
-        senderTextView.setText("From: "+this.holder.getSender().getName());
+        senderTextView.setText("From: " + this.holder.getSender().getName());
         contentTextView.setText(this.holder.getMessage().getContent());
-
 
 
         Button replyButton = view.findViewById(R.id.replyButton);
@@ -61,8 +51,8 @@ public class MessageFragment extends Fragment {
 
     }
 
-   @Override
-   public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == R.id.activity_create_messages) {
             if (resultCode == Activity.RESULT_OK) {
                 this.holder.success();
@@ -70,7 +60,7 @@ public class MessageFragment extends Fragment {
                 Toast.makeText(requireContext(), data.getStringExtra("error"), Toast.LENGTH_LONG).show();
             }
         }
-   }
+    }
 
     public void onReplyButtonClick(View view) {
         Bundle args = new Bundle();
@@ -82,10 +72,9 @@ public class MessageFragment extends Fragment {
         //TODO handle activity fail
         Intent i = new Intent(this.getContext(), CreateMessageActivity.class);
         i.putExtras(args);
-        startActivityForResult(i,R.id.activity_create_messages);
+        startActivityForResult(i, R.id.activity_create_messages);
 
     }
-
 
 
 }

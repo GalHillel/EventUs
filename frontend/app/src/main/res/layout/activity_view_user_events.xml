@@ -1,27 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.screens.UserEvents.ViewEventsActivity"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/activity_view_user_events"
+    style="@style/CustomFragmentScreen"
     android:orientation="vertical"
-    style="@style/CustomFragmentScreen">
-    <TextView
-        android:id="@+id/user_events_title"
-        style="@style/CustomFragmentTitle"
-        android:text="@string/placeholder"/>
+    tools:context=".ui.screens.UserEvents.ViewEventsActivity">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="4dp">
+
+        <!-- Add a top app bar with a title -->
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/user_events_title"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorButtonDefault"
+            android:contentInsetStart="0dp"
+            android:contentInsetLeft="0dp"
+            android:contentInsetEnd="0dp"
+            android:contentInsetRight="0dp"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/CustomFragmentTitle"
+                android:text="@string/placeholder"
+                android:textColor="#00695C"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                android:layout_gravity="center" />
+        </com.google.android.material.appbar.MaterialToolbar>
+    </androidx.cardview.widget.CardView>
 
     <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragment_event_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:id="@+id/fragment_event_list"
         tools:layout="@layout/fragment_event_list" />
 
 
-    <ImageButton
-        android:id="@+id/backButton"
-        style="@style/backButton"
-        android:layout_marginTop="16dp"
-        android:contentDescription="Back" />
+    <androidx.cardview.widget.CardView
+        style="@style/DefaultClickableButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="24dp"
+        app:cardElevation="4dp"
+        tools:ignore="DuplicateClickableBoundsCheck">
+
+        <!-- Use an ImageButton for back navigation -->
+        <ImageButton
+            android:id="@+id/backButton"
+            style="@style/DefaultClickableButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/back"
+            android:padding="8dp"
+            android:src="@drawable/ic_back"
+            app:tint="#00695C"
+            tools:ignore="ImageContrastCheck" />
+
+    </androidx.cardview.widget.CardView>
 
 </LinearLayout>
