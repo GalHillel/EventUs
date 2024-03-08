@@ -123,5 +123,13 @@
         <item name="android:scrollbars">vertical</item>
     </style>
 
+    <style name="CustomTabTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
+
+
+
+
 
 </resources>
