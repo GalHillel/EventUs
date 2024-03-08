@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -16,96 +15,112 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <!-- Welcome Text -->
         <TextView
-            android:id="@+id/signUpText1"
+            android:id="@+id/welcomeText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="75dp"
             android:layout_marginBottom="32dp"
             android:text="@string/do_not_have_an_account"
             android:textColor="@android:color/white"
-            android:textSize="28sp"
+            android:textSize="30sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent" />
 
+        <!-- Registration Text -->
         <TextView
-            android:id="@+id/signUpText2"
+            android:id="@+id/registrationText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="32dp"
             android:text="@string/let_s_sign_up_now"
             android:textColor="@android:color/white"
-            android:textSize="32sp"
+            android:textSize="24sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/welcomeText"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/signUpText1" />
-
-        <!-- Username -->
-        <EditText
-            android:id="@+id/username"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:autofillHints="Username"
-            android:hint="@string/username"
-            android:inputType="textPersonName"
-            android:minHeight="48dp"
-            android:textColor="@color/black"
-            android:textColorHint="@color/grey"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/signUpText2" />
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <!-- Email -->
-        <EditText
-            android:id="@+id/email"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputEmail"
+            style="@style/RoundedTextInputLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:autofillHints="Email"
-            android:hint="@string/email"
-            android:inputType="textEmailAddress"
-            android:minHeight="48dp"
-            android:textColor="@color/black"
-            android:textColorHint="@color/grey"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:hint="@string/prompt_email"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/username" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/registrationText"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintVertical_bias="0.5">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:maxLines="1"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:background="@android:color/transparent"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Password -->
-        <EditText
-            android:id="@+id/password"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputPassword"
+            style="@style/RoundedTextInputLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:autofillHints="Password"
-            android:hint="@string/password"
-            android:inputType="textPassword"
-            android:minHeight="48dp"
-            android:textColor="@color/black"
-            android:textColorHint="@color/grey"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:hint="@string/prompt_password"
+            app:endIconMode="password_toggle"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/email" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textInputEmail"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintVertical_bias="0.5">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:maxLines="1"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:background="@android:color/transparent"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Repeat Password -->
-        <EditText
-            android:id="@+id/passwordValidation"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputRepeatPassword"
+            style="@style/RoundedTextInputLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:autofillHints="Repeat Password"
             android:hint="@string/repeat_password"
-            android:inputType="textPassword"
-            android:minHeight="48dp"
-            android:textColor="@color/black"
-            android:textColorHint="@color/grey"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:endIconMode="password_toggle"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/password" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textInputPassword"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintVertical_bias="0.5">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/passwordValidation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:maxLines="1"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:background="@android:color/transparent"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <!-- RadioGroup for choosing organizer/participant -->
         <RadioGroup
@@ -113,37 +128,60 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/passwordValidation">
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textInputRepeatPassword"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintVertical_bias="0.5">
 
             <RadioButton
                 android:id="@+id/radioOrganizer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/i_am_an_organizer"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                app:buttonTint="@color/colorButtonDefault"/>
 
             <RadioButton
                 android:id="@+id/radioParticipant"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/i_am_a_participant"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                app:buttonTint="@color/colorButtonDefault"/>
 
         </RadioGroup>
 
-        <!-- Register Button -->
-        <Button
-            android:id="@+id/register"
+        <!-- Register Button inside MaterialCardView -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/registerCard"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="36dp"
-            android:text="@string/register"
-            android:textColor="#00695C"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="4dp"
+            app:cardBackgroundColor="@color/colorButtonDefault"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/radioGroup"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintVertical_bias="0.5">
+
+            <Button
+                android:id="@+id/register"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/register"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp"
+                android:background="?attr/selectableItemBackground"
+                android:gravity="center"/>
+
+        </com.google.android.material.card.MaterialCardView>
 
         <!-- Login Link -->
         <TextView
@@ -154,9 +192,11 @@
             android:text="@string/already_a_member_sign_in_here"
             android:textColor="@color/black"
             android:textStyle="italic"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/register" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/registerCard"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0.5" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

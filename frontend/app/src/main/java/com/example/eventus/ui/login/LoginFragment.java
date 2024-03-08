@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,55 +36,48 @@ public class LoginFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        final EditText emailFromTheUser = binding.email;
-        final EditText passwordFromTheUser = binding.password;
-        final CheckBox checkOrganizer = binding.checkOrganizer;
-
-        TextView loginBtn = view.findViewById(R.id.login);
-        loginBtn.setOnClickListener(v -> {
-            String userType = (checkOrganizer.isChecked()) ? "Organizer" : "Participant";
-            String emailToSendToLoginFunction = Objects.requireNonNull(emailFromTheUser.getText()).toString().trim();
-            String passwordToSendToLoginFunction = Objects.requireNonNull(passwordFromTheUser.getText()).toString().trim();
-
-            //default users for testing
-            if (emailToSendToLoginFunction.isEmpty() && passwordToSendToLoginFunction.isEmpty()) {
-                if (userType.equals("Participant")) {
-                    emailToSendToLoginFunction = "ziv@gmail.com";
-                    passwordToSendToLoginFunction = "zivPass";
-                } else {
-                    emailToSendToLoginFunction = "zivO@gmail.com";
-                    passwordToSendToLoginFunction = "zivOPass";
-                }
-            }
-
-            // Check if all fields are filled
-            if (emailToSendToLoginFunction.isEmpty() || passwordToSendToLoginFunction.isEmpty()) {
-                Toast.makeText(requireContext(), "Please fill in all fields", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            LoggedInUser userToLogIn = null;
-            try {
-                userToLogIn = Database.userLogin(emailToSendToLoginFunction, passwordToSendToLoginFunction, userType);
-                emailFromTheUser.setText("");
-                passwordFromTheUser.setText("");
-
-                // Prints success message
-                Toast.makeText(requireContext(), "Welcome " + userToLogIn.getName(), Toast.LENGTH_SHORT).show();
-            } catch (Exception e) {
-                Toast.makeText(requireContext(), e.toString(), Toast.LENGTH_SHORT).show();
-            }
-
-            Bundle args = new Bundle();
-            args.putSerializable("user", userToLogIn);
-
-            Intent i = new Intent(requireContext(), UserMainActivity.class);
-            i.putExtras(args);
-            startActivity(i);
-        });
-
+        TextView loginBtn = binding.login;
         TextView registerLink = binding.registerLink;
-        registerLink.setOnClickListener(view1 -> NavHostFragment.findNavController(LoginFragment.this).navigate(R.id.action_loginFragment_to_registrationFragment));
+
+        loginBtn.setOnClickListener(v -> loginUser());
+
+        registerLink.setOnClickListener(v ->
+                NavHostFragment.findNavController(LoginFragment.this)
+                        .navigate(R.id.action_loginFragment_to_registrationFragment));
+    }
+
+    private void loginUser() {
+        String email = binding.email.getText().toString().trim();
+        String password = binding.password.getText().toString().trim();
+        boolean isOrganizer = binding.checkOrganizer.isChecked();
+
+        // Default users for testing
+        if (email.isEmpty() && password.isEmpty()) {
+            email = isOrganizer ? "zivO@gmail.com" : "ziv@gmail.com";
+            password = isOrganizer ? "zivOPass" : "zivPass";
+        }
+
+        if (email.isEmpty() || password.isEmpty()) {
+            Toast.makeText(requireContext(), "Please fill in all fields", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+
+        try {
+            LoggedInUser loggedInUser = Database.userLogin(email, password, isOrganizer ? "Organizer" : "Participant");
+            binding.email.setText("");
+            binding.password.setText("");
+
+            // Prints success message
+            Toast.makeText(requireContext(), "Welcome " + loggedInUser.getName(), Toast.LENGTH_SHORT).show();
+
+            // Start UserMainActivity
+            Intent intent = new Intent(requireContext(), UserMainActivity.class);
+            intent.putExtra("user", loggedInUser);
+            startActivity(intent);
+        } catch (Exception e) {
+            Toast.makeText(requireContext(), e.toString(), Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

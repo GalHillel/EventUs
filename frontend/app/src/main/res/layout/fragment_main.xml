@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -12,11 +13,11 @@
 
     <ImageView
         android:id="@+id/appLogo"
-        android:layout_width="551dp"
-        android:layout_height="283dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="0dp"
         android:importantForAccessibility="no"
-        android:src="@drawable/logo"
+        android:src="@drawable/app_logo"
         app:layout_constraintBottom_toTopOf="@id/nav_host_fragment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -26,20 +27,17 @@
         android:id="@+id/welcomeText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="64dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginTop="32dp"
         android:text="@string/welcome_to_eventus"
         android:textColor="@android:color/white"
         android:textSize="34sp"
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/slogen"
+        android:id="@+id/slogan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="64dp"
+        android:layout_marginTop="16dp"
         android:text="@string/connect_celebrate_experience"
         android:textAlignment="center"
         android:textColor="@color/grey"
@@ -50,8 +48,7 @@
         android:id="@+id/explanationText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="64dp"
+        android:layout_marginTop="16dp"
         android:text="@string/discover_exciting_events_near_you_and_connect_with_like_minded_people"
         android:textAlignment="center"
         android:textColor="@color/grey"
@@ -63,15 +60,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="24dp"
         android:background="@drawable/rounded_button_background"
-        android:elevation="4dp"
-        android:gravity="center"
-        android:paddingTop="16dp"
-        android:paddingBottom="16dp"
-        android:stateListAnimator="@null"
         android:text="@string/let_s_get_started"
         android:textColor="#00695C"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        app:cornerRadius="24dp" />
 
 </LinearLayout>

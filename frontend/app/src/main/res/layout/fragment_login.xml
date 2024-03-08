@@ -1,6 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/main_background"
     android:orientation="vertical"
     android:paddingStart="30dp"
@@ -17,70 +18,95 @@
         android:textSize="60sp"
         android:textStyle="bold" />
 
-
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="75dp"
         android:layout_marginBottom="32dp"
         android:text="@string/let_s_login"
         android:textColor="@android:color/white"
-        android:textSize="36sp"
+        android:textSize="24sp"
         android:textStyle="bold" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputEmail"
-        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+        style="@style/RoundedTextInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        android:background="@android:color/transparent"
         android:hint="@string/prompt_email">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
             android:inputType="textEmailAddress"
-            android:maxLines="1" />
+            android:maxLines="1"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:background="@android:color/transparent"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputPassword"
-        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+        style="@style/RoundedTextInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        android:background="@android:color/transparent"
-        android:hint="@string/prompt_password">
+        android:hint="@string/prompt_password"
+        app:endIconMode="password_toggle">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
             android:inputType="textPassword"
-            android:maxLines="1" />
+            android:maxLines="1"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:background="@android:color/transparent"/>
     </com.google.android.material.textfield.TextInputLayout>
 
-    <CheckBox
-        android:id="@+id/checkOrganizer"
+    <RadioGroup
+        android:id="@+id/checkGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:text="@string/i_am_an_organizer"
-        android:textColor="@android:color/black" />
+        android:orientation="horizontal"
+        android:layout_marginBottom="16dp">
 
-    <Button
-        android:id="@+id/login"
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/checkOrganizer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/i_am_an_organizer"
+            android:textColor="@android:color/black"
+            app:buttonTint="@color/colorButtonDefault"/>
+    </RadioGroup>app:buttonTint="@color/colorButtonDefault"
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/loginCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        android:background="@drawable/rounded_button_background"
-        android:text="@string/log_in"
-        android:textColor="#00695C"/>
+        app:cardCornerRadius="8dp"
+        app:cardElevation="4dp"
+        app:cardBackgroundColor="@color/colorButtonDefault">
+
+        <Button
+            android:id="@+id/login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/log_in"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:background="?attr/selectableItemBackground"
+            android:gravity="center"/>
+
+    </com.google.android.material.card.MaterialCardView>
+
 
     <TextView
         android:id="@+id/registerLink"
@@ -91,13 +117,5 @@
         android:text="@string/don_t_have_an_account_yet_sign_up_now"
         android:textColor="@android:color/black"
         android:textStyle="italic" />
-
-
-    <ProgressBar
-        android:id="@+id/loading"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:visibility="gone" />
 
 </LinearLayout>
