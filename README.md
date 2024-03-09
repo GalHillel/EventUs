@@ -36,7 +36,7 @@ Welcome to EventUs, your ultimate event management solution! EventUs is a compre
 
 ### Backend
 
-1. Clone the repository: `git clone <repository-url>`
+1. Clone the repository: `git clone <[repository-url](https://github.com/GalHillel/EventUs.git)>`
 2. Navigate to the `backend` directory: `cd backend`
 3. Install dependencies: `npm install`
 4. Start the server: `npm start`
