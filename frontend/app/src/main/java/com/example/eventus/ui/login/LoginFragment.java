@@ -19,8 +19,6 @@ import com.example.eventus.data.model.LoggedInUser;
 import com.example.eventus.databinding.FragmentLoginBinding;
 import com.example.eventus.ui.screens.UserMainScreen.UserMainActivity;
 
-import java.util.Objects;
-
 public class LoginFragment extends Fragment {
 
     private FragmentLoginBinding binding;
@@ -53,8 +51,8 @@ public class LoginFragment extends Fragment {
 
         // Default users for testing
         if (email.isEmpty() && password.isEmpty()) {
-            email = isOrganizer ? "zivO@gmail.com" : "ziv@gmail.com";
-            password = isOrganizer ? "zivOPass" : "zivPass";
+            email = isOrganizer ? "galorganizer@gmail.com" : "galp@gmail.com";
+            password = "galPass";
         }
 
         if (email.isEmpty() || password.isEmpty()) {
