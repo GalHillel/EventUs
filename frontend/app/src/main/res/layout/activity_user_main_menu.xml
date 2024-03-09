@@ -8,12 +8,15 @@
     android:orientation="vertical"
     tools:context=".ui.screens.UserMainScreen.UserMainActivity">
 
+    <!-- FrameLayout for main content -->
     <FrameLayout
         android:id="@+id/userMainMenuFrame"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_weight="1">
+    </FrameLayout>
 
+    <!-- BottomNavigationView for navigation -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/mainMenuUserNavigation"
         android:layout_width="match_parent"

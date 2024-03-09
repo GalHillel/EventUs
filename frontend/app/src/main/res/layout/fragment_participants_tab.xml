@@ -54,12 +54,14 @@
             style="@style/DefaultClickableButton"
             android:layout_marginTop="8dp"
             android:text="@string/join_event"
+            android:layout_gravity="center"
             android:textColor="#00695C"/>
 
         <Button
             android:id="@+id/leaveEventButton"
             style="@style/badClickableButton"
             android:layout_marginTop="8dp"
+            android:layout_gravity="center"
             android:text="@string/leave_event" />
     </LinearLayout>
 

@@ -36,7 +36,8 @@ public class EventListFragment extends Fragment implements EventAdapter.OnShowMo
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_event_list, container, false);
     }
 
@@ -66,7 +67,8 @@ public class EventListFragment extends Fragment implements EventAdapter.OnShowMo
                 Toast.makeText(requireContext(), "an error has occurred", Toast.LENGTH_LONG).show();
             }
         }
-        if (getParentFragment() != null) requireParentFragment().onActivityResult(requestCode, resultCode, data);
+        if (getParentFragment() != null)
+            requireParentFragment().onActivityResult(requestCode, resultCode, data);
         else {
             requireActivity().setResult(resultCode, data);
         }

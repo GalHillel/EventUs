@@ -78,7 +78,10 @@ public class ViewEventsActivity extends BaseActivity {
 
         EventListFragment userEventListFragment = new EventListFragment(this.user, this.userEvents);
 
-        getSupportFragmentManager().beginTransaction().setReorderingAllowed(true).replace(R.id.fragment_event_list, userEventListFragment).commit();
+        getSupportFragmentManager().beginTransaction()
+                .setReorderingAllowed(true)
+                .replace(R.id.fragment_event_list, userEventListFragment)
+                .commit();
 
     }
 

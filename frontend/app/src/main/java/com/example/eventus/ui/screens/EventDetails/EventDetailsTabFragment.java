@@ -59,11 +59,6 @@ public class EventDetailsTabFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_event_details_tab, container, false);
     }
 
-    /*
-        TODO:
-            1. Add the option for an Organizer to send a message to all users in event - DONE
-            2. Add the option to rate an event and implement the rating algorithm
-     */
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
@@ -130,8 +125,6 @@ public class EventDetailsTabFragment extends Fragment {
         String eventId = holder.getEvent().getId();
         String userId = holder.getUser().get_id();
 
-        // Check if the RatingBar is not null
-
         // Get the rating value from the RatingBar
         float rating = ratingBar.getRating();
         try {
@@ -168,7 +161,6 @@ public class EventDetailsTabFragment extends Fragment {
         UserDisplay[] others = this.holder.getUsers().toArray(new UserDisplay[0]);
         args.putSerializable("other_users", others);
 
-        //TODO handle activity fail
         Intent i = new Intent(this.getContext(), CreateMessageActivity.class);
         i.putExtras(args);
         startActivity(i);

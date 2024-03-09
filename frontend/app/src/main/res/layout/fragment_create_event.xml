@@ -124,5 +124,6 @@
         style="@style/DefaultClickableButton"
         android:layout_marginTop="32dp"
         android:text="@string/create_event"
+        android:layout_gravity="center"
         android:textColor="#00695C" />
 </LinearLayout>

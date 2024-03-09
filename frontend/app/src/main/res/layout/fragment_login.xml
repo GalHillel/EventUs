@@ -67,21 +67,13 @@
             android:background="@android:color/transparent"/>
     </com.google.android.material.textfield.TextInputLayout>
 
-    <RadioGroup
-        android:id="@+id/checkGroup"
+    <CheckBox
+        android:id="@+id/checkOrganizer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginBottom="16dp">
-
-        <com.google.android.material.radiobutton.MaterialRadioButton
-            android:id="@+id/checkOrganizer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/i_am_an_organizer"
-            android:textColor="@android:color/black"
-            app:buttonTint="@color/colorButtonDefault"/>
-    </RadioGroup>app:buttonTint="@color/colorButtonDefault"
+        android:text="I am an organizer"
+        android:textColor="@android:color/black"
+        android:layout_marginBottom="16dp"/>
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/loginCard"

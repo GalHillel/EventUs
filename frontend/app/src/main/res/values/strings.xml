@@ -6,9 +6,8 @@
     <string name="action_sign_in_short">Sign in</string>
     <string name="welcome">"Welcome!"</string>
     <string name="invalid_username">Not a valid username</string>
-    <string name="invalid_password">Password must be >5 characters</string>
-    <string name="login_failed">"Login failed"</string>
-    <string name="prompt_username">Username or Email</string>
+    <string name="login_failed">"Login Failed"</string>
+    <string name="prompt_username">Username Or Email</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="manage_events">Manage Events</string>
     <string name="back">back</string>
@@ -21,7 +20,7 @@
     <string name="from_sender">From: Sender</string>
     <string name="dd_mm_yyyy">dd/mm/yyyy</string>
     <string name="todo">TODO</string>
-    <string name="event">event</string>
+    <string name="event">Event</string>
     <string name="log_out">Log out</string>
     <string name="edit_profile">Edit Profile</string>
     <string name="messages">Messages</string>
@@ -37,8 +36,8 @@
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="repeat_password">Repeat Password</string>
-    <string name="i_am_an_organizer">I am an Organizer</string>
-    <string name="i_am_a_participant">I am a Participant</string>
+    <string name="i_am_an_organizer">I Am An Organizer</string>
+    <string name="i_am_a_participant">I Am A Participant</string>
     <string name="register">Register</string>
     <string name="already_a_member_sign_in_here">Already a member? Sign in here!</string>
     <string name="participants">Participants</string>

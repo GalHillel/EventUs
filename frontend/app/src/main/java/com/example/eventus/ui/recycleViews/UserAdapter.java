@@ -95,7 +95,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
             return;
         }
         if (user.getUser_type().equals("Organizer")) {
-            holder.userName.setText(user.getName() + " (Host)");
+            holder.userName.setText(user.getName() + " (Organizer)");
         } else {
             holder.userName.setText(user.getName());
         }
