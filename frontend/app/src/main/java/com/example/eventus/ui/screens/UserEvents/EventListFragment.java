@@ -20,19 +20,23 @@ import com.example.eventus.data.model.UserEventDisplay;
 import com.example.eventus.ui.recycleViews.EventAdapter;
 import com.example.eventus.ui.screens.EventDetails.EventDetailsActivity;
 
-import java.util.Comparator;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 public class EventListFragment extends Fragment implements EventAdapter.OnShowMoreDetailsClickListener {
-    private final List<UserEventDisplay> lst;
+    private final List<UserEventDisplay> eventList;
     private LoggedInUser user;
 
-    public EventListFragment(LoggedInUser user, List<UserEventDisplay> lst) {
-        this.lst = lst;
+    public EventListFragment(LoggedInUser user, List<UserEventDisplay> eventList) {
+        this.eventList = eventList;
         this.user = user;
-        Date d = new Date();
-        this.lst.sort(Comparator.comparingLong(o -> Math.abs(d.getTime() - o.getDate().getTime())));
+        Collections.sort(eventList, (o1, o2) -> {
+            Date currentDate = new Date();
+            long diff1 = Math.abs(currentDate.getTime() - o1.getDate().getTime());
+            long diff2 = Math.abs(currentDate.getTime() - o2.getDate().getTime());
+            return Long.compare(diff1, diff2);
+        });
     }
 
     @Override
@@ -42,48 +46,45 @@ public class EventListFragment extends Fragment implements EventAdapter.OnShowMo
     }
 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        RecyclerView upcomingEventsRecyclerView = view.findViewById(R.id.eventListRecycleView);
-        EventAdapter upcomingEventAdapter = new EventAdapter(lst);
-        upcomingEventAdapter.setOnShowMoreDetailsClickListener(this);
-        upcomingEventsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        upcomingEventsRecyclerView.setAdapter(upcomingEventAdapter);
+        RecyclerView eventRecyclerView = view.findViewById(R.id.eventListRecycleView);
+        EventAdapter eventAdapter = new EventAdapter(eventList);
+        eventAdapter.setOnShowMoreDetailsClickListener(this);
+        eventRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        eventRecyclerView.setAdapter(eventAdapter);
 
-        if (this.lst.isEmpty()) {
+        if (eventList.isEmpty()) {
             view.setVisibility(View.GONE);
         }
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == R.id.showMoreDetails) {
-            if (resultCode == Activity.RESULT_OK) {
-                if (data != null && data.getExtras() != null) {
-                    LoggedInUser newUser = (LoggedInUser) data.getExtras().getSerializable("user");
-                    if (newUser != null) {
-                        this.user = newUser;
-                    }
+            if (resultCode == Activity.RESULT_OK && data != null && data.getExtras() != null) {
+                LoggedInUser newUser = (LoggedInUser) data.getExtras().getSerializable("user");
+                if (newUser != null) {
+                    this.user = newUser;
                 }
             } else if (resultCode == Activity.RESULT_CANCELED) {
-                Toast.makeText(requireContext(), "an error has occurred", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "An error has occurred", Toast.LENGTH_LONG).show();
             }
         }
-        if (getParentFragment() != null)
-            requireParentFragment().onActivityResult(requestCode, resultCode, data);
-        else {
+        Fragment parentFragment = getParentFragment();
+        if (parentFragment != null) {
+            parentFragment.onActivityResult(requestCode, resultCode, data);
+        } else {
             requireActivity().setResult(resultCode, data);
         }
     }
 
     @Override
     public void onShowMoreDetailsClick(UserEventDisplay clickedEvent) {
+        Intent intent = new Intent(getContext(), EventDetailsActivity.class);
         Bundle args = new Bundle();
         args.putSerializable("user", this.user);
-
         args.putString("eventId", clickedEvent.getId());
-
-        Intent i = new Intent(getContext(), EventDetailsActivity.class);
-        i.putExtras(args);
-        startActivityForResult(i, R.id.showMoreDetails);
-
+        intent.putExtras(args);
+        startActivityForResult(intent, R.id.showMoreDetails);
     }
 }

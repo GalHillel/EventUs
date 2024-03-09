@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -60,13 +61,16 @@ public class LoginFragment extends Fragment {
             return;
         }
 
-
         try {
+            // Attempt to login using provided credentials
             LoggedInUser loggedInUser = Database.userLogin(email, password, isOrganizer ? "Organizer" : "Participant");
+
+            // Clear input fields
             binding.email.setText("");
             binding.password.setText("");
+            binding.checkOrganizer.setChecked(false);
 
-            // Prints success message
+            // Display success message
             Toast.makeText(requireContext(), "Welcome " + loggedInUser.getName(), Toast.LENGTH_SHORT).show();
 
             // Start UserMainActivity
@@ -74,6 +78,7 @@ public class LoginFragment extends Fragment {
             intent.putExtra("user", loggedInUser);
             startActivity(intent);
         } catch (Exception e) {
+            // Display error message if login fails
             Toast.makeText(requireContext(), e.toString(), Toast.LENGTH_SHORT).show();
         }
     }

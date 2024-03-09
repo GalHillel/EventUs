@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,10 +25,7 @@ import java.util.List;
 
 public class BaseUserProfileFragment extends Fragment {
     private final UserProfile userProfile;
-
-
     private UserEventDisplay[] eventList;
-
 
     public BaseUserProfileFragment(UserProfile p) {
         this.userProfile = p;
@@ -42,25 +40,20 @@ public class BaseUserProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
         ImageView profilePic = view.findViewById(R.id.userPhotoImageView);
-
         if (!userProfile.getProfile_pic().isEmpty()) {
             try {
-                Bitmap profile_icon = Database.getProfilePic(userProfile.get_id());
+                Bitmap profileIcon = Database.getProfilePic(userProfile.get_id());
                 int width = getResources().getInteger(R.integer.profile_profilePicSize);
                 int height = getResources().getInteger(R.integer.profile_profilePicSize);
-                profile_icon = Bitmap.createScaledBitmap(profile_icon, width, height, false);
-                profilePic.setImageBitmap(profile_icon);
+                profileIcon = Bitmap.createScaledBitmap(profileIcon, width, height, false);
+                profilePic.setImageBitmap(profileIcon);
             } catch (ServerSideException e) {
-                // Handle the exception (e.g., show an error message)
                 e.printStackTrace();
             } catch (Exception e) {
-                // Handle other exceptions
                 e.printStackTrace();
             }
         }
-
 
         RatingBar userRatingBar = view.findViewById(R.id.userRatingBar);
         userRatingBar.setEnabled(false);
@@ -75,35 +68,24 @@ public class BaseUserProfileFragment extends Fragment {
             if (eventList == null) {
                 try {
                     eventList = Database.getEventList(userProfile.get_id());
-
                 } catch (ServerSideException e) {
-                    // Handle the exception (e.g., show an error message)
                     e.printStackTrace();
                 } catch (Exception e) {
-                    // Handle other exceptions
                     e.printStackTrace();
                 }
             }
             List<UserEventDisplay> tmp = Arrays.asList(eventList);
-            int num_ratings = tmp.stream().map(UserEventDisplay::getNum_rating).reduce(0, Integer::sum);
-            float avg_rating = tmp.stream().map(e -> e.getNum_rating() * e.getRating()).reduce(0.0F, Float::sum) / num_ratings;
-            ratingCountTextView.setText(num_ratings + " Ratings");
-            userRatingBar.setRating(avg_rating);
-
-
+            int numRatings = tmp.stream().map(UserEventDisplay::getNum_rating).reduce(0, Integer::sum);
+            float avgRating = tmp.stream().map(e -> e.getNum_rating() * e.getRating()).reduce(0.0F, Float::sum) / numRatings;
+            ratingCountTextView.setText(numRatings + " Ratings");
+            userRatingBar.setRating(avgRating);
         } else {
             userRatingBar.setVisibility(View.GONE);
             ratingCountTextView.setVisibility(View.GONE);
         }
 
-        // Set actual user name and bio
-
-
         bioTextView.setBackground(null);
         bioTextView.setText(userProfile.getBio());
         usernameTextView.setText(userProfile.getName());
-
-
     }
-
 }

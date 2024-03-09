@@ -133,7 +133,6 @@ public class EventParticipantsTabFragment extends Fragment implements UserAdapte
     public void onLeaveEventClick(View view) {
         if (this.holder.getUser().get_id().equals(this.holder.getEvent().getCreator_id())) {
             try {
-                //TODO maybe change this?
                 Database.delEvent(this.holder.getEvent().getId());
                 this.holder.getUser().getEvents().remove(this.holder.getEvent().getId());
                 this.holder.success();
@@ -193,7 +192,6 @@ public class EventParticipantsTabFragment extends Fragment implements UserAdapte
         UserDisplay[] others = {this.holder.getUsers().get(position)};
         args.putSerializable("other_users", others);
 
-        //TODO handle activity fail
         Intent i = new Intent(this.getContext(), CreateMessageActivity.class);
         i.putExtras(args);
         startActivity(i);
@@ -206,7 +204,6 @@ public class EventParticipantsTabFragment extends Fragment implements UserAdapte
         args.putSerializable("user", this.holder.getUser());
         args.putSerializable("other_user_id", this.holder.getUsers().get(position).get_id());
 
-        //TODO handle activity fail
         Intent i = new Intent(this.getContext(), ViewUserProfileActivity.class);
         i.putExtras(args);
         startActivity(i);

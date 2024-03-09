@@ -50,7 +50,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="@string/send"
-        android:textColor="#00695C" />
+        android:textColor="@color/dark_gray" />
 
 
 </LinearLayout>

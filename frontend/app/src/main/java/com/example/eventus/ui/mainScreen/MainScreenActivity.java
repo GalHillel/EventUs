@@ -5,11 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.eventus.R;
 
-public class MainActivity extends AppCompatActivity {
+public class MainScreenActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_activity);
+        setContentView(R.layout.activity_main_screen);
     }
 }

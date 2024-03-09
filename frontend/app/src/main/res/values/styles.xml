@@ -11,7 +11,7 @@
     </style>
 
     <style name="badClickableButton" parent="Widget.MaterialComponents.Button.Icon">
-        <item name="android:backgroundTint">@color/ButtonType2</item>
+        <item name="android:backgroundTint">@color/dark_gray</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
     </style>
@@ -136,8 +136,23 @@
     </style>
 
 
+    <style name="RoundedButton" parent="Widget.AppCompat.Button">
+        <item name="android:background">@drawable/rounded_button_background</item>
+        <item name="android:textColor">@color/dark_gray</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:padding">16dp</item>
+        <item name="android:gravity">center</item>
+    </style>
 
+        <!-- Style for read messages -->
+        <style name="message_read_background">
+            <item name="android:background">@drawable/bg_read_message</item>
+        </style>
 
+        <!-- Style for unread messages -->
+        <style name="message_unread_background">
+            <item name="android:background">@drawable/bg_unread_message</item>
+        </style>
 
 
 </resources>

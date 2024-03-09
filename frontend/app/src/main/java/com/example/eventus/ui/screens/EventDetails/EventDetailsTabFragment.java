@@ -66,7 +66,6 @@ public class EventDetailsTabFragment extends Fragment {
         eventDateView = view.findViewById(R.id.eventDateTextView);
         eventLocationview = view.findViewById(R.id.eventLocationTextView);
         eventDescription = view.findViewById(R.id.eventDescriptionTextView);
-        //eventDateView = view.findViewById(R.id.eventDateTextView);
         this.calendar = Calendar.getInstance();
         this.editEventButton = view.findViewById(R.id.editEventButton);
         this.saveEventButton = view.findViewById(R.id.saveEventButton);
@@ -79,7 +78,7 @@ public class EventDetailsTabFragment extends Fragment {
 
 
         if ("Organizer".equals(this.holder.getUser().getUser_type())) {
-            contactUserButton.setText("Contact all participants");
+            contactUserButton.setText("Contact All Participants");
             contactUserButton.setOnClickListener(this::onContactAllParticipantsClick);
         } else {
             contactUserButton.setOnClickListener(this::onContactOrganizerClick);
@@ -116,8 +115,6 @@ public class EventDetailsTabFragment extends Fragment {
         if (!user_in_event || holder.hasPassed()) {
             contactUserButton.setVisibility(View.GONE);
         }
-
-
     }
 
     private void onSaveRatingClick(View view) {
@@ -177,7 +174,6 @@ public class EventDetailsTabFragment extends Fragment {
             UserDisplay[] others = new UserDisplay[]{org.get()};
             args.putSerializable("other_users", others);
 
-            //TODO handle activity fail
             Intent i = new Intent(this.getContext(), CreateMessageActivity.class);
             i.putExtras(args);
             startActivity(i);
@@ -208,8 +204,6 @@ public class EventDetailsTabFragment extends Fragment {
         } catch (Exception e) {
             // Handle exception
         }
-
-
     }
 
     private void toggleEditableMode(boolean isEdit) {
@@ -282,11 +276,8 @@ public class EventDetailsTabFragment extends Fragment {
 
     }
 
-
     private void updateDateTextView() {
 
         eventDateView.setText(calendar.getTime().toString());
     }
-
-
 }

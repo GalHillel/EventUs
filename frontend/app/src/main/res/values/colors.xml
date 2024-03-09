@@ -30,4 +30,10 @@
     <color name="big_textbox_stroke">@color/MAIN_WEAK2</color>
     <color name="event_list_holder_stroke">@color/MAIN_WEAK2</color>
     <color name="profileBorder">@color/MAIN_WEAK</color>
+    <color name="default_text_button">#00695C</color>
+    <color name="dark_gray">#A9A9A9</color>
+    <color name="read_message_background_color">#E0E0E0</color> <!-- Light Gray -->
+    <color name="unread_message_background_color">#FFFFFF</color> <!-- White -->
+
+
 </resources>

@@ -67,7 +67,8 @@
                 android:maxLines="1"
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"
-                android:background="@android:color/transparent"/>
+                android:background="@android:color/transparent"
+                tools:ignore="VisualLintTextFieldSize" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Email -->
@@ -88,11 +89,13 @@
                 android:id="@+id/email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
                 android:inputType="textEmailAddress"
                 android:maxLines="1"
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"
-                android:background="@android:color/transparent"/>
+                android:textColorHint="#37474F"
+                tools:ignore="VisualLintTextFieldSize" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Password -->
@@ -118,7 +121,8 @@
                 android:maxLines="1"
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"
-                android:background="@android:color/transparent"/>
+                android:background="@android:color/transparent"
+                tools:ignore="VisualLintTextFieldSize" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Repeat Password -->
@@ -140,11 +144,12 @@
                 android:id="@+id/passwordValidation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
                 android:inputType="textPassword"
                 android:maxLines="1"
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"
-                android:background="@android:color/transparent"/>
+                tools:ignore="VisualLintTextFieldSize,TextContrastCheck" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- RadioGroup for choosing organizer/participant -->
@@ -197,14 +202,15 @@
                 android:id="@+id/register"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/register"
-                android:textColor="@android:color/white"
-                android:textSize="18sp"
-                android:textStyle="bold"
+                android:background="?attr/selectableItemBackground"
+                android:gravity="center"
                 android:paddingTop="16dp"
                 android:paddingBottom="16dp"
-                android:background="?attr/selectableItemBackground"
-                android:gravity="center"/>
+                android:text="@string/register"
+                android:textColor="@color/dark_gray"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                tools:ignore="VisualLintButtonSize" />
 
         </com.google.android.material.card.MaterialCardView>
 

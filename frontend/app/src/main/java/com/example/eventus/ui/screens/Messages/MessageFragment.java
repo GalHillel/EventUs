@@ -16,17 +16,22 @@ import androidx.fragment.app.Fragment;
 
 import com.example.eventus.R;
 import com.example.eventus.data.model.UserDisplay;
+import com.example.eventus.data.model.UserMessage;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 
 public class MessageFragment extends Fragment {
 
-    //private EditText replyEditText;
-    MessageActivity holder;
+    private final MessageActivity holder;
+    private final UserMessage message;
+    private final UserDisplay sender;
+    private final UserDisplay user;
 
-    public MessageFragment(MessageActivity initiator) {
-        this.holder = initiator;
+    public MessageFragment(MessageActivity holder, UserMessage message, UserDisplay sender, UserDisplay user) {
+        this.holder = holder;
+        this.message = message;
+        this.sender = sender;
+        this.user = user;
     }
-
 
     @Nullable
     @Override
@@ -41,41 +46,47 @@ public class MessageFragment extends Fragment {
         TextView titleTextView = view.findViewById(R.id.messageTitleTextView);
         TextView senderTextView = view.findViewById(R.id.messageSenderTextView);
         MaterialAutoCompleteTextView contentTextView = view.findViewById(R.id.messageContentTextView);
-        titleTextView.setText(this.holder.getMessage().getTitle());
-        senderTextView.setText("From: " + this.holder.getSender().getName());
-        contentTextView.setText(this.holder.getMessage().getContent());
 
+        // Set message details
+        titleTextView.setText(message.getTitle());
+        senderTextView.setText(getString(R.string.from_sender2, sender.getName()));
+        contentTextView.setText(message.getContent());
 
         Button replyButton = view.findViewById(R.id.replyButton);
         replyButton.setOnClickListener(this::onReplyButtonClick);
+    }
 
+    private void onReplyButtonClick(View view) {
+        // Start CreateMessageActivity for replying
+        Intent intent = new Intent(requireContext(), CreateMessageActivity.class);
+        Bundle args = new Bundle();
+        args.putSerializable("user", user);
+        args.putSerializable("other_users", new UserDisplay[]{sender});
+        args.putString("title", getString(R.string.reply_title, message.getTitle()));
+        intent.putExtras(args);
+        startActivityForResult(intent, R.id.activity_create_messages);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == R.id.activity_create_messages) {
             if (resultCode == Activity.RESULT_OK) {
-                this.holder.success();
-            } else if (resultCode == Activity.RESULT_CANCELED) {
-                Toast.makeText(requireContext(), data.getStringExtra("error"), Toast.LENGTH_LONG).show();
+                // Handle successful reply
+                holder.success();
+            } else if (resultCode == Activity.RESULT_CANCELED && data != null) {
+                // Handle reply cancellation
+                String error = data.getStringExtra("error");
+                if (error != null) {
+                    // Show error message
+                    showToast(error);
+                }
             }
         }
     }
 
-    public void onReplyButtonClick(View view) {
-        Bundle args = new Bundle();
-        args.putSerializable("user", this.holder.getUser());
-        UserDisplay[] others = {this.holder.getSender()};
-        args.putSerializable("other_users", others);
-        args.putString("title", "re: " + this.holder.getMessage().getTitle());
-
-        //TODO handle activity fail
-        Intent i = new Intent(this.getContext(), CreateMessageActivity.class);
-        i.putExtras(args);
-        startActivityForResult(i, R.id.activity_create_messages);
-
+    private void showToast(String message) {
+        // Display toast message
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
     }
-
-
 }
-

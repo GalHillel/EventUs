@@ -57,7 +57,7 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/back"
             android:padding="16dp"
-            app:tint="#00695C" />
+            app:tint="@color/dark_gray" />
     </androidx.cardview.widget.CardView>
 
 </LinearLayout>

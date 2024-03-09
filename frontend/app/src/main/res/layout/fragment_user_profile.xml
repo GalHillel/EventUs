@@ -19,7 +19,7 @@
         android:layout_gravity="center"
         android:layout_marginTop="16dp"
         android:text="@string/edit_profile"
-        android:textColor="#00695C" />
+        android:textColor="@color/dark_gray" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/logout"

@@ -21,10 +21,8 @@ import com.example.eventus.data.model.UserDisplay;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-/*TODO: Fix send message part, after sending a message, user doesn't get moved back user doesn't get moved back
-       (got exception from the Database function sendMessage, but it still send the message)
-*/
 public class CreateMessageFragment extends Fragment {
+
     private EditText subjectEditText;
     private EditText messageEditText;
     private final CreateMessageActivity holder;
@@ -49,46 +47,45 @@ public class CreateMessageFragment extends Fragment {
         Button sendButton = view.findViewById(R.id.sendButton);
         sendButton.setOnClickListener(this::onSendButtonClick);
 
-        if (!this.holder.getDefaultTitle().isEmpty()) {
+        if (!holder.getDefaultTitle().isEmpty()) {
             subjectEditText.setText(holder.getDefaultTitle());
             subjectEditText.setFocusable(false);
         }
-        String usersNames = Arrays.stream(holder.getOtherUsers()).map(UserDisplay::getName).collect(Collectors.joining(", "));
+        String usersNames = Arrays.stream(holder.getOtherUsers())
+                .map(UserDisplay::getName)
+                .collect(Collectors.joining(", "));
 
         recipientsText.setText(usersNames);
-
     }
 
     void onSendButtonClick(View view) {
-        int subjectLen = this.subjectEditText.getText().toString().length();
-        int contentLen = this.messageEditText.getText().toString().length();
+        int subjectLen = subjectEditText.getText().toString().length();
+        int contentLen = messageEditText.getText().toString().length();
 
-        //TODO handle constraints on message subject and content lengths
         if (subjectLen == 0 && contentLen == 0) {
-            Toast.makeText(requireContext(), "Message missing subject and content", Toast.LENGTH_SHORT).show();
+            showToast("Message missing subject and content");
             return;
         }
         if (subjectLen == 0) {
-            Toast.makeText(requireContext(), "Message missing subject", Toast.LENGTH_SHORT).show();
+            showToast("Message missing subject");
             return;
         }
         if (contentLen == 0) {
-            Toast.makeText(requireContext(), "Message missing content", Toast.LENGTH_SHORT).show();
+            showToast("Message missing content");
             return;
         }
 
-        Intent res = holder.sendMessage(this.subjectEditText.getText().toString(), this.messageEditText.getText().toString());
+        Intent res = holder.sendMessage(subjectEditText.getText().toString(), messageEditText.getText().toString());
 
         if (res.getIntExtra("code", Activity.RESULT_CANCELED) == Activity.RESULT_OK) {
             subjectEditText.setText("");
             messageEditText.setText("");
-            // Prints success message
-            Toast.makeText(requireContext(), "Message sent successfully", Toast.LENGTH_SHORT).show();
+            showToast("Message sent successfully");
             holder.success();
         }
-        //TODO handle caught exception
-
-
     }
 
+    private void showToast(String message) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
+    }
 }

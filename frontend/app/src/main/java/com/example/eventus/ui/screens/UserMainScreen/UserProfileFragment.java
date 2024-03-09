@@ -19,13 +19,13 @@ import com.example.eventus.ui.screens.Profile.BaseUserProfileFragment;
 
 public class UserProfileFragment extends Fragment {
     private final UserMainActivity holder;
+    private static final int EDIT_PROFILE_REQUEST_CODE = 100;
 
     public UserProfileFragment() {
         this.holder = null;
     }
 
     public UserProfileFragment(UserMainActivity holder) {
-
         this.holder = holder;
     }
 
@@ -36,9 +36,7 @@ public class UserProfileFragment extends Fragment {
 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        LoggedInUser user;
-        // Get the users' data from arguments
-        assert holder != null;
+        LoggedInUser user = null;
         if (holder.getUser() == null && getArguments() != null) {
             user = (LoggedInUser) getArguments().getSerializable("user");
         }
@@ -46,48 +44,42 @@ public class UserProfileFragment extends Fragment {
         view.findViewById(R.id.logout).setOnClickListener(this::onLogoutButtonClicked);
         view.findViewById(R.id.editProfileButton).setOnClickListener(this::onEditProfileButtonClicked);
 
-        assert holder != null;
         BaseUserProfileFragment userProfileFragment = new BaseUserProfileFragment(holder.getUser());
         getChildFragmentManager().beginTransaction().setReorderingAllowed(true).replace(R.id.user_profile, userProfileFragment).commit();
-
-
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == R.id.activity_edit_profile) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == EDIT_PROFILE_REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
-                if (data != null && data.getExtras() != null) {
-                    LoggedInUser newUser = (LoggedInUser) data.getExtras().getSerializable("user");
-                    if (newUser != null) {
-                        assert this.holder != null;
-                        this.holder.setUser(newUser);
-                    }
-
-                    assert this.holder != null;
-                    this.holder.update(R.id.profile);
-                }
+                handleProfileUpdate(data);
             } else if (resultCode == Activity.RESULT_CANCELED) {
-                Toast.makeText(requireContext(), "an error has occurred", Toast.LENGTH_LONG).show();
+                Toast.makeText(requireContext(), "An error occurred", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    private void handleProfileUpdate(Intent data) {
+        if (data != null && data.getExtras() != null) {
+            LoggedInUser newUser = (LoggedInUser) data.getExtras().getSerializable("user");
+            if (newUser != null) {
+                holder.setUser(newUser);
+                holder.update(R.id.profile);
             }
         }
     }
 
     public void onEditProfileButtonClicked(View view) {
         Bundle args = new Bundle();
-        assert holder != null;
         args.putSerializable("user", holder.getUser());
-        Intent i = new Intent(this.getContext(), EditProfileActivity.class);
-        i.putExtras(args);
-        startActivityForResult(i, R.id.activity_edit_profile);
+        Intent intent = new Intent(requireContext(), EditProfileActivity.class);
+        intent.putExtras(args);
+        startActivityForResult(intent, EDIT_PROFILE_REQUEST_CODE);
     }
 
     public void onLogoutButtonClicked(View view) {
-        //Navigation.findNavController(view).navigate(R.id.action_userProfileFragment_to_loginFragment);
-        assert holder != null;
         holder.success();
-        // Prints success message
         Toast.makeText(requireContext(), "Logging out", Toast.LENGTH_SHORT).show();
     }
-
 }

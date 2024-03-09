@@ -52,12 +52,13 @@ public class MessageAdaptor extends RecyclerView.Adapter<MessageAdaptor.MessageV
         holder.userMessageDateView.setText(msg.getDateString());
         holder.userMessageSenderView.setText("from: " + msg.getSenderName());
         if (hasRead) {
+            holder.userMessageItem.setBackgroundResource(R.drawable.bg_read_message);
             holder.userMessageItem.setBackgroundTintMode(PorterDuff.Mode.ADD);
             holder.userMessageSenderView.setTypeface(null, Typeface.NORMAL);
             holder.userMessageDateView.setTypeface(null, Typeface.NORMAL);
             holder.userMessageTitleView.setTypeface(null, Typeface.NORMAL);
         } else {
-
+            holder.userMessageItem.setBackgroundResource(R.drawable.bg_unread_message);
             holder.userMessageItem.setBackgroundTintMode(PorterDuff.Mode.CLEAR);
             holder.userMessageSenderView.setTypeface(null, Typeface.BOLD);
             holder.userMessageDateView.setTypeface(null, Typeface.BOLD);

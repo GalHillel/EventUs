@@ -83,5 +83,8 @@
     <string name="profile">Profile</string>
     <string name="new_event">New Event</string>
     <string name="create_message">Create Message</string>
+    <string name="reply_title">Reply: %s</string>
+    <string name="from_sender2">From: %s</string>
+
 
 </resources>

@@ -52,7 +52,7 @@
         style="@style/DefaultClickableButton"
         android:layout_gravity="center"
         android:text="@string/replay"
-        android:textColor="#00695C"/>
+        android:textColor="@color/dark_gray"/>
 
 
 </LinearLayout>

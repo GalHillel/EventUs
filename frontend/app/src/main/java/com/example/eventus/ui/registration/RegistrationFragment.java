@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
@@ -47,34 +48,21 @@ public class RegistrationFragment extends Fragment {
             String username = usernameEditText.getText().toString().trim();
             String userType = radioOrganizer.isChecked() ? "Organizer" : "Participant";
 
-            // Check if any field is empty
-            if (email.isEmpty() || password.isEmpty() || passwordValidation.isEmpty() || username.isEmpty()) {
-                Toast.makeText(requireContext(), "Please fill in all fields.", Toast.LENGTH_SHORT).show();
-                return;
-            }
+            registrationViewModel.register(email, password, passwordValidation, username, userType);
+        });
 
-            // Check if the email is in the correct format
-            if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                Toast.makeText(requireContext(), "Invalid email format. Please enter a valid email address.", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            // Check if passwords match
-            if (!passwordValidation.equals(password)) {
-                Toast.makeText(requireContext(), "Passwords do not match. Please try again.", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            // Attempt registration
-            boolean registrationSuccess = registrationViewModel.register(email, password, username, userType);
-
-            if (registrationSuccess) {
-                // Registration successful, display message
+        registrationViewModel.getRegistrationSuccess().observe(getViewLifecycleOwner(), success -> {
+            if (success) {
                 Toast.makeText(requireContext(), "Registration successful!", Toast.LENGTH_SHORT).show();
                 NavHostFragment.findNavController(RegistrationFragment.this).navigate(R.id.action_registrationFragment_to_loginFragment);
             } else {
-                // Registration failed
                 Toast.makeText(requireContext(), "Registration failed. Please try again later.", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        registrationViewModel.getErrorMessage().observe(getViewLifecycleOwner(), errorMessage -> {
+            if (errorMessage != null) {
+                Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show();
             }
         });
 

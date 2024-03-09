@@ -31,7 +31,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="@string/create_event"
-                android:textColor="#00695C"
+                android:textColor="@color/dark_gray"
                 android:textSize="30sp"
                 android:textStyle="bold" />
         </com.google.android.material.appbar.MaterialToolbar>
@@ -73,7 +73,7 @@
                 android:id="@+id/pickDateButton"
                 style="@style/DefaultClickableButton"
                 android:text="@string/pick_date"
-                android:textColor="#00695C" />
+                android:textColor="@color/dark_gray" />
 
         </LinearLayout>
 
@@ -125,5 +125,5 @@
         android:layout_marginTop="32dp"
         android:text="@string/create_event"
         android:layout_gravity="center"
-        android:textColor="#00695C" />
+        android:textColor="@color/dark_gray" />
 </LinearLayout>

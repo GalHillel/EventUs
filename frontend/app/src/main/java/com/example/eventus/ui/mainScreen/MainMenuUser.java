@@ -7,23 +7,29 @@ import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-
 import com.example.eventus.R;
 
 public class MainMenuUser extends Fragment {
 
-    public MainMenuUser() {
-    }
+    public MainMenuUser() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_main, container, false);
+        return inflater.inflate(R.layout.fragment_main, container, false);
+    }
 
-        view.findViewById(R.id.loginRegisterButton).setOnClickListener(v -> {
-            NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
-            navController.navigate(R.id.action_mainMenuUserFragment_to_loginFragment);
-        });
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        setupClickListeners(view);
+    }
 
-        return view;
+    private void setupClickListeners(View view) {
+        view.findViewById(R.id.loginRegisterButton).setOnClickListener(v -> navigateToLoginFragment());
+    }
+
+    private void navigateToLoginFragment() {
+        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+        navController.navigate(R.id.action_mainMenuUserFragment_to_loginFragment);
     }
 }
