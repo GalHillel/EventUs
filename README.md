@@ -51,7 +51,39 @@ We leveraged Android Studio, along with Java, for frontend development, enabling
 
 ## 📝 Usage
 
-[Provide detailed instructions on how to use the application, including how to create events, register for events, and interact with other users.]
+# EventUs User Guide
+
+Welcome to EventUs! This guide will walk you through using the application effectively, from creating and managing events to registering for events and interacting with other users.
+
+## Creating Events
+
+1. **Launch the Application:** Open the EventUs app on your device.
+2. **Login or Sign Up:** If you're a new user, sign up for an account using your email address or social media credentials. If you're an existing user, log in to your account.
+3. **Access Event Creation:** Once logged in, navigate to the "Create Event" section of the app.
+4. **Enter Event Details:** Fill in the required information for the event, including the event title, date, time, location, description, and any additional details.
+5. **Submit Event:** After entering all the necessary details, submit the event creation form. Your event will now be listed on the platform for others to view and register.
+
+## Registering for Events
+
+1. **Browse Events:** From the home screen or the "Events" section of the app, browse through the list of available events.
+2. **Select Event:** Tap on the event you're interested in to view more details.
+3. **Register:** If registration is open for the event, you'll find a "Register" button. Tap on it to register yourself for the event.
+4. **Confirmation:** Once registered successfully, you'll receive a confirmation message or email containing event details and confirmation of your registration.
+
+## Interacting with Other Users
+
+1. **Messaging Feature:** EventUs provides a built-in messaging feature to facilitate communication between event organizers and participants.
+2. **Viewing User Profiles:** You can view other users' profiles to learn more about them, including their interests, event history, and any shared connections.
+3. **Networking Opportunities:** Use the platform to connect with like-minded individuals, discuss common interests, and stay updated on upcoming events.
+4. **Engage in Discussions:** Participate in event-related discussions, forums, or chat groups to exchange ideas, ask questions, and share insights with other users.
+
+## Additional Tips
+
+- **Stay Updated:** Regularly check the app for new events, updates, and announcements.
+- **Provide Feedback:** If you encounter any issues or have suggestions for improvement, don't hesitate to provide feedback through the app's feedback or support channels.
+- **Network Responsibly:** Respect other users' privacy and engage in respectful and constructive communication.
+
+By following these instructions, you'll be able to navigate the EventUs application efficiently, create and manage events, register for events, and interact with other users seamlessly.
 
 ## 🤝 Contributing
 
