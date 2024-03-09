@@ -1,60 +1,71 @@
-# 🎉 EventUs 📅
+# EventUs
 
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+Welcome to EventUs, your ultimate event management solution! EventUs is a comprehensive application designed to streamline the organization and participation in various events, whether they're conferences, workshops, social gatherings, or anything in between. With EventUs, managing events becomes a breeze, and participating in them is more enjoyable than ever.
 
-Welcome to EventUs, your ultimate event management companion! 🚀 Whether you're an event organizer or a participant, EventUs provides you with the tools you need to plan, manage, and enjoy events seamlessly. Let's make every event an unforgettable experience! 💫
+## 🌟 Key Features
 
-## ✨ Features
+- **Effortless Event Creation:** With EventUs, creating new events is a piece of cake. Simply input event details such as date, time, location, and description, and watch as your event comes to life with just a few clicks.
 
-- **User-Friendly Interface**: Enjoy a seamless user experience with an intuitive interface designed to enhance usability and navigation.
-- **Event Discovery**: Easily discover a wide range of events tailored to your interests and preferences.
-- **Event Creation**: Effortlessly create and customize events with detailed information, including dates, locations, descriptions, and more.
-- **Participant Management**: Efficiently manage participants, invitations, and RSVPs for your events.
-- **Real-Time Communication**: Stay connected with event participants through real-time messaging and updates.
-- **Profile Customization**: Personalize your profile with photos, bios, and preferences to enhance your event experience.
-- **Comprehensive Analytics**: Gain insights into event attendance, engagement, and feedback through comprehensive analytics and reporting tools.
+- **Interactive Dashboard:** Stay on top of all your events with our intuitive dashboard. Easily monitor registrations, track attendance, and manage event logistics effortlessly from one central location.
+
+- **Engaging User Experience:** We've crafted EventUs with a focus on user experience, ensuring that browsing events, registering, and interacting with event organizers is a delightful experience for all users.
+
+- **Personalized Profiles:** Create personalized user profiles that reflect your interests and preferences. Keep track of your event history, connect with like-minded individuals, and showcase your unique personality.
+
+- **Real-time Communication:** Foster communication and collaboration among event organizers and participants with our integrated messaging features. Send updates, announcements, and reminders in real-time to keep everyone informed and engaged.
 
 ## 📸 Screenshots
 
-![Dashboard](appScreenShots/Dashboard/frame_0.jpg)
-![Main](appScreenShots/Main/frame_0.jpg)
-![Organizer](appScreenShots/Organizer/frame_0.jpg)
-![Participant](appScreenShots/Participant/frame_0.jpg)
+Will be add soon
 
-## 🚀 Getting Started
+## 🚀 Technologies Used
 
-To get started with EventUs, follow these steps:
+### Backend
 
-1. **Clone the Repository**:
-   ```bash
-   git clone https://github.com/GalHillel/EventUs.git
-   ```
+- **NestJS:** Utilizing the power of NestJS, a robust Node.js framework, we've built a scalable and efficient backend for EventUs.
+- **MongoDB:** Our backend relies on MongoDB, a flexible and reliable NoSQL database, for storing event data and user information securely.
+- **JWT Authentication:** Ensuring secure user authentication and authorization, we employ JSON Web Tokens to authenticate users and protect sensitive data.
 
-2. **Set Up the Backend**:
-   - Navigate to the `backend/event-us` directory.
-   - Follow the instructions in the backend README to set up and run the backend server.
+### Frontend
 
-3. **Set Up the Frontend**:
-   - Navigate to the `frontend/app` directory.
-   - Follow the instructions in the frontend README to set up and run the Android application.
+- **Java:** The primary programming language used for developing the frontend of the application.
+- **XML:** Utilized for defining the layout and structure of UI components in Android Studio.
+- **Amazing-UI:** A custom UI framework or design pattern implemented to create visually appealing user interfaces.
 
-4. **Explore and Enjoy**:
-   - Launch the EventUs application on your device.
-   - Discover, create, and participate in exciting events!
+We leveraged Android Studio, along with Java, for frontend development, enabling seamless integration and efficient coding practices for Android applications.
+
+## 💻 Installation
+
+### Backend
+
+1. Clone the repository: `git clone https://github.com/GalHillel/EventUs.git`
+2. Navigate to the `backend` directory: `cd backend`
+3. Install dependencies: `npm install`
+4. Start the server: `npm start`
+
+### Frontend
+
+1. Navigate to the `frontend` directory: `cd frontend`
+2. Install dependencies: `npm install`
+3. Start the development server: `npm start`
+
+## 📝 Usage
+
+[Provide detailed instructions on how to use the application, including how to create events, register for events, and interact with other users.]
 
 ## 🤝 Contributing
 
-We welcome contributions from the community to enhance EventUs further. To contribute, please follow these guidelines:
+We welcome contributions from the community! Whether you want to report a bug, suggest a feature, or contribute code, your input is valuable to us. Please refer to our [Contribution Guidelines](CONTRIBUTING.md) for more information.
 
-1. Fork the repository and create your branch (`git checkout -b feature/YourFeature`).
-2. Commit your changes (`git commit -am 'Add new feature'`).
-3. Push to the branch (`git push origin feature/YourFeature`).
-4. Create a new Pull Request.
+## 📄 License
 
-## 📝 License
+This project is licensed under the [MIT License](LICENSE).
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+## 📧 Contact
 
-## 📬 Contact
+For any inquiries or feedback, please don't hesitate to reach out to us at [galh2011@gmail.com](mailto:galh2011@gmail.com).
 
-For any inquiries or feedback, please contact us at [galh2011@gmail.com](mailto:galh2011@gmail.com).
+Thank you for choosing EventUs! We hope you enjoy using our application as much as we enjoyed creating it. Happy event planning!
+
+---
+
