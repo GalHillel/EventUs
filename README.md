@@ -49,9 +49,7 @@ We leveraged Android Studio, along with Java, for frontend development, enabling
 2. Install dependencies: `npm install`
 3. Start the development server: `npm start`
 
-## 📝 Usage
-
-# EventUs User Guide
+# 📝 EventUs User Guide
 
 Welcome to EventUs! This guide will walk you through using the application effectively, from creating and managing events to registering for events and interacting with other users.
 
