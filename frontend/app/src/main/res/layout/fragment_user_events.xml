@@ -45,11 +45,13 @@
 
     <!-- Past Events Section -->
     <androidx.cardview.widget.CardView
+        android:id="@+id/pastEventsCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         app:cardCornerRadius="8dp"
-        app:cardElevation="4dp">
+        app:cardElevation="4dp"
+        android:visibility="visible">
 
         <!-- Top App Bar for Past Events -->
         <com.google.android.material.appbar.MaterialToolbar
@@ -64,6 +66,7 @@
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
             <TextView
+                android:id="@+id/title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/past_events"

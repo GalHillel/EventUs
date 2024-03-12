@@ -52,6 +52,7 @@ public class UserEventsFragment extends Fragment {
             this.holder.loadEvents();
         }
 
+
         upcomingEventsList.clear();
         pastEventsList.clear();
         Date currentDate = new Date();
@@ -64,6 +65,17 @@ public class UserEventsFragment extends Fragment {
         }
         upcomingEventsList.sort(Comparator.comparing(UserEventDisplay::getDate));
         pastEventsList.sort(Comparator.comparing(UserEventDisplay::getDate));
+
+        if (pastEventsList.isEmpty()){
+            // Remove past events and extend upcoming events
+            getView().findViewById(R.id.pastEventsAppBar).setVisibility(View.GONE);
+            ViewGroup.LayoutParams layoutParams = getView().findViewById(R.id.upcomingEventsList).getLayoutParams();
+            layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+            getView().findViewById(R.id.upcomingEventsList).setLayoutParams(layoutParams);
+        } else if (!this.holder.getUser().getUser_type().equals("Organizer")){
+            // Change the past event title to "Waiting for rating"
+            ((TextView) getView().findViewById(R.id.pastEventsAppBar).findViewById(R.id.title)).setText("Waiting for Rating");
+        }
 
         upcomingEventsFragment = new EventListFragment(this.holder.getUser(), upcomingEventsList);
         getChildFragmentManager().beginTransaction()

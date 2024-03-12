@@ -97,6 +97,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/eventDescriptionTextView"
+            android:layout_width="match_parent"
             style="@style/LargeTextField"
             android:inputType="textMultiLine"
             android:text="@string/placeholder" />

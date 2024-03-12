@@ -85,6 +85,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/bio"
+            android:layout_width="match_parent"
             style="@style/LargeTextField"
             android:inputType="textMultiLine"
             android:text="@string/placeholder" />

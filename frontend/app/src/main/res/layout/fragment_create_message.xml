@@ -38,6 +38,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/messageEditText"
+            android:layout_width="match_parent"
             style="@style/LargeTextField"
             android:hint="@string/message_content"
             android:inputType="textMultiLine" />
