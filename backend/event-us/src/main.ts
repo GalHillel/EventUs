@@ -1,28 +1,31 @@
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { SpelunkerModule } from 'nestjs-spelunker';
+
+import { AppModule } from './app.module';
+import { JsonLogger, log } from './common/platform';
+
+const PORT = Number.parseInt(process.env.PORT || '3000', 10);
+const HOST = process.env.HOST || '0.0.0.0';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  
-  const options = new DocumentBuilder()
-    .setTitle('core-api')
-    .setDescription('The core API description')
-    .setVersion('3.0')
-    .addTag('core-api')
-    .build();
-  const document = SwaggerModule.createDocument(app, options);
-  SwaggerModule.setup('docs', app, document);
+  const app = await NestFactory.create(AppModule, { logger: new JsonLogger() });
 
-  // 1. Generate the tree as text
-  const tree = SpelunkerModule.explore(app);
-  const root = SpelunkerModule.graph(tree);
-  const edges = SpelunkerModule.findGraphEdges(root);
-  const mermaidEdges = edges.map(({ from, to }) => `${from.module.name}-->${to.module.name}`);
-  console.log(`graph TD\n\t${mermaidEdges.join('\n\t')}`);
+  app.enableCors();
+  app.useGlobalPipes(new ValidationPipe({ transform: true }));
+  app.enableShutdownHooks();
 
-  await app.listen(3000);
+  const options = new DocumentBuilder().setTitle('EventUs API').setVersion(process.env.APP_VERSION || 'dev').build();
+  SwaggerModule.setup('docs', app, SwaggerModule.createDocument(app, options));
+
+  await app.listen(PORT, HOST);
+  log('info', 'server started', { port: PORT, host: HOST });
 }
+
+process.on('unhandledRejection', (reason) => log('error', 'unhandled rejection', { reason: String(reason) }));
+process.on('uncaughtException', (err: Error) => {
+  log('error', 'uncaught exception', { reason: err.message });
+  process.exit(1);
+});
+
 bootstrap();
