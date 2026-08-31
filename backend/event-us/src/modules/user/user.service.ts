@@ -44,8 +44,7 @@ export class UserService {
    */
   async addMessages(userIds: string[],msgId:string): Promise<void>{
     //no need to check for duplicate messages as this function gets called only on message creation
-    const temp = await this.setMessageState(userIds,msgId,false);
-    console.log(temp)
+    await this.setMessageState(userIds,msgId,false);
   }
 
   /**
@@ -58,7 +57,6 @@ export class UserService {
     if(await this.userModel.findOne({email:createUserDto.email, user_type:createUserDto.user_type}).exec() != null){
       throw new HttpException(createUserDto.user_type+" with this email already exists!",HttpStatus.CONFLICT)
     }
-    console.log("creating user" + createUserDto);
     const createdUser = new this.userModel(createUserDto);
     return createdUser.save();
   }
@@ -149,9 +147,7 @@ export class UserService {
   }
 
   async getUserListProfilePics(_ids:string[],fields?:string){
-    const userList = await this.userModel.find({ _id: { $in: _ids },profile_pic:{$ne:""} },fields).populate('profile_pic','icon',this.profilePicModel).exec();
-    console.log(userList);
-    return userList;
+    return this.userModel.find({ _id: { $in: _ids },profile_pic:{$ne:""} },fields).populate('profile_pic','icon',this.profilePicModel).exec();
   }
 
 

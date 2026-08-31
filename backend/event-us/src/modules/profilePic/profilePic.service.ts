@@ -47,14 +47,5 @@ export class ProfilePicService {
     return (await this.getProfilePic(_id,'icon')).icon.toString('base64');
   }
 
-  async printAllProfilePics(): Promise<void>{
-    const profilepics: ProfilePic[] = await this.profilePicModel.find().exec();
-    
-    profilepics.forEach( (profilepic,index)=>{
-      
-      console.log(profilepic);
-    });
-  }
-
   // Implement other CRUD operations as needed
 }
