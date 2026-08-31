@@ -23,7 +23,6 @@ export class EventService {
    * @returns updated event
    */
   async addUser(_id:string,userId:string): Promise<UserEvent>{
-    console.log("_id: "+_id + "     user: "+userId);
     const userEvent = await this.getUserEvent(_id);
     //dupe check
     if (userEvent.attendents.has(userId)){
@@ -76,14 +75,6 @@ export class EventService {
     });
   }
 
-  async printAllEvents(): Promise<void>{
-    const events: UserEvent[] = await this.userEventModel.find().exec();
-    
-    events.forEach( (event,index)=>{
-      console.log(event);
-    });
-  }
-
   // TODO: error handling
   /**
    * Get all event by ids
@@ -120,7 +111,6 @@ export class EventService {
         search_query.push({[key]:searchTerms[key]});
       }
     }
-    console.log(search_query)
     return this.userEventModel.find(
       {
         $and:[
@@ -159,10 +149,7 @@ export class EventService {
     //const tmp = await this.userEventModel.findById(_id).updateMany({},{ $unset:["attendents."+userId]}).exec();
     
     const userEvent = await this.userEventModel.findById(_id).exec();
-    console.log(userEvent.attendents);
-    console.log(userId);
     userEvent.attendents.delete(userId);
-    console.log(userEvent.attendents);
     return userEvent.save()
   }
 

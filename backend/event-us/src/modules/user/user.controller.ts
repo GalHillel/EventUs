@@ -9,6 +9,7 @@ import { ProfilePicService } from '../profilePic/profilePic.service';
 import { MessageService } from '../message/message.service';
 import { CreateMessageDto } from '../dto/message.dto';
 import { EditEventDto, RateEventDto } from '../dto/event.dto';
+import { log } from '../../common/platform';
 
 
 @Controller('users')
@@ -45,7 +46,7 @@ export class UserController {
       await this.userService.editUser(_id,editUserDto);
       
     } catch(e){
-      console.log("error in edit user " + e.message)
+      log('error', 'edit user failed', { userId: _id, reason: e.message });
       if(e instanceof HttpException){
         
         throw new HttpException(e.message,e.getStatus());
@@ -64,7 +65,7 @@ export class UserController {
   @HttpCode(HttpStatus.NO_CONTENT)
   @Patch(':id/rate')
   async rateEvent(@Param('id') _id: string, @Body() ratingDTO:RateEventDto): Promise<void>{
-    console.log("user " + _id + " rating " + ratingDTO._id)
+    log('info', 'user rating event', { userId: _id, eventId: ratingDTO._id });
     try{
       this.eventService.rateEvent(ratingDTO._id,ratingDTO).then((editEventDto)=> {
         this.exitEvent(_id,ratingDTO._id).then(()=> {
@@ -73,7 +74,7 @@ export class UserController {
       });
     }
     catch(e){
-      console.log("error in rate event " + e.message)
+      log('error', 'rate event failed', { userId: _id, reason: e.message });
       if(e instanceof HttpException){
         
         throw new HttpException(e.message,e.getStatus());

@@ -12,7 +12,6 @@ export class MessageService {
   @InjectModel(User.name) private readonly userModel: Model<User>) {}
 
   async createMessage(createMessageDto: CreateMessageDto): Promise<Message> {
-    console.log("creating message" + createMessageDto);
     const createdMessage = new this.messageModel(createMessageDto);
     return createdMessage.save();
   }

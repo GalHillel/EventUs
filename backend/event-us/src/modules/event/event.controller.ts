@@ -36,7 +36,6 @@ export class EventController {
   @HttpCode(HttpStatus.NO_CONTENT)
   @Patch(':id/edit')
   async editEvent(@Param('id') _id: string, @Body() edit:EditEventDto): Promise<void>{
-    console.log(edit);
     this.eventService.editEvent(_id,edit);
   }
 
