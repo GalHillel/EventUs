@@ -8,6 +8,7 @@ import java.net.HttpURLConnection;
 import java.util.List;
 import java.util.Map;
 
+import com.example.eventus.BuildConfig;
 import com.example.eventus.data.model.LoggedInUser;
 import com.example.eventus.data.model.NewUserMessage;
 import com.example.eventus.data.model.UserMessageDisplay;
@@ -109,7 +110,7 @@ public class Database {
 
     public static void uploadProfilePic(byte[] pic, final FileUploader.UploadCallback callback) {
         FileUploader uploader = new FileUploader();
-        uploader.uploadFile("http://10.0.2.2:3000/profilepics", pic, callback);
+        uploader.uploadFile(BuildConfig.API_BASE_URL + "profilepics", pic, callback);
 
 
     }
