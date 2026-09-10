@@ -20,6 +20,41 @@ the ingress; no Nginx. Filebeat ships JSON straight to Elasticsearch; no Logstas
     eventus.sh              every operation
     Jenkinsfile             build, push, deploy
 
+## WSL host
+
+Two settings have to be right before anything else, and neither is the default.
+
+K3s needs cgroup v2. On cgroup v1 the kubelet refuses to start and k3s exits with
+status 0 in a restart loop, with the reason only in `journalctl -u k3s`. Set it in
+`%USERPROFILE%\.wslconfig` on the Windows side:
+
+    [wsl2]
+    memory=10GB
+    processors=6
+    kernelCommandLine=cgroup_no_v1=all systemd.unified_cgroup_hierarchy=1
+
+and enable systemd in `/etc/wsl.conf` inside the distro:
+
+    [boot]
+    systemd=true
+
+Run `wsl --shutdown` after either change. `stat -fc %T /sys/fs/cgroup` must print
+`cgroup2fs`.
+
+Mirrored networking mirrors listening sockets, not iptables rules. A Kubernetes
+hostPort is a DNAT rule, so Windows cannot reach the ingress through it and opening
+the Hyper-V firewall does not help. Stay on NAT and forward the ports from an
+elevated PowerShell:
+
+    $ip = (wsl hostname -I).Trim().Split(" ")[0]
+    foreach ($p in 80,8080,6443) {
+      netsh interface portproxy delete v4tov4 listenport=$p listenaddress=0.0.0.0
+      netsh interface portproxy add v4tov4 listenport=$p listenaddress=0.0.0.0 connectport=$p connectaddress=$ip
+    }
+
+The WSL address changes on every restart, so this has to run again after each one.
+For Kibana, add `127.0.0.1 kibana.local` to `C:\Windows\System32\drivers\etc\hosts`.
+
 ## Run it
 
 Ansible is the one thing that has to be there before the first run; it installs
@@ -41,6 +76,10 @@ everything else.
 | `traffic` | steady traffic until Ctrl+C |
 | `break` | push the deliberate regression |
 | `reset` | revert it and clear the healer cooldown |
+
+`eventus.sh` reads the node address from the cluster, so it works from inside WSL
+without the port forward. The URLs below are how the same services look from Windows
+once the forward is in place.
 
 | url | what |
 |---|---|
@@ -67,3 +106,6 @@ Thresholds live in the healer ConfigMap in `infra/terraform/main.tf`.
 - The health endpoints are exempt from the chaos switch. A pod failing its probes gets
   killed by Kubernetes; the failure being demonstrated is a pod that stays healthy and
   serves errors.
+- Filebeat installs an ECS template by default, in which `service` is an object. The
+  API writes it as a string, so every document is rejected on a mapping conflict.
+  `setup.template.enabled` is false for that reason.
