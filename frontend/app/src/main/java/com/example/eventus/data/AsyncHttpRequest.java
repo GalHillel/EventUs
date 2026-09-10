@@ -2,6 +2,7 @@ package com.example.eventus.data;
 
 import android.os.AsyncTask;
 
+import com.example.eventus.BuildConfig;
 import com.example.eventus.data.model.ServerResponse;
 import com.google.gson.Gson;
 
@@ -66,7 +67,7 @@ public class AsyncHttpRequest extends AsyncTask<Void, Void, ServerResponse> {
     }
 
     private ServerResponse sendHttpRequest() throws Exception {
-        String url = "http://10.0.2.2:3000/" + this.dir;
+        String url = BuildConfig.API_BASE_URL + this.dir;
         String payloadStr = "";
         String query = "";
 

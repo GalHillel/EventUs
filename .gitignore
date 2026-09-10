@@ -71,3 +71,26 @@ lerna-debug.log*
 
 frontend/app/src/main/java/com/example/appExample/
 
+# Terraform
+infra/terraform/.terraform/
+infra/terraform/.terraform.lock.hcl
+infra/terraform/*.tfstate
+infra/terraform/*.tfstate.*
+infra/terraform/*.tfvars
+!infra/terraform/*.tfvars.example
+infra/terraform/crash.log
+infra/terraform/.terraform.tfstate.lock.info
+
+# Ansible
+infra/ansible/*.retry
+infra/ansible/.vault_pass
+
+# Jenkins
+infra/jenkins/kubeconfig-jenkins.yaml
+
+# Kubernetes and local secrets
+kubeconfig
+*.kubeconfig
+.env
+.env.*
+!.env.example
