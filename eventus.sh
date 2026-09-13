@@ -17,7 +17,7 @@ usage: ./eventus.sh <command>
   kibana      create the eventus-logs data view
   status      one screen with the state of everything
   traffic     send steady traffic until Ctrl+C
-  break       push the deliberate regression
+  break       push a commit that turns on error injection
   reset       revert it and clear the healer cooldown
 USAGE
 }
