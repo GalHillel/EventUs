@@ -17,8 +17,9 @@ returns 500 on half the requests. The healer covers that case.
   and service, ingress, Elasticsearch, Kibana, Filebeat, the healer CronJob, and the
   service account Jenkins uses.
 - Docker - builds the API image and pushes it to Docker Hub.
-- Jenkins - on every push to the repo: builds the image with a unique tag, pushes it,
-  updates the deployment, and runs a smoke test against the new pod.
+- Jenkins - polls the repository every two minutes and runs five stages: Checkout,
+  Build, Push, Deploy, Smoke test. The image tag is the short git sha plus the build
+  number, so every build is a distinct image.
 - Filebeat - runs on the node, reads the container log files and sends them to
   Elasticsearch.
 - Elasticsearch and Kibana - store the logs and let me query them.
@@ -29,6 +30,10 @@ returns 500 on half the requests. The healer covers that case.
 I used Traefik as the ingress because it already ships with K3s, so there was no
 reason to install Nginx. Filebeat writes JSON straight into Elasticsearch, so there
 is no Logstash either.
+
+The cluster is split into three namespaces: `eventus` for the API and MongoDB,
+`observability` for Elasticsearch, Kibana and Filebeat, and `platform` for the healer
+CronJob.
 
 ## Files
 
@@ -98,6 +103,16 @@ branch, set the script path to `Jenkinsfile`, and enable "Poll SCM" with `H/2 * 
 It needs two credentials - `dockerhub` for the registry and `kubeconfig-jenkins` as a
 secret file, which `./eventus.sh up` already wrote to `infra/jenkins/`.
 
+The logs reach Kibana on their own, but the dashboard has to be created once:
+
+    cd infra/kibana
+    ./setup-dashboard.sh
+
+That adds five panels - server errors over time, all requests over time, errors by
+version, total server errors, and requests by path - to a dashboard called
+"EventUs platform" at
+`http://kibana.local/app/dashboards#/view/eventus-platform`.
+
 Commands:
 
 | command | what it does |
@@ -134,6 +149,18 @@ commit up within two minutes, builds and deploys it, the red responses start sho
 up in the traffic window, and about five minutes later the healer rolls the deployment
 back and they stop. `rollout history` shows the new revision with the reason in
 CHANGE-CAUSE. Run `./eventus.sh reset` afterwards.
+
+## The Android client
+
+The server address used to be written into the Java. It is a build config field now, so
+the debug build talks to the emulator host at `http://10.0.2.2/` and the release build to
+`http://eventus.local/`. Both go through the ingress on port 80 instead of straight to
+port 3000, which is what let the app run against the cluster instead of a local `npm run
+start`. `usesCleartextTraffic` in the manifest was replaced with a network security config
+that allows plain HTTP for those two hosts only.
+
+Open `frontend/` in Android Studio and run the debug build on an emulator. The port
+forward from Windows has to be up, same as for everything else.
 
 ## Things that went wrong
 
