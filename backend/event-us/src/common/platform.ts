@@ -1,7 +1,6 @@
 import {
   Controller,
   Get,
-  InternalServerErrorException,
   LoggerService,
   ServiceUnavailableException,
 } from '@nestjs/common';
@@ -89,10 +88,5 @@ export class PlatformController {
       version: VERSION,
       pod: process.env.POD_NAME || 'local',
     };
-  }
-
-  @Get('chaos/boom')
-  boom(): never {
-    throw new InternalServerErrorException('deliberate failure');
   }
 }

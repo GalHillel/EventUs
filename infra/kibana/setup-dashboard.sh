@@ -36,4 +36,4 @@ for o in d.get('saved_objects',[]):
 " || echo "${out}" | head -n -1
 
 echo
-echo "open: http://kibana.local/app/dashboards#/view/eventus-demo"
+echo "open: http://kibana.local/app/dashboards#/view/eventus-platform"
